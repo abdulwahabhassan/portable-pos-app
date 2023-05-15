@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="406453423630273620" name="close_drawer">"ನ್ಯಾವಿಗೇಷನ್‌ ಮೆನು ಮುಚ್ಚಿರಿ"</string>
+    <string msgid="7573152094250666567" name="close_sheet">"ಶೀಟ್ ಮುಚ್ಚಿರಿ"</string>
+    <string msgid="5389587048670450460" name="collapsed">"ಕುಗ್ಗಿಸಲಾಗಿದೆ"</string>
+    <string msgid="2846784065735639969" name="date_picker_headline">"ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ"</string>
+    <string msgid="4627306862713137085" name="date_picker_headline_description">"ಪ್ರಸ್ತುತ ಆಯ್ಕೆ: %1$s"</string>
+    <string msgid="5152441868029453612" name="date_picker_navigate_to_year_description">"%1$s ವರ್ಷಕ್ಕೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ"</string>
+    <string msgid="5724377114289981899" name="date_picker_no_selection_description">"ಯಾವುದೂ ಅಲ್ಲ"</string>
+    <string msgid="145089358343568971" name="date_picker_switch_to_day_selection">"ಒಂದು ವರ್ಷವನ್ನು ಆಯ್ಕೆಮಾಡಲು ಸ್ವೈಪ್ ಮಾಡಿ ಅಥವಾ ಒಂದು ದಿನವನ್ನು ಆಯ್ಕೆಮಾಡಲು ಹಿಂತಿರುಗಲು ಟ್ಯಾಪ್ ಮಾಡಿ"</string>
+    <string msgid="8313783187901412102" name="date_picker_switch_to_next_month">"ಮುಂದಿನ ತಿಂಗಳಿಗೆ ಬದಲಿಸಿ"</string>
+    <string msgid="7596294429748914881" name="date_picker_switch_to_previous_month">"ಹಿಂದಿನ ತಿಂಗಳಿಗೆ ಬದಲಿಸಿ"</string>
+    <string msgid="3412370019845183965" name="date_picker_switch_to_year_selection">"ವರ್ಷವನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಬದಲಿಸಿ"</string>
+    <string msgid="9208721003668059792" name="date_picker_title">"ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
+    <string msgid="8140324713311804736" name="date_picker_year_picker_pane_title">"ವರ್ಷದ ಪಿಕರ್ ಗೋಚರಿಸುತ್ತದೆ"</string>
+    <string msgid="8038256446254964252" name="default_error_message">"ಅಮಾನ್ಯ ಇನ್‌ಪುಟ್"</string>
+    <string msgid="6312721426453364202" name="default_popup_window_title">"ಪಾಪ್-ಅಪ್ ವಿಂಡೋ"</string>
+    <string msgid="4057925834421392736" name="dialog">"ಡೈಲಾಗ್"</string>
+    <string msgid="1890207353314751437" name="dropdown_menu">"ಡ್ರಾಪ್‌ಡೌನ್ ಮೆನು"</string>
+    <string msgid="5974471714631304645" name="expanded">"ವಿಸ್ತರಿಸಲಾಗಿದೆ"</string>
+    <string msgid="6827826412747255547" name="in_progress">"ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
+    <string msgid="7933458017204019916" name="indeterminate">"ಭಾಗಶಃ ಪರೀಕ್ಷಿಸಲಾಗಿದೆ"</string>
+    <string msgid="542007171693138492" name="navigation_menu">"ನ್ಯಾವಿಗೇಶನ್‌ ಮೆನು"</string>
+    <string msgid="6610465462668679431" name="not_selected">"ಆಯ್ಕೆ ಮಾಡಿಲ್ಲ"</string>
+    <string msgid="875452955155264703" name="off">"ಆಫ್ ಆಗಿದೆ"</string>
+    <string msgid="8655164131929253426" name="on">"ಆನ್ ಆಗಿದೆ"</string>
+    <string msgid="5941395253238309765" name="range_end">"ಶ್ರೇಣಿಯ ಅಂತ್ಯ"</string>
+    <string msgid="7097486360902471446" name="range_start">"ಶ್ರೇಣಿಯ ಪ್ರಾರಂಭ"</string>
+    <string msgid="6420018528474762666" name="search_bar_search">"ಹುಡುಕಿ"</string>
+    <string msgid="6043586758067023" name="selected">"ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ"</string>
+    <string msgid="3962933905051144957" name="snackbar_dismiss">"ವಜಾಗೊಳಿಸಿ"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+    <string msgid="7189888345201419934" name="suggestions_available">"ಸಲಹೆಗಳನ್ನು ಕೆಳಗೆ ನೀಡಲಾಗಿದೆ"</string>
+    <string msgid="2561197295334830845" name="switch_role">"ಬದಲಿಸಿ"</string>
+    <string msgid="1672349317127674378" name="tab">"ಟ್ಯಾಬ್"</string>
+    <string msgid="5946805113151406391" name="template_percent">"<ns1:g id="PERCENTAGE">%1$d</ns1:g> ಶೇಕಡಾ."</string>
+</resources>

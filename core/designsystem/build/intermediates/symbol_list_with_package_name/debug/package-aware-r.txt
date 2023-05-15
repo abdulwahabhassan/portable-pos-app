@@ -1,0 +1,14 @@
+com.bankly.core.designsystem
+font aclonica
+font roboto_black
+font roboto_black_italic
+font roboto_bold
+font roboto_bold_italic
+font roboto_italic
+font roboto_light
+font roboto_light_italic
+font roboto_medium
+font roboto_medium_italic
+font roboto_regular
+font roboto_thin
+font roboto_thin_italic
