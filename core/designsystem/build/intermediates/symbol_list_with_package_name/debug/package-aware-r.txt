@@ -1,4 +1,6 @@
 com.bankly.core.designsystem
+drawable ic_visibility_off
+drawable ic_visibility_on
 font aclonica
 font roboto_black
 font roboto_black_italic

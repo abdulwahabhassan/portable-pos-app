@@ -21,16 +21,6 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
-@Preview(showBackground = true)
-internal fun BanklyBackButtonPreview() {
-    BanklyTheme {
-        BanklyBackButton(
-            onClick = {}
-        )
-    }
-}
-
-@Composable
 fun BanklyBackButton(onClick: () -> Unit) {
     Icon(
         imageVector = BanklyIcons.ArrowLeft,
@@ -55,4 +45,17 @@ fun BanklyBackButton(onClick: () -> Unit) {
                 )
             )
     )
+}
+
+/**
+ * Preview
+ */
+@Composable
+@Preview(showBackground = true)
+internal fun BanklyBackButtonPreview() {
+    BanklyTheme {
+        BanklyBackButton(
+            onClick = {}
+        )
+    }
 }

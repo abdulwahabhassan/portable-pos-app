@@ -1,3 +1,5 @@
+int drawable ic_visibility_off 0x0
+int drawable ic_visibility_on 0x0
 int font aclonica 0x0
 int font roboto_black 0x0
 int font roboto_black_italic 0x0

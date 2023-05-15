@@ -5,10 +5,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowLeft
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bankly.core.designsystem.R
 
 /**
  * Material icons are [ImageVector]s, custom icons are drawable resource IDs.
  */
 object BanklyIcons {
     val ArrowLeft = Icons.Rounded.ChevronLeft
+    val VisibilityOn = R.drawable.ic_visibility_on
+    val VisibilityOff = R.drawable.ic_visibility_off
 }

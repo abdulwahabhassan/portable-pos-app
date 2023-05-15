@@ -62,7 +62,7 @@ fun BanklyTitleBar(
             }
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium.copy(MaterialTheme.colorScheme.onTertiary),
+                style = MaterialTheme.typography.titleMedium.copy(MaterialTheme.colorScheme.tertiary),
                 modifier = Modifier
                     .weight(2f)
                     .padding(horizontal = 12.dp),
@@ -75,7 +75,7 @@ fun BanklyTitleBar(
                     text = "Step $currentPage/$totalPage",
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.onTertiary),
+                    style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
@@ -98,7 +98,7 @@ fun BanklyTitleBar(
         if (subTitle.isNotEmpty()) {
             Text(
                 text = subTitle,
-                style = MaterialTheme.typography.bodyLarge.copy(MaterialTheme.colorScheme.onTertiary),
+                style = MaterialTheme.typography.bodyLarge.copy(MaterialTheme.colorScheme.tertiary),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,9 +114,6 @@ fun BanklyTitleBar(
 @Composable
 @Preview(showBackground = true)
 internal fun BanklyTitleBarPreview1() {
-    /**
-     * Preview with back button
-     */
     BanklyTheme {
         BanklyTitleBar(
             onBackClick = {},
@@ -132,9 +129,6 @@ internal fun BanklyTitleBarPreview1() {
 @Composable
 @Preview(showBackground = true)
 internal fun BanklyTitleBarPreview2() {
-    /**
-     * Preview without back button
-     */
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In"
@@ -145,9 +139,6 @@ internal fun BanklyTitleBarPreview2() {
 @Composable
 @Preview(showBackground = true)
 internal fun BanklyTitleBarPreview3() {
-    /**
-     * Preview without back button
-     */
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In",
@@ -159,9 +150,6 @@ internal fun BanklyTitleBarPreview3() {
 @Composable
 @Preview(showBackground = true)
 internal fun BanklyTitleBarPreview4() {
-    /**
-     * Preview without back button
-     */
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In",
@@ -174,9 +162,6 @@ internal fun BanklyTitleBarPreview4() {
 @Composable
 @Preview(showBackground = true)
 internal fun BanklyTitleBarPreview5() {
-    /**
-     * Preview without back button
-     */
     BanklyTheme {
         BanklyTitleBar(
             onBackClick = { },
