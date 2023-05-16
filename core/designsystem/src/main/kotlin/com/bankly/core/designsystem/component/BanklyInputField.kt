@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -49,12 +50,7 @@ fun BanklyInputField(
     readOnly: Boolean = false,
     isError: Boolean = false,
     isPasswordField: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(
-        capitalization = KeyboardCapitalization.None,
-        autoCorrect = false,
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Default
-    )
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -66,7 +62,7 @@ fun BanklyInputField(
         else MaterialTheme.colorScheme.primaryContainer.copy(0.7f),
         cursorColor = if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorCursorColor = MaterialTheme.colorScheme.onError,
+        errorCursorColor = MaterialTheme.colorScheme.error,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
@@ -77,41 +73,41 @@ fun BanklyInputField(
         unfocusedLeadingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorLeadingIconColor = MaterialTheme.colorScheme.onError,
+        errorLeadingIconColor = MaterialTheme.colorScheme.error,
         focusedTrailingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         unfocusedTrailingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorTrailingIconColor = MaterialTheme.colorScheme.onError,
+        errorTrailingIconColor = MaterialTheme.colorScheme.error,
         focusedLabelColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         unfocusedLabelColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorLabelColor = MaterialTheme.colorScheme.onError,
-        errorSupportingTextColor = MaterialTheme.colorScheme.onError,
+        errorLabelColor = MaterialTheme.colorScheme.error,
+        errorSupportingTextColor = MaterialTheme.colorScheme.error,
         focusedPrefixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         unfocusedPrefixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorPrefixColor = MaterialTheme.colorScheme.onError,
+        errorPrefixColor = MaterialTheme.colorScheme.error,
         focusedSuffixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         unfocusedSuffixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
-        errorSuffixColor = MaterialTheme.colorScheme.onError,
+        errorSuffixColor = MaterialTheme.colorScheme.error,
         focusedSupportingTextColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
         else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         unfocusedSupportingTextColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.onError
+        else if (isError) MaterialTheme.colorScheme.error
         else MaterialTheme.colorScheme.primary,
         disabledTrailingIconColor = Color.Unspecified,
         disabledLabelColor = MaterialTheme.colorScheme.tertiary,
@@ -120,15 +116,14 @@ fun BanklyInputField(
         disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
         disabledSuffixColor = MaterialTheme.colorScheme.tertiary,
         disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
-        disabledTextColor = MaterialTheme.colorScheme.tertiary
+        disabledTextColor = MaterialTheme.colorScheme.tertiary,
+        placeholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
     )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .onFocusChanged { focusState: FocusState -> isFocused = focusState.isFocused }
-            .focusable()
+            .padding(vertical = 12.dp)
     ) {
         Text(
             text = label,
@@ -142,17 +137,27 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.onTertiary else if (isError) MaterialTheme.colorScheme.error
+                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.tertiary else if (isError) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.primary else Color.Transparent,
                         shape = MaterialTheme.shapes.medium
-                    ),
+                    )
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    },
                 value = textFieldValue,
                 onValueChange = onTextFieldValueChange,
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
                 singleLine = true,
-                placeholder = { Text(text = hint, style = MaterialTheme.typography.bodyMedium) },
+                placeholder = {
+                    Text(
+                        text = hint,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    )
+                },
                 keyboardOptions = keyboardOptions,
                 textStyle = MaterialTheme.typography.bodyMedium,
                 shape = MaterialTheme.shapes.medium,
@@ -166,6 +171,7 @@ fun BanklyInputField(
                         contentDescription = "Visibility Icon",
                         modifier = Modifier
                             .size(24.dp)
+                            .clip(MaterialTheme.shapes.small)
                             .clickable(
                                 onClick = {
                                     isVisible = !isVisible
@@ -192,10 +198,13 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.onTertiary else if (isError) MaterialTheme.colorScheme.error else if (!isEnabled) MaterialTheme.colorScheme.onTertiary
+                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.tertiary else if (isError) MaterialTheme.colorScheme.error else if (!isEnabled) MaterialTheme.colorScheme.tertiary
                         else MaterialTheme.colorScheme.primary else Color.Transparent,
                         shape = MaterialTheme.shapes.medium
-                    ),
+                    )
+                    .onFocusChanged { focusState ->
+                        isFocused = focusState.isFocused
+                    },
                 value = textFieldValue,
                 placeholder = { Text(text = hint, style = MaterialTheme.typography.bodyMedium) },
                 onValueChange = onTextFieldValueChange,
@@ -205,7 +214,7 @@ fun BanklyInputField(
                 singleLine = true,
                 keyboardOptions = keyboardOptions,
                 textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onTertiary
+                    color = MaterialTheme.colorScheme.tertiary
                 ),
                 shape = MaterialTheme.shapes.medium,
                 colors = textFieldColors

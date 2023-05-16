@@ -13,7 +13,7 @@ object BanklyRippleTheme : RippleTheme {
 
     @Composable
     override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
-        MaterialTheme.colorScheme.inversePrimary,
+        MaterialTheme.colorScheme.primaryContainer,
         lightTheme = true
     )
 }

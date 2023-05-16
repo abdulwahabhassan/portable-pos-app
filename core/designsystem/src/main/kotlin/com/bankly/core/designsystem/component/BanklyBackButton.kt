@@ -31,7 +31,7 @@ fun BanklyBackButton(onClick: () -> Unit) {
             .size(33.dp)
             .clip(MaterialTheme.shapes.small)
             .background(
-                color = MaterialTheme.colorScheme.inversePrimary,
+                color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.small,
             )
             .clickable(

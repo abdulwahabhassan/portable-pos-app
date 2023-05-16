@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="msg_enter_passcode">Enter passcode</string>
+    <string name="msg_phone_number_sample">e.g 08167039661</string>
+    <string name="msg_passcode_label">Passcode</string>
+    <string name="msg_forgot_passcode">"Forgot Passcode? "</string>
+    <string name="action_recover_passcode">Recover Passcode</string>
+    <string name="action_log_in">Log In</string>
+    <string name="msg_login_screen_subtitle">Fill in your sign in details to access your account</string>
+    <string name="msg_log_in">Log In</string>
+</resources>

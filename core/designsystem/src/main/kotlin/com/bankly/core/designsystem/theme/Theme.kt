@@ -12,20 +12,21 @@ fun BanklyTheme(
     content: @Composable () -> Unit
 ) {
     val banklyLightColorScheme = lightColorScheme(
-        primary = blue06,
+        primary = blue06, //Icon tint, Text color
         onPrimary = white,
-        primaryContainer = blue02,
+        primaryContainer = blue02, //InputTextField background
+        onPrimaryContainer = grey04, // InputTextField placeholder
+
         secondary = pink04,
         onSecondary = blue06,
-        inversePrimary = blue02,
-        surfaceVariant = blue01,
-        tertiary = grey05,
-        onTertiary = grey05,
-        tertiaryContainer = grey01,
-        error = red,
-        errorContainer = pink02,
-        onError = red,
-        outline = blue06,
+
+        tertiary = grey05, //Body text, Title
+        onTertiary = white,
+        tertiaryContainer = grey02, //Disabled InputTextField, Disabled Button
+
+        error = red, //Error text
+        onError = white,
+        errorContainer = pink02, //Error InputTextField
     )
 
     CompositionLocalProvider(LocalRippleTheme provides BanklyRippleTheme) {

@@ -16,4 +16,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "BanklyKozenPos"
 include(":app")
+
 include(":core:designsystem")
+
+include(":feature:authentication")

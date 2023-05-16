@@ -1,0 +1,9 @@
+com.bankly.feature.authentication
+string action_log_in
+string action_recover_passcode
+string msg_enter_passcode
+string msg_forgot_passcode
+string msg_log_in
+string msg_login_screen_subtitle
+string msg_passcode_label
+string msg_phone_number_sample
