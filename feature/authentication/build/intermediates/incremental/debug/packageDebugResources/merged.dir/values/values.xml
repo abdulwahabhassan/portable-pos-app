@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="action_log_in">Log In</string>
-    <string name="action_recover_passcode">Recover Passcode</string>
+    <string name="action_back_to_log_in">Back to login</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_recover_passcode">Recover passcode</string>
+    <string name="action_resend_code">Resend Code</string>
+    <string name="action_send_code">Send Code</string>
+    <string name="msg_confirm_passcode_label">Confirm Passcode</string>
+    <string name="msg_confirm_pin">Confirm PIN</string>
+    <string name="msg_create_new_passcode">Create new passcode</string>
+    <string name="msg_enter_confirm_passcode">Enter confirm passcode</string>
     <string name="msg_enter_passcode">Enter passcode</string>
-    <string name="msg_forgot_passcode">"Forgot Passcode? "</string>
+    <string name="msg_enter_passcode_sent_to_phone">Enter code sent to this phone number\n</string>
+    <string name="msg_enter_phone_number_to_reset">Enter your phone number you used to sign up to get a reset code</string>
+    <string name="msg_forgot_passcode">"Forgot passcode? "</string>
     <string name="msg_log_in">Log In</string>
     <string name="msg_login_screen_subtitle">Fill in your sign in details to access your account</string>
+    <string name="msg_new_passcode">New Passcode</string>
     <string name="msg_passcode_label">Passcode</string>
     <string name="msg_phone_number_sample">e.g 08167039661</string>
+    <string name="msg_resend_code_in">Resend Code in</string>
+    <string name="msg_set_pin">Set PIN</string>
+    <string name="title_log_in">Log In</string>
+    <string name="title_recover_passcode">Recover Passcode</string>
+    <string name="title_set_new_passcode">Set New Passcode</string>
 </resources>

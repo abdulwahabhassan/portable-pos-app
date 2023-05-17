@@ -1,5 +1,12 @@
 R_DEF: Internal format may change without notice
 local
+drawable animation_500_l3eabagh_1
+drawable ic_bankly_app_logo
+drawable ic_bankly_splash_icon
+drawable ic_bankly_splash_logo
+drawable ic_notification_bell_01
+drawable ic_notification_bell_02
+drawable ic_successful
 drawable ic_visibility_off
 drawable ic_visibility_on
 font aclonica
@@ -15,3 +22,4 @@ font roboto_medium_italic
 font roboto_regular
 font roboto_thin
 font roboto_thin_italic
+string desc_clickable_icon

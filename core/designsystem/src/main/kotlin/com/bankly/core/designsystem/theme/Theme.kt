@@ -27,6 +27,8 @@ fun BanklyTheme(
         error = red, //Error text
         onError = white,
         errorContainer = pink02, //Error InputTextField
+        onErrorContainer = red
+
     )
 
     CompositionLocalProvider(LocalRippleTheme provides BanklyRippleTheme) {

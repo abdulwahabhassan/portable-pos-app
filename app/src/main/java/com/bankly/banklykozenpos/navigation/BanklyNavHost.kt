@@ -6,7 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bankly.feature.authentication.navigation.LoginScreen
+import com.bankly.feature.authentication.navigation.CreateNewPassCodeScreen
+import com.bankly.feature.authentication.navigation.SetPinScreen
+import com.bankly.feature.authentication.navigation.SuccessfulScreen
 
 @Composable
 fun BanklyNavHost(
@@ -20,7 +22,7 @@ fun BanklyNavHost(
         startDestination = startDestination,
     ) {
         composable("login") {
-            LoginScreen()
+            SetPinScreen()
         }
     }
 }

@@ -2,7 +2,6 @@ package com.bankly.core.designsystem.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,16 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
@@ -44,11 +40,12 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyInputField(
     textFieldValue: TextFieldValue,
     onTextFieldValueChange: (TextFieldValue) -> Unit,
-    hint: String,
-    label: String,
+    placeholderText: String,
+    labelText: String,
     isEnabled: Boolean = true,
     readOnly: Boolean = false,
     isError: Boolean = false,
+    feedbackText: String = "",
     isPasswordField: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
@@ -123,10 +120,10 @@ fun BanklyInputField(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp)
+            .padding(vertical = 8.dp)
     ) {
         Text(
-            text = label,
+            text = labelText,
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.padding(horizontal = 24.dp)
         )
@@ -137,8 +134,11 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.tertiary else if (isError) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.primary else Color.Transparent,
+                        color = if (isFocused)
+                            if (!isEnabled) MaterialTheme.colorScheme.tertiary
+                            else if (isError) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.primary
+                        else Color.Transparent,
                         shape = MaterialTheme.shapes.medium
                     )
                     .onFocusChanged { focusState ->
@@ -152,7 +152,7 @@ fun BanklyInputField(
                 singleLine = true,
                 placeholder = {
                     Text(
-                        text = hint,
+                        text = placeholderText,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -161,7 +161,8 @@ fun BanklyInputField(
                 keyboardOptions = keyboardOptions,
                 textStyle = MaterialTheme.typography.bodyMedium,
                 shape = MaterialTheme.shapes.medium,
-                visualTransformation = PasswordVisualTransformation('*'),
+                visualTransformation = if (isVisible) VisualTransformation.None
+                else PasswordVisualTransformation('*'),
                 trailingIcon = {
                     Icon(
                         painter = painterResource(
@@ -198,15 +199,23 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) if (!isEnabled) MaterialTheme.colorScheme.tertiary else if (isError) MaterialTheme.colorScheme.error else if (!isEnabled) MaterialTheme.colorScheme.tertiary
-                        else MaterialTheme.colorScheme.primary else Color.Transparent,
+                        color = if (isFocused)
+                            if (!isEnabled) MaterialTheme.colorScheme.tertiary
+                            else if (isError) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.primary
+                        else Color.Transparent,
                         shape = MaterialTheme.shapes.medium
                     )
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
                     },
                 value = textFieldValue,
-                placeholder = { Text(text = hint, style = MaterialTheme.typography.bodyMedium) },
+                placeholder = {
+                    Text(
+                        text = placeholderText,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
                 onValueChange = onTextFieldValueChange,
                 enabled = isEnabled,
                 readOnly = readOnly,
@@ -220,6 +229,15 @@ fun BanklyInputField(
                 colors = textFieldColors
             )
         }
+        Text(
+            text = feedbackText,
+            style = MaterialTheme.typography.bodySmall.copy(
+                color = if (!isEnabled) MaterialTheme.colorScheme.tertiary
+                else if (isError) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
     }
 }
 
@@ -229,54 +247,55 @@ fun BanklyInputField(
  */
 @Composable
 @Preview(showBackground = true)
-fun BanklyInputFieldPreview1() {
+private fun BanklyInputFieldPreview1() {
     BanklyTheme {
         BanklyInputField(
             textFieldValue = TextFieldValue(text = ""),
             onTextFieldValueChange = {},
-            label = "Phone Number",
-            hint = "e.g 08167039661",
+            labelText = "Phone Number",
+            placeholderText = "e.g 08167039661",
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyInputFieldPreview2() {
+private fun BanklyInputFieldPreview2() {
     BanklyTheme {
         BanklyInputField(
             textFieldValue = TextFieldValue(text = ""),
             onTextFieldValueChange = {},
-            label = "Passcode",
-            hint = "Input password",
+            labelText = "Passcode",
+            placeholderText = "Input password",
             isPasswordField = true,
-            isError = true
+            isError = true,
+            feedbackText = "Invalid input"
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyInputFieldPreview3() {
+private fun BanklyInputFieldPreview3() {
     BanklyTheme {
         BanklyInputField(
             textFieldValue = TextFieldValue(text = ""),
             onTextFieldValueChange = {},
-            label = "Home address",
-            hint = "Enter your home address",
+            labelText = "Home address",
+            placeholderText = "Enter your home address",
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyInputFieldPreview4() {
+private fun BanklyInputFieldPreview4() {
     BanklyTheme {
         BanklyInputField(
             textFieldValue = TextFieldValue(text = "Hassan Abdulwahab"),
             onTextFieldValueChange = {},
-            label = "Name",
-            hint = "What's your name?",
+            labelText = "Name",
+            placeholderText = "What's your name?",
             isEnabled = false,
         )
     }

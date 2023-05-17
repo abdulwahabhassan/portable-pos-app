@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,14 +39,14 @@ fun BanklyButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium.copy(fontSize = 16.sp)
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyButtonPreview() {
+private fun BanklyButtonPreview() {
     BanklyTheme {
         BanklyButton(
             text = "Pay",

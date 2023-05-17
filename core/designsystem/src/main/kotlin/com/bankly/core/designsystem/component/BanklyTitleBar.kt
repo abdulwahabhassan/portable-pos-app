@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +38,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyTitleBar(
     onBackClick: (() -> Unit)? = null,
     title: String,
-    subTitle: String = "",
+    subTitle: AnnotatedString = buildAnnotatedString { append("") },
     currentPage: Int = 0,
     totalPage: Int = 0
 ) {
@@ -44,7 +47,9 @@ fun BanklyTitleBar(
     }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 24.dp)
     ) {
         Row(
             modifier = Modifier
@@ -58,13 +63,13 @@ fun BanklyTitleBar(
                     BanklyBackButton(onClick = onBackClick)
                 }
             } else {
-                Box(modifier = Modifier.weight(1f))
+                Box(modifier = Modifier.size(46.dp).weight(1f)) {}
             }
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium.copy(MaterialTheme.colorScheme.tertiary),
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(3f)
                     .padding(horizontal = 12.dp),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
@@ -113,12 +118,12 @@ fun BanklyTitleBar(
  */
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyTitleBarPreview1() {
+private fun BanklyTitleBarPreview1() {
     BanklyTheme {
         BanklyTitleBar(
             onBackClick = {},
             title = "Log In",
-            subTitle = "Fill in your sign in details to access your account",
+            subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 1,
             totalPage = 2
         )
@@ -128,7 +133,7 @@ internal fun BanklyTitleBarPreview1() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyTitleBarPreview2() {
+private fun BanklyTitleBarPreview2() {
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In"
@@ -138,21 +143,22 @@ internal fun BanklyTitleBarPreview2() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyTitleBarPreview3() {
+private fun BanklyTitleBarPreview3() {
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In",
-            subTitle = "Fill in your sign in details to access your account"
+            subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") }
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyTitleBarPreview4() {
+private fun BanklyTitleBarPreview4() {
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In",
+            subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 3,
             totalPage = 10
         )
@@ -161,7 +167,7 @@ internal fun BanklyTitleBarPreview4() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyTitleBarPreview5() {
+private fun BanklyTitleBarPreview5() {
     BanklyTheme {
         BanklyTitleBar(
             onBackClick = { },

@@ -5,4 +5,7 @@ plugins {
 
 android {
     namespace = "com.bankly.feature.authentication"
+    buildFeatures {
+        buildConfig = true
+    }
 }

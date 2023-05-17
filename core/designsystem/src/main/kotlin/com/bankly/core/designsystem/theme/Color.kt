@@ -43,8 +43,8 @@ internal val black = Color(0xFF000000)
 internal val white = Color(0xFFFFFFFF)
 internal val red: Color = Color(0xFFFF4648)
 
-val green01: Color = Color(0xFFCFE7DD)
-val green02: Color = Color(0xFF28C76F)
+internal val green01: Color = Color(0xFFCFE7DD)
+internal val green02: Color = Color(0xFF28C76F)
 
 
 

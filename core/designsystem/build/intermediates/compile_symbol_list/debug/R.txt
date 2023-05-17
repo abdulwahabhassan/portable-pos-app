@@ -1,3 +1,10 @@
+int drawable animation_500_l3eabagh_1 0x0
+int drawable ic_bankly_app_logo 0x0
+int drawable ic_bankly_splash_icon 0x0
+int drawable ic_bankly_splash_logo 0x0
+int drawable ic_notification_bell_01 0x0
+int drawable ic_notification_bell_02 0x0
+int drawable ic_successful 0x0
 int drawable ic_visibility_off 0x0
 int drawable ic_visibility_on 0x0
 int font aclonica 0x0
@@ -13,3 +20,4 @@ int font roboto_medium_italic 0x0
 int font roboto_regular 0x0
 int font roboto_thin 0x0
 int font roboto_thin_italic 0x0
+int string desc_clickable_icon 0x0

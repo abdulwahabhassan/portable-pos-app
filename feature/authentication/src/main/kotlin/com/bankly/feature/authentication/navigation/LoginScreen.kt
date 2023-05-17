@@ -34,6 +34,10 @@ fun LoginScreen() {
         phoneNumber.text,
         passcode.text
     ) { mutableStateOf(phoneNumber.text.isNotEmpty() && passcode.text.isNotEmpty()) }
+    val isPhoneNumberError by remember { mutableStateOf(false) }
+    val isPassCodeError by remember { mutableStateOf(false) }
+    val phoneNumberFeedBack by remember { mutableStateOf("") }
+    val passCodeFeedback by remember { mutableStateOf("") }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -47,9 +51,9 @@ fun LoginScreen() {
                 BanklyTitleBar(
                     onBackClick = {},
                     title = stringResource(R.string.msg_log_in),
-                    subTitle = stringResource(R.string.msg_login_screen_subtitle),
-                    currentPage = 0,
-                    totalPage = 0
+                    subTitle = buildAnnotatedString {
+                        append(stringResource(R.string.msg_login_screen_subtitle))
+                    }
                 )
 
                 BanklyInputField(
@@ -57,11 +61,13 @@ fun LoginScreen() {
                     onTextFieldValueChange = { textFieldValue ->
                         phoneNumber = textFieldValue
                     },
-                    hint = stringResource(R.string.msg_phone_number_sample),
-                    label = "Phone Number",
+                    placeholderText = stringResource(R.string.msg_phone_number_sample),
+                    labelText = "Phone Number",
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number
-                    )
+                        keyboardType = KeyboardType.Phone
+                    ),
+                    isError = isPhoneNumberError,
+                    feedbackText = phoneNumberFeedBack
                 )
 
                 BanklyInputField(
@@ -69,12 +75,14 @@ fun LoginScreen() {
                     onTextFieldValueChange = { textFieldValue ->
                         passcode = textFieldValue
                     },
-                    hint = stringResource(R.string.msg_enter_passcode),
-                    label = stringResource(R.string.msg_passcode_label),
+                    placeholderText = stringResource(R.string.msg_enter_passcode),
+                    labelText = stringResource(R.string.msg_passcode_label),
                     isPasswordField = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword
-                    )
+                    ),
+                    isError = isPassCodeError,
+                    feedbackText = passCodeFeedback
                 )
 
                 BanklyClickableText(
@@ -92,7 +100,7 @@ fun LoginScreen() {
         }
 
         item {
-            BanklyButton(stringResource(R.string.action_log_in), {}, isEnabled)
+            BanklyButton(stringResource(R.string.title_log_in), {}, isEnabled)
         }
     }
 

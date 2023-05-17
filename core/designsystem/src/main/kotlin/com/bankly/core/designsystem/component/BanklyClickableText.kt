@@ -53,7 +53,7 @@ fun BanklyClickableText(
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyClickableTextPreview1() {
+private fun BanklyClickableTextPreview1() {
     BanklyTheme {
         BanklyClickableText(
             text = buildAnnotatedString {
@@ -73,7 +73,7 @@ fun BanklyClickableTextPreview1() {
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyClickableTextPreview2() {
+private fun BanklyClickableTextPreview2() {
     BanklyTheme {
         BanklyClickableText(
             text = buildAnnotatedString {

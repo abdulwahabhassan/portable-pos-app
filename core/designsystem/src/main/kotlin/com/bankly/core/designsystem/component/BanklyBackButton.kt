@@ -52,7 +52,7 @@ fun BanklyBackButton(onClick: () -> Unit) {
  */
 @Composable
 @Preview(showBackground = true)
-internal fun BanklyBackButtonPreview() {
+private fun BanklyBackButtonPreview() {
     BanklyTheme {
         BanklyBackButton(
             onClick = {}
