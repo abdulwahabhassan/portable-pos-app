@@ -3,6 +3,6 @@
 3    package="com.bankly.core.designsystem" >
 4
 5    <uses-sdk android:minSdkVersion="29" />
-5-->/Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9950525137266128530.xml
+5-->/Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
 6
 7</manifest>

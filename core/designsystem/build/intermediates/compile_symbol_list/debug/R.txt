@@ -2,9 +2,17 @@ int drawable animation_500_l3eabagh_1 0x0
 int drawable ic_bankly_app_logo 0x0
 int drawable ic_bankly_splash_icon 0x0
 int drawable ic_bankly_splash_logo 0x0
+int drawable ic_home_01 0x0
+int drawable ic_home_02 0x0
+int drawable ic_more_01 0x0
+int drawable ic_more_02 0x0
 int drawable ic_notification_bell_01 0x0
 int drawable ic_notification_bell_02 0x0
+int drawable ic_receipt_01 0x0
+int drawable ic_receipt_02 0x0
 int drawable ic_successful 0x0
+int drawable ic_support_01 0x0
+int drawable ic_support_02 0x0
 int drawable ic_visibility_off 0x0
 int drawable ic_visibility_on 0x0
 int font aclonica 0x0

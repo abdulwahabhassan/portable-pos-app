@@ -40,7 +40,7 @@ fun <T : Enum<T>> BanklyTabBar(
         tabs.forEach { category ->
             Box(
                 modifier = Modifier
-                    .height(46.dp)
+                    .height(42.dp)
                     .weight(1f)
                     .padding(4.dp)
                     .background(

@@ -9,3 +9,7 @@ android {
         buildConfig = true
     }
 }
+dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:common"))
+}
