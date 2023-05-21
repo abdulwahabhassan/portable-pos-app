@@ -17,44 +17,48 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
-) : BaseViewModel<LoginUiEvent, LoginUiState>(LoginUiState.Initial) {
+) : BaseViewModel<LoginUiEvent, LoginState>(LoginState.Initial) {
 
     override fun handleUiEvents(event: LoginUiEvent) {
         when (event) {
             is LoginUiEvent.Login -> {
-                performLogin(
-                    phoneNumber = event.phoneNumber,
-                    passCode = event.passCode
-                )
+                if (validatePhoneNumber(event.phoneNumber)) {
+                    performLogin(
+                        phoneNumber = event.phoneNumber,
+                        passCode = event.passCode
+                    )
+                } else {
+                    setUiState { LoginState.Error("Please enter a valid phone number") }
+                }
             }
         }
     }
 
+    private fun validatePhoneNumber(phoneNumber: String): Boolean {
+        return if (phoneNumber.length == 11) return true else false
+    }
+
     private fun performLogin(phoneNumber: String, passCode: String) {
-        Log.d("Debug", "view model debug: $phoneNumber $passCode")
+        Log.d("login debug view model", "perform logic")
         viewModelScope.launch {
             userRepository.getToken(phoneNumber, passCode)
                 .onEach { resource ->
                     resource.onLoading {
-                        Log.d("Debug", "view model debug: onLoading $resource")
-                        setUiState { LoginUiState.Loading }
+                        setUiState { LoginState.Loading }
                     }
                     resource.onReady { token ->
-                        Log.d("Debug", "view model debug: onReady $resource")
                         /**
                          * TODO -> Cache **token**
                          */
-                        setUiState { LoginUiState.Success }
+                        setUiState { LoginState.Success }
                     }
                     resource.onFailure { message ->
-                        Log.d("Debug", "view model debug: onFailure $resource")
-                        setUiState { LoginUiState.Error(message) }
+                        setUiState { LoginState.Error(message) }
                     }
                 }.catch {
-                    Log.d("Debug", "view model debug: caught an exception ${it.message}")
                     it.printStackTrace()
                     setUiState {
-                        LoginUiState.Error(
+                        LoginState.Error(
                             it.message ?: "An unexpected event occurred. We're fixing this!"
                         )
                     }
@@ -62,14 +66,13 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
 }
 
-sealed interface LoginUiState {
-    object Initial : LoginUiState
-    object Loading : LoginUiState
-    object Success : LoginUiState
-    data class Error(val message: String) : LoginUiState
+sealed interface LoginState {
+    object Initial : LoginState
+    object Loading : LoginState
+    object Success : LoginState
+    data class Error(val message: String) : LoginState
 }
 
 sealed interface LoginUiEvent {

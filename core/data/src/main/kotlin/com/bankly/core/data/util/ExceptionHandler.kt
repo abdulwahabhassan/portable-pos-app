@@ -1,15 +1,17 @@
 package com.bankly.core.data.util
 
+import android.util.Log
 import com.bankly.core.network.model.response.NetworkError
 import com.bankly.core.network.model.response.TokenNetworkError
+import java.nio.charset.Charset
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 
 fun handleHttpException(e: HttpException, json: Json): NetworkError? {
     return try {
-        e.response()?.errorBody()?.let {
-            json.decodeFromString<NetworkError>(e.response()?.errorBody().toString())
+        e.response()?.errorBody()?.source()?.readString(Charset.defaultCharset())?.let  {
+            json.decodeFromString<NetworkError>(it)
         }
     } catch (t: Throwable) {
         t.printStackTrace()
@@ -19,8 +21,8 @@ fun handleHttpException(e: HttpException, json: Json): NetworkError? {
 
 fun handleTokenHttpException(e: HttpException, json: Json): TokenNetworkError? {
     return try {
-        e.response()?.errorBody()?.let {
-            json.decodeFromString<TokenNetworkError>(e.response()?.errorBody().toString())
+        e.response()?.errorBody()?.source()?.readString(Charset.defaultCharset())?.let {
+            json.decodeFromString<TokenNetworkError>(it)
         }
     } catch (t: Throwable) {
         t.printStackTrace()

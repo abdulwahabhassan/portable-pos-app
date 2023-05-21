@@ -24,6 +24,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyClickableText(
     text: AnnotatedString,
     onClick: () -> Unit,
+    isEnabled: Boolean = true
 ) {
     Text(
         modifier = Modifier
@@ -35,7 +36,7 @@ fun BanklyClickableText(
             .clip(MaterialTheme.shapes.small)
             .clickable(
                 onClick = onClick,
-                enabled = true,
+                enabled = isEnabled,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(

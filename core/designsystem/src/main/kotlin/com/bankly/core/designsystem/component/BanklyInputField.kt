@@ -177,7 +177,7 @@ fun BanklyInputField(
                                 onClick = {
                                     isVisible = !isVisible
                                 },
-                                enabled = true,
+                                enabled = isEnabled,
                                 role = Role.Button,
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(

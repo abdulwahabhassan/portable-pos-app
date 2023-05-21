@@ -1,5 +1,6 @@
 package com.bankly.core.data.util
 
+import android.util.Log
 import com.bankly.core.common.model.Result
 import com.bankly.core.network.model.response.TokenNetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,6 +44,7 @@ suspend fun handleTokenRequest(
         try {
             Result.Success(apiRequest.invoke())
         } catch (e: HttpException) {
+            Log.d("", "msg: ${e.message} resp: ${e.response()} errorbody: ${e.response()?.errorBody()}")
             val response = handleTokenHttpException(e, json)
             Result.Error(
                 message = response?.errorDescription ?: response?.error ?: response?.message

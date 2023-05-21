@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,7 +42,8 @@ fun BanklyTitleBar(
     title: String,
     subTitle: AnnotatedString = buildAnnotatedString { append("") },
     currentPage: Int = 0,
-    totalPage: Int = 0
+    totalPage: Int = 0,
+    isLoading: Boolean = false
 ) {
     val isValidPageCount by remember(currentPage, totalPage) {
         mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
@@ -63,7 +66,11 @@ fun BanklyTitleBar(
                     BanklyBackButton(onClick = onBackClick)
                 }
             } else {
-                Box(modifier = Modifier.size(46.dp).weight(1f)) {}
+                Box(
+                    modifier = Modifier
+                        .size(46.dp)
+                        .weight(1f)
+                ) {}
             }
             Text(
                 text = title,
@@ -91,6 +98,11 @@ fun BanklyTitleBar(
             }
 
         }
+        if (isLoading) {
+            LinearProgressIndicator(modifier = Modifier.padding(bottom = 12.dp).height(2.dp).fillMaxWidth(), strokeCap = StrokeCap.Round)
+        } else {
+            Spacer(modifier = Modifier.padding(bottom = 12.dp).height(2.dp))
+        }
         if (isValidPageCount) {
             LinearProgressIndicator(
                 modifier = Modifier
@@ -100,6 +112,8 @@ fun BanklyTitleBar(
                 strokeCap = StrokeCap.Round
             )
         }
+
+
         if (subTitle.isNotEmpty()) {
             Text(
                 text = subTitle,
@@ -160,7 +174,8 @@ private fun BanklyTitleBarPreview4() {
             title = "Log In",
             subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 3,
-            totalPage = 10
+            totalPage = 10,
+            isLoading = true
         )
     }
 }
@@ -172,6 +187,7 @@ private fun BanklyTitleBarPreview5() {
         BanklyTitleBar(
             onBackClick = { },
             title = "Log In",
+            isLoading = true
         )
     }
 }

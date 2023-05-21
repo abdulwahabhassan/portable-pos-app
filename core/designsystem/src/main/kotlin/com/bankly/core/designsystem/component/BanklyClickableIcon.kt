@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +25,7 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
-fun BanklyClickableIcon(icon: Int, onClick: () -> Unit) {
+fun BanklyClickableIcon(icon: Int, onClick: () -> Unit, color: Color = Color.Unspecified) {
     Icon(
         painter = painterResource(id = icon),
         contentDescription = stringResource(R.string.desc_clickable_icon),
@@ -40,7 +41,7 @@ fun BanklyClickableIcon(icon: Int, onClick: () -> Unit) {
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
+                    color = color
                 )
             )
             .padding(4.dp)
@@ -48,7 +49,7 @@ fun BanklyClickableIcon(icon: Int, onClick: () -> Unit) {
 }
 
 @Composable
-fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit) {
+fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit, color: Color = Color.Unspecified) {
     Icon(
         imageVector = icon,
         contentDescription = stringResource(R.string.desc_clickable_icon),
@@ -64,7 +65,7 @@ fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit) {
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
+                    color = color
                 )
             )
             .padding(4.dp)
@@ -80,7 +81,8 @@ private fun BanklyClickableIconPreview1() {
     BanklyTheme {
         BanklyClickableIcon(
             icon = BanklyIcons.Notification_Bell_01,
-            onClick = {}
+            onClick = {},
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -91,7 +93,8 @@ private fun BanklyClickableIconPreview2() {
     BanklyTheme {
         BanklyClickableIcon(
             icon = BanklyIcons.ArrowLeft,
-            onClick = {}
+            onClick = {},
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

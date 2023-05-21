@@ -16,6 +16,7 @@ fun BanklyTheme(
         onPrimary = white,
         primaryContainer = blue02, //InputTextField background
         onPrimaryContainer = grey04, // InputTextField placeholder
+        inversePrimary = blue03, //Disabled Icon and Text color
 
         secondary = pink04,
         onSecondary = blue06,
@@ -27,7 +28,9 @@ fun BanklyTheme(
         error = red, //Error text
         onError = white,
         errorContainer = pink02, //Error InputTextField
-        onErrorContainer = red
+        onErrorContainer = red,
+
+        surface = white
 
     )
 

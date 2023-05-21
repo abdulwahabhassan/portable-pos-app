@@ -1,25 +1,25 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml:2:13-83
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml:2:13-83
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml:2:13-83
+ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml:2:13-83
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml:2:13-83
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml:2:13-83
 	package
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml:2:13-83
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml:2:13-83
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
 	xmlns:android
-		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml:2:23-81
+		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml:2:23-81
 uses-sdk
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml reason: use-sdk injection requested
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml reason: use-sdk injection requested
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
 	android:targetSdkVersion
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
 	android:minSdkVersion
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
-		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10064973269169544222.xml
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+		ADDED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml
+		INJECTED from /Users/habdulwahab/Android/BanklyKozenPos/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest14969776004284320359.xml

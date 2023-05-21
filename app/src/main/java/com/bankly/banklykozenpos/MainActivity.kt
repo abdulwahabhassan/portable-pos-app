@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BanklyTheme {
                 BanklyApp(
+                    context = this,
                     networkMonitor = networkMonitor
                 )
             }

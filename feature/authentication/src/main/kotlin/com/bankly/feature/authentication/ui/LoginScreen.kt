@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,47 +30,37 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
+import com.bankly.feature.authentication.viewmodel.LoginState
 import com.bankly.feature.authentication.viewmodel.LoginUiEvent
-import com.bankly.feature.authentication.viewmodel.LoginUiState
 import com.bankly.feature.authentication.viewmodel.LoginViewModel
 
-@Composable
-internal fun LoginRoute(
-    onLoginClick: (phoneNumber: String, passCode: String) -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
+@Immutable
+data class LoginUiState(
+    val phoneNumber: TextFieldValue = TextFieldValue(text = "08167039661"),
+    val passCode: TextFieldValue = TextFieldValue(text = "Gdz36Val"),
+    val isPhoneNumberError: Boolean = false,
+    val isPassCodeError: Boolean = false,
+    val phoneNumberFeedBack: String = "",
+    val passCodeFeedBack: String = "",
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LoginScreen(
-        uiState = uiState,
-        onLoginClick = { phoneNumber, passCode ->
-            viewModel.sendEvent(LoginUiEvent.Login(phoneNumber, passCode))
-        }
-    )
+    val isLoginButtonEnabled: Boolean
+        get() = phoneNumber.text.isNotEmpty() && passCode.text.isNotEmpty() && !isPhoneNumberError && !isPassCodeError
 }
 
 @Composable
-fun LoginScreen(
-    uiState: LoginUiState,
-    onLoginClick: (phoneNumber: String, passCode: String) -> Unit,
-) {
-    var phoneNumber by remember() { mutableStateOf(TextFieldValue()) }
-    var passcode by remember() { mutableStateOf(TextFieldValue()) }
-    val isEnabled by remember(
-        phoneNumber.text, passcode.text, uiState
-    ) {
-        mutableStateOf(
-            phoneNumber.text.isNotEmpty() &&
-                    passcode.text.isNotEmpty() &&
-                    uiState !is LoginUiState.Loading
-        )
-    }
-    val isPhoneNumberError by remember { mutableStateOf(false) }
-    val isPassCodeError by remember { mutableStateOf(false) }
-    val phoneNumberFeedBack by remember { mutableStateOf("") }
-    val passCodeFeedback by remember { mutableStateOf("") }
+fun rememberLoginUiState(): MutableState<LoginUiState> = remember { mutableStateOf(LoginUiState()) }
 
-    Log.d("Debug", "Ui state debug: $uiState")
+@Composable
+internal fun LoginScreen(
+    viewModel: LoginViewModel = hiltViewModel(),
+    onLoginSuccess: () -> Unit,
+    onLoginError: (String) -> Unit
+) {
+    val loginState by viewModel.uiState.collectAsStateWithLifecycle()
+    var loginUiState by rememberLoginUiState()
+
+    Log.d("login debug ui state", "$loginUiState")
+    Log.d("login debug ui", "$loginUiState")
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -84,36 +76,39 @@ fun LoginScreen(
                     title = stringResource(R.string.msg_log_in),
                     subTitle = buildAnnotatedString {
                         append(stringResource(R.string.msg_login_screen_subtitle))
-                    }
+                    },
+                    isLoading = loginState == LoginState.Loading
                 )
 
                 BanklyInputField(
-                    textFieldValue = phoneNumber,
+                    textFieldValue = loginUiState.phoneNumber,
                     onTextFieldValueChange = { textFieldValue ->
-                        phoneNumber = textFieldValue
+                        loginUiState = loginUiState.copy(phoneNumber = textFieldValue)
                     },
+                    isEnabled = loginState !is LoginState.Loading,
                     placeholderText = stringResource(R.string.msg_phone_number_sample),
                     labelText = "Phone Number",
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Phone
                     ),
-                    isError = isPhoneNumberError,
-                    feedbackText = phoneNumberFeedBack
+                    isError = loginUiState.isPhoneNumberError,
+                    feedbackText = loginUiState.phoneNumberFeedBack
                 )
 
                 BanklyInputField(
-                    textFieldValue = passcode,
+                    textFieldValue = loginUiState.passCode,
                     onTextFieldValueChange = { textFieldValue ->
-                        passcode = textFieldValue
+                        loginUiState = loginUiState.copy(passCode = textFieldValue)
                     },
+                    isEnabled = loginState !is LoginState.Loading,
                     placeholderText = stringResource(R.string.msg_enter_passcode),
                     labelText = stringResource(R.string.msg_passcode_label),
                     isPasswordField = true,
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Password
                     ),
-                    isError = isPassCodeError,
-                    feedbackText = passCodeFeedback
+                    isError = loginUiState.isPassCodeError,
+                    feedbackText = loginUiState.passCodeFeedBack
                 )
 
                 BanklyClickableText(
@@ -125,7 +120,8 @@ fun LoginScreen(
                             ).toSpanStyle()
                         ) { append(stringResource(R.string.action_recover_passcode)) }
                     },
-                    onClick = {}
+                    onClick = {},
+                    isEnabled = loginState !is LoginState.Loading,
                 )
             }
         }
@@ -133,21 +129,38 @@ fun LoginScreen(
         item {
             BanklyButton(
                 text = stringResource(R.string.title_log_in),
-                onClick = { onLoginClick(phoneNumber.text, passcode.text) },
-                isEnabled = isEnabled
+                onClick = {
+                    Log.d("login debug", "login button clicked!")
+                    viewModel.sendEvent(
+                        LoginUiEvent.Login(
+                            loginUiState.phoneNumber.text,
+                            loginUiState.passCode.text
+                        )
+                    )
+                },
+                isEnabled = loginUiState.isLoginButtonEnabled && loginState !is LoginState.Loading
             )
         }
+    }
+
+    when (val state = loginState) {
+        is LoginState.Initial -> {}
+        is LoginState.Loading -> {}
+        is LoginState.Error -> {
+            onLoginError(state.message)
+        }
+        is LoginState.Success -> onLoginSuccess()
     }
 
 }
 
 @Composable
 @Preview(showBackground = true)
-fun LoginScreenPreview() {
+private fun LoginScreenPreview() {
     BanklyTheme {
         LoginScreen(
-            onLoginClick = { _, _ -> },
-            uiState = LoginUiState.Initial
+            onLoginSuccess = {},
+            onLoginError = {}
         )
     }
 }

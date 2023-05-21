@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Bankly</string>
+    <string name="desc_navigation_icon">Navigation Icon</string>
 </resources>

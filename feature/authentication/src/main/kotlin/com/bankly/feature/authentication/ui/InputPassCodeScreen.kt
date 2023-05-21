@@ -81,23 +81,27 @@ fun InputPassCodeScreen() {
 
             BanklyPassCodeInputField(passCode = passCode, isError = isError)
 
-            BanklyClickableText(text = if (ticks == 60) buildAnnotatedString {
-                withStyle(
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.primary
-                    ).toSpanStyle()
-                ) { append(stringResource(R.string.action_resend_code)) }
-            } else buildAnnotatedString {
-                append(stringResource(R.string.msg_resend_code_in))
-                append(" ")
-                withStyle(
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.primary
-                    ).toSpanStyle()
-                ) { append("${ticks}s") }
-            }) {
+            BanklyClickableText(
+                text = if (ticks == 60) buildAnnotatedString {
+                    withStyle(
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.primary
+                        ).toSpanStyle()
+                    ) { append(stringResource(R.string.action_resend_code)) }
+                } else buildAnnotatedString {
+                    append(stringResource(R.string.msg_resend_code_in))
+                    append(" ")
+                    withStyle(
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.primary
+                        ).toSpanStyle()
+                    ) { append("${ticks}s") }
+                },
+                onClick = {
 
-            }
+                },
+                isEnabled = true
+            )
         }
 
         item {
