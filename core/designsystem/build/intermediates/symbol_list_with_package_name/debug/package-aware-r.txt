@@ -3,6 +3,7 @@ drawable animation_500_l3eabagh_1
 drawable ic_bankly_app_logo
 drawable ic_bankly_splash_icon
 drawable ic_bankly_splash_logo
+drawable ic_error_alert
 drawable ic_home_01
 drawable ic_home_02
 drawable ic_more_01

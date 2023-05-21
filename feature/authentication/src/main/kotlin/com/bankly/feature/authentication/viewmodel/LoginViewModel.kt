@@ -31,6 +31,10 @@ class LoginViewModel @Inject constructor(
                     setUiState { LoginState.Error("Please enter a valid phone number") }
                 }
             }
+
+            LoginUiEvent.ResetState -> {
+                setUiState { LoginState.Initial }
+            }
         }
     }
 
@@ -72,7 +76,7 @@ sealed interface LoginState {
     object Initial : LoginState
     object Loading : LoginState
     object Success : LoginState
-    data class Error(val message: String) : LoginState
+    data class Error(val errorMessage: String) : LoginState
 }
 
 sealed interface LoginUiEvent {
@@ -80,4 +84,6 @@ sealed interface LoginUiEvent {
         val phoneNumber: String,
         val passCode: String
     ) : LoginUiEvent
+
+    object ResetState : LoginUiEvent
 }

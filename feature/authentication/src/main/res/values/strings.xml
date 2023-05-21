@@ -23,4 +23,6 @@
     <string name="msg_new_passcode">New Passcode</string>
     <string name="msg_set_pin">Set PIN</string>
     <string name="msg_confirm_pin">Confirm PIN</string>
+    <string name="action_okay">Okay</string>
+    <string name="label_phone_number">Phone Number</string>
 </resources>

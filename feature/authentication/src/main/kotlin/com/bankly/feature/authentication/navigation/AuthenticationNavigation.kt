@@ -25,13 +25,13 @@ const val successfulScreen = authenticationNavGraph.plus("/successful_screen")
 
 fun NavGraphBuilder.authenticationNavGraph(
     onLoginSuccess: () -> Unit,
-    onLoginError: (String) -> Unit,
+    onBackClick: () -> Unit
 ) {
     navigation(
         route = authenticationNavGraph,
         startDestination = loginScreen,
     ) {
-        loginScreen(onLoginSuccess = onLoginSuccess, onLoginError = onLoginError)
+        loginScreen(onLoginSuccess = onLoginSuccess, onBackClick = onBackClick)
         confirmPinScreen()
         createNewPassCodeScreen()
         inputPassCodeScreen()
@@ -44,10 +44,10 @@ fun NavGraphBuilder.authenticationNavGraph(
 
 internal fun NavGraphBuilder.loginScreen(
     onLoginSuccess: () -> Unit,
-    onLoginError: (String) -> Unit,
+    onBackClick: () -> Unit
 ) {
     composable(route = loginScreen) {
-        LoginScreen(onLoginSuccess = onLoginSuccess, onLoginError = onLoginError)
+        LoginScreen(onLoginSuccess = onLoginSuccess, onBackClick = onBackClick)
     }
 }
 

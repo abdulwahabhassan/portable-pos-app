@@ -13,7 +13,8 @@ fun BanklyApp(
     appState: BanklyAppState = rememberBanklyAppState(
         context = context,
         networkMonitor = networkMonitor
-    )
+    ),
+    onFinishActivity: () -> Unit
 ) {
-    TopLevelNavHost(appState)
+    TopLevelNavHost(appState, onPopTopLevelNavGraph = onFinishActivity)
 }

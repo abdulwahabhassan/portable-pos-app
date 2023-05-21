@@ -9,46 +9,52 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 
 @Composable
-fun BanklyButton(
+fun BanklyFilledButton(
+    modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    isEnabled: Boolean
+    isEnabled: Boolean = true,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .padding(32.dp)
-            .fillMaxWidth()
+        modifier = modifier
             .height(50.dp),
         enabled = isEnabled,
         shape = MaterialTheme.shapes.small,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = backgroundColor,
+            contentColor = textColor,
             disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer
         )
 
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium)
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+            overflow = TextOverflow.Ellipsis
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-private fun BanklyButtonPreview() {
+private fun BanklyFilledButtonPreview() {
     BanklyTheme {
-        BanklyButton(
+        BanklyFilledButton(
+            modifier = Modifier
+                .padding(32.dp)
+                .fillMaxWidth(),
             text = "Pay",
             onClick = {},
             isEnabled = true

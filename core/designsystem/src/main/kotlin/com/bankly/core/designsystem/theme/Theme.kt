@@ -30,7 +30,8 @@ fun BanklyTheme(
         errorContainer = pink02, //Error InputTextField
         onErrorContainer = red,
 
-        surface = white
+        surface = white,
+        surfaceVariant = white //Card background
 
     )
 

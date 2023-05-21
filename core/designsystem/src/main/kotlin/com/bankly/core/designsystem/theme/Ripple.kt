@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-object BanklyRippleTheme : RippleTheme {
+internal object BanklyRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor(): Color = blue02
 

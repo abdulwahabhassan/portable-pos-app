@@ -82,7 +82,7 @@ enum class Sample {
 
 @Composable
 @Preview(showBackground = true)
-fun BanklyTabBarPreview() {
+private fun BanklyTabBarPreview() {
 
     BanklyTheme {
         BanklyTabBar(

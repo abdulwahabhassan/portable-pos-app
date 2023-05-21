@@ -3,6 +3,8 @@ package com.bankly.feature.authentication.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -17,7 +19,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.bankly.core.designsystem.component.BanklyButton
+import androidx.compose.ui.unit.dp
+import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -62,7 +65,13 @@ fun InputPhoneNumberScreen() {
         }
 
         item {
-            BanklyButton(stringResource(R.string.action_send_code), {}, isEnabled)
+            BanklyFilledButton(
+                Modifier
+                    .padding(32.dp)
+                    .fillMaxWidth(),
+                stringResource(R.string.action_send_code), {},
+                isEnabled
+            )
         }
     }
 

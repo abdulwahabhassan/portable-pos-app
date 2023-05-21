@@ -1,9 +1,12 @@
 package com.bankly.feature.authentication.ui
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -16,16 +19,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.BanklyButton
+import com.bankly.core.designsystem.component.ActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
+import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -54,13 +60,16 @@ fun rememberLoginUiState(): MutableState<LoginUiState> = remember { mutableState
 internal fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit,
-    onLoginError: (String) -> Unit
+    onBackClick: () -> Unit
 ) {
     val loginState by viewModel.uiState.collectAsStateWithLifecycle()
     var loginUiState by rememberLoginUiState()
+    val context = LocalContext.current
 
     Log.d("login debug ui state", "$loginUiState")
     Log.d("login debug ui", "$loginUiState")
+
+    BackHandler { onBackClick() }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -72,7 +81,7 @@ internal fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BanklyTitleBar(
-                    onBackClick = {},
+                    onBackClick = onBackClick,
                     title = stringResource(R.string.msg_log_in),
                     subTitle = buildAnnotatedString {
                         append(stringResource(R.string.msg_login_screen_subtitle))
@@ -87,7 +96,7 @@ internal fun LoginScreen(
                     },
                     isEnabled = loginState !is LoginState.Loading,
                     placeholderText = stringResource(R.string.msg_phone_number_sample),
-                    labelText = "Phone Number",
+                    labelText = stringResource(R.string.label_phone_number),
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Phone
                     ),
@@ -127,7 +136,10 @@ internal fun LoginScreen(
         }
 
         item {
-            BanklyButton(
+            BanklyFilledButton(
+                modifier = Modifier
+                    .padding(32.dp)
+                    .fillMaxWidth(),
                 text = stringResource(R.string.title_log_in),
                 onClick = {
                     Log.d("login debug", "login button clicked!")
@@ -147,12 +159,20 @@ internal fun LoginScreen(
         is LoginState.Initial -> {}
         is LoginState.Loading -> {}
         is LoginState.Error -> {
-            onLoginError(state.message)
+            ActionDialog(
+                title = "Login error",
+                subtitle = state.errorMessage,
+                positiveActionText = stringResource(R.string.action_okay),
+                positiveAction = {
+                    viewModel.sendEvent(LoginUiEvent.ResetState)
+                })
         }
+
         is LoginState.Success -> onLoginSuccess()
     }
 
 }
+
 
 @Composable
 @Preview(showBackground = true)
@@ -160,7 +180,7 @@ private fun LoginScreenPreview() {
     BanklyTheme {
         LoginScreen(
             onLoginSuccess = {},
-            onLoginError = {}
+            onBackClick = {}
         )
     }
 }

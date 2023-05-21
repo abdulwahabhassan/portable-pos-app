@@ -19,7 +19,8 @@ import com.bankly.feature.authentication.navigation.successfulScreen
 fun TopLevelNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = authenticationNavGraph
+    startDestination: String = authenticationNavGraph,
+    onPopTopLevelNavGraph: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -28,9 +29,7 @@ fun TopLevelNavHost(
     ) {
         authenticationNavGraph(
             onLoginSuccess = { appState.navigateTo(TopLevelDestination.DASHBOARD) },
-            onLoginError = { errorMessage: String ->
-
-            }
+            onBackClick = onPopTopLevelNavGraph
         )
         dashBoardNavGraph(appState = appState)
     }
