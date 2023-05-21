@@ -2,9 +2,11 @@
 <resources>
     <string name="action_back_to_log_in">Back to login</string>
     <string name="action_continue">Continue</string>
+    <string name="action_okay">Okay</string>
     <string name="action_recover_passcode">Recover passcode</string>
     <string name="action_resend_code">Resend Code</string>
     <string name="action_send_code">Send Code</string>
+    <string name="label_phone_number">Phone Number</string>
     <string name="msg_confirm_passcode_label">Confirm Passcode</string>
     <string name="msg_confirm_pin">Confirm PIN</string>
     <string name="msg_create_new_passcode">Create new passcode</string>

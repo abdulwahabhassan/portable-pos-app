@@ -5,10 +5,11 @@ import com.bankly.core.network.BuildConfig.CLIENT_SECRET
 import com.bankly.core.network.BuildConfig.GRANT_TYPE
 import com.bankly.core.network.model.AuthenticatedUser
 import com.bankly.core.network.model.NetworkUserWallet
+import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.GetTokenRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
+import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
 import com.bankly.core.network.model.response.TokenNetworkResponse
 import retrofit2.http.Body
@@ -25,20 +26,15 @@ import retrofit2.http.Query
 sealed interface BanklyApiService {
 
     interface Base {
-        @PUT(value = "identity/put/TerminalPasscode/Forgot")
+        @POST(value = "identity/post/api/Account/password/v2/forgotpasswordcode")
         suspend fun forgotPassCode(
             @Body body: ForgotPassCodeRequestBody,
-        ): NetworkResponse<AuthenticatedUser>
+        ): NetworkResponse<ResultStatus>
 
-        @PUT(value = "identity/put/TerminalPasscode/Change")
-        suspend fun changePassCode(
-            @Body body: ChangePassCodeRequestBody,
-        ): NetworkResponse<AuthenticatedUser>
-
-        @PUT(value = "identity/put/TerminalPasscode/Reset")
-        suspend fun resetPassCode(
-            @Body body: ResetPassCodeRequestBody,
-        ): NetworkResponse<AuthenticatedUser>
+        @PUT(value = "identity/post/api/Account/validateotp")
+        suspend fun validateOtp(
+            @Body body: ValidateOtpRequestBody,
+        ): NetworkResponse<ResultStatus>
 
         @FormUrlEncoded
         @POST(value = "identity/post/connect/token")
@@ -50,6 +46,16 @@ sealed interface BanklyApiService {
             @Field("password") password: String,
             @Field("auth_mode") authMode: String? = null,
         ): TokenNetworkResponse
+
+        @PUT(value = "identity/put/TerminalPasscode/Change")
+        suspend fun changePassCode(
+            @Body body: ChangePassCodeRequestBody,
+        ): NetworkResponse<AuthenticatedUser>
+
+        @PUT(value = "identity/put/TerminalPasscode/Reset")
+        suspend fun resetPassCode(
+            @Body body: ResetPassCodeRequestBody,
+        ): NetworkResponse<AuthenticatedUser>
 
     }
 

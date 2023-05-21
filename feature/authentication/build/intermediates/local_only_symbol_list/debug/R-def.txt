@@ -2,9 +2,11 @@ R_DEF: Internal format may change without notice
 local
 string action_back_to_log_in
 string action_continue
+string action_okay
 string action_recover_passcode
 string action_resend_code
 string action_send_code
+string label_phone_number
 string msg_confirm_passcode_label
 string msg_confirm_pin
 string msg_create_new_passcode

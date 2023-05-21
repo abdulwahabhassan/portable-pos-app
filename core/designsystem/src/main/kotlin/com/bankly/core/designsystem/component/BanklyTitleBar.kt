@@ -99,9 +99,21 @@ fun BanklyTitleBar(
 
         }
         if (isLoading) {
-            LinearProgressIndicator(modifier = Modifier.padding(bottom = 12.dp).height(2.dp).fillMaxWidth(), strokeCap = StrokeCap.Round)
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .height(2.dp)
+                    .fillMaxWidth(),
+                strokeCap = StrokeCap.Round,
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.primaryContainer
+            )
         } else {
-            Spacer(modifier = Modifier.padding(bottom = 12.dp).height(2.dp))
+            Spacer(
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .height(2.dp)
+            )
         }
         if (isValidPageCount) {
             LinearProgressIndicator(
@@ -109,7 +121,9 @@ fun BanklyTitleBar(
                     .fillMaxWidth()
                     .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 24.dp),
                 progress = (currentPage.toFloat() / totalPage.toFloat()) * 1f,
-                strokeCap = StrokeCap.Round
+                strokeCap = StrokeCap.Round,
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.primaryContainer
             )
         }
 

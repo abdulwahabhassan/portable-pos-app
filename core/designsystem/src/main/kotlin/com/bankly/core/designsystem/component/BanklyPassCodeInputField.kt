@@ -27,7 +27,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 @Composable
 fun BanklyPassCodeInputField(
     passCode: List<String>,
-    isError: Boolean = false,
+    isError: Boolean = false
 ) {
     Row(
         modifier = Modifier

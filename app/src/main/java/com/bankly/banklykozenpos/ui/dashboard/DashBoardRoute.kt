@@ -43,7 +43,6 @@ fun DashBoardRoute(
                         subTitle = buildAnnotatedString { append("") }
                     )
                 }
-
             }
         },
         bottomBar = {

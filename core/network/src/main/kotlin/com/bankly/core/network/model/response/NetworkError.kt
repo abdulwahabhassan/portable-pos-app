@@ -2,18 +2,19 @@ package com.bankly.core.network.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class NetworkError(
-    val message: String?,
-    val validationMessages: List<String>?,
-    val errorCode: Int?
+    val message: String? = null,
+    val validationMessages: List<String>? = null,
+    val errorCode: Int? = null
 )
 
 @Serializable
 data class TokenNetworkError(
-    @SerialName("error") val error: String?,
-    @SerialName("error_description") val errorDescription: String?,
-    @SerialName("status") val status: Long?,
-    @SerialName("message") val message: String?
+    @SerialName("error") val error: String? = null,
+    @SerialName("error_description") val errorDescription: String? = null,
+    @SerialName("status") val status: Long? = null,
+    @SerialName("message") val message: String? = null
 )

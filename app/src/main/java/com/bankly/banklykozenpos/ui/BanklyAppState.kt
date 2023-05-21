@@ -14,7 +14,6 @@ import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.navigation.BottomNavDestination
 import com.bankly.banklykozenpos.navigation.TopLevelDestination
 import com.bankly.banklykozenpos.navigation.dashBoardNavGraph
-import com.bankly.banklykozenpos.navigation.dashBoardRoute
 import com.bankly.banklykozenpos.navigation.homeScreen
 import com.bankly.banklykozenpos.navigation.moreScreen
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph

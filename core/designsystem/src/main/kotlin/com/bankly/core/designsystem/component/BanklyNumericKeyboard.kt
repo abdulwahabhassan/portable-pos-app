@@ -33,14 +33,18 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyNumericKeyboardPreview() {
     BanklyTheme {
         BanklyNumericKeyboard(
-            onKeyPressed = {}
+            onKeyPressed = {},
+            isKeyPadEnabled = true,
+            isDoneKeyEnabled = false
         )
     }
 }
 
 @Composable
 fun BanklyNumericKeyboard(
-    onKeyPressed: (PassCodeKey) -> Unit
+    onKeyPressed: (PassCodeKey) -> Unit,
+    isKeyPadEnabled: Boolean = true,
+    isDoneKeyEnabled: Boolean = true,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(PassCodeKey.values().size / 4),
@@ -57,16 +61,18 @@ fun BanklyNumericKeyboard(
                     .height(40.dp)
                     .clip(MaterialTheme.shapes.small)
                     .background(
-                        color = if (key == PassCodeKey.DONE) MaterialTheme.colorScheme.primary
-                        else if (key == PassCodeKey.DELETE) MaterialTheme.colorScheme.onPrimaryContainer
-                        else MaterialTheme.colorScheme.tertiary,
+                        color = when (key) {
+                            PassCodeKey.DONE -> if (isDoneKeyEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.inversePrimary
+                            PassCodeKey.DELETE -> MaterialTheme.colorScheme.onPrimaryContainer
+                            else -> MaterialTheme.colorScheme.tertiary
+                        },
                         shape = MaterialTheme.shapes.small
                     )
                     .clickable(
                         onClick = {
                             onKeyPressed(key)
                         },
-                        enabled = true,
+                        enabled = if (key == PassCodeKey.DONE) isDoneKeyEnabled else isKeyPadEnabled,
                         role = Role.Button,
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(

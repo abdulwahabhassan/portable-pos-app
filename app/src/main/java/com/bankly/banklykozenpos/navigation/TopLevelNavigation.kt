@@ -7,13 +7,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
-import com.bankly.feature.authentication.navigation.confirmPinScreen
-import com.bankly.feature.authentication.navigation.createNewPassCodeScreen
-import com.bankly.feature.authentication.navigation.inputPassCodeScreen
-import com.bankly.feature.authentication.navigation.inputPhoneNumberScreen
-import com.bankly.feature.authentication.navigation.setNewPassCodeScreen
-import com.bankly.feature.authentication.navigation.setPinScreen
-import com.bankly.feature.authentication.navigation.successfulScreen
 
 @Composable
 fun TopLevelNavHost(
@@ -28,8 +21,9 @@ fun TopLevelNavHost(
         startDestination = startDestination,
     ) {
         authenticationNavGraph(
+            navController = appState.topLevelNavHostController,
             onLoginSuccess = { appState.navigateTo(TopLevelDestination.DASHBOARD) },
-            onBackClick = onPopTopLevelNavGraph
+            onBackClick = onPopTopLevelNavGraph,
         )
         dashBoardNavGraph(appState = appState)
     }

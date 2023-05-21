@@ -2,11 +2,11 @@ package com.bankly.core.network.retrofit.datasource
 
 import com.bankly.core.network.RemoteDataSource
 import com.bankly.core.network.model.AuthenticatedUser
-import com.bankly.core.network.model.NetworkUserWallet
+import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.GetTokenRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
+import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
 import com.bankly.core.network.model.response.TokenNetworkResponse
 import com.bankly.core.network.retrofit.BanklyApiService
@@ -25,6 +25,22 @@ class BanklyBaseRemoteDataSource @Inject constructor(
     okHttpClient: OkHttpClient,
 ) : RemoteDataSource.BanklyBaseDataSource {
 
+    override suspend fun getToken(userName: String, password: String): TokenNetworkResponse {
+        return networkApi.getToken(username = userName, password = password)
+    }
+
+    override suspend fun forgotPassCode(
+        body: ForgotPassCodeRequestBody
+    ): NetworkResponse<ResultStatus> {
+        return networkApi.forgotPassCode(body = body)
+    }
+
+    override suspend fun validateOtp(
+        body: ValidateOtpRequestBody
+    ): NetworkResponse<ResultStatus> {
+        return networkApi.validateOtp(body = body)
+    }
+
     private val networkApi = Retrofit.Builder()
         .baseUrl(BanklyBaseUrl.Base.value)
         .client(okHttpClient)
@@ -40,20 +56,11 @@ class BanklyBaseRemoteDataSource @Inject constructor(
         return networkApi.resetPassCode(body = body)
     }
 
-    override suspend fun forgotPassCode(
-        body: ForgotPassCodeRequestBody
-    ): NetworkResponse<AuthenticatedUser> {
-        return networkApi.forgotPassCode(body = body)
-    }
 
     override suspend fun changePassCode(
         body: ChangePassCodeRequestBody
     ): NetworkResponse<AuthenticatedUser> {
         return networkApi.changePassCode(body = body)
-    }
-
-    override suspend fun getToken(userName: String, password: String): TokenNetworkResponse {
-        return networkApi.getToken(username = userName, password = password)
     }
 
 }

@@ -8,19 +8,19 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class NetworkResponse<T>(
-    val hasResult: Boolean?,
-    val result: T?,
-    val successful: Boolean?,
-    val resultType: String?,
-    val message: String?,
-    val validationMessages: List<String>?
+    val hasResult: Boolean? = null,
+    val result: T? = null,
+    val successful: Boolean? = null,
+    val resultType: Int? = null,
+    val message: String? = null,
+    val validationMessages: List<String>? = null,
 )
 
 
 @Serializable
 data class TokenNetworkResponse(
     @SerialName("access_token")
-    val accessToken: String?,
+    val accessToken: String?= null,
     @SerialName("expires_in")
     val expiresIn: Long? = null,
     @SerialName("token_type")

@@ -28,7 +28,7 @@ fun DashBoardBottomNavBar(
 ) {
     NavigationBar(
         modifier = modifier,
-//        contentColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.primary,
         tonalElevation = 0.dp
     ) {
         destinations.forEach { destination ->
