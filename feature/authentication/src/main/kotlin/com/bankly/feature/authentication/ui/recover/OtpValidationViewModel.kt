@@ -6,6 +6,7 @@ import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.repository.UserRepository
+import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class OtpValidationViewModel @Inject constructor(
 
     override fun handleUiEvents(event: OtpValidationUiEvent) {
         when (event) {
-            is OtpValidationUiEvent.OtpValidation -> {
+            is OtpValidationUiEvent.ValidateOtp -> {
                 validateOtp(otp = event.otp, phoneNumber = event.phoneNumber)
             }
 
@@ -29,6 +30,9 @@ class OtpValidationViewModel @Inject constructor(
                 setUiState { OtpValidationState.Initial }
             }
 
+            is OtpValidationUiEvent.ResendOtp -> {
+                resendOtp(event.phoneNumber)
+            }
         }
     }
 
@@ -42,7 +46,31 @@ class OtpValidationViewModel @Inject constructor(
                         setUiState { OtpValidationState.Loading }
                     }
                     resource.onReady {
-                        setUiState { OtpValidationState.Success }
+                        setUiState { OtpValidationState.OtpValidationSuccess }
+                    }
+                    resource.onFailure { message ->
+                        setUiState { OtpValidationState.Error(message) }
+                    }
+                }.catch {
+                    it.printStackTrace()
+                    setUiState {
+                        OtpValidationState.Error(
+                            it.message ?: "An unexpected event occurred. We're fixing this!"
+                        )
+                    }
+                }.collect()
+        }
+    }
+
+    private fun resendOtp(phoneNumber: String) {
+        viewModelScope.launch {
+            userRepository.forgotPassCode(body = ForgotPassCodeRequestBody(phoneNumber = phoneNumber))
+                .onEach { resource ->
+                    resource.onLoading {
+                        setUiState { OtpValidationState.Loading }
+                    }
+                    resource.onReady {
+                        setUiState { OtpValidationState.ResendOtpSuccess }
                     }
                     resource.onFailure { message ->
                         setUiState { OtpValidationState.Error(message) }
@@ -63,11 +91,13 @@ class OtpValidationViewModel @Inject constructor(
 sealed interface OtpValidationState {
     object Initial : OtpValidationState
     object Loading : OtpValidationState
-    object Success : OtpValidationState
+    object OtpValidationSuccess : OtpValidationState
+    object ResendOtpSuccess : OtpValidationState
     data class Error(val errorMessage: String) : OtpValidationState
 }
 
 sealed interface OtpValidationUiEvent {
-    data class OtpValidation(val otp: String, val phoneNumber: String) : OtpValidationUiEvent
+    data class ValidateOtp(val otp: String, val phoneNumber: String) : OtpValidationUiEvent
     object ResetState : OtpValidationUiEvent
+    data class ResendOtp(val phoneNumber: String) : OtpValidationUiEvent
 }

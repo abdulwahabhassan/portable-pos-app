@@ -3,6 +3,6 @@
 3    package="com.bankly.core.common" >
 4
 5    <uses-sdk android:minSdkVersion="29" />
-5-->/Users/habdulwahab/Android/BanklyKozenPos/core/common/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest12541025167707914296.xml
+5-->/Users/habdulwahab/Android/BanklyKozenPos/core/common/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest3334202621572169300.xml
 6
 7</manifest>

@@ -16,5 +16,9 @@ fun BanklyApp(
     ),
     onFinishActivity: () -> Unit
 ) {
-    TopLevelNavHost(appState, onPopTopLevelNavGraph = onFinishActivity)
+    TopLevelNavHost(
+        appState,
+        onPopAuthenticationNavGraph = onFinishActivity,
+        onPopDashBoardNavGraph = onFinishActivity
+    )
 }

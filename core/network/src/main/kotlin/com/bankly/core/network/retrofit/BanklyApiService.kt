@@ -5,6 +5,7 @@ import com.bankly.core.network.BuildConfig.CLIENT_SECRET
 import com.bankly.core.network.BuildConfig.GRANT_TYPE
 import com.bankly.core.network.model.AuthenticatedUser
 import com.bankly.core.network.model.NetworkUserWallet
+import com.bankly.core.network.model.ResultMessage
 import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
@@ -52,10 +53,10 @@ sealed interface BanklyApiService {
             @Body body: ChangePassCodeRequestBody,
         ): NetworkResponse<AuthenticatedUser>
 
-        @PUT(value = "identity/put/TerminalPasscode/Reset")
+        @PUT(value = "identity/post/api/Account/resetpasswordbycode")
         suspend fun resetPassCode(
             @Body body: ResetPassCodeRequestBody,
-        ): NetworkResponse<AuthenticatedUser>
+        ): NetworkResponse<ResultMessage>
 
     }
 

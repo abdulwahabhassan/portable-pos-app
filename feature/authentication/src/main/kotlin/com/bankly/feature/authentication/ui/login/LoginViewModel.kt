@@ -40,7 +40,6 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun performLogin(phoneNumber: String, passCode: String) {
-        Log.d("login debug view model", "perform logic")
         viewModelScope.launch {
             userRepository.getToken(phoneNumber, passCode)
                 .onEach { resource ->

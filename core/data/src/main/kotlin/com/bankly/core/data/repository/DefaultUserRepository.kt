@@ -2,6 +2,7 @@ package com.bankly.core.data.repository
 
 import com.bankly.core.common.model.Resource
 import com.bankly.core.common.model.Result
+import com.bankly.core.data.model.asMessage
 import com.bankly.core.data.model.asStatus
 import com.bankly.core.data.model.asToken
 import com.bankly.core.data.model.asUser
@@ -10,6 +11,7 @@ import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.data.util.handleTokenResponse
+import com.bankly.core.model.Message
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
@@ -81,7 +83,7 @@ class DefaultUserRepository @Inject constructor(
 
     override suspend fun resetPassCode(
         body: ResetPassCodeRequestBody
-    ): Flow<Resource<User>> = flow {
+    ): Flow<Resource<Message>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
@@ -91,7 +93,7 @@ class DefaultUserRepository @Inject constructor(
                 apiRequest = { banklyBaseRemoteDataSource.resetPassCode(body) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data::asUser.invoke()))
+            is Result.Success -> emit(Resource.Ready(responseResult.data::asMessage.invoke()))
         }
     }
 

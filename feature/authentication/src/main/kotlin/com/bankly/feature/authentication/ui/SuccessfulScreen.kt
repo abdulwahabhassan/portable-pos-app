@@ -1,5 +1,6 @@
 package com.bankly.feature.authentication.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,8 +31,11 @@ fun SuccessfulScreen(
     message: String,
     subMessage: String,
     buttonText: String,
-    onClick: () -> Unit
+    onButtonClick: () -> Unit,
 ) {
+    BackHandler {
+        onButtonClick()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +74,7 @@ fun SuccessfulScreen(
             BanklyFilledButton(
                 modifier = Modifier
                     .padding(32.dp)
-                    .fillMaxWidth(), buttonText, onClick, true
+                    .fillMaxWidth(), buttonText, onButtonClick, true
             )
         }
     }
@@ -84,7 +88,7 @@ fun SuccessfulScreenPreview() {
             message = "Passcode Reset Successfully",
             subMessage = "You have successfully reset your passcode. Login to continue",
             buttonText = stringResource(R.string.action_back_to_log_in),
-            onClick = {}
+            onButtonClick = {}
         )
     }
 

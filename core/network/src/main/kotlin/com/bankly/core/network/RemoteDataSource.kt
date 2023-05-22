@@ -1,6 +1,7 @@
 package com.bankly.core.network
 
 import com.bankly.core.network.model.AuthenticatedUser
+import com.bankly.core.network.model.ResultMessage
 import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
@@ -24,7 +25,7 @@ sealed interface RemoteDataSource {
 
         suspend fun resetPassCode(
             body: ResetPassCodeRequestBody
-        ): NetworkResponse<AuthenticatedUser>
+        ): NetworkResponse<ResultMessage>
 
         suspend fun changePassCode(
             body: ChangePassCodeRequestBody

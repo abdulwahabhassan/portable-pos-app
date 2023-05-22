@@ -30,14 +30,10 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
-import com.bankly.feature.authentication.ui.login.LoginScreenUiState
-import com.bankly.feature.authentication.ui.login.LoginState
-import com.bankly.feature.authentication.ui.login.LoginUiEvent
-import com.bankly.feature.authentication.ui.login.LoginViewModel
 
 @Immutable
-data class InputPhoneNumberScreenUiState(
-    val phoneNumber: TextFieldValue = TextFieldValue(text = "08167039661"),
+data class RecoverPassCodeScreenUiState(
+    val phoneNumber: TextFieldValue = TextFieldValue(),
     val isPhoneNumberError: Boolean = false,
     val phoneNumberFeedBack: String = "",
 ) {
@@ -46,16 +42,17 @@ data class InputPhoneNumberScreenUiState(
 }
 
 @Composable
-fun rememberInputPhoneNumberScreenUiState(): MutableState<InputPhoneNumberScreenUiState> =
-    remember { mutableStateOf(InputPhoneNumberScreenUiState()) }
+fun rememberRecoverPassCodeScreenUiState(): MutableState<RecoverPassCodeScreenUiState> =
+    remember { mutableStateOf(RecoverPassCodeScreenUiState()) }
 
 @Composable
-fun InputPhoneNumberScreen(
+internal fun RecoverPassCodeScreen(
     viewModel: RecoverPassCodeViewModel = hiltViewModel(),
-    onRecoverPassCodeSuccess: (String) -> Unit
+    onRecoverPassCodeSuccess: (String) -> Unit,
+    onBackButtonClick: () -> Unit
 ) {
     val recoverPassCodeState by viewModel.uiState.collectAsStateWithLifecycle()
-    var inputPhoneNumberScreenUiState by rememberInputPhoneNumberScreenUiState()
+    var recoverPassCodeScreenUiState by rememberRecoverPassCodeScreenUiState()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -67,7 +64,7 @@ fun InputPhoneNumberScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BanklyTitleBar(
-                    onBackClick = {},
+                    onBackClick = onBackButtonClick,
                     title = stringResource(R.string.title_recover_passcode),
                     subTitle = buildAnnotatedString {
                         append(stringResource(R.string.msg_enter_phone_number_to_reset))
@@ -76,10 +73,10 @@ fun InputPhoneNumberScreen(
                 )
 
                 BanklyInputField(
-                    textFieldValue = inputPhoneNumberScreenUiState.phoneNumber,
+                    textFieldValue = recoverPassCodeScreenUiState.phoneNumber,
                     onTextFieldValueChange = { textFieldValue ->
-                        inputPhoneNumberScreenUiState =
-                            inputPhoneNumberScreenUiState.copy(phoneNumber = textFieldValue)
+                        recoverPassCodeScreenUiState =
+                            recoverPassCodeScreenUiState.copy(phoneNumber = textFieldValue)
 
                     },
                     isEnabled = recoverPassCodeState !is RecoverPassCodeState.Loading,
@@ -88,7 +85,7 @@ fun InputPhoneNumberScreen(
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Number
                     ),
-                    isError = inputPhoneNumberScreenUiState.isPhoneNumberError
+                    isError = recoverPassCodeScreenUiState.isPhoneNumberError
                 )
             }
         }
@@ -102,11 +99,11 @@ fun InputPhoneNumberScreen(
                 onClick = {
                     viewModel.sendEvent(
                         RecoverPassCodeUiEvent.RecoverPassCode(
-                            inputPhoneNumberScreenUiState.phoneNumber.text
+                            recoverPassCodeScreenUiState.phoneNumber.text
                         )
                     )
                 },
-                isEnabled = inputPhoneNumberScreenUiState.isSendCodeButtonEnabled && recoverPassCodeState !is RecoverPassCodeState.Loading
+                isEnabled = recoverPassCodeScreenUiState.isSendCodeButtonEnabled && recoverPassCodeState !is RecoverPassCodeState.Loading
             )
         }
     }
@@ -124,17 +121,18 @@ fun InputPhoneNumberScreen(
                 })
         }
 
-        is RecoverPassCodeState.Success -> onRecoverPassCodeSuccess(inputPhoneNumberScreenUiState.phoneNumber.text)
+        is RecoverPassCodeState.Success -> onRecoverPassCodeSuccess(recoverPassCodeScreenUiState.phoneNumber.text)
     }
 
 }
 
 @Composable
 @Preview(showBackground = true)
-fun InputPhoneNumberScreenPreview() {
+private fun RecoverPassCodeScreenPreview() {
     BanklyTheme {
-        InputPhoneNumberScreen(
-            onRecoverPassCodeSuccess = {}
+        RecoverPassCodeScreen(
+            onRecoverPassCodeSuccess = {},
+            onBackButtonClick = {}
         )
     }
 }

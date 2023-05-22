@@ -44,7 +44,6 @@ class RecoverPassCodeViewModel @Inject constructor(
     }
 
     private fun recoverPassCode(phoneNumber: String) {
-        Log.d("login debug view model", "perform logic")
         viewModelScope.launch {
             userRepository.forgotPassCode(body = ForgotPassCodeRequestBody(phoneNumber = phoneNumber))
                 .onEach { resource ->

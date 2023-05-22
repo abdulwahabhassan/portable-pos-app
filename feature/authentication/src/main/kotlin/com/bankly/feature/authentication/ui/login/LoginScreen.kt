@@ -57,11 +57,11 @@ fun rememberLoginScreenUiState(): MutableState<LoginScreenUiState> = remember { 
 internal fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onRecoverPassCodeClick: () -> Unit
 ) {
     val loginState by viewModel.uiState.collectAsStateWithLifecycle()
     var loginScreenUiState by rememberLoginScreenUiState()
-    val context = LocalContext.current
 
     Log.d("login debug ui state", "$loginScreenUiState")
     Log.d("login debug ui", "$loginScreenUiState")
@@ -126,7 +126,7 @@ internal fun LoginScreen(
                             ).toSpanStyle()
                         ) { append(stringResource(R.string.action_recover_passcode)) }
                     },
-                    onClick = {},
+                    onClick = onRecoverPassCodeClick,
                     isEnabled = loginState !is LoginState.Loading,
                 )
             }
@@ -177,7 +177,8 @@ private fun LoginScreenPreview() {
     BanklyTheme {
         LoginScreen(
             onLoginSuccess = {},
-            onBackClick = {}
+            onBackClick = {},
+            onRecoverPassCodeClick = {}
         )
     }
 }

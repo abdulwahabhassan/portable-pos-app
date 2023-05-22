@@ -1,7 +1,7 @@
 package com.bankly.core.data.repository
 
 import com.bankly.core.common.model.Resource
-import com.bankly.core.common.model.Result
+import com.bankly.core.model.Message
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
@@ -15,7 +15,7 @@ interface UserRepository {
     suspend fun getToken(userName: String, password: String): Flow<Resource<Token>>
     suspend fun forgotPassCode(body: ForgotPassCodeRequestBody): Flow<Resource<Status>>
     suspend fun validateOtp(body: ValidateOtpRequestBody): Flow<Resource<Status>>
-    suspend fun resetPassCode(body: ResetPassCodeRequestBody): Flow<Resource<User>>
+    suspend fun resetPassCode(body: ResetPassCodeRequestBody): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCodeRequestBody): Flow<Resource<User>>
 
 }

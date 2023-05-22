@@ -32,7 +32,8 @@ const val supportScreen = dashBoardRoute.plus("/support_screen")
 const val moreScreen = dashBoardRoute.plus("/more_screen")
 
 fun NavGraphBuilder.dashBoardNavGraph(
-    appState: BanklyAppState
+    appState: BanklyAppState,
+    onPopDashboardScreen: () -> Unit
 ) {
     navigation(
         route = dashBoardNavGraph,
@@ -58,7 +59,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
                     )
                 },
                 currentTab = currentTab,
-                onTabChange = { tab: DashboardTab -> currentTab = tab }
+                onTabChange = { tab: DashboardTab -> currentTab = tab },
+                onBackClick = onPopDashboardScreen
             )
         }
     }

@@ -3,6 +3,6 @@
 3    package="com.bankly.feature.authentication" >
 4
 5    <uses-sdk android:minSdkVersion="29" />
-5-->/Users/habdulwahab/Android/BanklyKozenPos/feature/authentication/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest8063272556504503107.xml
+5-->/Users/habdulwahab/Android/BanklyKozenPos/feature/authentication/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17155460079468413144.xml
 6
 7</manifest>

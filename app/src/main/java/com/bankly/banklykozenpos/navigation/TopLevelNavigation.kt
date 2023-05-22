@@ -13,7 +13,8 @@ fun TopLevelNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = authenticationNavGraph,
-    onPopTopLevelNavGraph: () -> Unit
+    onPopAuthenticationNavGraph: () -> Unit,
+    onPopDashBoardNavGraph: () -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -23,9 +24,12 @@ fun TopLevelNavHost(
         authenticationNavGraph(
             navController = appState.topLevelNavHostController,
             onLoginSuccess = { appState.navigateTo(TopLevelDestination.DASHBOARD) },
-            onBackClick = onPopTopLevelNavGraph,
+            onPopLoginScreen = onPopAuthenticationNavGraph,
+            onBackToLoginClick = {
+                appState.navigateTo(TopLevelDestination.AUTHENTICATION)
+            }
         )
-        dashBoardNavGraph(appState = appState)
+        dashBoardNavGraph(appState = appState, onPopDashboardScreen = onPopDashBoardNavGraph)
     }
 }
 

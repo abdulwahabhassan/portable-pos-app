@@ -4,8 +4,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResetPassCodeRequestBody(
-    val serialNumber: String,
-    val defaultPasscode: String,
-    val newPasscode: String,
-    val confirmPasscode: String
+    val username: String,
+    val password: String,
+    val confirmPassword: String,
+    val code: String
 )
+
+/**
+ *
+{
+"username": "08167039661",
+"password": "Gdz36Val",
+"confirmPassword": "Gdz36Val",
+"code": "452262"
+}
+ */

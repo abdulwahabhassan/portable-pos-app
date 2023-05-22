@@ -2,6 +2,7 @@ package com.bankly.core.network.retrofit.datasource
 
 import com.bankly.core.network.RemoteDataSource
 import com.bankly.core.network.model.AuthenticatedUser
+import com.bankly.core.network.model.ResultMessage
 import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
@@ -52,10 +53,9 @@ class BanklyBaseRemoteDataSource @Inject constructor(
 
     override suspend fun resetPassCode(
         body: ResetPassCodeRequestBody
-    ): NetworkResponse<AuthenticatedUser> {
+    ): NetworkResponse<ResultMessage> {
         return networkApi.resetPassCode(body = body)
     }
-
 
     override suspend fun changePassCode(
         body: ChangePassCodeRequestBody

@@ -111,6 +111,7 @@ class BanklyAppState(
             // Pop up to the start destination of the graph to
             // avoid building up a large stack of destinations
             // on the back stack as users select items
+            Log.d("topmost navigation graph route debug", "${dashBoardNavHostController.graph.route}")
             popUpTo(dashBoardNavHostController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -134,6 +135,10 @@ class BanklyAppState(
 
     fun navigateTo(destination: TopLevelDestination) {
         val navOption = navOptions {
+            Log.d("topmost navigation graph route debug", "${topLevelNavHostController.graph.route}")
+//            popUpTo(topLevelNavHostController.graph.findStartDestination().id) {
+//                saveState = true
+//            }
             // Avoid multiple copies of the same destination when
             // re-selecting the same item
             launchSingleTop = true
