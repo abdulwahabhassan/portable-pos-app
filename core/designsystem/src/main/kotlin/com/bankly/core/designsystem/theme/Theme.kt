@@ -24,6 +24,7 @@ fun BanklyTheme(
         tertiary = grey05, //Body text, Title
         onTertiary = white,
         tertiaryContainer = grey02, //Disabled InputTextField, Disabled Button
+        onTertiaryContainer = blue01,
 
         error = red, //Error text
         onError = white,

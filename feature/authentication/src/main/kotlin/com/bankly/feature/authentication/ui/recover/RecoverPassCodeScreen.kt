@@ -4,9 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
@@ -30,6 +34,7 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
+import com.bankly.feature.authentication.ui.login.LoginState
 
 @Immutable
 data class RecoverPassCodeScreenUiState(
@@ -38,13 +43,14 @@ data class RecoverPassCodeScreenUiState(
     val phoneNumberFeedBack: String = "",
 ) {
     val isSendCodeButtonEnabled: Boolean
-        get() = phoneNumber.text.isNotEmpty() && !isPhoneNumberError
+        get() = phoneNumber.text.isNotEmpty() && phoneNumber.text.length == 11 && !isPhoneNumberError
 }
 
 @Composable
 fun rememberRecoverPassCodeScreenUiState(): MutableState<RecoverPassCodeScreenUiState> =
     remember { mutableStateOf(RecoverPassCodeScreenUiState()) }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RecoverPassCodeScreen(
     viewModel: RecoverPassCodeViewModel = hiltViewModel(),
@@ -54,57 +60,61 @@ internal fun RecoverPassCodeScreen(
     val recoverPassCodeState by viewModel.uiState.collectAsStateWithLifecycle()
     var recoverPassCodeScreenUiState by rememberRecoverPassCodeScreenUiState()
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        item {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                BanklyTitleBar(
-                    onBackClick = onBackButtonClick,
-                    title = stringResource(R.string.title_recover_passcode),
-                    subTitle = buildAnnotatedString {
-                        append(stringResource(R.string.msg_enter_phone_number_to_reset))
-                    },
-                    isLoading = recoverPassCodeState is RecoverPassCodeState.Loading
-                )
+    Scaffold(
+        topBar = {
+            BanklyTitleBar(
+                onBackClick = onBackButtonClick,
+                title = stringResource(R.string.title_recover_passcode),
+                subTitle = buildAnnotatedString {
+                    append(stringResource(R.string.msg_enter_phone_number_to_reset))
+                },
+                isLoading = recoverPassCodeState is RecoverPassCodeState.Loading
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            item {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    BanklyInputField(
+                        textFieldValue = recoverPassCodeScreenUiState.phoneNumber,
+                        onTextFieldValueChange = { textFieldValue ->
+                            recoverPassCodeScreenUiState =
+                                recoverPassCodeScreenUiState.copy(phoneNumber = textFieldValue)
 
-                BanklyInputField(
-                    textFieldValue = recoverPassCodeScreenUiState.phoneNumber,
-                    onTextFieldValueChange = { textFieldValue ->
-                        recoverPassCodeScreenUiState =
-                            recoverPassCodeScreenUiState.copy(phoneNumber = textFieldValue)
+                        },
+                        isEnabled = recoverPassCodeState !is RecoverPassCodeState.Loading,
+                        placeholderText = stringResource(R.string.msg_phone_number_sample),
+                        labelText = "Phone Number",
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        isError = recoverPassCodeScreenUiState.isPhoneNumberError
+                    )
+                }
+            }
 
+            item {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .padding(32.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.action_send_code),
+                    onClick = {
+                        viewModel.sendEvent(
+                            RecoverPassCodeUiEvent.RecoverPassCode(
+                                recoverPassCodeScreenUiState.phoneNumber.text
+                            )
+                        )
                     },
-                    isEnabled = recoverPassCodeState !is RecoverPassCodeState.Loading,
-                    placeholderText = stringResource(R.string.msg_phone_number_sample),
-                    labelText = "Phone Number",
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    isError = recoverPassCodeScreenUiState.isPhoneNumberError
+                    isEnabled = recoverPassCodeScreenUiState.isSendCodeButtonEnabled && recoverPassCodeState !is RecoverPassCodeState.Loading
                 )
             }
-        }
-
-        item {
-            BanklyFilledButton(
-                modifier = Modifier
-                    .padding(32.dp)
-                    .fillMaxWidth(),
-                text = stringResource(R.string.action_send_code),
-                onClick = {
-                    viewModel.sendEvent(
-                        RecoverPassCodeUiEvent.RecoverPassCode(
-                            recoverPassCodeScreenUiState.phoneNumber.text
-                        )
-                    )
-                },
-                isEnabled = recoverPassCodeScreenUiState.isSendCodeButtonEnabled && recoverPassCodeState !is RecoverPassCodeState.Loading
-            )
         }
     }
 

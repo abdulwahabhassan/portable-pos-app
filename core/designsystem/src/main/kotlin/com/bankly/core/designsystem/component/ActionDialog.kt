@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.bankly.core.designsystem.R
 import com.bankly.core.designsystem.theme.BanklyTheme
 
@@ -44,9 +45,12 @@ fun ActionDialog(
 ) {
     var showDialog by remember { mutableStateOf(true) }
     if (showDialog) {
-        Dialog(onDismissRequest = {
-            showDialog = false
-        }) {
+        Dialog(
+            onDismissRequest = {
+                showDialog = false
+            },
+            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(),

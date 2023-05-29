@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.MutableState
@@ -19,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -53,6 +54,7 @@ data class LoginScreenUiState(
 @Composable
 fun rememberLoginScreenUiState(): MutableState<LoginScreenUiState> = remember { mutableStateOf(LoginScreenUiState()) }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
@@ -68,87 +70,91 @@ internal fun LoginScreen(
 
     BackHandler { onBackClick() }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        item {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                BanklyTitleBar(
-                    onBackClick = onBackClick,
-                    title = stringResource(R.string.msg_log_in),
-                    subTitle = buildAnnotatedString {
-                        append(stringResource(R.string.msg_login_screen_subtitle))
-                    },
-                    isLoading = loginState == LoginState.Loading
-                )
+    Scaffold(
+        topBar = {
+            BanklyTitleBar(
+                onBackClick = onBackClick,
+                title = stringResource(R.string.msg_log_in),
+                subTitle = buildAnnotatedString {
+                    append(stringResource(R.string.msg_login_screen_subtitle))
+                },
+                isLoading = loginState == LoginState.Loading
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            modifier = Modifier.padding(padding),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            item {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    BanklyInputField(
+                        textFieldValue = loginScreenUiState.phoneNumber,
+                        onTextFieldValueChange = { textFieldValue ->
+                            loginScreenUiState = loginScreenUiState.copy(phoneNumber = textFieldValue)
+                        },
+                        isEnabled = loginState !is LoginState.Loading,
+                        placeholderText = stringResource(R.string.msg_phone_number_sample),
+                        labelText = stringResource(R.string.label_phone_number),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Phone
+                        ),
+                        isError = loginScreenUiState.isPhoneNumberError,
+                        feedbackText = loginScreenUiState.phoneNumberFeedBack
+                    )
 
-                BanklyInputField(
-                    textFieldValue = loginScreenUiState.phoneNumber,
-                    onTextFieldValueChange = { textFieldValue ->
-                        loginScreenUiState = loginScreenUiState.copy(phoneNumber = textFieldValue)
-                    },
-                    isEnabled = loginState !is LoginState.Loading,
-                    placeholderText = stringResource(R.string.msg_phone_number_sample),
-                    labelText = stringResource(R.string.label_phone_number),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Phone
-                    ),
-                    isError = loginScreenUiState.isPhoneNumberError,
-                    feedbackText = loginScreenUiState.phoneNumberFeedBack
-                )
+                    BanklyInputField(
+                        textFieldValue = loginScreenUiState.passCode,
+                        onTextFieldValueChange = { textFieldValue ->
+                            loginScreenUiState = loginScreenUiState.copy(passCode = textFieldValue)
+                        },
+                        isEnabled = loginState !is LoginState.Loading,
+                        placeholderText = stringResource(R.string.msg_enter_passcode),
+                        labelText = stringResource(R.string.msg_passcode_label),
+                        isPasswordField = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Password
+                        ),
+                        isError = loginScreenUiState.isPassCodeError,
+                        feedbackText = loginScreenUiState.passCodeFeedBack
+                    )
 
-                BanklyInputField(
-                    textFieldValue = loginScreenUiState.passCode,
-                    onTextFieldValueChange = { textFieldValue ->
-                        loginScreenUiState = loginScreenUiState.copy(passCode = textFieldValue)
-                    },
-                    isEnabled = loginState !is LoginState.Loading,
-                    placeholderText = stringResource(R.string.msg_enter_passcode),
-                    labelText = stringResource(R.string.msg_passcode_label),
-                    isPasswordField = true,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Password
-                    ),
-                    isError = loginScreenUiState.isPassCodeError,
-                    feedbackText = loginScreenUiState.passCodeFeedBack
-                )
+                    BanklyClickableText(
+                        text = buildAnnotatedString {
+                            append(stringResource(R.string.msg_forgot_passcode))
+                            withStyle(
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    color = MaterialTheme.colorScheme.primary
+                                ).toSpanStyle()
+                            ) { append(stringResource(R.string.action_recover_passcode)) }
+                        },
+                        onClick = onRecoverPassCodeClick,
+                        isEnabled = loginState !is LoginState.Loading,
+                    )
+                }
+            }
 
-                BanklyClickableText(
-                    text = buildAnnotatedString {
-                        append(stringResource(R.string.msg_forgot_passcode))
-                        withStyle(
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                color = MaterialTheme.colorScheme.primary
-                            ).toSpanStyle()
-                        ) { append(stringResource(R.string.action_recover_passcode)) }
+            item {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp, vertical = 20.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.title_log_in),
+                    onClick = {
+                        Log.d("login debug", "login button clicked!")
+                        viewModel.sendEvent(
+                            LoginUiEvent.Login(
+                                loginScreenUiState.phoneNumber.text,
+                                loginScreenUiState.passCode.text
+                            )
+                        )
                     },
-                    onClick = onRecoverPassCodeClick,
-                    isEnabled = loginState !is LoginState.Loading,
+                    isEnabled = loginScreenUiState.isLoginButtonEnabled && loginState !is LoginState.Loading
                 )
             }
-        }
-
-        item {
-            BanklyFilledButton(
-                modifier = Modifier
-                    .padding(32.dp)
-                    .fillMaxWidth(),
-                text = stringResource(R.string.title_log_in),
-                onClick = {
-                    Log.d("login debug", "login button clicked!")
-                    viewModel.sendEvent(
-                        LoginUiEvent.Login(
-                            loginScreenUiState.phoneNumber.text,
-                            loginScreenUiState.passCode.text
-                        )
-                    )
-                },
-                isEnabled = loginScreenUiState.isLoginButtonEnabled && loginState !is LoginState.Loading
-            )
         }
     }
 

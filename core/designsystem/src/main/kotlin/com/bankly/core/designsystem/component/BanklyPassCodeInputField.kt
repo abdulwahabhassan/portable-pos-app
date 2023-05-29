@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,14 +32,16 @@ fun BanklyPassCodeInputField(
 ) {
     Row(
         modifier = Modifier
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+            .fillMaxWidth()
+            .padding(vertical = 16.dp, horizontal = 12.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         passCode.forEachIndexed { index, s ->
             val isFocused by remember(passCode) {
                 mutableStateOf(passCode.indexOfFirst { it.isEmpty() } == index)
             }
+            Spacer(modifier = Modifier.width(4.dp).weight(1f))
             Box(
                 modifier = Modifier
                     .width(44.dp)
@@ -66,6 +69,7 @@ fun BanklyPassCodeInputField(
                         ),
                 )
             }
+            Spacer(modifier = Modifier.width(4.dp).weight(1f))
         }
     }
 }

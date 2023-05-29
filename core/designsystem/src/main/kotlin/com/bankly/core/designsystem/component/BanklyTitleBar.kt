@@ -135,7 +135,7 @@ fun BanklyTitleBar(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 52.dp)
+                    .padding(horizontal = 48.dp)
             )
         }
     }

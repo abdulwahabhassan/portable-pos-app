@@ -35,7 +35,8 @@ fun BanklyFilledButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
             contentColor = textColor,
-            disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer
+            disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer
         )
 
     ) {
