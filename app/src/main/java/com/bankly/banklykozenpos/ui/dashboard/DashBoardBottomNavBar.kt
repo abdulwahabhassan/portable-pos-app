@@ -53,6 +53,7 @@ fun DashBoardBottomNavBar(
 
                 alwaysShowLabel = true,
                 colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = MaterialTheme.colorScheme.surface,
                     selectedIconColor = Color.Unspecified,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = Color.Unspecified,
