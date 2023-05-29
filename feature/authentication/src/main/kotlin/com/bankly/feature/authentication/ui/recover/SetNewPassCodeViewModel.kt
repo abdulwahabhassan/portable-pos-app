@@ -6,8 +6,8 @@ import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.repository.UserRepository
-import com.bankly.core.network.model.request.ResetPassCodeRequestBody
+import com.bankly.core.domain.usecase.ResetPassCodeUseCase
+import com.bankly.core.model.ResetPassCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SetNewPassCodeViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val resetPassCodeUseCase: ResetPassCodeUseCase
 ) : BaseViewModel<SetNewPassCodeUiEvent, SetNewPassCodeState>(SetNewPassCodeState.Initial) {
 
     override fun handleUiEvents(event: SetNewPassCodeUiEvent) {
@@ -45,8 +45,8 @@ class SetNewPassCodeViewModel @Inject constructor(
         passCode: String, confirmPassCode: String, phoneNumber: String, otp: String
     ) {
         viewModelScope.launch {
-            userRepository.resetPassCode(
-                body = ResetPassCodeRequestBody(
+            resetPassCodeUseCase(
+                body = ResetPassCode(
                     username = phoneNumber,
                     password = passCode,
                     confirmPassword = confirmPassCode,

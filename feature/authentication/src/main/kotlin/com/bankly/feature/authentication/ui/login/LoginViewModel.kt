@@ -1,13 +1,12 @@
 package com.bankly.feature.authentication.ui.login
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.onFailure
 import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
 import com.bankly.core.common.util.Validator.validatePhoneNumber
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.repository.UserRepository
+import com.bankly.core.domain.usecase.GetTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val loginTokenUseCase: GetTokenUseCase
 ) : BaseViewModel<LoginUiEvent, LoginState>(LoginState.Initial) {
 
     override fun handleUiEvents(event: LoginUiEvent) {
@@ -41,7 +40,7 @@ class LoginViewModel @Inject constructor(
 
     private fun performLogin(phoneNumber: String, passCode: String) {
         viewModelScope.launch {
-            userRepository.getToken(phoneNumber, passCode)
+            loginTokenUseCase(phoneNumber, passCode)
                 .onEach { resource ->
                     resource.onLoading {
                         setUiState { LoginState.Loading }

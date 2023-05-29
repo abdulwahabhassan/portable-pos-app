@@ -27,7 +27,7 @@ suspend fun <T> handleRequest(
                     ?: response?.message ?: "Something went wrong, we're fixing it"
             )
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage)
+            Result.Error(message = e.localizedMessage ?: "Something went wrong, we're fixing it")
         }
     }
 }
@@ -44,14 +44,14 @@ suspend fun handleTokenRequest(
         try {
             Result.Success(apiRequest.invoke())
         } catch (e: HttpException) {
-            Log.d("", "msg: ${e.message} resp: ${e.response()} errorbody: ${e.response()?.errorBody()}")
+            Log.d("", "msg: ${e.message} resp: ${e.response()} error-body: ${e.response()?.errorBody()}")
             val response = handleTokenHttpException(e, json)
             Result.Error(
                 message = response?.errorDescription ?: response?.error ?: response?.message
                 ?: "Something went wrong, we're fixing it"
             )
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage)
+            Result.Error(message = e.localizedMessage ?: "Something went wrong, we're fixing it")
         }
     }
 }

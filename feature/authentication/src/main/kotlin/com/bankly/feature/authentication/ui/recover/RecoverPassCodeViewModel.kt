@@ -1,15 +1,13 @@
 package com.bankly.feature.authentication.ui.recover
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.onFailure
 import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
 import com.bankly.core.common.util.Validator.validatePhoneNumber
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.repository.UserRepository
-import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.ValidateOtpRequestBody
+import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
+import com.bankly.core.model.ForgotPassCode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -19,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RecoverPassCodeViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val forgotPassCodeUseCase: ForgotPassCodeUseCase
 ) : BaseViewModel<RecoverPassCodeUiEvent, RecoverPassCodeState>(RecoverPassCodeState.Initial) {
 
     override fun handleUiEvents(event: RecoverPassCodeUiEvent) {
@@ -38,14 +36,12 @@ class RecoverPassCodeViewModel @Inject constructor(
                 setUiState { RecoverPassCodeState.Initial }
             }
 
-            is RecoverPassCodeUiEvent.ResetPassCode -> TODO()
-
         }
     }
 
     private fun recoverPassCode(phoneNumber: String) {
         viewModelScope.launch {
-            userRepository.forgotPassCode(body = ForgotPassCodeRequestBody(phoneNumber = phoneNumber))
+            forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
                 .onEach { resource ->
                     resource.onLoading {
                         setUiState { RecoverPassCodeState.Loading }
@@ -78,6 +74,5 @@ sealed interface RecoverPassCodeState {
 
 sealed interface RecoverPassCodeUiEvent {
     data class RecoverPassCode(val phoneNumber: String) : RecoverPassCodeUiEvent
-    data class ResetPassCode(val phoneNumber: String) : RecoverPassCodeUiEvent
     object ResetState : RecoverPassCodeUiEvent
 }

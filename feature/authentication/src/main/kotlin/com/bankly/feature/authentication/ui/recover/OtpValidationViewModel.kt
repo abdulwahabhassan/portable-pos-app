@@ -5,9 +5,10 @@ import com.bankly.core.common.model.onFailure
 import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.repository.UserRepository
-import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.ValidateOtpRequestBody
+import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
+import com.bankly.core.domain.usecase.ValidateOtpUseCase
+import com.bankly.core.model.ForgotPassCode
+import com.bankly.core.model.ValidateOtp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class OtpValidationViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val validateOtpUseCase: ValidateOtpUseCase,
+    private val forgotPassCodeUseCase: ForgotPassCodeUseCase
 ) : BaseViewModel<OtpValidationUiEvent, OtpValidationState>(OtpValidationState.Initial) {
 
     override fun handleUiEvents(event: OtpValidationUiEvent) {
@@ -38,8 +40,8 @@ class OtpValidationViewModel @Inject constructor(
 
     private fun validateOtp(otp: String, phoneNumber: String) {
         viewModelScope.launch {
-            userRepository.validateOtp(
-                body = ValidateOtpRequestBody(otp = otp, phoneNumber = phoneNumber)
+            validateOtpUseCase(
+                body = ValidateOtp(otp = otp, phoneNumber = phoneNumber)
             )
                 .onEach { resource ->
                     resource.onLoading {
@@ -64,7 +66,7 @@ class OtpValidationViewModel @Inject constructor(
 
     private fun resendOtp(phoneNumber: String) {
         viewModelScope.launch {
-            userRepository.forgotPassCode(body = ForgotPassCodeRequestBody(phoneNumber = phoneNumber))
+            forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
                 .onEach { resource ->
                     resource.onLoading {
                         setUiState { OtpValidationState.Loading }

@@ -1,7 +1,6 @@
 package com.bankly.core.network.retrofit.datasource
 
 import com.bankly.core.network.RemoteDataSource
-import com.bankly.core.network.model.NetworkUserWallet
 import com.bankly.core.network.retrofit.BanklyApiService
 import com.bankly.core.network.retrofit.model.BanklyBaseUrl
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

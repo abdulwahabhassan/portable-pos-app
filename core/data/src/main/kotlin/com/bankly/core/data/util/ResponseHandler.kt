@@ -16,7 +16,7 @@ fun <T> handleResponse(
     }
 
     is Result.Error -> {
-        Result.Error(requestResult.message ?: "Something went wrong! We're fixing it!")
+        Result.Error(requestResult.message)
     }
 
 }
@@ -33,7 +33,7 @@ fun handleTokenResponse(
     }
 
     is Result.Error -> {
-        Result.Error(requestResult.message ?: "Something went wrong! We're fixing it!")
+        Result.Error(requestResult.message)
     }
 
 }

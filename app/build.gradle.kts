@@ -72,6 +72,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))

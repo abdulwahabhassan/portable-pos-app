@@ -1,6 +1,5 @@
 package com.bankly.core.data.util
 
-import android.util.Log
 import com.bankly.core.network.model.response.NetworkError
 import com.bankly.core.network.model.response.TokenNetworkError
 import java.nio.charset.Charset

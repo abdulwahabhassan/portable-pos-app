@@ -2,7 +2,6 @@ package com.bankly.core.network.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Serializable
 data class NetworkError(

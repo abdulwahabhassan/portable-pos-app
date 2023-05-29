@@ -1,6 +1,6 @@
 package com.bankly.core.data.di
 
-import com.bankly.core.data.repository.UserRepository
+import com.bankly.core.domain.repository.UserRepository
 import com.bankly.core.data.repository.DefaultUserRepository
 import com.bankly.core.data.util.ConnectivityManagerNetworkMonitor
 import com.bankly.core.data.util.NetworkMonitor

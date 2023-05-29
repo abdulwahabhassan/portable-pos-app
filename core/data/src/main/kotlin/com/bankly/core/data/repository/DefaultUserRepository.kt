@@ -2,29 +2,30 @@ package com.bankly.core.data.repository
 
 import com.bankly.core.common.model.Resource
 import com.bankly.core.common.model.Result
-import com.bankly.core.data.model.asMessage
-import com.bankly.core.data.model.asStatus
-import com.bankly.core.data.model.asToken
-import com.bankly.core.data.model.asUser
+import com.bankly.core.data.util.asMessage
+import com.bankly.core.data.util.asRequestBody
+import com.bankly.core.data.util.asStatus
+import com.bankly.core.data.util.asToken
+import com.bankly.core.data.util.asUser
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.data.util.handleTokenResponse
+import com.bankly.core.domain.repository.UserRepository
+import com.bankly.core.model.ChangePassCode
+import com.bankly.core.model.ForgotPassCode
 import com.bankly.core.model.Message
+import com.bankly.core.model.ResetPassCode
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
-import com.bankly.core.network.model.request.ChangePassCodeRequestBody
-import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.ResetPassCodeRequestBody
-import com.bankly.core.network.model.request.ValidateOtpRequestBody
+import com.bankly.core.model.ValidateOtp
 import com.bankly.core.network.retrofit.datasource.BanklyBaseRemoteDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 
 class DefaultUserRepository @Inject constructor(
@@ -51,7 +52,7 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun forgotPassCode(
-        body: ForgotPassCodeRequestBody
+        body: ForgotPassCode
     ): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
@@ -59,21 +60,21 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.forgotPassCode(body) }
+                apiRequest = { banklyBaseRemoteDataSource.forgotPassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asStatus.invoke()))
         }
     }
 
-    override suspend fun validateOtp(body: ValidateOtpRequestBody): Flow<Resource<Status>> = flow {
+    override suspend fun validateOtp(body: ValidateOtp): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.validateOtp(body = body) }
+                apiRequest = { banklyBaseRemoteDataSource.validateOtp(body = body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asStatus.invoke()))
@@ -82,7 +83,7 @@ class DefaultUserRepository @Inject constructor(
 
 
     override suspend fun resetPassCode(
-        body: ResetPassCodeRequestBody
+        body: ResetPassCode
     ): Flow<Resource<Message>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
@@ -90,7 +91,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.resetPassCode(body) }
+                apiRequest = { banklyBaseRemoteDataSource.resetPassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asMessage.invoke()))
@@ -98,7 +99,7 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun changePassCode(
-        body: ChangePassCodeRequestBody
+        body: ChangePassCode
     ): Flow<Resource<User>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
@@ -106,7 +107,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.changePassCode(body) }
+                apiRequest = { banklyBaseRemoteDataSource.changePassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asUser.invoke()))
