@@ -50,8 +50,14 @@ fun NavGraphBuilder.authenticationNavGraph(
             onRecoverPassCode = {
                 navController.navigateToRecoverPassCodeScreen()
             })
-        confirmPinScreen()
-        createNewPassCodeScreen()
+        recoverPassCodeScreen(
+            onRecoverPassCodeSuccess = { phoneNumber: String ->
+                navController.navigateToOtpValidationScreen(phoneNumber = phoneNumber)
+            },
+            onPopRecoverPassCodeScreen = {
+                navController.popBackStack()
+            }
+        )
         otpValidationScreen(
             onOtpValidationSuccess = { phoneNumber: String, otp: String ->
                 navController.navigateToSetNewPassCodeScreen(phoneNumber = phoneNumber, otp = otp)
@@ -59,15 +65,6 @@ fun NavGraphBuilder.authenticationNavGraph(
             onPopOtpValidationScreen = {
                 navController.popBackStack()
             })
-        recoverPassCodeScreen(
-            onRecoverPassCodeSuccess = { phoneNumber: String ->
-                navController.navigateToOtpValidationScreen(phoneNumber = phoneNumber)
-            },
-            onPopRecoverPassCodeScreen = {
-                navController.navigateToRecoverPassCodeScreen()
-            }
-        )
-        successfulScreen(onBackToLoginClick = onBackToLoginClick)
         setNewPassCodeScreen(
             onSetNewPassCodeSuccess = { message: String ->
                 navController.navigateToSuccessfulRoute(message = message)
@@ -75,7 +72,10 @@ fun NavGraphBuilder.authenticationNavGraph(
             onPopSetNewPassCodeScreen = {
                 navController.popBackStack()
             })
+        successfulScreen(onBackToLoginClick = onBackToLoginClick)
         setPinScreen()
+        confirmPinScreen()
+        createNewPassCodeScreen()
     }
 }
 
