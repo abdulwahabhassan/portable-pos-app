@@ -163,7 +163,7 @@ internal fun LoginScreen(
         is LoginState.Loading -> {}
         is LoginState.Error -> {
             ActionDialog(
-                title = "Login error",
+                title = stringResource(R.string.title_login_error),
                 subtitle = state.errorMessage,
                 positiveActionText = stringResource(R.string.action_okay),
                 positiveAction = {

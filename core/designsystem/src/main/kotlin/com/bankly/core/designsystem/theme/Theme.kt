@@ -31,10 +31,10 @@ fun BanklyTheme(
         errorContainer = pink02, //Error InputTextField
         onErrorContainer = red,
 
+        background = white,
         surface = white,
-        surfaceVariant = white //Card background
-
-    )
+        surfaceVariant = white, //Card background
+        )
 
     CompositionLocalProvider(LocalRippleTheme provides BanklyRippleTheme) {
         MaterialTheme(

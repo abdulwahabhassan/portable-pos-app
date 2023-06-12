@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="desc_clickable_icon">Clickable Icon</string>
+    <string name="title_cancel_transaction">Cancel Transaction?</string>
+    <string name="msg_are_you_sure_you_want_to_cancel">Are you sure you want to cancel?</string>
+    <string name="action_yes_cancel">Yes, cancel</string>
+    <string name="msg_check_your_internet_connection">Check your internet connection!</string>
+    <string name="action_no">No</string>
 </resources>

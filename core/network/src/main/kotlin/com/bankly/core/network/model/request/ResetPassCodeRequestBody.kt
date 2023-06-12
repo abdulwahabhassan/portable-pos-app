@@ -9,13 +9,3 @@ data class ResetPassCodeRequestBody(
     val confirmPassword: String,
     val code: String
 )
-
-/**
- *
-{
-"username": "08167039661",
-"password": "Gdz36Val",
-"confirmPassword": "Gdz36Val",
-"code": "452262"
-}
- */

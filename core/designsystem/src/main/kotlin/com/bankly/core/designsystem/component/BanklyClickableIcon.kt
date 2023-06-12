@@ -29,7 +29,7 @@ fun BanklyClickableIcon(icon: Int, onClick: () -> Unit, color: Color = Color.Uns
     Icon(
         painter = painterResource(id = icon),
         contentDescription = stringResource(R.string.desc_clickable_icon),
-        tint = MaterialTheme.colorScheme.primary,
+        tint = color,
         modifier = Modifier
             .padding(8.dp)
             .size(32.dp)
@@ -41,7 +41,7 @@ fun BanklyClickableIcon(icon: Int, onClick: () -> Unit, color: Color = Color.Uns
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = color
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
             .padding(4.dp)
@@ -53,7 +53,7 @@ fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit, color: Color = C
     Icon(
         imageVector = icon,
         contentDescription = stringResource(R.string.desc_clickable_icon),
-        tint = MaterialTheme.colorScheme.primary,
+        tint = color,
         modifier = Modifier
             .padding(8.dp)
             .size(32.dp)
@@ -65,7 +65,7 @@ fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit, color: Color = C
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = color
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
             .padding(4.dp)

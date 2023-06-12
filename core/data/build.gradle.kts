@@ -15,4 +15,6 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(libs.retrofit.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.dataStore.core)
+    implementation(libs.kotlinx.serialization.json)
 }

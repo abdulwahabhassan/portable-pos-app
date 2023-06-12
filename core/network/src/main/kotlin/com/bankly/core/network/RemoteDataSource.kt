@@ -15,6 +15,12 @@ import com.bankly.core.network.model.response.TokenNetworkResponse
  */
 sealed interface RemoteDataSource {
     interface BanklyBaseDataSource {
+
+        suspend fun getToken(
+            userName: String,
+            password: String
+        ): TokenNetworkResponse
+
         suspend fun forgotPassCode(
             body: ForgotPassCodeRequestBody
         ): NetworkResponse<ResultStatus>
@@ -31,8 +37,9 @@ sealed interface RemoteDataSource {
             body: ChangePassCodeRequestBody
         ): NetworkResponse<AuthenticatedUser>
 
-        suspend fun getToken(userName: String, password: String
-        ): TokenNetworkResponse
+        suspend fun getWallet(
+            token: String
+        ): NetworkResponse<Any>
     }
 
     interface BanklyPosDataSource {

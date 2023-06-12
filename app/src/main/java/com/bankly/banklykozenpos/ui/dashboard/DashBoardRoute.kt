@@ -1,6 +1,10 @@
 package com.bankly.banklykozenpos.ui.dashboard
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,6 +14,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -40,8 +45,8 @@ fun DashBoardRoute(
 
     if (showActionDialog.value) {
         ActionDialog(
-            title = "Confirm action",
-            subtitle = "Are you sure you want to exit the app?",
+            title = stringResource(com.bankly.banklykozenpos.R.string.title_confirm_action),
+            subtitle = stringResource(com.bankly.banklykozenpos.R.string.msg_are_you_sure_you_want_to_exit_the_app),
             positiveActionText = stringResource(R.string.action_yes),
             positiveAction = { onBackClick() },
             negativeActionText = stringResource(R.string.action_no),
@@ -67,7 +72,7 @@ fun DashBoardRoute(
             }
         },
         bottomBar = {
-            if (showBottomNavBar) {
+            AnimatedVisibility(visible = showBottomNavBar, exit = fadeOut() + slideOutHorizontally()) {
                 DashBoardBottomNavBar(
                     destinations = BottomNavDestination.values()
                         .filter { it.isBottomNavDestination },

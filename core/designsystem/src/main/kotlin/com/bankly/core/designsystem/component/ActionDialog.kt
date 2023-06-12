@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,6 +34,12 @@ import androidx.compose.ui.window.DialogProperties
 import com.bankly.core.designsystem.R
 import com.bankly.core.designsystem.theme.BanklyTheme
 
+/**
+ * [ActionDialog] is used to display messages or feedback to user across the app.
+ * When either of [positiveActionText] or [negativeActionText] is not null, their corresponding
+ * action buttons are shown and their respective actions [positiveAction] or [negativeAction]
+ * are called when either button is clicked
+ */
 @Composable
 fun ActionDialog(
     title: String,
@@ -136,13 +143,13 @@ fun ActionDialogPreview1() {
     BanklyTheme {
         val context = LocalContext.current
         ActionDialog(
-            title = "Cancel Transaction?",
-            subtitle = "Are you sure you want to cancel?",
-            positiveActionText = "No",
+            title = stringResource(R.string.title_cancel_transaction),
+            subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_cancel),
+            positiveActionText = stringResource(R.string.action_no),
             positiveAction = {
 
             },
-            negativeActionText = "Yes, cancel"
+            negativeActionText = stringResource(R.string.action_yes_cancel)
         ) {
 
         }
@@ -155,7 +162,7 @@ fun ActionDialogPreview2() {
     BanklyTheme {
         val context = LocalContext.current
         ActionDialog(
-            title = "Check your internet connection!",
+            title = stringResource(R.string.msg_check_your_internet_connection),
             positiveActionText = "Okay",
             positiveAction = {
 

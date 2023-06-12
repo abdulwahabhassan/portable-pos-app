@@ -17,4 +17,5 @@ interface UserRepository {
     suspend fun validateOtp(body: ValidateOtp): Flow<Resource<Status>>
     suspend fun resetPassCode(body: ResetPassCode): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCode): Flow<Resource<User>>
+    suspend fun getWallet(token: String): Flow<Resource<Any>>
 }

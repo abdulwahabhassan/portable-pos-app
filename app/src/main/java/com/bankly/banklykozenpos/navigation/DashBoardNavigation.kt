@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
@@ -23,6 +24,7 @@ import com.bankly.banklykozenpos.ui.dashboard.MoreScreen
 import com.bankly.banklykozenpos.ui.dashboard.PosScreen
 import com.bankly.banklykozenpos.ui.dashboard.SupportScreen
 import com.bankly.banklykozenpos.ui.dashboard.TransactionsScreen
+import com.bankly.core.designsystem.component.ActionDialog
 
 const val dashBoardNavGraph = "dashboard_graph"
 const val dashBoardRoute = dashBoardNavGraph.plus("/dashboard_route")
@@ -82,7 +84,7 @@ fun DashBoardNavHost(
         composable(route = homeScreen) {
             when (currentHomeTab) {
                 DashboardTab.POS -> {
-                    PosScreen()
+                    PosScreen {}
                 }
 
                 DashboardTab.Home -> {

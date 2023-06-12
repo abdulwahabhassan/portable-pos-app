@@ -63,4 +63,7 @@ class BanklyBaseRemoteDataSource @Inject constructor(
         return networkApi.changePassCode(body = body)
     }
 
+    override suspend fun getWallet(token: String): NetworkResponse<Any> {
+        return networkApi.getWallet(token = token)
+    }
 }

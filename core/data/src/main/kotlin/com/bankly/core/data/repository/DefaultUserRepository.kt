@@ -113,4 +113,20 @@ class DefaultUserRepository @Inject constructor(
             is Result.Success -> emit(Resource.Ready(responseResult.data::asUser.invoke()))
         }
     }
+
+    override suspend fun getWallet(
+        token: String
+    ): Flow<Resource<Any>> = flow {
+        emit(Resource.Loading)
+        when (val responseResult = handleResponse(
+            requestResult = handleRequest(
+                dispatcher = ioDispatcher,
+                networkMonitor = networkMonitor,
+                json = json,
+                apiRequest = { banklyBaseRemoteDataSource.getWallet(token) }
+            ))) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data))
+        }
+    }
 }

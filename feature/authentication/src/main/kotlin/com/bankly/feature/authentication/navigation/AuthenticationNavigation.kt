@@ -12,10 +12,10 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.bankly.feature.authentication.ui.ConfirmPinScreen
 import com.bankly.feature.authentication.ui.CreateNewPassCodeScreen
-import com.bankly.feature.authentication.ui.recover.OtpValidationScreen
-import com.bankly.feature.authentication.ui.recover.RecoverPassCodeScreen
+import com.bankly.feature.authentication.ui.passcode.OtpValidationScreen
+import com.bankly.feature.authentication.ui.passcode.RecoverPassCodeScreen
 import com.bankly.feature.authentication.ui.login.LoginScreen
-import com.bankly.feature.authentication.ui.recover.SetNewPassCodeScreen
+import com.bankly.feature.authentication.ui.passcode.SetNewPassCodeScreen
 import com.bankly.feature.authentication.ui.SetPinScreen
 import com.bankly.feature.authentication.ui.SuccessfulScreen
 

@@ -30,4 +30,10 @@
     <string name="action_yes_i_am">Yes, I am</string>
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
+    <string name="title_otp_validation_error">OTP validation error</string>
+    <string name="title_login_error">Login error</string>
+    <string name="title_confirm_action">Confirm action</string>
+    <string name="msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode">Are you sure you do not want to continue re-setting your passcode?</string>
+    <string name="title_recover_passcode_error">Recover passcode error</string>
+    <string name="title_reset_passcode_error">Reset passcode error</string>
 </resources>
