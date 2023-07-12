@@ -4,7 +4,7 @@ import com.bankly.core.network.BuildConfig.CLIENT_ID
 import com.bankly.core.network.BuildConfig.CLIENT_SECRET
 import com.bankly.core.network.BuildConfig.GRANT_TYPE
 import com.bankly.core.network.model.AuthenticatedUser
-import com.bankly.core.network.model.NetworkUserWallet
+import com.bankly.core.network.model.WalletResult
 import com.bankly.core.network.model.ResultMessage
 import com.bankly.core.network.model.ResultStatus
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
@@ -27,8 +27,8 @@ import retrofit2.http.Query
  */
 sealed interface BanklyApiService {
 
-    interface Base {
-        @POST(value = "identity/post/api/Account/password/v2/forgotpasswordcode")
+    interface Identity {
+        @POST(value = "post/api/Account/password/v2/forgotpasswordcode")
         suspend fun forgotPassCode(
             @Body body: ForgotPassCodeRequestBody,
         ): NetworkResponse<ResultStatus>
@@ -39,7 +39,7 @@ sealed interface BanklyApiService {
         ): NetworkResponse<ResultStatus>
 
         @FormUrlEncoded
-        @POST(value = "identity/post/connect/token")
+        @POST(value = "post/connect/token")
         suspend fun getToken(
             @Field("client_id") clientId: String = CLIENT_ID,
             @Field("client_secret") clientSecret: String = CLIENT_SECRET,
@@ -49,27 +49,29 @@ sealed interface BanklyApiService {
             @Field("auth_mode") authMode: String? = null,
         ): TokenNetworkResponse
 
-        @PUT(value = "identity/put/TerminalPasscode/Change")
+        @PUT(value = "put/TerminalPasscode/Change")
         suspend fun changePassCode(
             @Body body: ChangePassCodeRequestBody,
         ): NetworkResponse<AuthenticatedUser>
 
-        @PUT(value = "identity/post/api/Account/resetpasswordbycode")
+        @PUT(value = "post/api/Account/resetpasswordbycode")
         suspend fun resetPassCode(
             @Body body: ResetPassCodeRequestBody,
         ): NetworkResponse<ResultMessage>
+    }
 
-        @GET(value = "wallet/get/account/agent/default")
+    interface Wallet {
+        @GET(value = "get/account/agent/default")
         suspend fun getWallet(
             @Header("Authorization") token: String,
-        ): NetworkResponse<Any>
+        ): NetworkResponse<WalletResult>
     }
 
     interface Pos {
         @GET(value = "/user-wallet")
         suspend fun getUserWallet(
             @Query("id") id: String,
-        ): NetworkResponse<NetworkUserWallet>
+        ): NetworkResponse<WalletResult>
 
     }
 
@@ -77,7 +79,7 @@ sealed interface BanklyApiService {
         @GET(value = "/user-wallet")
         suspend fun getUserWallet(
             @Query("id") id: String,
-        ): NetworkResponse<NetworkUserWallet>
+        ): NetworkResponse<WalletResult>
 
     }
 
@@ -85,7 +87,7 @@ sealed interface BanklyApiService {
         @GET(value = "/user-wallet")
         suspend fun getUserWallet(
             @Query("id") id: String,
-        ): NetworkResponse<NetworkUserWallet>
+        ): NetworkResponse<WalletResult>
 
     }
 }

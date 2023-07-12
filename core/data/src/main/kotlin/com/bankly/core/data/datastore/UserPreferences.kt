@@ -5,8 +5,12 @@ import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStore
+import com.bankly.core.common.di.IODispatcher
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.InputStream
 import java.io.OutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +23,8 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class UserPreferences(
-    val token: String = ""
+    val token: String = "",
+    val shouldShowWalletBalance: Boolean = false
 )
 
 private object UserPreferencesSerializer : Serializer<UserPreferences> {
@@ -46,10 +51,11 @@ private object UserPreferencesSerializer : Serializer<UserPreferences> {
     }
 }
 
-class UserPreferencesStore(
-    private val context: Context,
+@Singleton
+class UserPreferencesDataStore @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val scope: CoroutineScope,
-    private val dispatcher: CoroutineDispatcher,
+    @IODispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     private val Context.userPrefDataStore by dataStore(
@@ -63,6 +69,6 @@ class UserPreferencesStore(
         scope.launch(dispatcher) { context.userPrefDataStore.updateData { updater(it) } }.join()
     }
 
-    suspend fun getData(): UserPreferences =
+    suspend fun data(): UserPreferences =
         withContext(dispatcher) { context.userPrefDataStore.data.first() }
 }

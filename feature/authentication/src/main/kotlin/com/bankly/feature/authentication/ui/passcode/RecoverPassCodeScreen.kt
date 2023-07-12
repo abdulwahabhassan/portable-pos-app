@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
@@ -54,7 +54,7 @@ internal fun RecoverPassCodeScreen(
     onRecoverPassCodeSuccess: (String) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
-    val recoverPassCodeState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recoverPassCodeState by viewModel.state.collectAsStateWithLifecycle()
     var recoverPassCodeScreenUiState by rememberRecoverPassCodeScreenUiState()
 
     Scaffold(
@@ -119,7 +119,7 @@ internal fun RecoverPassCodeScreen(
         is RecoverPassCodeState.Initial -> {}
         is RecoverPassCodeState.Loading -> {}
         is RecoverPassCodeState.Error -> {
-            ActionDialog(
+            BanklyActionDialog(
                 title = stringResource(R.string.title_recover_passcode_error),
                 subtitle = state.errorMessage,
                 positiveActionText = stringResource(R.string.action_okay),

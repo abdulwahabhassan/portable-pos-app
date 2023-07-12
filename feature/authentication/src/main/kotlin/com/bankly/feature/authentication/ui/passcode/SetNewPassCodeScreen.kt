@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
@@ -68,14 +68,14 @@ internal fun SetNewPassCodeScreen(
     onSetNewPassCodeSuccess: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
-    val setNewPassCodeState by viewModel.uiState.collectAsStateWithLifecycle()
+    val setNewPassCodeState by viewModel.state.collectAsStateWithLifecycle()
     var setNewPassCodeUiState by rememberSetNewPassCodeScreenUiState(phoneNumber, otp)
     BackHandler {
         setNewPassCodeUiState = setNewPassCodeUiState.copy(showActionDialog = true)
     }
 
     if (setNewPassCodeUiState.showActionDialog) {
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(id = R.string.title_confirm_action),
             subtitle = stringResource(id = R.string.msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode),
             positiveActionText = stringResource(R.string.action_yes),
@@ -174,7 +174,7 @@ internal fun SetNewPassCodeScreen(
         is SetNewPassCodeState.Initial -> {}
         is SetNewPassCodeState.Loading -> {}
         is SetNewPassCodeState.Error -> {
-            ActionDialog(
+            BanklyActionDialog(
                 title = stringResource(R.string.title_reset_passcode_error),
                 subtitle = state.errorMessage,
                 positiveActionText = stringResource(R.string.action_okay),

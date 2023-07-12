@@ -1,5 +1,6 @@
 package com.bankly.core.data.repository
 
+import com.bankly.core.common.di.IODispatcher
 import com.bankly.core.common.model.Resource
 import com.bankly.core.common.model.Result
 import com.bankly.core.data.util.asMessage
@@ -8,6 +9,7 @@ import com.bankly.core.data.util.asStatus
 import com.bankly.core.data.util.asToken
 import com.bankly.core.data.util.asUser
 import com.bankly.core.data.util.NetworkMonitor
+import com.bankly.core.data.util.asUserWallet
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.data.util.handleTokenRequest
@@ -20,8 +22,12 @@ import com.bankly.core.model.ResetPassCode
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
+import com.bankly.core.model.UserWallet
 import com.bankly.core.model.ValidateOtp
-import com.bankly.core.network.retrofit.datasource.BanklyBaseRemoteDataSource
+import com.bankly.core.network.model.ResultMessage
+import com.bankly.core.network.model.WalletResult
+import com.bankly.core.network.retrofit.datasource.BanklyIdentityRemoteDataSource
+import com.bankly.core.network.retrofit.datasource.BanklyWalletRemoteDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -29,10 +35,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 
 class DefaultUserRepository @Inject constructor(
-    private val ioDispatcher: CoroutineDispatcher,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val networkMonitor: NetworkMonitor,
     private val json: Json,
-    private val banklyBaseRemoteDataSource: BanklyBaseRemoteDataSource
+    private val banklyIdentityRemoteDataSource: BanklyIdentityRemoteDataSource,
+    private val banklyWalletRemoteDataSource: BanklyWalletRemoteDataSource
 ) : UserRepository {
 
     override suspend fun getToken(
@@ -44,7 +51,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.getToken(userName, password) }
+                apiRequest = { banklyIdentityRemoteDataSource.getToken(userName, password) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asToken.invoke()))
@@ -60,7 +67,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.forgotPassCode(body.asRequestBody()) }
+                apiRequest = { banklyIdentityRemoteDataSource.forgotPassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asStatus.invoke()))
@@ -74,7 +81,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.validateOtp(body = body.asRequestBody()) }
+                apiRequest = { banklyIdentityRemoteDataSource.validateOtp(body = body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asStatus.invoke()))
@@ -91,7 +98,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.resetPassCode(body.asRequestBody()) }
+                apiRequest = { banklyIdentityRemoteDataSource.resetPassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asMessage.invoke()))
@@ -107,7 +114,7 @@ class DefaultUserRepository @Inject constructor(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.changePassCode(body.asRequestBody()) }
+                apiRequest = { banklyIdentityRemoteDataSource.changePassCode(body.asRequestBody()) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data::asUser.invoke()))
@@ -116,17 +123,17 @@ class DefaultUserRepository @Inject constructor(
 
     override suspend fun getWallet(
         token: String
-    ): Flow<Resource<Any>> = flow {
+    ): Flow<Resource<UserWallet>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
                 dispatcher = ioDispatcher,
                 networkMonitor = networkMonitor,
                 json = json,
-                apiRequest = { banklyBaseRemoteDataSource.getWallet(token) }
+                apiRequest = { banklyWalletRemoteDataSource.getWallet(token) }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data))
+            is Result.Success -> emit(Resource.Ready(responseResult.data::asUserWallet.invoke()))
         }
     }
 }

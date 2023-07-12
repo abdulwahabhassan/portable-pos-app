@@ -3,26 +3,37 @@ package com.bankly.banklykozenpos.ui.dashboard
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.model.QuickAction
+import com.bankly.core.common.util.Formatter
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeScreenViewModel = hiltViewModel(),
+) {
+    val homeScreenUiState = viewModel.state.collectAsStateWithLifecycle().value
+
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
@@ -30,10 +41,15 @@ fun HomeScreen() {
 
         ) {
             WalletCard(
-                isWalletBalanceVisible = true,
-                onToggleWalletBalanceVisibility = {},
-                accountNumber = "02992002020",
-                currentBalance = "2773892",
+                shouldShowWalletBalance = homeScreenUiState.shouldShowWalletBalance,
+                onToggleWalletBalanceVisibility = { toggleState ->
+                    viewModel.sendEvent(HomeUiEvent.ToggleWalletBalanceVisibilityEvent(toggleState))
+                },
+                accountNumber = homeScreenUiState.accountNumber,
+                bankName = homeScreenUiState.bankName,
+                currentBalance = homeScreenUiState.accountBalance,
+                shouldShowVisibilityIcon = homeScreenUiState.shouldShowVisibilityIcon,
+                isWalletBalanceLoading = homeScreenUiState.shouldShowLoadingIcon
             )
         }
         Text(
@@ -46,9 +62,22 @@ fun HomeScreen() {
         )
         LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp)) {
             items(QuickAction.values()) { quickAction: QuickAction ->
-                QuickActionCard(quickAction = quickAction, onClick = {})
+                QuickActionCard(quickAction = quickAction, onClick = {
+
+                })
             }
         }
+    }
+
+    if (homeScreenUiState.shouldShowErrorDialog) {
+        BanklyActionDialog(
+            title = stringResource(R.string.error),
+            subtitle = homeScreenUiState.message,
+            positiveActionText = "Dismiss",
+            positiveAction = {
+                viewModel.sendEvent(HomeUiEvent.DismissErrorDialog)
+            }
+        )
     }
 }
 

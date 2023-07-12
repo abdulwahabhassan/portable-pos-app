@@ -35,13 +35,13 @@ import com.bankly.core.designsystem.R
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 /**
- * [ActionDialog] is used to display messages or feedback to user across the app.
+ * [BanklyActionDialog] is used to display messages or feedback to user across the app.
  * When either of [positiveActionText] or [negativeActionText] is not null, their corresponding
  * action buttons are shown and their respective actions [positiveAction] or [negativeAction]
  * are called when either button is clicked
  */
 @Composable
-fun ActionDialog(
+fun BanklyActionDialog(
     title: String,
     subtitle: String? = null,
     icon: Int? = R.drawable.ic_error_alert,
@@ -142,7 +142,7 @@ fun ActionDialog(
 fun ActionDialogPreview1() {
     BanklyTheme {
         val context = LocalContext.current
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(R.string.title_cancel_transaction),
             subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_cancel),
             positiveActionText = stringResource(R.string.action_no),
@@ -161,7 +161,7 @@ fun ActionDialogPreview1() {
 fun ActionDialogPreview2() {
     BanklyTheme {
         val context = LocalContext.current
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(R.string.msg_check_your_internet_connection),
             positiveActionText = "Okay",
             positiveAction = {

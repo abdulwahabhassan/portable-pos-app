@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,7 @@ class RecoverPassCodeViewModel @Inject constructor(
     private val forgotPassCodeUseCase: ForgotPassCodeUseCase
 ) : BaseViewModel<RecoverPassCodeUiEvent, RecoverPassCodeState>(RecoverPassCodeState.Initial) {
 
-    override fun handleUiEvents(event: RecoverPassCodeUiEvent) {
+    override suspend fun handleUiEvents(event: RecoverPassCodeUiEvent) {
         when (event) {
             is RecoverPassCodeUiEvent.RecoverPassCode -> {
                 if (validatePhoneNumber(event.phoneNumber)) {
@@ -39,28 +40,26 @@ class RecoverPassCodeViewModel @Inject constructor(
         }
     }
 
-    private fun recoverPassCode(phoneNumber: String) {
-        viewModelScope.launch {
-            forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
-                .onEach { resource ->
-                    resource.onLoading {
-                        setUiState { RecoverPassCodeState.Loading }
-                    }
-                    resource.onReady {
-                        setUiState { RecoverPassCodeState.Success }
-                    }
-                    resource.onFailure { message ->
-                        setUiState { RecoverPassCodeState.Error(message) }
-                    }
-                }.catch {
-                    it.printStackTrace()
-                    setUiState {
-                        RecoverPassCodeState.Error(
-                            it.message ?: "An unexpected event occurred. We're fixing this!"
-                        )
-                    }
-                }.collect()
-        }
+    private suspend fun recoverPassCode(phoneNumber: String) {
+        forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
+            .onEach { resource ->
+                resource.onLoading {
+                    setUiState { RecoverPassCodeState.Loading }
+                }
+                resource.onReady {
+                    setUiState { RecoverPassCodeState.Success }
+                }
+                resource.onFailure { message ->
+                    setUiState { RecoverPassCodeState.Error(message) }
+                }
+            }.catch {
+                it.printStackTrace()
+                setUiState {
+                    RecoverPassCodeState.Error(
+                        it.message ?: "An unexpected event occurred!"
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
 }

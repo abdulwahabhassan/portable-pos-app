@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyNumericKeyboard
 import com.bankly.core.designsystem.component.BanklyPassCodeInputField
@@ -67,7 +67,7 @@ internal fun OtpValidationScreen(
     onOtpValidationSuccess: (phoneNumber: String, otp: String) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
-    val otpValidationState by viewModel.uiState.collectAsStateWithLifecycle()
+    val otpValidationState by viewModel.state.collectAsStateWithLifecycle()
     var otpValidationScreenUiState by rememberOtpValidationScreenUiState(phoneNumber = phoneNumber)
     val coroutineScope = rememberCoroutineScope()
 
@@ -76,7 +76,7 @@ internal fun OtpValidationScreen(
     }
 
     if (otpValidationScreenUiState.showActionDialog) {
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(R.string.title_confirm_action),
             subtitle = stringResource(R.string.msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode),
             positiveActionText = stringResource(R.string.action_yes),
@@ -218,7 +218,7 @@ internal fun OtpValidationScreen(
         is OtpValidationState.Loading -> {}
         is OtpValidationState.Error -> {
             Log.d("otp error debug", "show dialog")
-            ActionDialog(
+            BanklyActionDialog(
                 title = stringResource(R.string.title_otp_validation_error),
                 subtitle = state.errorMessage,
                 positiveActionText = stringResource(R.string.action_okay),

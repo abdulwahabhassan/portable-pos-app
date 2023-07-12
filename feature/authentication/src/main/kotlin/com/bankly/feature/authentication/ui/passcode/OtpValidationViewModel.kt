@@ -12,9 +12,8 @@ import com.bankly.core.model.ValidateOtp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class OtpValidationViewModel @Inject constructor(
@@ -22,7 +21,7 @@ class OtpValidationViewModel @Inject constructor(
     private val forgotPassCodeUseCase: ForgotPassCodeUseCase
 ) : BaseViewModel<OtpValidationUiEvent, OtpValidationState>(OtpValidationState.Initial) {
 
-    override fun handleUiEvents(event: OtpValidationUiEvent) {
+    override suspend fun handleUiEvents(event: OtpValidationUiEvent) {
         when (event) {
             is OtpValidationUiEvent.ValidateOtp -> {
                 validateOtp(otp = event.otp, phoneNumber = event.phoneNumber)
@@ -38,54 +37,48 @@ class OtpValidationViewModel @Inject constructor(
         }
     }
 
-    private fun validateOtp(otp: String, phoneNumber: String) {
-        viewModelScope.launch {
-            validateOtpUseCase(
-                body = ValidateOtp(otp = otp, phoneNumber = phoneNumber)
-            )
-                .onEach { resource ->
-                    resource.onLoading {
-                        setUiState { OtpValidationState.Loading }
-                    }
-                    resource.onReady {
-                        setUiState { OtpValidationState.OtpValidationSuccess }
-                    }
-                    resource.onFailure { message ->
-                        setUiState { OtpValidationState.Error(message) }
-                    }
-                }.catch {
-                    it.printStackTrace()
-                    setUiState {
-                        OtpValidationState.Error(
-                            it.message ?: "An unexpected event occurred. We're fixing this!"
-                        )
-                    }
-                }.collect()
-        }
+    private suspend fun validateOtp(otp: String, phoneNumber: String) {
+        validateOtpUseCase(body = ValidateOtp(otp = otp, phoneNumber = phoneNumber))
+            .onEach { resource ->
+                resource.onLoading {
+                    setUiState { OtpValidationState.Loading }
+                }
+                resource.onReady {
+                    setUiState { OtpValidationState.OtpValidationSuccess }
+                }
+                resource.onFailure { message ->
+                    setUiState { OtpValidationState.Error(message) }
+                }
+            }.catch {
+                it.printStackTrace()
+                setUiState {
+                    OtpValidationState.Error(
+                        it.message ?: "An unexpected event occurred!"
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
-    private fun resendOtp(phoneNumber: String) {
-        viewModelScope.launch {
-            forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
-                .onEach { resource ->
-                    resource.onLoading {
-                        setUiState { OtpValidationState.Loading }
-                    }
-                    resource.onReady {
-                        setUiState { OtpValidationState.ResendOtpSuccess }
-                    }
-                    resource.onFailure { message ->
-                        setUiState { OtpValidationState.Error(message) }
-                    }
-                }.catch {
-                    it.printStackTrace()
-                    setUiState {
-                        OtpValidationState.Error(
-                            it.message ?: "An unexpected event occurred. We're fixing this!"
-                        )
-                    }
-                }.collect()
-        }
+    private suspend fun resendOtp(phoneNumber: String) {
+        forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
+            .onEach { resource ->
+                resource.onLoading {
+                    setUiState { OtpValidationState.Loading }
+                }
+                resource.onReady {
+                    setUiState { OtpValidationState.ResendOtpSuccess }
+                }
+                resource.onFailure { message ->
+                    setUiState { OtpValidationState.Error(message) }
+                }
+            }.catch {
+                it.printStackTrace()
+                setUiState {
+                    OtpValidationState.Error(
+                        it.message ?: "An unexpected event occurred!"
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
 }

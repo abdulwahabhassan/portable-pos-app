@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bankly.banklykozenpos.R
 import com.bankly.core.common.util.Formatter.formatAmount
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.model.PassCodeKey
@@ -55,7 +55,7 @@ fun PosScreen(
     var actionMessage by rememberSaveable { mutableStateOf("") }
 
     if (showActionDialog) {
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(R.string.title_validation_error),
             subtitle = actionMessage,
             positiveActionText = "Okay",

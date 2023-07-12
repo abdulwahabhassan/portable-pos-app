@@ -8,6 +8,7 @@ import com.bankly.core.model.ResetPassCode
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
+import com.bankly.core.model.UserWallet
 import com.bankly.core.model.ValidateOtp
 import kotlinx.coroutines.flow.Flow
 
@@ -17,5 +18,5 @@ interface UserRepository {
     suspend fun validateOtp(body: ValidateOtp): Flow<Resource<Status>>
     suspend fun resetPassCode(body: ResetPassCode): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCode): Flow<Resource<User>>
-    suspend fun getWallet(token: String): Flow<Resource<Any>>
+    suspend fun getWallet(token: String): Flow<Resource<UserWallet>>
 }

@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,7 @@ class SetNewPassCodeViewModel @Inject constructor(
     private val resetPassCodeUseCase: ResetPassCodeUseCase
 ) : BaseViewModel<SetNewPassCodeUiEvent, SetNewPassCodeState>(SetNewPassCodeState.Initial) {
 
-    override fun handleUiEvents(event: SetNewPassCodeUiEvent) {
+    override suspend fun handleUiEvents(event: SetNewPassCodeUiEvent) {
         when (event) {
             is SetNewPassCodeUiEvent.SetNewPassCode -> {
                 if (Validator.validatePassCodes(event.passCode, event.confirmPassCode)) {
@@ -41,37 +42,35 @@ class SetNewPassCodeViewModel @Inject constructor(
         }
     }
 
-    private fun resetPassCode(
+    private suspend fun resetPassCode(
         passCode: String, confirmPassCode: String, phoneNumber: String, otp: String
     ) {
-        viewModelScope.launch {
-            resetPassCodeUseCase(
-                body = ResetPassCode(
-                    username = phoneNumber,
-                    password = passCode,
-                    confirmPassword = confirmPassCode,
-                    code = otp
-                )
+        resetPassCodeUseCase(
+            body = ResetPassCode(
+                username = phoneNumber,
+                password = passCode,
+                confirmPassword = confirmPassCode,
+                code = otp
             )
-                .onEach { resource ->
-                    resource.onLoading {
-                        setUiState { SetNewPassCodeState.Loading }
-                    }
-                    resource.onReady { message ->
-                        setUiState { SetNewPassCodeState.Success(message.message) }
-                    }
-                    resource.onFailure { message ->
-                        setUiState { SetNewPassCodeState.Error(message) }
-                    }
-                }.catch {
-                    it.printStackTrace()
-                    setUiState {
-                        SetNewPassCodeState.Error(
-                            it.message ?: "An unexpected event occurred. We're fixing this!"
-                        )
-                    }
-                }.collect()
-        }
+        )
+            .onEach { resource ->
+                resource.onLoading {
+                    setUiState { SetNewPassCodeState.Loading }
+                }
+                resource.onReady { message ->
+                    setUiState { SetNewPassCodeState.Success(message.message) }
+                }
+                resource.onFailure { message ->
+                    setUiState { SetNewPassCodeState.Error(message) }
+                }
+            }.catch {
+                it.printStackTrace()
+                setUiState {
+                    SetNewPassCodeState.Error(
+                        it.message ?: "An unexpected event occurred!"
+                    )
+                }
+            }.launchIn(viewModelScope)
     }
 
 }

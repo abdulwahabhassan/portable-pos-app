@@ -7,10 +7,12 @@ import com.bankly.core.model.ResetPassCode
 import com.bankly.core.model.Status
 import com.bankly.core.model.Token
 import com.bankly.core.model.User
+import com.bankly.core.model.UserWallet
 import com.bankly.core.model.ValidateOtp
 import com.bankly.core.network.model.AuthenticatedUser
 import com.bankly.core.network.model.ResultMessage
 import com.bankly.core.network.model.ResultStatus
+import com.bankly.core.network.model.WalletResult
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
@@ -24,7 +26,8 @@ fun AuthenticatedUser.asUser() = User(
 
 fun TokenNetworkResponse.asToken() = Token(
     token = accessToken ?: "",
-    expiresIn = expiresIn ?: 0L
+    expiresIn = expiresIn ?: 0L,
+    tokenType = tokenType ?: ""
 )
 
 fun ResultStatus.asStatus() = Status(
@@ -52,4 +55,11 @@ fun ResetPassCode.asRequestBody() = ResetPassCodeRequestBody(
 
 fun ValidateOtp.asRequestBody() = ValidateOtpRequestBody(
     otp = otp, phoneNumber = phoneNumber
+)
+
+fun WalletResult.asUserWallet() = UserWallet(
+    accountBalance = currentBalance,
+    bankName = fundingSourceName,
+    accountNumber = fundingAccountNumber,
+    accountName = name
 )

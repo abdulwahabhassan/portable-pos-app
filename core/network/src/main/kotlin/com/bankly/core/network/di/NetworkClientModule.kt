@@ -7,24 +7,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
-
-    @Provides
+object NetworkClientModule {
     @Singleton
-    fun providesNetworkJson(): Json = Json {
-        ignoreUnknownKeys = true
-    }
-
     @Provides
-    @Singleton
-    fun okHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
+    fun providesOkHttpClient(): OkHttpClient = OkHttpClient.Builder().apply {
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -48,5 +40,4 @@ object NetworkModule {
             .retryOnConnectionFailure(false)
     }
         .build()
-
 }

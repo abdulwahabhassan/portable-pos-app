@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
@@ -52,7 +52,8 @@ data class LoginScreenUiState(
 }
 
 @Composable
-fun rememberLoginScreenUiState(): MutableState<LoginScreenUiState> = remember { mutableStateOf(LoginScreenUiState()) }
+fun rememberLoginScreenUiState(): MutableState<LoginScreenUiState> =
+    remember { mutableStateOf(LoginScreenUiState()) }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +63,7 @@ internal fun LoginScreen(
     onBackClick: () -> Unit,
     onRecoverPassCodeClick: () -> Unit
 ) {
-    val loginState by viewModel.uiState.collectAsStateWithLifecycle()
+    val loginState by viewModel.state.collectAsStateWithLifecycle()
     var loginScreenUiState by rememberLoginScreenUiState()
 
     Log.d("login debug ui state", "$loginScreenUiState")
@@ -94,7 +95,8 @@ internal fun LoginScreen(
                     BanklyInputField(
                         textFieldValue = loginScreenUiState.phoneNumber,
                         onTextFieldValueChange = { textFieldValue ->
-                            loginScreenUiState = loginScreenUiState.copy(phoneNumber = textFieldValue)
+                            loginScreenUiState =
+                                loginScreenUiState.copy(phoneNumber = textFieldValue)
                         },
                         isEnabled = loginState !is LoginState.Loading,
                         placeholderText = stringResource(R.string.msg_phone_number_sample),
@@ -159,10 +161,8 @@ internal fun LoginScreen(
     }
 
     when (val state = loginState) {
-        is LoginState.Initial -> {}
-        is LoginState.Loading -> {}
         is LoginState.Error -> {
-            ActionDialog(
+            BanklyActionDialog(
                 title = stringResource(R.string.title_login_error),
                 subtitle = state.errorMessage,
                 positiveActionText = stringResource(R.string.action_okay),
@@ -172,6 +172,7 @@ internal fun LoginScreen(
         }
 
         is LoginState.Success -> onLoginSuccess()
+        else -> {}
     }
 
 }

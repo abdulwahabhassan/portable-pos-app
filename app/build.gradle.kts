@@ -1,6 +1,12 @@
 import com.bankly.buildlogic.BuildType
 import java.util.Properties
 import java.io.FileInputStream
+import java.util.Locale
+import java.time.LocalDateTime as localDateTime
+import java.time.format.DateTimeFormatter as dateTimeFormatter
+import java.util.Date as date
+import java.util.Locale as locale
+import java.io.ByteArrayOutputStream as byteArrayOutputStream
 
 plugins {
     id("com.bankly.android.application")
@@ -12,7 +18,6 @@ plugins {
 val keystorePropertiesFile: File? = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 keystoreProperties.load(keystorePropertiesFile?.let { FileInputStream(it) })
-
 
 android {
     namespace = "com.bankly.banklykozenpos"
@@ -44,22 +49,41 @@ android {
         }
         release {
             isMinifyEnabled = false
+            isDebuggable = true
             applicationIdSuffix = BuildType.RELEASE.applicationIdSuffix
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("config")
         }
+//        applicationVariants.all{ variant ->
+//            variant.outputs.forEach{ output ->
+//                //project.ext { appName = "Bankly-Kozen" }
+////                .format("dd-MMM-yy")
+//                val formattedDate = date().toString()
+//                var newName = output.outputFile.name
+//                newName = newName.replace("app-", "Bankly-Kozen-" + "${variant.versionName}-${getBranchName()}-")
+//                newName = newName.replace("-debug", "-debug-$formattedDate")
+//                newName = newName.replace("-release", "-release-$formattedDate")
+//                (output as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName  = newName
+//            }
+//            false
+//        }
+
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
-    }
+//    buildFeatures {
+//        compose = true
+//    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = "1.4.7"
+//    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -76,11 +100,29 @@ kapt {
     correctErrorTypes = true
 }
 
+//fun getBranchName(): String {
+//    return try {
+//        println("Task Getting Branch Name..")
+//        val stdout = byteArrayOutputStream()
+//        exec {
+//            commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
+//            standardOutput = stdout
+//        }
+//        println("Git Current Branch = $stdout")
+//        stdout.toString().replace("/", "-").replace("\n", "").lowercase(Locale.getDefault())
+//    }
+//    catch (e: Exception) {
+//        println("Exception = " + e.message)
+//        ""
+//    }
+//}
+
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
+    implementation(project(":core:model"))
 
     implementation(project(":feature:authentication"))
 
@@ -95,6 +137,5 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.accompanist.systemuicontroller)
-
-
+    implementation(libs.kotlinx.datetime)
 }

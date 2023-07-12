@@ -11,7 +11,6 @@ import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-@Singleton
 class BanklyNotificationRemoteDataSource @Inject constructor(
     networkJson: Json,
     okhttpCallFactory: Call.Factory,

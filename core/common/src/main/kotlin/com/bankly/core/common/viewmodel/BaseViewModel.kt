@@ -25,19 +25,19 @@ abstract class BaseViewModel<E, S>(initialState: S) : ViewModel() {
      * [E] stands for Event
      * [S] stands for State
      */
-    private val uiEvent = MutableSharedFlow<E>()
-    private val _uiState = MutableStateFlow(initialState)
-    val uiState: StateFlow<S> = _uiState.asStateFlow()
+    private val event = MutableSharedFlow<E>()
+    private val _state = MutableStateFlow(initialState)
+    val state: StateFlow<S> = _state.asStateFlow()
 
     init {
-        uiEvent.onEach(::handleUiEvents).launchIn(viewModelScope)
+        event.onEach(::handleUiEvents).launchIn(viewModelScope)
     }
 
     /**
      * Handles the event and updates the state.
      * @param event The event to handle.
      */
-    protected abstract fun handleUiEvents(event: E)
+    protected abstract suspend fun handleUiEvents(event: E)
 
     /**
      * Emits an event to the event flow.
@@ -45,7 +45,7 @@ abstract class BaseViewModel<E, S>(initialState: S) : ViewModel() {
      */
     fun sendEvent(event: E) {
         viewModelScope.launch {
-            uiEvent.emit(event)
+            this@BaseViewModel.event.emit(event)
         }
     }
 
@@ -55,7 +55,7 @@ abstract class BaseViewModel<E, S>(initialState: S) : ViewModel() {
      */
     protected fun setUiState(transform: S.() -> S) {
         viewModelScope.launch {
-            _uiState.emit(transform(_uiState.value))
+            _state.emit(transform(_state.value))
         }
     }
 }

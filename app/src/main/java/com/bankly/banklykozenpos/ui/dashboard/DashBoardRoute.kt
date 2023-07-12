@@ -3,7 +3,6 @@ package com.bankly.banklykozenpos.ui.dashboard
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,13 +13,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import com.bankly.banklykozenpos.model.DashboardTab
 import com.bankly.banklykozenpos.navigation.BottomNavDestination
-import com.bankly.core.designsystem.component.ActionDialog
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.feature.authentication.R
 
@@ -44,7 +42,7 @@ fun DashBoardRoute(
     }
 
     if (showActionDialog.value) {
-        ActionDialog(
+        BanklyActionDialog(
             title = stringResource(com.bankly.banklykozenpos.R.string.title_confirm_action),
             subtitle = stringResource(com.bankly.banklykozenpos.R.string.msg_are_you_sure_you_want_to_exit_the_app),
             positiveActionText = stringResource(R.string.action_yes),

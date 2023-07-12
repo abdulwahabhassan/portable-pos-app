@@ -24,10 +24,10 @@ suspend fun <T> handleRequest(
             val response = handleHttpException(e, json)
             Result.Error(
                 message = response?.validationMessages?.joinToString(", \n")
-                    ?: response?.message ?: "Something went wrong, we're fixing it"
+                    ?: response?.message ?: "Something went wrong!"
             )
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage ?: "Something went wrong, we're fixing it")
+            Result.Error(message = e.localizedMessage ?: "Something went wrong!")
         }
     }
 }
@@ -51,7 +51,7 @@ suspend fun handleTokenRequest(
                 ?: "Something went wrong, we're fixing it"
             )
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage ?: "Something went wrong, we're fixing it")
+            Result.Error(message = e.localizedMessage ?: "Something went wrong!")
         }
     }
 }
