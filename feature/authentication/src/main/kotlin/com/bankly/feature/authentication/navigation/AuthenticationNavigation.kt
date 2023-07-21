@@ -2,32 +2,38 @@ package com.bankly.feature.authentication.navigation
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.bankly.feature.authentication.ui.ConfirmPinScreen
-import com.bankly.feature.authentication.ui.CreateNewPassCodeScreen
-import com.bankly.feature.authentication.ui.passcode.OtpValidationScreen
-import com.bankly.feature.authentication.ui.passcode.RecoverPassCodeScreen
 import com.bankly.feature.authentication.ui.login.LoginScreen
+import com.bankly.feature.authentication.ui.otp.OtpValidationScreen
+import com.bankly.feature.authentication.ui.passcode.CreateNewPassCodeScreen
+import com.bankly.feature.authentication.ui.passcode.RecoverPassCodeScreen
 import com.bankly.feature.authentication.ui.passcode.SetNewPassCodeScreen
-import com.bankly.feature.authentication.ui.SetPinScreen
-import com.bankly.feature.authentication.ui.SuccessfulScreen
+import com.bankly.feature.authentication.ui.pin.ConfirmPinScreen
+import com.bankly.feature.authentication.ui.pin.SetPinScreen
+import com.bankly.feature.authentication.ui.success.SuccessfulScreen
 
 const val authenticationNavGraph = "authentication_graph"
-const val loginRoute = authenticationNavGraph.plus("/login_screen")
-const val confirmPinRoute = authenticationNavGraph.plus("/confirm_pin_screen")
-const val createNewPassCodeRoute = authenticationNavGraph.plus("/create_new_pass_code_screen")
-const val otpValidationRoute = authenticationNavGraph.plus("/otp_validation_screen")
-const val recoverPassCodeRoute = authenticationNavGraph.plus("/input_phone_number_screen")
-const val setNewPassCodeRoute = authenticationNavGraph.plus("/set_new_pass_code_screen")
-const val setPinRoute = authenticationNavGraph.plus("/set_pin_route")
-const val successfulRoute = authenticationNavGraph.plus("/successful_screen")
+const val authenticationRoute = authenticationNavGraph.plus("/authentication_route")
+const val loginScreen = authenticationRoute.plus("/login_screen")
+const val confirmPinScreen = authenticationRoute.plus("/confirm_pin_screen")
+const val createNewPassCodeScreen = authenticationRoute.plus("/create_new_pass_code_screen")
+const val otpValidationScreen = authenticationRoute.plus("/otp_validation_screen")
+const val recoverPassCodeScreen = authenticationRoute.plus("/input_phone_number_screen")
+const val setNewPassCodeScreen = authenticationRoute.plus("/set_new_pass_code_screen")
+const val setPinScreen = authenticationRoute.plus("/set_pin_route")
+const val successfulScreen = authenticationRoute.plus("/successful_screen")
 
 
 internal const val phoneNumberArg = "phoneNumber"
@@ -35,42 +41,66 @@ internal const val otpArg = "otp"
 internal const val successMessageArg = "successMessage"
 
 fun NavGraphBuilder.authenticationNavGraph(
-    navController: NavController,
     onLoginSuccess: () -> Unit,
     onPopLoginScreen: () -> Unit,
     onBackToLoginClick: () -> Unit,
 ) {
     navigation(
         route = authenticationNavGraph,
-        startDestination = loginRoute,
+        startDestination = authenticationRoute,
+    ) {
+        composable(authenticationRoute) {
+            val authenticationState by rememberAuthenticationState()
+            AuthenticationNavHost(
+                authenticationState.navHostController,
+                onLoginSuccess,
+                onPopLoginScreen,
+                onBackToLoginClick
+            )
+        }
+
+    }
+}
+
+@Composable
+fun AuthenticationNavHost(
+    navHostController: NavHostController,
+    onLoginSuccess: () -> Unit,
+    onPopLoginScreen: () -> Unit,
+    onBackToLoginClick: () -> Unit,
+) {
+    NavHost(
+        modifier = Modifier,
+        navController = navHostController,
+        startDestination = loginScreen,
     ) {
         loginScreen(
             onLoginSuccess = onLoginSuccess,
             onBackClick = onPopLoginScreen,
             onRecoverPassCode = {
-                navController.navigateToRecoverPassCodeScreen()
+                navHostController.navigateToRecoverPassCodeScreen()
             })
         recoverPassCodeScreen(
             onRecoverPassCodeSuccess = { phoneNumber: String ->
-                navController.navigateToOtpValidationScreen(phoneNumber = phoneNumber)
+                navHostController.navigateToOtpValidationScreen(phoneNumber = phoneNumber)
             },
             onPopRecoverPassCodeScreen = {
-                navController.popBackStack()
+                navHostController.popBackStack()
             }
         )
         otpValidationScreen(
             onOtpValidationSuccess = { phoneNumber: String, otp: String ->
-                navController.navigateToSetNewPassCodeScreen(phoneNumber = phoneNumber, otp = otp)
+                navHostController.navigateToSetNewPassCodeScreen(phoneNumber = phoneNumber, otp = otp)
             },
             onPopOtpValidationScreen = {
-                navController.popBackStack()
+                navHostController.popBackStack()
             })
         setNewPassCodeScreen(
             onSetNewPassCodeSuccess = { message: String ->
-                navController.navigateToSuccessfulRoute(message = message)
+                navHostController.navigateToSuccessfulRoute(message = message)
             },
             onPopSetNewPassCodeScreen = {
-                navController.popBackStack()
+                navHostController.popBackStack()
             })
         successfulScreen(onBackToLoginClick = onBackToLoginClick)
         setPinScreen()
@@ -83,7 +113,7 @@ fun NavGraphBuilder.authenticationNavGraph(
  * Login
  */
 internal fun NavController.navigateToLoginScreen(topicId: String) {
-    this.navigate(loginRoute)
+    this.navigate(loginScreen)
 }
 
 internal fun NavGraphBuilder.loginScreen(
@@ -91,7 +121,7 @@ internal fun NavGraphBuilder.loginScreen(
     onBackClick: () -> Unit,
     onRecoverPassCode: () -> Unit
 ) {
-    composable(route = loginRoute) {
+    composable(route = loginScreen) {
         LoginScreen(
             onLoginSuccess = onLoginSuccess,
             onBackClick = onBackClick,
@@ -104,7 +134,7 @@ internal fun NavGraphBuilder.loginScreen(
  * Recover Passcode
  */
 internal fun NavController.navigateToRecoverPassCodeScreen() {
-    this.navigate(recoverPassCodeRoute)
+    this.navigate(recoverPassCodeScreen)
 }
 
 internal fun NavGraphBuilder.recoverPassCodeScreen(
@@ -112,7 +142,7 @@ internal fun NavGraphBuilder.recoverPassCodeScreen(
     onPopRecoverPassCodeScreen: () -> Unit
 ) {
     composable(
-        route = recoverPassCodeRoute,
+        route = recoverPassCodeScreen,
     ) {
         RecoverPassCodeScreen(
             onRecoverPassCodeSuccess = onRecoverPassCodeSuccess,
@@ -129,7 +159,7 @@ internal fun NavController.navigateToOtpValidationScreen(phoneNumber: String) {
     Log.d("otp debug encoded", encodedPhoneNumber.toString())
     //Pop up to Login screen
     val navOptions = NavOptions.Builder().setPopUpTo(this.graph.findStartDestination().id, false).build()
-    this.navigate("$otpValidationRoute/$encodedPhoneNumber", navOptions)
+    this.navigate("$otpValidationScreen/$encodedPhoneNumber", navOptions)
 }
 
 internal fun NavGraphBuilder.otpValidationScreen(
@@ -137,7 +167,7 @@ internal fun NavGraphBuilder.otpValidationScreen(
     onPopOtpValidationScreen: () -> Unit
 ) {
     composable(
-        route = "$otpValidationRoute/{$phoneNumberArg}",
+        route = "$otpValidationScreen/{$phoneNumberArg}",
         arguments = listOf(
             navArgument(phoneNumberArg) { type = NavType.StringType },
         )
@@ -161,7 +191,7 @@ internal fun NavController.navigateToSetNewPassCodeScreen(phoneNumber: String, o
     val encodedOtp = Uri.encode(otp)
     //Pop up to Login screen
     val navOptions = NavOptions.Builder().setPopUpTo(this.graph.findStartDestination().id, false).build()
-    this.navigate("$setNewPassCodeRoute/$encodedPhoneNumber/$encodedOtp", navOptions)
+    this.navigate("$setNewPassCodeScreen/$encodedPhoneNumber/$encodedOtp", navOptions)
 }
 
 internal fun NavGraphBuilder.setNewPassCodeScreen(
@@ -169,7 +199,7 @@ internal fun NavGraphBuilder.setNewPassCodeScreen(
     onPopSetNewPassCodeScreen: () -> Unit
 ) {
     composable(
-        route = "$setNewPassCodeRoute/{$phoneNumberArg}/{$otpArg}",
+        route = "$setNewPassCodeScreen/{$phoneNumberArg}/{$otpArg}",
         arguments = listOf(
             navArgument(phoneNumberArg) { type = NavType.StringType },
             navArgument(otpArg) { type = NavType.StringType },
@@ -193,14 +223,14 @@ internal fun NavGraphBuilder.setNewPassCodeScreen(
  */
 internal fun NavController.navigateToSuccessfulRoute(message: String) {
     val encodedSuccessMessage = Uri.encode(message)
-    this.navigate("$successfulRoute/$encodedSuccessMessage")
+    this.navigate("$successfulScreen/$encodedSuccessMessage")
 }
 
 internal fun NavGraphBuilder.successfulScreen(
     onBackToLoginClick: () -> Unit
 ) {
     composable(
-        route = "$successfulRoute/{$successMessageArg}",
+        route = "$successfulScreen/{$successMessageArg}",
         arguments = listOf(
             navArgument(successMessageArg) { type = NavType.StringType },
         )
@@ -219,12 +249,12 @@ internal fun NavGraphBuilder.successfulScreen(
  * Create New Pass Code
  */
 internal fun NavController.navigateToCreateNewPassCodeScreen(topicId: String) {
-    this.navigate(loginRoute)
+    this.navigate(loginScreen)
 }
 
 internal fun NavGraphBuilder.createNewPassCodeScreen() {
     composable(
-        route = createNewPassCodeRoute
+        route = createNewPassCodeScreen
     ) {
         CreateNewPassCodeScreen()
     }
@@ -234,12 +264,12 @@ internal fun NavGraphBuilder.createNewPassCodeScreen() {
  * Set PIN
  */
 internal fun NavController.navigateToSetPinRoute(topicId: String) {
-    this.navigate(setPinRoute)
+    this.navigate(setPinScreen)
 }
 
 internal fun NavGraphBuilder.setPinScreen() {
     composable(
-        route = setPinRoute
+        route = setPinScreen
     ) {
         SetPinScreen()
     }
@@ -250,12 +280,12 @@ internal fun NavGraphBuilder.setPinScreen() {
  * Confirm PIN
  */
 internal fun NavController.navigateToConfirmPinRoute(topicId: String) {
-    this.navigate(confirmPinRoute)
+    this.navigate(confirmPinScreen)
 }
 
 internal fun NavGraphBuilder.confirmPinScreen() {
     composable(
-        route = confirmPinRoute
+        route = confirmPinScreen
     ) {
         ConfirmPinScreen()
     }

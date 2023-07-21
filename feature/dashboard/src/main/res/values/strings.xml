@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Bankly</string>
+    <string name="desc_navigation_icon">Navigation Icon</string>
+    <string name="symbol_naira">₦</string>
+    <string name="msg_enter_amount">Enter Amount</string>
+    <string name="msg_are_you_sure_you_want_to_exit_the_app">Are you sure you want to exit the app?</string>
+    <string name="title_confirm_action">Confirm action</string>
+    <string name="title_validation_error">Validation error</string>
+    <string name="desc_visibility_icon">Visibility icon</string>
+    <string name="desc_pay_with_cash">Pay with cash</string>
+    <string name="desc_pay_with_card">Pay with card</string>
+    <string name="title_pay_with_card">Pay with\nCard</string>
+    <string name="title_quick_action">Quick Action</string>
+    <string name="error">Error</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+</resources>

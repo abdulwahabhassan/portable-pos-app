@@ -42,7 +42,6 @@ android {
             storePassword = keystoreProperties["storePassword"] as String
         }
     }
-
     buildTypes {
         debug {
             applicationIdSuffix = BuildType.DEBUG.applicationIdSuffix
@@ -57,20 +56,6 @@ android {
             )
             signingConfig = signingConfigs.getByName("config")
         }
-//        applicationVariants.all{ variant ->
-//            variant.outputs.forEach{ output ->
-//                //project.ext { appName = "Bankly-Kozen" }
-////                .format("dd-MMM-yy")
-//                val formattedDate = date().toString()
-//                var newName = output.outputFile.name
-//                newName = newName.replace("app-", "Bankly-Kozen-" + "${variant.versionName}-${getBranchName()}-")
-//                newName = newName.replace("-debug", "-debug-$formattedDate")
-//                newName = newName.replace("-release", "-release-$formattedDate")
-//                (output as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName  = newName
-//            }
-//            false
-//        }
-
     }
 
     compileOptions {
@@ -78,12 +63,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-//    buildFeatures {
-//        compose = true
-//    }
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = "1.4.7"
-//    }
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -100,23 +79,6 @@ kapt {
     correctErrorTypes = true
 }
 
-//fun getBranchName(): String {
-//    return try {
-//        println("Task Getting Branch Name..")
-//        val stdout = byteArrayOutputStream()
-//        exec {
-//            commandLine("git", "rev-parse", "--abbrev-ref", "HEAD")
-//            standardOutput = stdout
-//        }
-//        println("Git Current Branch = $stdout")
-//        stdout.toString().replace("/", "-").replace("\n", "").lowercase(Locale.getDefault())
-//    }
-//    catch (e: Exception) {
-//        println("Exception = " + e.message)
-//        ""
-//    }
-//}
-
 dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
@@ -125,6 +87,7 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(project(":feature:authentication"))
+    implementation(project(":feature:dashboard"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

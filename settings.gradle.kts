@@ -36,3 +36,4 @@ include(":core:network")
  * Feature modules
  */
 include(":feature:authentication")
+include(":feature:dashboard")

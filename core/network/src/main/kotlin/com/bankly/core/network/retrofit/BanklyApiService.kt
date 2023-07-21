@@ -33,7 +33,7 @@ sealed interface BanklyApiService {
             @Body body: ForgotPassCodeRequestBody,
         ): NetworkResponse<ResultStatus>
 
-        @PUT(value = "identity/post/api/Account/validateotp")
+        @PUT(value = "post/api/Account/validateotp")
         suspend fun validateOtp(
             @Body body: ValidateOtpRequestBody,
         ): NetworkResponse<ResultStatus>

@@ -1,14 +1,17 @@
 package com.bankly.feature.authentication.ui.login
 
 import android.util.Log
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
+import com.bankly.core.common.model.State
 import com.bankly.core.common.model.onFailure
 import com.bankly.core.common.model.onLoading
 import com.bankly.core.common.model.onReady
-import com.bankly.core.common.util.Validator.validatePhoneNumber
+import com.bankly.core.common.util.Validator.isPhoneNumberValid
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetTokenUseCase
+import com.bankly.core.model.Token
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -19,23 +22,35 @@ import kotlinx.coroutines.flow.onEach
 class LoginViewModel @Inject constructor(
     private val loginTokenUseCase: GetTokenUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
-) : BaseViewModel<LoginUiEvent, LoginState>(LoginState.Initial) {
+) : BaseViewModel<LoginScreenEvent, LoginScreenState>(LoginScreenState()) {
 
-    override suspend fun handleUiEvents(event: LoginUiEvent) {
+    override suspend fun handleUiEvents(event: LoginScreenEvent) {
         when (event) {
-            is LoginUiEvent.Login -> {
-                if (validatePhoneNumber(event.phoneNumber)) {
-                    performLogin(
-                        phoneNumber = event.phoneNumber,
-                        passCode = event.passCode
+            is LoginScreenEvent.LoginScreen -> {
+                performLogin(
+                    phoneNumber = event.phoneNumber,
+                    passCode = event.passCode
+                )
+            }
+
+            is LoginScreenEvent.OnEnterPhoneNumber -> {
+                setUiState {
+                    copy(
+                        phoneNumberTFV = event.phoneNumberTFV,
+                        isPhoneNumberError = !isPhoneNumberValid(event.phoneNumberTFV.text),
+                        phoneNumberFeedBack = if (isPhoneNumberValid(event.phoneNumberTFV.text)) "" else "Please enter a valid phone number"
                     )
-                } else {
-                    setUiState { LoginState.Error("Please enter a valid phone number") }
                 }
             }
 
-            LoginUiEvent.ResetState -> {
-                setUiState { LoginState.Initial }
+            is LoginScreenEvent.OnEnterPassCode -> {
+                setUiState {
+                    copy(
+                        passCodeTFV = event.passCodeTFV,
+                        isPassCodeError = event.passCodeTFV.text.trim().isEmpty(),
+                        passCodeFeedBack = if (event.passCodeTFV.text.trim().isEmpty()) "Please enter your passcode" else ""
+                    )
+                }
             }
         }
     }
@@ -44,7 +59,7 @@ class LoginViewModel @Inject constructor(
         loginTokenUseCase(phoneNumber, passCode)
             .onEach { resource ->
                 resource.onLoading {
-                    setUiState { LoginState.Loading }
+                    setUiState { copy(loginState = State.Loading, isUserInputEnabled = false) }
                 }
                 resource.onReady { tokenObj ->
                     Log.d("debug", "token: ${tokenObj.token}")
@@ -55,34 +70,27 @@ class LoginViewModel @Inject constructor(
                             append(tokenObj.token)
                         })
                     }
-                    setUiState { LoginState.Success }
+                    setUiState { copy(loginState = State.Success(data = tokenObj)) }
                 }
-                resource.onFailure { message ->
-                    setUiState { LoginState.Error(message) }
+                resource.onFailure { failureMessage ->
+                    setUiState {
+                        copy(
+                            loginState = State.Error(message = failureMessage),
+                            isUserInputEnabled = true
+                        )
+                    }
                 }
             }.catch {
                 it.printStackTrace()
                 setUiState {
-                    LoginState.Error(
-                        it.message ?: "An unexpected event occurred!"
+                    copy(
+                        loginState = State.Error(
+                            message = it.localizedMessage ?: it.message
+                            ?: "An unexpected event occurred!"
+                        ),
+                        isUserInputEnabled = true
                     )
                 }
             }.launchIn(viewModelScope)
     }
-}
-
-sealed interface LoginState {
-    object Initial : LoginState
-    object Loading : LoginState
-    object Success : LoginState
-    data class Error(val errorMessage: String) : LoginState
-}
-
-sealed interface LoginUiEvent {
-    data class Login(
-        val phoneNumber: String,
-        val passCode: String
-    ) : LoginUiEvent
-
-    object ResetState : LoginUiEvent
 }
