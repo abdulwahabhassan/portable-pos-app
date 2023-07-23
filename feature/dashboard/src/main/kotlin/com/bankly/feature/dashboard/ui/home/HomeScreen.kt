@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,12 +24,23 @@ import com.bankly.feature.dashboard.model.QuickAction
 import com.bankly.feature.dashboard.ui.component.DashBoardQuickActionCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 
+
 @Composable
-fun HomeScreen(
+fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
-    val homeScreenUiState = viewModel.state.collectAsStateWithLifecycle().value
+    val screenState = viewModel.state.collectAsStateWithLifecycle().value
+    HomeScreen(
+        screenState = screenState,
+        onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) }
+    )
+}
 
+@Composable
+fun HomeScreen(
+    screenState: HomeScreenState,
+    onUiEvent: (HomeScreenEvent) -> Unit
+) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
@@ -38,15 +48,15 @@ fun HomeScreen(
 
         ) {
             WalletCard(
-                shouldShowWalletBalance = homeScreenUiState.shouldShowWalletBalance,
+                shouldShowWalletBalance = screenState.shouldShowWalletBalance,
                 onToggleWalletBalanceVisibility = { toggleState ->
-                    viewModel.sendEvent(HomeUiEvent.ToggleWalletBalanceVisibilityEvent(toggleState))
+                    onUiEvent(HomeScreenEvent.ToggleWalletBalanceVisibility(toggleState))
                 },
-                accountNumber = homeScreenUiState.accountNumber,
-                bankName = homeScreenUiState.bankName,
-                currentBalance = homeScreenUiState.accountBalance,
-                shouldShowVisibilityIcon = homeScreenUiState.shouldShowVisibilityIcon,
-                isWalletBalanceLoading = homeScreenUiState.shouldShowLoadingIcon
+                accountNumber = screenState.accountNumber,
+                bankName = screenState.bankName,
+                currentBalance = screenState.accountBalance,
+                shouldShowVisibilityIcon = screenState.shouldShowVisibilityIcon,
+                isWalletBalanceLoading = screenState.shouldShowLoadingIcon
             )
         }
         Text(
@@ -66,24 +76,25 @@ fun HomeScreen(
         }
     }
 
-    if (homeScreenUiState.shouldShowErrorDialog) {
+    if (screenState.shouldShowErrorDialog) {
         BanklyActionDialog(
             title = stringResource(R.string.error),
-            subtitle = homeScreenUiState.message,
+            subtitle = screenState.message,
             positiveActionText = "Dismiss",
             positiveAction = {
-                viewModel.sendEvent(HomeUiEvent.DismissErrorDialog)
+                onUiEvent(HomeScreenEvent.OnDismissErrorDialog)
             }
         )
     }
 }
 
 @Composable
-@Preview(
-    showBackground = true
-)
+@Preview(showBackground = true)
 private fun HomeScreenPreview() {
     BanklyTheme {
-        HomeScreen()
+        HomeScreen(
+            screenState = HomeScreenState(),
+            onUiEvent = {}
+        )
     }
 }

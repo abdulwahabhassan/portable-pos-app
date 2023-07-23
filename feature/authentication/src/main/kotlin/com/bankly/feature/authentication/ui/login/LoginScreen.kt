@@ -33,24 +33,38 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
 
+@Composable
+internal fun LoginRoute(
+    viewModel: LoginViewModel = hiltViewModel(),
+    onLoginSuccess: () -> Unit,
+    onBackPress: () -> Unit,
+    onRecoverPassCodeClick: () -> Unit
+) {
+    BackHandler { onBackPress() }
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    LoginScreen(
+        onLoginSuccess = onLoginSuccess,
+        onBackPress = onBackPress,
+        onRecoverPassCodeClick = onRecoverPassCodeClick,
+        screenState = screenState,
+        onUiEvent = { uiEvent: LoginScreenEvent -> viewModel.sendEvent(uiEvent) }
+    )
+
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit,
-    onBackClick: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit
+    onBackPress: () -> Unit,
+    onRecoverPassCodeClick: () -> Unit,
+    screenState: LoginScreenState,
+    onUiEvent: (LoginScreenEvent) -> Unit
 ) {
-    val screenState by viewModel.state.collectAsStateWithLifecycle()
-    Log.d("login debug is login success", "${screenState.loginState}")
-    Log.d("login debug ui state", "$screenState")
-
-    BackHandler { onBackClick() }
-
     Scaffold(
         topBar = {
             BanklyTitleBar(
-                onBackClick = onBackClick,
+                onBackPress = onBackPress,
                 title = stringResource(R.string.msg_log_in),
                 subTitle = buildAnnotatedString {
                     append(stringResource(R.string.msg_login_screen_subtitle))
@@ -71,7 +85,7 @@ internal fun LoginScreen(
                     BanklyInputField(
                         textFieldValue = screenState.phoneNumberTFV,
                         onTextFieldValueChange = { textFieldValue ->
-                            viewModel.sendEvent(LoginScreenEvent.OnEnterPhoneNumber(textFieldValue))
+                            onUiEvent(LoginScreenEvent.OnEnterPhoneNumber(textFieldValue))
                         },
                         isEnabled = screenState.isUserInputEnabled,
                         placeholderText = stringResource(R.string.msg_phone_number_sample),
@@ -86,7 +100,7 @@ internal fun LoginScreen(
                     BanklyInputField(
                         textFieldValue = screenState.passCodeTFV,
                         onTextFieldValueChange = { textFieldValue ->
-                            viewModel.sendEvent(LoginScreenEvent.OnEnterPassCode(textFieldValue))
+                            onUiEvent(LoginScreenEvent.OnEnterPassCode(textFieldValue))
                         },
                         isEnabled = screenState.isUserInputEnabled,
                         placeholderText = stringResource(R.string.msg_enter_passcode),
@@ -122,8 +136,8 @@ internal fun LoginScreen(
                     text = stringResource(R.string.title_log_in),
                     onClick = {
                         Log.d("login debug", "login button clicked!")
-                        viewModel.sendEvent(
-                            LoginScreenEvent.LoginScreen(
+                        onUiEvent(
+                            LoginScreenEvent.OnLoginClick(
                                 screenState.phoneNumberTFV.text,
                                 screenState.passCodeTFV.text
                             )
@@ -141,8 +155,10 @@ internal fun LoginScreen(
             BanklyActionDialog(
                 title = stringResource(R.string.title_login_error),
                 subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay))
+                positiveActionText = stringResource(R.string.action_okay)
+            )
         }
+
         is State.Success -> {
             onLoginSuccess()
         }
@@ -155,8 +171,10 @@ private fun LoginScreenPreview() {
     BanklyTheme {
         LoginScreen(
             onLoginSuccess = {},
-            onBackClick = {},
-            onRecoverPassCodeClick = {}
+            onBackPress = {},
+            onRecoverPassCodeClick = {},
+            screenState = LoginScreenState(),
+            onUiEvent = {}
         )
     }
 }

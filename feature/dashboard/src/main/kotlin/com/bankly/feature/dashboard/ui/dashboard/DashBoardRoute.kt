@@ -1,6 +1,5 @@
-package com.bankly.feature.dashboard
+package com.bankly.feature.dashboard.ui.dashboard
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
@@ -17,8 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.tooling.preview.Preview
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.navigation.BottomNavDestination
 import com.bankly.feature.dashboard.ui.component.DashBoardAppBar
@@ -34,7 +36,7 @@ fun DashBoardRoute(
     content: @Composable (PaddingValues) -> Unit,
     currentTab: DashboardTab,
     onTabChange: (DashboardTab) -> Unit,
-    onBackClick: () -> Unit
+    onBackPress: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val showActionDialog = remember { mutableStateOf(false) }
@@ -48,7 +50,7 @@ fun DashBoardRoute(
             title = stringResource(R.string.title_confirm_action),
             subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_exit_the_app),
             positiveActionText = stringResource(R.string.action_yes),
-            positiveAction = { onBackClick() },
+            positiveAction = { onBackPress() },
             negativeActionText = stringResource(R.string.action_no),
             negativeAction = { showActionDialog.value = false })
     }
@@ -64,7 +66,7 @@ fun DashBoardRoute(
                     )
                 } else {
                     BanklyTitleBar(
-                        onBackClick = {},
+                        onBackPress = {},
                         title = "",
                         subTitle = buildAnnotatedString { append("") }
                     )
@@ -85,5 +87,21 @@ fun DashBoardRoute(
             SnackbarHost(hostState = snackBarHostState)
         }
     ) { padding -> content(padding) }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun DashBoardRoutePreview() {
+    BanklyTheme {
+        DashBoardRoute(
+            showTopAppBar = true,
+            currentBottomNavDestination = BottomNavDestination.HOME,
+            onNavigateToBottomNavDestination = {},
+            showBottomNavBar = true,
+            content = {},
+            currentTab = DashboardTab.Home,
+            onTabChange = {},
+            onBackPress = {}
+        )
+    }
 }

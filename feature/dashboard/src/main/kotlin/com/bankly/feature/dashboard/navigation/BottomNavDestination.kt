@@ -15,27 +15,27 @@ enum class BottomNavDestination(
         unselectedIcon = BanklyIcons.Home_02,
         title = "Home",
         isBottomNavDestination = true,
-        route = homeScreen
+        route = homeRoute
     ),
     TRANSACTIONS(
         selectedIcon = BanklyIcons.Receipt_01,
         unselectedIcon = BanklyIcons.Receipt_02,
         title = "Transactions",
         isBottomNavDestination = true,
-        route = transactionsScreen
+        route = transactionsRoute
     ),
     SUPPORT(
         selectedIcon = BanklyIcons.Support_01,
         unselectedIcon = BanklyIcons.Support_02,
         title = "Support",
         isBottomNavDestination = true,
-        route = supportScreen
+        route = supportRoute
     ),
     MORE(
         selectedIcon = BanklyIcons.More_01,
         unselectedIcon = BanklyIcons.More_02,
         title = "More",
         isBottomNavDestination = true,
-        route = moreScreen
+        route = moreRoute
     ),
 }

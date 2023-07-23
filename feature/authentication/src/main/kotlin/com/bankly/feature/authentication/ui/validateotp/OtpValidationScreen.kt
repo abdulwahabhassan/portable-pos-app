@@ -1,6 +1,5 @@
-package com.bankly.feature.authentication.ui.otp
+package com.bankly.feature.authentication.ui.validateotp
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -12,14 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bankly.core.common.model.State
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyNumericKeyboard
@@ -38,76 +31,57 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-@Immutable
-data class OtpValidationScreenUiState(
-    val otp: List<String> = List(6) { "" },
-    val phoneNumber: String = "",
-    val isOtpError: Boolean = false,
-    val otpFeedBack: String = "",
-    val ticks: Int = 60,
-    val showActionDialog: Boolean = false
-) {
-    val isDoneButtonEnabled: Boolean
-        get() = otp.all { digit: String -> digit.isNotEmpty() } && !isOtpError
-}
 
 @Composable
-fun rememberOtpValidationScreenUiState(phoneNumber: String): MutableState<OtpValidationScreenUiState> =
-    remember(phoneNumber) { mutableStateOf(OtpValidationScreenUiState(phoneNumber = phoneNumber)) }
+internal fun OtpValidationRoute(
+    viewModel: OtpValidationViewModel = hiltViewModel(),
+    phoneNumber: String,
+    onOtpValidationSuccess: (phoneNumber: String, otp: String) -> Unit,
+    onBackPress: () -> Unit
+) {
+    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    OtpValidationScreen(
+        screenState = screenState,
+        phoneNumber = phoneNumber,
+        onOtpValidationSuccess = onOtpValidationSuccess,
+        onBackPress = onBackPress,
+        onUiEvent = { uiEvent: OtpValidationScreenEvent -> viewModel.sendEvent(uiEvent) }
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OtpValidationScreen(
-    viewModel: OtpValidationViewModel = hiltViewModel(),
+    screenState: OtpValidationScreenState,
     phoneNumber: String,
     onOtpValidationSuccess: (phoneNumber: String, otp: String) -> Unit,
-    onBackButtonClick: () -> Unit
+    onBackPress: () -> Unit,
+    onUiEvent: (OtpValidationScreenEvent) -> Unit
 ) {
-    val otpValidationState by viewModel.state.collectAsStateWithLifecycle()
-    var otpValidationScreenUiState by rememberOtpValidationScreenUiState(phoneNumber = phoneNumber)
-    val coroutineScope = rememberCoroutineScope()
-
     BackHandler {
-        otpValidationScreenUiState = otpValidationScreenUiState.copy(showActionDialog = true)
+        onUiEvent(OtpValidationScreenEvent.OnBackPress)
     }
 
-    if (otpValidationScreenUiState.showActionDialog) {
+    if (screenState.shouldShowWarningDialog) {
         BanklyActionDialog(
             title = stringResource(R.string.title_confirm_action),
             subtitle = stringResource(R.string.msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode),
             positiveActionText = stringResource(R.string.action_yes),
             positiveAction = {
-                onBackButtonClick()
+                onBackPress()
             },
             negativeActionText = stringResource(R.string.action_no),
             negativeAction = {
-                otpValidationScreenUiState = otpValidationScreenUiState.copy(showActionDialog = false)
-            })
-    }
-
-    @Composable
-    fun startTimer() {
-        LaunchedEffect(key1 = Unit, block = {
-            coroutineScope.launch {
-                while (otpValidationScreenUiState.ticks > 0) {
-                    delay(1.seconds)
-                    otpValidationScreenUiState =
-                        otpValidationScreenUiState.copy(ticks = otpValidationScreenUiState.ticks - 1)
-                }
-                otpValidationScreenUiState = otpValidationScreenUiState.copy(ticks = 60)
+                onUiEvent(OtpValidationScreenEvent.OnDismissWarningDialog)
             }
-        })
+        )
     }
 
     Scaffold(
         topBar = {
             BanklyTitleBar(
-                onBackClick = {
-                    otpValidationScreenUiState = otpValidationScreenUiState.copy(showActionDialog = true)
+                onBackPress = {
+                    onUiEvent(OtpValidationScreenEvent.OnBackPress)
                 },
                 title = stringResource(R.string.title_recover_passcode),
                 subTitle = buildAnnotatedString {
@@ -121,7 +95,7 @@ internal fun OtpValidationScreen(
                         ).toSpanStyle()
                     ) {
                         append(
-                            otpValidationScreenUiState.phoneNumber.replaceRange(
+                            phoneNumber.replaceRange(
                                 startIndex = 4,
                                 endIndex = 9,
                                 replacement = "XXXXX"
@@ -129,12 +103,14 @@ internal fun OtpValidationScreen(
                         )
                     }
                 },
-                isLoading = otpValidationState is OtpValidationState.Loading
+                isLoading = screenState.isLoading
             )
         }
     ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -142,12 +118,11 @@ internal fun OtpValidationScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 BanklyPassCodeInputField(
-                    passCode = otpValidationScreenUiState.otp,
-                    isError = otpValidationScreenUiState.isOtpError
+                    passCode = screenState.otp
                 )
 
                 BanklyClickableText(
-                    text = if (otpValidationScreenUiState.ticks == 60) buildAnnotatedString {
+                    text = if (screenState.ticks == 0) buildAnnotatedString {
                         withStyle(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.primary
@@ -160,16 +135,12 @@ internal fun OtpValidationScreen(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 color = MaterialTheme.colorScheme.primary
                             ).toSpanStyle()
-                        ) { append("${otpValidationScreenUiState.ticks}s") }
+                        ) { append("${screenState.ticks}s") }
                     },
                     onClick = {
-                        viewModel.sendEvent(
-                            OtpValidationUiEvent.ResendOtp(
-                                otpValidationScreenUiState.phoneNumber
-                            )
-                        )
+                        onUiEvent(OtpValidationScreenEvent.OnResendOtpClick(phoneNumber))
                     },
-                    isEnabled = otpValidationState !is OtpValidationState.Loading && otpValidationScreenUiState.ticks == 60
+                    isEnabled = screenState.isResendCodeTextButtonEnabled
                 )
             }
 
@@ -179,68 +150,67 @@ internal fun OtpValidationScreen(
                         when (key) {
                             PassCodeKey.DELETE -> {
                                 val index =
-                                    otpValidationScreenUiState.otp.indexOfLast { it.isNotEmpty() }
+                                    screenState.otp.indexOfLast { it.isNotEmpty() }
                                 if (index != -1) {
-                                    val newOtp = otpValidationScreenUiState.otp.toMutableList()
+                                    val newOtp = screenState.otp.toMutableList()
                                     newOtp[index] = ""
-                                    otpValidationScreenUiState =
-                                        otpValidationScreenUiState.copy(otp = newOtp)
+                                    onUiEvent(OtpValidationScreenEvent.OnEnterOtp(otp = newOtp))
                                 }
                             }
 
                             PassCodeKey.DONE -> {
-                                viewModel.sendEvent(
-                                    OtpValidationUiEvent.ValidateOtp(
-                                        otpValidationScreenUiState.otp.joinToString(""),
-                                        otpValidationScreenUiState.phoneNumber
+                                onUiEvent(
+                                    OtpValidationScreenEvent.OnDoneClick(
+                                        screenState.otp.joinToString(""),
+                                        phoneNumber
                                     )
                                 )
                             }
 
                             else -> {
-                                val index = otpValidationScreenUiState.otp.indexOfFirst { it.isEmpty() }
+                                val index =
+                                    screenState.otp.indexOfFirst { it.isEmpty() }
                                 if (index != -1) {
-                                    val newOtp = otpValidationScreenUiState.otp.toMutableList()
+                                    val newOtp = screenState.otp.toMutableList()
                                     newOtp[index] = key.value
-                                    otpValidationScreenUiState =
-                                        otpValidationScreenUiState.copy(otp = newOtp)
+                                    onUiEvent(OtpValidationScreenEvent.OnEnterOtp(otp = newOtp))
                                 }
                             }
                         }
                     },
-                    isKeyPadEnabled = otpValidationState !is OtpValidationState.Loading,
-                    isDoneKeyEnabled = otpValidationState !is OtpValidationState.Loading && otpValidationScreenUiState.isDoneButtonEnabled
+                    isKeyPadEnabled = screenState.isKeyPadEnabled,
+                    isDoneKeyEnabled = screenState.isDoneButtonEnabled
                 )
             }
         }
     }
 
-    startTimer()
-
-    when (val state = otpValidationState) {
-        is OtpValidationState.Initial -> {}
-        is OtpValidationState.Loading -> {}
-        is OtpValidationState.Error -> {
-            Log.d("otp error debug", "show dialog")
+    when (val state = screenState.otpValidationState) {
+        is State.Initial, is State.Loading -> {}
+        is State.Error -> {
             BanklyActionDialog(
                 title = stringResource(R.string.title_otp_validation_error),
-                subtitle = state.errorMessage,
-                positiveActionText = stringResource(R.string.action_okay),
-                positiveAction = {
-                    viewModel.sendEvent(OtpValidationUiEvent.ResetState)
-                })
+                subtitle = state.message,
+                positiveActionText = stringResource(R.string.action_okay)
+            )
         }
 
-        is OtpValidationState.OtpValidationSuccess -> onOtpValidationSuccess(
-            otpValidationScreenUiState.phoneNumber,
-            otpValidationScreenUiState.otp.joinToString("")
+        is State.Success -> onOtpValidationSuccess(
+            phoneNumber,
+            screenState.otp.joinToString("")
         )
-
-        OtpValidationState.ResendOtpSuccess -> {
-            startTimer()
-        }
     }
 
+    when (val state = screenState.resendOtpState) {
+        is State.Initial, is State.Loading, is State.Success -> {}
+        is State.Error -> {
+            BanklyActionDialog(
+                title = stringResource(R.string.title_resend_otp_error),
+                subtitle = state.message,
+                positiveActionText = stringResource(R.string.action_okay)
+            )
+        }
+    }
 }
 
 @Composable
@@ -248,9 +218,11 @@ internal fun OtpValidationScreen(
 private fun OtpValidationScreenPreview() {
     BanklyTheme {
         OtpValidationScreen(
+            screenState = OtpValidationScreenState(),
             phoneNumber = "08167039661",
             onOtpValidationSuccess = { _, _ -> },
-            onBackButtonClick = {}
+            onBackPress = {},
+            onUiEvent = {}
         )
     }
 }

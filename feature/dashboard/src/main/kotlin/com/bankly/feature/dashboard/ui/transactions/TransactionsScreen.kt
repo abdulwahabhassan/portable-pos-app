@@ -9,6 +9,10 @@ import androidx.compose.ui.Modifier
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
+fun TransactionsRoute() {
+    TransactionsScreen()
+}
+@Composable
 fun TransactionsScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = "Transactions Screen")

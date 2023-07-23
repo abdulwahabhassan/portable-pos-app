@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 /**
- * @param onBackClick The action to be performed when navigation icon is clicked
- * If [onBackClick] is provided, navigation icon is shown otherwise hidden
+ * @param onBackPress The action to be performed when navigation icon is clicked
+ * If [onBackPress] is provided, navigation icon is shown otherwise hidden
  * @param currentPage The current page the user is on in a process flow such as an boarding flow
  * @param totalPage The total number of steps or screens in a single process flow
  *  [currentPage] must be less than [totalPage] otherwise they are not shown
@@ -38,7 +38,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
  */
 @Composable
 fun BanklyTitleBar(
-    onBackClick: (() -> Unit)? = null,
+    onBackPress: (() -> Unit)? = null,
     title: String,
     subTitle: AnnotatedString = buildAnnotatedString { append("") },
     currentPage: Int = 0,
@@ -61,9 +61,9 @@ fun BanklyTitleBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (onBackClick != null) {
+            if (onBackPress != null) {
                 Box(modifier = Modifier.weight(1f)) {
-                    BanklyBackButton(onClick = onBackClick)
+                    BanklyBackButton(onClick = onBackPress)
                 }
             } else {
                 Box(
@@ -149,7 +149,7 @@ fun BanklyTitleBar(
 private fun BanklyTitleBarPreview1() {
     BanklyTheme {
         BanklyTitleBar(
-            onBackClick = {},
+            onBackPress = {},
             title = "Log In",
             subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 1,
@@ -199,7 +199,7 @@ private fun BanklyTitleBarPreview4() {
 private fun BanklyTitleBarPreview5() {
     BanklyTheme {
         BanklyTitleBar(
-            onBackClick = { },
+            onBackPress = { },
             title = "Log In",
             isLoading = true
         )

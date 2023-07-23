@@ -31,7 +31,7 @@ fun ConfirmPinScreen() {
     ) {
         item {
             BanklyTitleBar(
-                onBackClick = {},
+                onBackPress = {},
                 title = stringResource(R.string.msg_confirm_pin),
                 currentPage = 3,
                 totalPage = 3

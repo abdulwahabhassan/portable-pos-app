@@ -31,7 +31,7 @@ fun SetPinScreen() {
     ) {
         item {
             BanklyTitleBar(
-                onBackClick = {},
+                onBackPress = {},
                 title = stringResource(R.string.msg_set_pin),
                 currentPage = 2,
                 totalPage = 3

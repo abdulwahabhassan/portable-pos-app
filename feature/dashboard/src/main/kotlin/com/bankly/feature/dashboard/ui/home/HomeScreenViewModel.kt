@@ -20,12 +20,12 @@ import kotlinx.coroutines.launch
 class HomeScreenViewModel @Inject constructor(
     private val getWalletUseCase: GetWalletUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
-) : BaseViewModel<HomeUiEvent, HomeUiState>(HomeUiState()) {
+) : BaseViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()) {
 
-    override suspend fun handleUiEvents(event: HomeUiEvent) {
+    override suspend fun handleUiEvents(event: HomeScreenEvent) {
         when (event) {
-            is HomeUiEvent.ToggleWalletBalanceVisibilityEvent -> toggleWalletBalanceVisibility(event.shouldShowWalletBalance)
-            HomeUiEvent.DismissErrorDialog -> dismissErrorDialog()
+            is HomeScreenEvent.ToggleWalletBalanceVisibility -> toggleWalletBalanceVisibility(event.shouldShowWalletBalance)
+            HomeScreenEvent.OnDismissErrorDialog -> dismissErrorDialog()
         }
     }
 
@@ -82,23 +82,4 @@ class HomeScreenViewModel @Inject constructor(
     private fun dismissErrorDialog() {
         setUiState { copy(shouldShowErrorDialog = false) }
     }
-}
-
-data class HomeUiState(
-    val accountBalance: Double = 0.00,
-    val bankName: String = "",
-    val accountNumber: String = "",
-    val accountName: String = "",
-    val shouldShowWalletBalance: Boolean = false,
-    val message: String = "",
-    val shouldShowErrorDialog: Boolean = false,
-    val shouldShowLoadingIcon: Boolean = true,
-    val shouldShowVisibilityIcon: Boolean = false
-)
-
-sealed interface HomeUiEvent {
-    data class ToggleWalletBalanceVisibilityEvent(val shouldShowWalletBalance: Boolean) :
-        HomeUiEvent
-
-    object DismissErrorDialog : HomeUiEvent
 }

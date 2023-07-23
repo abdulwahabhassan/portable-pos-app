@@ -1,4 +1,4 @@
-package com.bankly.feature.authentication.ui.passcode
+package com.bankly.feature.authentication.ui.createnewpasscode
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize

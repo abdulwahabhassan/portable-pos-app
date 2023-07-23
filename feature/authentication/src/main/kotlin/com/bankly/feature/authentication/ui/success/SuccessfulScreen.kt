@@ -26,15 +26,31 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
 
+
+@Composable
+fun SuccessfulRoute(
+    message: String,
+    subMessage: String,
+    buttonText: String,
+    onBackToLoginClick: () -> Unit,
+) {
+    SuccessfulScreen(
+        message = message,
+        subMessage = subMessage,
+        buttonText = buttonText,
+        onBackToLoginClick = onBackToLoginClick,
+    )
+}
+
 @Composable
 fun SuccessfulScreen(
     message: String,
     subMessage: String,
     buttonText: String,
-    onButtonClick: () -> Unit,
+    onBackToLoginClick: () -> Unit,
 ) {
     BackHandler {
-        onButtonClick()
+        onBackToLoginClick()
     }
     Box(
         modifier = Modifier
@@ -74,7 +90,9 @@ fun SuccessfulScreen(
             BanklyFilledButton(
                 modifier = Modifier
                     .padding(32.dp)
-                    .fillMaxWidth(), buttonText, onButtonClick, true
+                    .fillMaxWidth(), buttonText,
+                onBackToLoginClick,
+                true
             )
         }
     }
@@ -88,9 +106,7 @@ fun SuccessfulScreenPreview() {
             message = "Passcode Reset Successfully",
             subMessage = "You have successfully reset your passcode. Login to continue",
             buttonText = stringResource(R.string.action_back_to_log_in),
-            onButtonClick = {}
+            onBackToLoginClick = {}
         )
     }
-
-
 }

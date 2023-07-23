@@ -11,9 +11,11 @@ data class LoginScreenState(
     val isPassCodeError: Boolean = false,
     val phoneNumberFeedBack: String = "",
     val passCodeFeedBack: String = "",
-    val isUserInputEnabled: Boolean = true,
     val loginState: State<Token> = State.Initial
 ) {
     val isLoginButtonEnabled: Boolean
-        get() = phoneNumberTFV.text.isNotEmpty() && passCodeTFV.text.isNotEmpty() && !isPhoneNumberError && !isPassCodeError && isUserInputEnabled
+        get() = phoneNumberTFV.text.isNotEmpty() && passCodeTFV.text.isNotEmpty() &&
+                isPhoneNumberError.not() && isPassCodeError.not() && loginState !is State.Loading
+    val isUserInputEnabled: Boolean
+        get() = loginState !is State.Loading
 }

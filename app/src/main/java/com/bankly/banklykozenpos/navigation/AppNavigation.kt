@@ -7,13 +7,14 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
+import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 
 @Composable
 fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = authenticationNavGraph,
+    startDestination: String = authenticationNavGraphRoute,
     onPopAuthenticationNavGraph: () -> Unit,
     onPopDashBoardNavGraph: () -> Unit,
 ) {
@@ -26,13 +27,10 @@ fun AppNavHost(
             onLoginSuccess = {
                 appState.navigateTo(TopLevelDestination.DASHBOARD)
             },
-            onPopLoginScreen = onPopAuthenticationNavGraph,
-            onBackToLoginClick = {
-                appState.navigateTo(TopLevelDestination.AUTHENTICATION)
-            }
+            onBackPress = onPopAuthenticationNavGraph,
         )
         dashBoardNavGraph(
-            onPopDashboardScreen = onPopDashBoardNavGraph
+            onBackPress = onPopDashBoardNavGraph
         )
     }
 }
@@ -40,7 +38,7 @@ fun AppNavHost(
 internal fun NavHostController.navigateToAuthenticationNavGraph(
     navOptions: NavOptions? = null
 ) {
-    this.navigate(authenticationNavGraph, navOptions)
+    this.navigate(authenticationNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.navigateToDashBoardNavGraph(

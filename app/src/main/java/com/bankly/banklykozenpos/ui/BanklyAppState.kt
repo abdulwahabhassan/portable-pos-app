@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
@@ -12,6 +13,7 @@ import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.banklykozenpos.navigation.TopLevelDestination
+import com.bankly.feature.authentication.navigation.authenticationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -53,13 +55,11 @@ data class BanklyAppState(
 
     fun navigateTo(destination: TopLevelDestination) {
         val navOption = navOptions {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
             launchSingleTop = true
             restoreState = true
-//            navHostController.currentDestination?.route?.let {
-//                popUpTo(it) {
-//                    inclusive = true
-//                }
-//            }
         }
         Log.d("debug", "current destination: ${navHostController.currentDestination?.route}")
         when (destination) {

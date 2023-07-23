@@ -1,7 +1,6 @@
 package com.bankly.feature.authentication.ui.login
 
 import android.util.Log
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.State
 import com.bankly.core.common.model.onFailure
@@ -11,7 +10,6 @@ import com.bankly.core.common.util.Validator.isPhoneNumberValid
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetTokenUseCase
-import com.bankly.core.model.Token
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -26,7 +24,7 @@ class LoginViewModel @Inject constructor(
 
     override suspend fun handleUiEvents(event: LoginScreenEvent) {
         when (event) {
-            is LoginScreenEvent.LoginScreen -> {
+            is LoginScreenEvent.OnLoginClick -> {
                 performLogin(
                     phoneNumber = event.phoneNumber,
                     passCode = event.passCode
@@ -45,10 +43,11 @@ class LoginViewModel @Inject constructor(
 
             is LoginScreenEvent.OnEnterPassCode -> {
                 setUiState {
+                    val isEmpty = event.passCodeTFV.text.trim().isEmpty()
                     copy(
                         passCodeTFV = event.passCodeTFV,
-                        isPassCodeError = event.passCodeTFV.text.trim().isEmpty(),
-                        passCodeFeedBack = if (event.passCodeTFV.text.trim().isEmpty()) "Please enter your passcode" else ""
+                        isPassCodeError = isEmpty,
+                        passCodeFeedBack = if (isEmpty) "Please enter your passcode" else ""
                     )
                 }
             }
@@ -59,7 +58,7 @@ class LoginViewModel @Inject constructor(
         loginTokenUseCase(phoneNumber, passCode)
             .onEach { resource ->
                 resource.onLoading {
-                    setUiState { copy(loginState = State.Loading, isUserInputEnabled = false) }
+                    setUiState { copy(loginState = State.Loading) }
                 }
                 resource.onReady { tokenObj ->
                     Log.d("debug", "token: ${tokenObj.token}")
@@ -75,8 +74,7 @@ class LoginViewModel @Inject constructor(
                 resource.onFailure { failureMessage ->
                     setUiState {
                         copy(
-                            loginState = State.Error(message = failureMessage),
-                            isUserInputEnabled = true
+                            loginState = State.Error(message = failureMessage)
                         )
                     }
                 }
@@ -87,8 +85,7 @@ class LoginViewModel @Inject constructor(
                         loginState = State.Error(
                             message = it.localizedMessage ?: it.message
                             ?: "An unexpected event occurred!"
-                        ),
-                        isUserInputEnabled = true
+                        )
                     )
                 }
             }.launchIn(viewModelScope)

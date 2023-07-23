@@ -5,7 +5,7 @@ object Validator {
         return if (phoneNumber.length == 11) return true else false
     }
 
-    fun validatePassCodes(passCode: String, confirmPassCode: String): Boolean {
+    fun doPassCodesMatch(passCode: String, confirmPassCode: String): Boolean {
         return passCode == confirmPassCode
     }
 }

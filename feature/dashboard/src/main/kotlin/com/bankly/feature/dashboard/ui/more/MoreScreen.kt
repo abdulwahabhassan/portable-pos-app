@@ -9,6 +9,11 @@ import androidx.compose.ui.Modifier
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
+fun MoreRoute() {
+    MoreScreen()
+}
+
+@Composable
 fun MoreScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = "More Screen")

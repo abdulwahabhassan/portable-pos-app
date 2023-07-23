@@ -42,10 +42,10 @@ data class DashBoardState(
     val currentBottomNavDestination: BottomNavDestination
         @Composable get() {
             return when (navHostController.currentBackStackEntryAsState().value?.destination?.route) {
-                homeScreen -> BottomNavDestination.HOME
-                transactionsScreen -> BottomNavDestination.TRANSACTIONS
-                supportScreen -> BottomNavDestination.SUPPORT
-                moreScreen -> BottomNavDestination.MORE
+                homeRoute -> BottomNavDestination.HOME
+                transactionsRoute -> BottomNavDestination.TRANSACTIONS
+                supportRoute -> BottomNavDestination.SUPPORT
+                moreRoute -> BottomNavDestination.MORE
                 else -> BottomNavDestination.HOME
             }
         }

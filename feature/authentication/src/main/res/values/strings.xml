@@ -36,4 +36,5 @@
     <string name="msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode">Are you sure you do not want to continue re-setting your passcode?</string>
     <string name="title_recover_passcode_error">Recover passcode error</string>
     <string name="title_reset_passcode_error">Reset passcode error</string>
+    <string name="title_resend_otp_error">Resent OTP error</string>
 </resources>
