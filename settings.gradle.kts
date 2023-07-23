@@ -37,3 +37,4 @@ include(":core:network")
  */
 include(":feature:authentication")
 include(":feature:dashboard")
+include(":feature:paywithcard")

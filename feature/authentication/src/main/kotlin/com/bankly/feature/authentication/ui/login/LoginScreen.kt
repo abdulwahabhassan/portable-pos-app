@@ -160,6 +160,7 @@ internal fun LoginScreen(
         }
 
         is State.Success -> {
+            onUiEvent(LoginScreenEvent.OnExit)
             onLoginSuccess()
         }
     }

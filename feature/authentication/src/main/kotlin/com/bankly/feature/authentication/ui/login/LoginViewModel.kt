@@ -51,6 +51,10 @@ class LoginViewModel @Inject constructor(
                     )
                 }
             }
+
+            LoginScreenEvent.OnExit -> {
+                setUiState { copy(loginState = State.Initial) }
+            }
         }
     }
 

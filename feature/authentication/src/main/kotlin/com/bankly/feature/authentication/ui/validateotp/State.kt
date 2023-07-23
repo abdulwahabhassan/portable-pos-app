@@ -8,7 +8,6 @@ data class OtpValidationScreenState(
     val ticks: Int = 60,
     val otpValidationState: State<Status> = State.Initial,
     val resendOtpState: State<Status> = State.Initial,
-    val shouldShowWarningDialog: Boolean = false
 ) {
     val isDoneButtonEnabled: Boolean
         get() = otp.all { digit: String -> digit.isNotEmpty() } && otpValidationState !is State.Loading && resendOtpState !is State.Loading

@@ -67,6 +67,10 @@ class SetNewPassCodeViewModel @Inject constructor(
             SetNewPassCodeScreenEvent.OnDismissWarningDialog -> {
                 setUiState { copy(shouldShowWarningDialog = false) }
             }
+
+            SetNewPassCodeScreenEvent.OnExit -> {
+                setUiState { copy(setNewPassCodeState = State.Initial) }
+            }
         }
     }
 
@@ -102,5 +106,4 @@ class SetNewPassCodeViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
     }
-
 }

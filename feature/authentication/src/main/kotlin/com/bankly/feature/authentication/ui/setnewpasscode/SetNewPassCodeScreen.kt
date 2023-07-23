@@ -133,9 +133,7 @@ internal fun SetNewPassCodeScreen(
                         feedbackText = screenState.confirmPassCodeFeedBack,
                         isEnabled = screenState.isUserInputEnabled
                     )
-
                 }
-
             }
 
             item {
@@ -172,6 +170,7 @@ internal fun SetNewPassCodeScreen(
         }
 
         is State.Success -> {
+            onUiEvent(SetNewPassCodeScreenEvent.OnExit)
             onSetNewPassCodeSuccess(state.data.message)
         }
     }

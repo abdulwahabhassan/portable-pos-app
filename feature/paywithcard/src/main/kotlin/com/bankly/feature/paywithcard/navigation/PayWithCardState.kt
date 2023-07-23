@@ -1,4 +1,4 @@
-package com.bankly.feature.authentication.navigation
+package com.bankly.feature.paywithcard.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -9,14 +9,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun rememberAuthenticationState(
+fun rememberPayWithCardState(
     navHostController: NavHostController = rememberNavController(),
-): MutableState<AuthenticationState> {
+): MutableState<PayWithCardState> {
     return remember(
         navHostController
     ) {
         mutableStateOf(
-            AuthenticationState(
+            PayWithCardState(
                 navHostController = navHostController
             )
         )
@@ -24,7 +24,7 @@ fun rememberAuthenticationState(
 }
 
 @Stable
-data class AuthenticationState(
+data class PayWithCardState(
     val navHostController: NavHostController,
 ) {
     val shouldShowTopAppBar: Boolean

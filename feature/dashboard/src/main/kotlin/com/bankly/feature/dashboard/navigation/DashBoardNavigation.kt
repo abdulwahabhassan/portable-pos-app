@@ -17,7 +17,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit
 ) {
     navigation(
-        route = dashBoardNavGraph,
+        route = dashBoardNavGraphRoute,
         startDestination = dashBoardRoute,
     ) {
         composable(dashBoardRoute) {

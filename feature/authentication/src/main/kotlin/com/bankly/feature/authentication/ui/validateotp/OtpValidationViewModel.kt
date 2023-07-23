@@ -36,16 +36,12 @@ class OtpValidationViewModel @Inject constructor(
                 resendOtp(event.phoneNumber)
             }
 
-            is OtpValidationScreenEvent.OnBackPress -> {
-                setUiState { copy(shouldShowWarningDialog = true) }
-            }
-
             is OtpValidationScreenEvent.OnEnterOtp -> {
                 setUiState { copy(otp = event.otp) }
             }
 
-            OtpValidationScreenEvent.OnDismissWarningDialog -> {
-                setUiState { copy(shouldShowWarningDialog = false) }
+            OtpValidationScreenEvent.OnExit -> {
+                setUiState { copy(otpValidationState = State.Initial) }
             }
         }
     }

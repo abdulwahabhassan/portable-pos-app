@@ -1,6 +1,5 @@
 package com.bankly.banklykozenpos.ui
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -9,11 +8,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.bankly.banklykozenpos.navigation.TopLevelDestination
+import com.bankly.banklykozenpos.navigation.TopLevelDestination.AUTHENTICATION
+import com.bankly.banklykozenpos.navigation.TopLevelDestination.DASHBOARD
+import com.bankly.banklykozenpos.navigation.TopLevelDestination.PAYWITHCARD
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
 import com.bankly.core.data.util.NetworkMonitor
-import com.bankly.banklykozenpos.navigation.TopLevelDestination
-import com.bankly.feature.authentication.navigation.authenticationRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -44,7 +46,6 @@ data class BanklyAppState(
     private val coroutineScope: CoroutineScope,
     val networkMonitor: NetworkMonitor,
 ) {
-
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
         .stateIn(
@@ -61,13 +62,10 @@ data class BanklyAppState(
             launchSingleTop = true
             restoreState = true
         }
-        Log.d("debug", "current destination: ${navHostController.currentDestination?.route}")
         when (destination) {
-            TopLevelDestination.AUTHENTICATION -> navHostController
-                .navigateToAuthenticationNavGraph(navOption)
-
-            TopLevelDestination.DASHBOARD -> navHostController
-                .navigateToDashBoardNavGraph(navOption)
+            AUTHENTICATION -> navHostController.navigateToAuthenticationNavGraph(navOption)
+            DASHBOARD -> navHostController.navigateToDashBoardNavGraph(navOption)
+            PAYWITHCARD -> navHostController.navigateToPayWithCardNavGraph(navOption)
         }
     }
 }

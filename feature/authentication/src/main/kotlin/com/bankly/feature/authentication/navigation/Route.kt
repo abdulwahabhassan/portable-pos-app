@@ -14,15 +14,15 @@ import com.bankly.feature.authentication.ui.success.SuccessfulRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
 
 const val authenticationNavGraphRoute = "authentication_nav_graph"
-const val authenticationRoute = authenticationNavGraphRoute.plus("/auth_route")
-const val loginRoute = authenticationRoute.plus("/login_screen")
-const val confirmPinRoute = authenticationRoute.plus("/confirm_pin_screen")
-const val createNewPassCodeRoute = authenticationRoute.plus("/create_new_pass_code_screen")
-const val otpValidationRoute = authenticationRoute.plus("/otp_validation_screen")
-const val recoverPassCodeRoute = authenticationRoute.plus("/input_phone_number_screen")
-const val setNewPassCodeRoute = authenticationRoute.plus("/set_new_pass_code_screen")
-const val setPinRoute = authenticationRoute.plus("/set_pin_screen")
-const val successfulRoute = authenticationRoute.plus("/successful_screen")
+internal const val authenticationRoute = authenticationNavGraphRoute.plus("/auth_route")
+internal const val loginRoute = authenticationRoute.plus("/login_screen")
+internal const val confirmPinRoute = authenticationRoute.plus("/confirm_pin_screen")
+internal const val createNewPassCodeRoute = authenticationRoute.plus("/create_new_pass_code_screen")
+internal const val otpValidationRoute = authenticationRoute.plus("/otp_validation_screen")
+internal const val recoverPassCodeRoute = authenticationRoute.plus("/input_phone_number_screen")
+internal const val setNewPassCodeRoute = authenticationRoute.plus("/set_new_pass_code_screen")
+internal const val setPinRoute = authenticationRoute.plus("/set_pin_screen")
+internal const val successfulRoute = authenticationRoute.plus("/successful_screen")
 
 internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,

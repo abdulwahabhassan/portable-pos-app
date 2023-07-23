@@ -11,11 +11,10 @@ fun BanklyApp(
     appState: BanklyAppState = rememberBanklyAppState(
         networkMonitor = networkMonitor
     ),
-    onFinishActivity: () -> Unit
+    onCloseApp: () -> Unit
 ) {
     AppNavHost(
         appState,
-        onPopAuthenticationNavGraph = onFinishActivity,
-        onPopDashBoardNavGraph = onFinishActivity
+        onBackPress = onCloseApp
     )
 }

@@ -117,6 +117,7 @@ internal fun RecoverPassCodeScreen(
         }
 
         is State.Success -> {
+            onUiEvent(RecoverPassCodeScreenEvent.OnExit)
             onRecoverPassCodeSuccess(screenState.phoneNumberTFV.text)
         }
     }

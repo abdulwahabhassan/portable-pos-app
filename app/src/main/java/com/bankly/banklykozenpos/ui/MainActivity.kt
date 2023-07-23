@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
             BanklyTheme {
                 BanklyApp(
                     networkMonitor = networkMonitor,
-                    onFinishActivity = {
+                    onCloseApp = {
                         finish()
                     }
                 )

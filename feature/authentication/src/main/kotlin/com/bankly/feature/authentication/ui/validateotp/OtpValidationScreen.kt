@@ -1,6 +1,5 @@
 package com.bankly.feature.authentication.ui.validateotp
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,31 +57,10 @@ internal fun OtpValidationScreen(
     onBackPress: () -> Unit,
     onUiEvent: (OtpValidationScreenEvent) -> Unit
 ) {
-    BackHandler {
-        onUiEvent(OtpValidationScreenEvent.OnBackPress)
-    }
-
-    if (screenState.shouldShowWarningDialog) {
-        BanklyActionDialog(
-            title = stringResource(R.string.title_confirm_action),
-            subtitle = stringResource(R.string.msg_are_you_sure_you_do_not_want_to_continue_re_setting_your_passcode),
-            positiveActionText = stringResource(R.string.action_yes),
-            positiveAction = {
-                onBackPress()
-            },
-            negativeActionText = stringResource(R.string.action_no),
-            negativeAction = {
-                onUiEvent(OtpValidationScreenEvent.OnDismissWarningDialog)
-            }
-        )
-    }
-
     Scaffold(
         topBar = {
             BanklyTitleBar(
-                onBackPress = {
-                    onUiEvent(OtpValidationScreenEvent.OnBackPress)
-                },
+                onBackPress = onBackPress,
                 title = stringResource(R.string.title_recover_passcode),
                 subTitle = buildAnnotatedString {
                     append(
@@ -195,10 +173,13 @@ internal fun OtpValidationScreen(
             )
         }
 
-        is State.Success -> onOtpValidationSuccess(
-            phoneNumber,
-            screenState.otp.joinToString("")
-        )
+        is State.Success -> {
+            onUiEvent(OtpValidationScreenEvent.OnExit)
+            onOtpValidationSuccess(
+                phoneNumber,
+                screenState.otp.joinToString("")
+            )
+        }
     }
 
     when (val state = screenState.resendOtpState) {

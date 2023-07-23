@@ -9,14 +9,16 @@ import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
+import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
+import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
+import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 
 @Composable
 fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = authenticationNavGraphRoute,
-    onPopAuthenticationNavGraph: () -> Unit,
-    onPopDashBoardNavGraph: () -> Unit,
+    onBackPress: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -27,26 +29,18 @@ fun AppNavHost(
             onLoginSuccess = {
                 appState.navigateTo(TopLevelDestination.DASHBOARD)
             },
-            onBackPress = onPopAuthenticationNavGraph,
+            onBackPress = onBackPress,
         )
         dashBoardNavGraph(
-            onBackPress = onPopDashBoardNavGraph
+            onBackPress = onBackPress
+        )
+        payWithCardNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
         )
     }
 }
-
-internal fun NavHostController.navigateToAuthenticationNavGraph(
-    navOptions: NavOptions? = null
-) {
-    this.navigate(authenticationNavGraphRoute, navOptions)
-}
-
-internal fun NavHostController.navigateToDashBoardNavGraph(
-    navOptions: NavOptions? = null
-) {
-    this.navigate(dashBoardNavGraph, navOptions)
-}
-
 
 
 

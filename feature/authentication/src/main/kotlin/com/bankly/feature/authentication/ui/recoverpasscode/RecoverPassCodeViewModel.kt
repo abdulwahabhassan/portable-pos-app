@@ -37,6 +37,10 @@ class RecoverPassCodeViewModel @Inject constructor(
                     )
                 }
             }
+
+            RecoverPassCodeScreenEvent.OnExit -> {
+                setUiState { copy(recoverPassCodeState = State.Initial) }
+            }
         }
     }
 

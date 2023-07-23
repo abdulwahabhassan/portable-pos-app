@@ -88,6 +88,7 @@ dependencies {
 
     implementation(project(":feature:authentication"))
     implementation(project(":feature:dashboard"))
+    implementation(project(":feature:paywithcard"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
