@@ -25,14 +25,18 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
-fun BanklyClickableIcon(icon: Int, onClick: () -> Unit, color: Color = Color.Unspecified) {
+fun BanklyClickableIcon(
+    modifier: Modifier = Modifier,
+    icon: Int,
+    onClick: () -> Unit,
+    color: Color = Color.Unspecified,
+    rippleColor: Color = MaterialTheme.colorScheme.primary,
+) {
     Icon(
         painter = painterResource(id = icon),
         contentDescription = stringResource(R.string.desc_clickable_icon),
         tint = color,
-        modifier = Modifier
-            .padding(8.dp)
-            .size(32.dp)
+        modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .clickable(
                 onClick = onClick,
@@ -41,22 +45,26 @@ fun BanklyClickableIcon(icon: Int, onClick: () -> Unit, color: Color = Color.Uns
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
+                    color = rippleColor
                 )
             )
-            .padding(4.dp)
+
     )
 }
 
 @Composable
-fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit, color: Color = Color.Unspecified) {
+fun BanklyClickableIcon(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    color: Color = Color.Unspecified,
+    rippleColor: Color = MaterialTheme.colorScheme.primary,
+) {
     Icon(
         imageVector = icon,
         contentDescription = stringResource(R.string.desc_clickable_icon),
         tint = color,
-        modifier = Modifier
-            .padding(8.dp)
-            .size(32.dp)
+        modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .clickable(
                 onClick = onClick,
@@ -65,21 +73,21 @@ fun BanklyClickableIcon(icon: ImageVector, onClick: () -> Unit, color: Color = C
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
+                    color = rippleColor
                 )
             )
-            .padding(4.dp)
     )
 }
 
 /**
- * Preview
+ * Previews
  */
 @Composable
 @Preview(showBackground = true)
 private fun BanklyClickableIconPreview1() {
     BanklyTheme {
         BanklyClickableIcon(
+            modifier = Modifier.size(32.dp).padding(4.dp),
             icon = BanklyIcons.Notification_Bell_01,
             onClick = {},
             color = MaterialTheme.colorScheme.primary
@@ -92,6 +100,7 @@ private fun BanklyClickableIconPreview1() {
 private fun BanklyClickableIconPreview2() {
     BanklyTheme {
         BanklyClickableIcon(
+            modifier = Modifier.size(32.dp).padding(4.dp),
             icon = BanklyIcons.ArrowLeft,
             onClick = {},
             color = MaterialTheme.colorScheme.primary

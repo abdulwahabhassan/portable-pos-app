@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 /**
@@ -35,6 +36,8 @@ import com.bankly.core.designsystem.theme.BanklyTheme
  * @param totalPage The total number of steps or screens in a single process flow
  *  [currentPage] must be less than [totalPage] otherwise they are not shown
  * @param subTitle The text that appears underneath [title] to provide extra information or hint
+ * The close icon and page number will not be shown at the same time. If both are set, close icon
+ * will not be shown in favour of page number
  */
 @Composable
 fun BanklyTitleBar(
@@ -43,9 +46,10 @@ fun BanklyTitleBar(
     subTitle: AnnotatedString = buildAnnotatedString { append("") },
     currentPage: Int = 0,
     totalPage: Int = 0,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    onCloseClick: (() -> Unit)? = null
 ) {
-    val isValidPageCount by remember(currentPage, totalPage) {
+    val shouldShowPageNumber by remember(currentPage, totalPage) {
         mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
     }
 
@@ -57,7 +61,7 @@ fun BanklyTitleBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 8.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -82,7 +86,7 @@ fun BanklyTitleBar(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            if (isValidPageCount) {
+            if (shouldShowPageNumber) {
                 Text(
                     text = "Step $currentPage/$totalPage",
                     overflow = TextOverflow.Ellipsis,
@@ -93,6 +97,15 @@ fun BanklyTitleBar(
                         .weight(1f)
                         .width(90.dp)
                 )
+            } else if (onCloseClick != null) {
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
+                    BanklyClickableIcon(
+                        modifier = Modifier.size(36.dp),
+                        icon = BanklyIcons.close,
+                        onClick = onCloseClick,
+                        rippleColor = MaterialTheme.colorScheme.error,
+                    )
+                }
             } else {
                 Box(modifier = Modifier.weight(1f))
             }
@@ -115,7 +128,7 @@ fun BanklyTitleBar(
                     .height(2.dp)
             )
         }
-        if (isValidPageCount) {
+        if (shouldShowPageNumber) {
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -126,7 +139,6 @@ fun BanklyTitleBar(
                 trackColor = MaterialTheme.colorScheme.primaryContainer
             )
         }
-
 
         if (subTitle.isNotEmpty()) {
             Text(
@@ -153,8 +165,9 @@ private fun BanklyTitleBarPreview1() {
             title = "Log In",
             subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 1,
-            totalPage = 2
-        )
+            totalPage = 2,
+
+            )
 
     }
 }
@@ -202,6 +215,19 @@ private fun BanklyTitleBarPreview5() {
             onBackPress = { },
             title = "Log In",
             isLoading = true
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun BanklyTitleBarPreview6() {
+    BanklyTheme {
+        BanklyTitleBar(
+            onBackPress = { },
+            title = "Select Account Type",
+            isLoading = true,
+            onCloseClick = {}
         )
     }
 }

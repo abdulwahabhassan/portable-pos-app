@@ -1,10 +1,10 @@
 package com.bankly.banklykozenpos.navigation
 
-import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
-import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
-
 enum class TopLevelDestination {
     AUTHENTICATION,
     DASHBOARD,
-    PAYWITHCARD,
+    PAY_WITH_CARD,
+    PAY_WITH_TRANSFER,
+    PAY_WITH_CASH,
+    SEND_MONEY
 }

@@ -27,13 +27,8 @@ fun BanklyBackButton(onClick: () -> Unit) {
         contentDescription = "Left Arrow",
         tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
-            .padding(8.dp)
-            .size(33.dp)
+
             .clip(MaterialTheme.shapes.small)
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = MaterialTheme.shapes.small,
-            )
             .clickable(
                 onClick = onClick,
                 enabled = true,
@@ -43,6 +38,12 @@ fun BanklyBackButton(onClick: () -> Unit) {
                     bounded = true,
                     color = MaterialTheme.colorScheme.primary
                 )
+            )
+            .padding(4.dp)
+            .size(32.dp)
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = MaterialTheme.shapes.small,
             )
     )
 }

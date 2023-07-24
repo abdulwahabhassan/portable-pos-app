@@ -28,18 +28,22 @@ import com.bankly.feature.dashboard.ui.component.WalletCard
 @Composable
 fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
+    onQuickActionCardClick: (QuickAction) -> Unit,
 ) {
     val screenState = viewModel.state.collectAsStateWithLifecycle().value
     HomeScreen(
         screenState = screenState,
-        onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) }
+        onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },
+        onQuickActionCardClick = onQuickActionCardClick,
+
     )
 }
 
 @Composable
 fun HomeScreen(
     screenState: HomeScreenState,
-    onUiEvent: (HomeScreenEvent) -> Unit
+    onUiEvent: (HomeScreenEvent) -> Unit,
+    onQuickActionCardClick: (QuickAction) -> Unit,
 ) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -69,9 +73,12 @@ fun HomeScreen(
         )
         LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp)) {
             items(QuickAction.values()) { quickAction: QuickAction ->
-                DashBoardQuickActionCard(quickAction = quickAction, onClick = {
-
-                })
+                DashBoardQuickActionCard(
+                    quickAction = quickAction,
+                    onClick = {
+                        onQuickActionCardClick(quickAction)
+                    }
+                )
             }
         }
     }
@@ -94,7 +101,8 @@ private fun HomeScreenPreview() {
     BanklyTheme {
         HomeScreen(
             screenState = HomeScreenState(),
-            onUiEvent = {}
+            onUiEvent = {},
+            onQuickActionCardClick = {}
         )
     }
 }

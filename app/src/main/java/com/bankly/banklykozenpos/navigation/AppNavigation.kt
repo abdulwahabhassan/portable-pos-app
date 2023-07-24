@@ -2,16 +2,13 @@ package com.bankly.banklykozenpos.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
+import com.bankly.feature.dashboard.model.QuickAction
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
-import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
-import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 
 @Composable
 fun AppNavHost(
@@ -32,7 +29,15 @@ fun AppNavHost(
             onBackPress = onBackPress,
         )
         dashBoardNavGraph(
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
+            onQuickActionCardClick = { quickAction: QuickAction ->
+                when (quickAction) {
+                    QuickAction.PayWithCard -> appState.navigateTo(TopLevelDestination.PAY_WITH_CARD)
+                    QuickAction.PayWithTransfer -> appState.navigateTo(TopLevelDestination.PAY_WITH_TRANSFER)
+                    QuickAction.PayWithCash -> appState.navigateTo(TopLevelDestination.PAY_WITH_CASH)
+                    QuickAction.SendMoney -> appState.navigateTo(TopLevelDestination.SEND_MONEY)
+                }
+            }
         )
         payWithCardNavGraph(
             onBackPress = {

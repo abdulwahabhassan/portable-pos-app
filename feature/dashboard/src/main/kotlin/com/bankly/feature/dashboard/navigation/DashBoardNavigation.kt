@@ -12,9 +12,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 import com.bankly.feature.dashboard.model.DashboardTab
+import com.bankly.feature.dashboard.model.QuickAction
 
 fun NavGraphBuilder.dashBoardNavGraph(
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onQuickActionCardClick: (QuickAction) -> Unit,
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -33,7 +35,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
                     DashBoardBottomNavHost(
                         currentHomeTab = dashBoardState.currentTab,
                         modifier = Modifier.padding(padding),
-                        navHostController = dashBoardState.navHostController
+                        navHostController = dashBoardState.navHostController,
+                        onQuickActionCardClick = onQuickActionCardClick
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -50,14 +53,18 @@ fun NavGraphBuilder.dashBoardNavGraph(
 fun DashBoardBottomNavHost(
     currentHomeTab: DashboardTab,
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    onQuickActionCardClick: (QuickAction) -> Unit,
 ) {
     NavHost(
         modifier = modifier,
         navController = navHostController,
         startDestination = homeRoute,
     ) {
-        homeRoute(currentHomeTab = currentHomeTab)
+        homeRoute(
+            currentHomeTab = currentHomeTab,
+            onQuickActionCardClick = onQuickActionCardClick,
+        )
         transactionsRoute()
         supportRoute()
         moreRoute()

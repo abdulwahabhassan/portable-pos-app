@@ -60,10 +60,10 @@ data class DashBoardState(
         }
 
         when (destination) {
-            BottomNavDestination.HOME -> navHostController.navigateToHome(navOption)
-            BottomNavDestination.TRANSACTIONS -> navHostController.navigateToTransactions(navOption)
-            BottomNavDestination.SUPPORT -> navHostController.navigateToSupport(navOption)
-            BottomNavDestination.MORE -> navHostController.navigateToMore(navOption)
+            BottomNavDestination.HOME -> navHostController.navigateToHomeRoute(navOption)
+            BottomNavDestination.TRANSACTIONS -> navHostController.navigateToTransactionsRoute(navOption)
+            BottomNavDestination.SUPPORT -> navHostController.navigateToSupportRoute(navOption)
+            BottomNavDestination.MORE -> navHostController.navigateToMoreRoute(navOption)
         }
     }
 }

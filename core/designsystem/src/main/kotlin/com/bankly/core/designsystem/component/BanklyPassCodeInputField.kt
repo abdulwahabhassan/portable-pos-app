@@ -44,7 +44,7 @@ fun BanklyPassCodeInputField(
             Spacer(modifier = Modifier.width(4.dp).weight(1f))
             Box(
                 modifier = Modifier
-                    .width(44.dp)
+                    .width(48.dp)
                     .height(52.dp)
                     .background(
                         color = if (isError) MaterialTheme.colorScheme.errorContainer else

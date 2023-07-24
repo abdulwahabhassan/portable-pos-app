@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="title_select_account_type">Select Account Type</string>
+    <string name="title_insert_card">Insert Card</string>
+    <string name="msg_insert_your_card_into_the_machine">Insert your card into the machine...</string>
+    <string name="title_validation_error">PIN validation error</string>
+    <string name="action_view_transaction_details">View Transaction Details</string>
+    <string name="action_go_to_home">Go to Home</string>
+</resources>

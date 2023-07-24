@@ -75,7 +75,8 @@ internal fun LoginScreen(
     ) { padding ->
         LazyColumn(
             modifier = Modifier.padding(padding),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Column(

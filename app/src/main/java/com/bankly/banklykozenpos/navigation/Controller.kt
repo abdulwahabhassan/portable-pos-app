@@ -23,3 +23,21 @@ internal fun NavHostController.navigateToPayWithCardNavGraph(
 ) {
     this.navigate(payWithCardNavGraphRoute, navOptions)
 }
+internal fun NavHostController.navigateToPayWithTransferNavGraph(
+    navOptions: NavOptions? = null
+) {
+    this.navigate("", navOptions)
+}
+
+internal fun NavHostController.navigateToPayWithCashNavGraph(
+    navOptions: NavOptions? = null
+) {
+    this.navigate("", navOptions)
+}
+
+internal fun NavHostController.navigateToSendMoneyNavGraph(
+    navOptions: NavOptions? = null
+) {
+    this.navigate("", navOptions)
+}
+

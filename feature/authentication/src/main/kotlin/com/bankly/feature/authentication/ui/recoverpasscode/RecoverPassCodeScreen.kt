@@ -67,7 +67,8 @@ internal fun RecoverPassCodeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Column(

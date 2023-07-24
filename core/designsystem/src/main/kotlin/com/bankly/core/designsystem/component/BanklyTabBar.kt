@@ -3,6 +3,7 @@ package com.bankly.core.designsystem.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ fun <T : Enum<T>> BanklyTabBar(
                 shape = MaterialTheme.shapes.medium,
             ),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         tabs.forEach { category ->
             Box(

@@ -9,12 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.navigation.TopLevelDestination
-import com.bankly.banklykozenpos.navigation.TopLevelDestination.AUTHENTICATION
-import com.bankly.banklykozenpos.navigation.TopLevelDestination.DASHBOARD
-import com.bankly.banklykozenpos.navigation.TopLevelDestination.PAYWITHCARD
+import com.bankly.banklykozenpos.navigation.TopLevelDestination.*
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToPayWithCashNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToPayWithTransferNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToSendMoneyNavGraph
 import com.bankly.core.data.util.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -56,8 +57,10 @@ data class BanklyAppState(
 
     fun navigateTo(destination: TopLevelDestination) {
         val navOption = navOptions {
-            popUpTo(navHostController.graph.findStartDestination().id) {
-                saveState = true
+            if (destination == DASHBOARD) {
+                popUpTo(navHostController.graph.findStartDestination().id) {
+                    saveState = true
+                }
             }
             launchSingleTop = true
             restoreState = true
@@ -65,7 +68,10 @@ data class BanklyAppState(
         when (destination) {
             AUTHENTICATION -> navHostController.navigateToAuthenticationNavGraph(navOption)
             DASHBOARD -> navHostController.navigateToDashBoardNavGraph(navOption)
-            PAYWITHCARD -> navHostController.navigateToPayWithCardNavGraph(navOption)
+            PAY_WITH_CARD -> navHostController.navigateToPayWithCardNavGraph(navOption)
+            PAY_WITH_TRANSFER -> navHostController.navigateToPayWithTransferNavGraph(navOption)
+            PAY_WITH_CASH -> navHostController.navigateToPayWithCashNavGraph(navOption)
+            SEND_MONEY ->navHostController.navigateToSendMoneyNavGraph(navOption)
         }
     }
 }
