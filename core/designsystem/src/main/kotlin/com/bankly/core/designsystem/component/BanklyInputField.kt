@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -42,81 +43,67 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyInputField(
     textFieldValue: TextFieldValue,
     onTextFieldValueChange: (TextFieldValue) -> Unit,
-    placeholderText: String,
-    labelText: String,
+    placeholderText: String = "",
+    labelText: String = "",
     isEnabled: Boolean = true,
     readOnly: Boolean = false,
     isError: Boolean = false,
     feedbackText: String = "",
     isPasswordField: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    trailingIcon: Int? = null,
+    onTrailingIconClick: () -> Unit = {},
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(
+        color = MaterialTheme.colorScheme.tertiary
+    ),
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
 
-    val textFieldColors = TextFieldDefaults.textFieldColors(
-        textColor = MaterialTheme.colorScheme.tertiary,
-        containerColor = if (!isEnabled) MaterialTheme.colorScheme.tertiaryContainer
-        else if (isError) MaterialTheme.colorScheme.errorContainer
-        else MaterialTheme.colorScheme.primaryContainer.copy(0.7f),
-        cursorColor = if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
+    val textFieldColors = TextFieldDefaults.colors(
+        focusedTextColor = MaterialTheme.colorScheme.tertiary,
+        unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
+        disabledTextColor = MaterialTheme.colorScheme.tertiary,
+        errorTextColor = MaterialTheme.colorScheme.error,
+        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
+        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
+        disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+        cursorColor = MaterialTheme.colorScheme.primary,
         errorCursorColor = MaterialTheme.colorScheme.error,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
         errorIndicatorColor = Color.Transparent,
-        focusedLeadingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedLeadingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        errorLeadingIconColor = MaterialTheme.colorScheme.error,
-        focusedTrailingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedTrailingIconColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        errorTrailingIconColor = MaterialTheme.colorScheme.error,
-        focusedLabelColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedLabelColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        errorLabelColor = MaterialTheme.colorScheme.error,
-        errorSupportingTextColor = MaterialTheme.colorScheme.error,
-        focusedPrefixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedPrefixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        errorPrefixColor = MaterialTheme.colorScheme.error,
-        focusedSuffixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedSuffixColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        errorSuffixColor = MaterialTheme.colorScheme.error,
-        focusedSupportingTextColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        unfocusedSupportingTextColor = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-        else if (isError) MaterialTheme.colorScheme.error
-        else MaterialTheme.colorScheme.primary,
-        disabledTrailingIconColor = Color.Unspecified,
-        disabledLabelColor = MaterialTheme.colorScheme.tertiary,
+        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
         disabledLeadingIconColor = MaterialTheme.colorScheme.tertiary,
-        disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
-        disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
-        disabledSuffixColor = MaterialTheme.colorScheme.tertiary,
+        errorLeadingIconColor = MaterialTheme.colorScheme.error,
+        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+        disabledTrailingIconColor = MaterialTheme.colorScheme.tertiary,
+        errorTrailingIconColor = MaterialTheme.colorScheme.error,
+        focusedLabelColor = MaterialTheme.colorScheme.primary,
+        unfocusedLabelColor = MaterialTheme.colorScheme.primary,
+        disabledLabelColor = MaterialTheme.colorScheme.tertiary,
+        errorLabelColor = MaterialTheme.colorScheme.error,
+        focusedSupportingTextColor = MaterialTheme.colorScheme.primary,
+        unfocusedSupportingTextColor = MaterialTheme.colorScheme.primary,
         disabledSupportingTextColor = MaterialTheme.colorScheme.tertiary,
-        disabledTextColor = MaterialTheme.colorScheme.tertiary,
-        placeholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        errorSupportingTextColor = MaterialTheme.colorScheme.error,
+        focusedPrefixColor = MaterialTheme.colorScheme.primary,
+        unfocusedPrefixColor = MaterialTheme.colorScheme.primary,
+        errorPrefixColor = MaterialTheme.colorScheme.error,
+        disabledPrefixColor = MaterialTheme.colorScheme.tertiary,
+        focusedSuffixColor = MaterialTheme.colorScheme.primary,
+        unfocusedSuffixColor = MaterialTheme.colorScheme.primary,
+        disabledSuffixColor = MaterialTheme.colorScheme.tertiary,
+        errorSuffixColor = MaterialTheme.colorScheme.error,
+        focusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
+        errorPlaceholderColor = MaterialTheme.colorScheme.error
     )
 
     Column(
@@ -124,11 +111,13 @@ fun BanklyInputField(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        Text(
-            text = labelText,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(horizontal = 24.dp)
-        )
+        if (labelText.isNotEmpty()) {
+            Text(
+                text = labelText,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
+        }
         if (isPasswordField) {
             TextField(
                 modifier = Modifier
@@ -218,17 +207,40 @@ fun BanklyInputField(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 },
+                visualTransformation = visualTransformation,
                 onValueChange = onTextFieldValueChange,
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
                 singleLine = true,
                 keyboardOptions = keyboardOptions,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.tertiary
-                ),
+                textStyle = textStyle,
                 shape = MaterialTheme.shapes.medium,
-                colors = textFieldColors
+                colors = textFieldColors,
+                trailingIcon = {
+                    trailingIcon?.let {
+                        Icon(
+                            painter = painterResource(trailingIcon),
+                            contentDescription = "Trailing icon",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clip(MaterialTheme.shapes.small)
+                                .clickable(
+                                    onClick = onTrailingIconClick,
+                                    enabled = isEnabled,
+                                    role = Role.Button,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = rememberRipple(
+                                        bounded = true,
+                                        color = if (isError) MaterialTheme.colorScheme.error
+                                        else MaterialTheme.colorScheme.primary
+                                    )
+                                ),
+                            tint = if (isError) MaterialTheme.colorScheme.error
+                            else MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             )
         }
         Text(
@@ -297,6 +309,19 @@ private fun BanklyInputFieldPreview4() {
             textFieldValue = TextFieldValue(text = "Hassan Abdulwahab"),
             onTextFieldValueChange = {},
             labelText = "Name",
+            placeholderText = "What's your name?",
+            isEnabled = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun BanklyInputFieldPreview5() {
+    BanklyTheme {
+        BanklyInputField(
+            textFieldValue = TextFieldValue(text = "Hassan Abdulwahab"),
+            onTextFieldValueChange = {},
             placeholderText = "What's your name?",
             isEnabled = false,
         )

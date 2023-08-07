@@ -1,18 +1,9 @@
 import com.bankly.buildlogic.BuildType
 import java.util.Properties
 import java.io.FileInputStream
-import java.util.Locale
-import java.time.LocalDateTime as localDateTime
-import java.time.format.DateTimeFormatter as dateTimeFormatter
-import java.util.Date as date
-import java.util.Locale as locale
-import java.io.ByteArrayOutputStream as byteArrayOutputStream
 
 plugins {
-    id("com.bankly.android.application")
-    id("com.bankly.android.application.compose")
-    id("com.bankly.android.hilt")
-    id("org.jetbrains.kotlin.android")
+    id("com.bankly.convention.application")
 }
 
 val keystorePropertiesFile: File? = rootProject.file("keystore.properties")
@@ -89,17 +80,5 @@ dependencies {
     implementation(project(":feature:authentication"))
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:paywithcard"))
-
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.kotlinx.datetime)
+    implementation(project(":feature:cardtransfer"))
 }

@@ -1,6 +1,5 @@
 plugins {
-    id("com.bankly.android.library")
-    id("com.bankly.android.hilt")
+    id("com.bankly.convention.core")
     id("kotlinx-serialization")
 }
 
@@ -14,7 +13,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:domain"))
     implementation(libs.retrofit.core)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.dataStore.core)
     implementation(libs.kotlinx.serialization.json)
 }

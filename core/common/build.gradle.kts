@@ -1,6 +1,6 @@
 plugins {
-    id("com.bankly.android.library")
-    id("com.bankly.android.hilt")
+    id("com.bankly.convention.core")
+    id("com.bankly.convention.compose")
 }
 
 android {
@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.viewModelCompose)
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewModel.ktx)
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:model"))
 }

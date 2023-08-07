@@ -1,7 +1,5 @@
 plugins {
-    id("com.bankly.android.library")
-    id("com.bankly.android.hilt")
-    kotlin("kapt")
+    id("com.bankly.convention.core")
 }
 
 android {
@@ -11,7 +9,4 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(libs.hilt.android)
-    implementation(libs.kotlinx.coroutines.android)
-    kapt(libs.hilt.compiler)
 }

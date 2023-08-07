@@ -8,4 +8,12 @@ object Validator {
     fun doPassCodesMatch(passCode: String, confirmPassCode: String): Boolean {
         return passCode == confirmPassCode
     }
+
+    fun isAccountNumberValid(accountNumber: String): Boolean {
+        return accountNumber.length == 10
+    }
+
+    fun isAmountValid(amount: Double): Boolean {
+        return amount > 0 && amount < 1_000_000
+    }
 }

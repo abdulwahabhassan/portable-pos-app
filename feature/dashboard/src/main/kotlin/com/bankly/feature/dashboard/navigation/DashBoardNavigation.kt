@@ -17,6 +17,7 @@ import com.bankly.feature.dashboard.model.QuickAction
 fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
     onQuickActionCardClick: (QuickAction) -> Unit,
+    onContinueToPayWithCardClick: (Double) -> Unit
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -36,7 +37,14 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         currentHomeTab = dashBoardState.currentTab,
                         modifier = Modifier.padding(padding),
                         navHostController = dashBoardState.navHostController,
-                        onQuickActionCardClick = onQuickActionCardClick
+                        onQuickActionCardClick = { quickAction: QuickAction ->
+                            if (quickAction == QuickAction.PayWithCard) {
+                                dashBoardState = dashBoardState.copy(currentTab = DashboardTab.POS)
+                            } else {
+                                onQuickActionCardClick(quickAction)
+                            }
+                        },
+                        onContinueToPayWithCardClick = onContinueToPayWithCardClick
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -55,6 +63,7 @@ fun DashBoardBottomNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     onQuickActionCardClick: (QuickAction) -> Unit,
+    onContinueToPayWithCardClick: (Double) -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -64,6 +73,7 @@ fun DashBoardBottomNavHost(
         homeRoute(
             currentHomeTab = currentHomeTab,
             onQuickActionCardClick = onQuickActionCardClick,
+            onContinueToPayWithCardClick = onContinueToPayWithCardClick
         )
         transactionsRoute()
         supportRoute()

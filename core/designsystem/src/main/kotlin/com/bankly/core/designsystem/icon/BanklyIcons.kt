@@ -31,4 +31,7 @@ object BanklyIcons {
     val PayWithCash = R.drawable.ic_pay_with_cash
     val SendMoney = R.drawable.ic_send_money
     val close = R.drawable.ic_close
+    val Chevron_Up = R.drawable.ic_chevron_up
+    val Chevron_Down = R.drawable.ic_chevron_down
+    val Search = R.drawable.ic_search
 }

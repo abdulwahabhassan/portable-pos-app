@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.navigation.BottomNavDestination
 
@@ -67,10 +68,11 @@ fun DashBoardBottomNavBar(
 @Composable
 @Preview(showBackground = true)
 fun BottomNavBarPreview() {
-    DashBoardBottomNavBar(
-        destinations = BottomNavDestination.values().toList(),
-        onNavigateToBottomNavDestination = {},
-        currentBottomNavDestination = BottomNavDestination.HOME
-    )
-
+   BanklyTheme {
+       DashBoardBottomNavBar(
+           destinations = BottomNavDestination.values().toList(),
+           onNavigateToBottomNavDestination = {},
+           currentBottomNavDestination = BottomNavDestination.HOME
+       )
+   }
 }

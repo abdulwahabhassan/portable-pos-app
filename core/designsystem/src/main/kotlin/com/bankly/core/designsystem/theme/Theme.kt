@@ -33,8 +33,9 @@ fun BanklyTheme(
 
         background = white,
         surface = white,
-        surfaceVariant = white, //Card background
-        )
+        surfaceVariant = grey00, //Card background
+        outlineVariant = grey01
+    )
 
     CompositionLocalProvider(LocalRippleTheme provides BanklyRippleTheme) {
         MaterialTheme(

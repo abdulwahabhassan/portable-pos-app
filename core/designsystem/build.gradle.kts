@@ -1,27 +1,14 @@
 plugins {
-    id("com.bankly.android.library")
-    id("com.bankly.android.library.compose")
+    id("com.bankly.convention.core")
+    id("com.bankly.convention.compose")
 }
 
 android {
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
     namespace = "com.bankly.core.designsystem"
-}
-
-dependencies {
-    api(libs.androidx.compose.foundation)
-    api(libs.androidx.compose.foundation)
-    api(libs.androidx.compose.foundation.layout)
-    api(libs.androidx.compose.material.iconsExtended)
-    api(libs.androidx.compose.material3)
-    api(libs.androidx.compose.runtime)
-    api(libs.androidx.compose.ui.tooling.preview)
-    api(libs.androidx.compose.ui.util)
-
-    debugApi(libs.androidx.compose.ui.tooling)
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.coil.kt.compose)
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.7"
+    }
 }

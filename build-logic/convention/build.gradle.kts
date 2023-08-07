@@ -23,37 +23,21 @@ tasks.withType<KotlinCompile>().configureEach {
 
 gradlePlugin {
     plugins {
-        register("androidApplicationCompose") {
-            id = "com.bankly.android.application.compose"
-            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        register("banklyApplicationConvention") {
+            id = "com.bankly.convention.application"
+            implementationClass = "BanklyApplicationConventionPlugin"
         }
-        register("androidApplication") {
-            id = "com.bankly.android.application"
-            implementationClass = "AndroidApplicationConventionPlugin"
+        register("banklyCoreConvention") {
+            id = "com.bankly.convention.core"
+            implementationClass = "BanklyCoreConventionPlugin"
         }
-        register("androidLibraryCompose") {
-            id = "com.bankly.android.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        register("banklyFeatureConvention") {
+            id = "com.bankly.convention.feature"
+            implementationClass = "BanklyFeatureConventionPlugin"
         }
-        register("androidLibrary") {
-            id = "com.bankly.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
-        register("androidFeature") {
-            id = "com.bankly.android.feature"
-            implementationClass = "AndroidFeatureConventionPlugin"
-        }
-        register("androidTest") {
-            id = "com.bankly.android.test"
-            implementationClass = "AndroidTestConventionPlugin"
-        }
-        register("androidHilt") {
-            id = "com.bankly.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
-        }
-        register("androidRoom") {
-            id = "com.bankly.android.room"
-            implementationClass = "AndroidRoomConventionPlugin"
+        register("banklyComposeConvention") {
+            id = "com.bankly.convention.compose"
+            implementationClass = "BanklyComposeConventionPlugin"
         }
     }
 }

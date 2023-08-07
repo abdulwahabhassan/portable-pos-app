@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.ui.pos
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,13 +49,14 @@ import com.bankly.feature.dashboard.R
 
 @Composable
 fun PosTab(
-    onContinueClick: (String) -> Unit
+    onContinueClick: (Double) -> Unit
 ) {
     PosScreen(onContinueClick = onContinueClick)
 }
+
 @Composable
 fun PosScreen(
-    onContinueClick: (String) -> Unit
+    onContinueClick: (Double) -> Unit
 ) {
     var displayedAmount by rememberSaveable { mutableStateOf("0.00") }
     var showActionDialog by rememberSaveable { mutableStateOf(false) }
@@ -194,7 +196,7 @@ fun PosScreen(
             text = "Continue",
             isEnabled = displayedAmount != "0.00",
             onClick = {
-                onContinueClick(displayedAmount)
+                onContinueClick(displayedAmount.replace(",", "").toDouble())
             }
         )
     }

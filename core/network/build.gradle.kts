@@ -1,15 +1,11 @@
 plugins {
-    id("com.bankly.android.library")
-    id("com.bankly.android.hilt")
+    id("com.bankly.convention.core")
     id("kotlinx-serialization")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     namespace = "com.bankly.core.network"
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 secrets {
@@ -17,7 +13,6 @@ secrets {
 }
 
 dependencies {
-    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.kotlinx.datetime)

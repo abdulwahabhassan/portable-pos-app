@@ -29,7 +29,7 @@ fun BanklyRowCheckBox(isChecked: Boolean, onCheckedChange: ((Boolean) -> Unit), 
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 shape = MaterialTheme.shapes.medium
             )
             .clip(MaterialTheme.shapes.medium)

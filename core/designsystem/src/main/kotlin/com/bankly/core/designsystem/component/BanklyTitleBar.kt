@@ -1,5 +1,6 @@
 package com.bankly.core.designsystem.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
@@ -47,7 +49,8 @@ fun BanklyTitleBar(
     currentPage: Int = 0,
     totalPage: Int = 0,
     isLoading: Boolean = false,
-    onCloseClick: (() -> Unit)? = null
+    onCloseClick: (() -> Unit)? = null,
+    backgroundColor: Color = MaterialTheme.colorScheme.background
 ) {
     val shouldShowPageNumber by remember(currentPage, totalPage) {
         mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
@@ -55,8 +58,10 @@ fun BanklyTitleBar(
 
     Column(
         modifier = Modifier
+            .background(color = backgroundColor)
             .fillMaxWidth()
             .padding(bottom = 24.dp)
+
     ) {
         Row(
             modifier = Modifier

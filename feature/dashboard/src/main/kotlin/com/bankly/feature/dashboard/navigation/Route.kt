@@ -20,11 +20,14 @@ internal const val moreRoute = dashBoardRoute.plus("/more_screen")
 internal fun NavGraphBuilder.homeRoute(
     currentHomeTab: DashboardTab,
     onQuickActionCardClick: (QuickAction) -> Unit,
+    onContinueToPayWithCardClick: (Double) -> Unit,
 ) {
     composable(route = homeRoute) {
         when (currentHomeTab) {
             DashboardTab.POS -> {
-                PosTab {}
+                PosTab(
+                    onContinueClick = onContinueToPayWithCardClick
+                )
             }
 
             DashboardTab.Home -> {

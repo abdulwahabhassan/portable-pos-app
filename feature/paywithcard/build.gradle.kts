@@ -1,17 +1,8 @@
 plugins {
-    id("com.bankly.android.feature")
-    id("com.bankly.android.library.compose")
+    id("com.bankly.convention.feature")
 }
 
 android {
     namespace = "com.bankly.feature.paywithcard"
-    buildFeatures {
-        buildConfig = true
-    }
 }
-dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
-    implementation(project(":core:common"))
-}
+
