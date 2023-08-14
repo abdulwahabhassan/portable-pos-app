@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -27,41 +26,43 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.R
+import com.bankly.core.designsystem.component.BanklyDetailRow
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.model.TransactionDetails
-import com.bankly.core.model.toDetailsMap
 
 @Composable
 fun TransactionDetailsRoute(
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
-    onLogComplaintClick: () -> Unit
+    onLogComplaintClick: () -> Unit,
+    onGoToHomeClick: () -> Unit,
 ) {
     TransactionDetailsScreen(
-        onShareClick,
-        onSmsClick,
-        onLogComplaintClick
+        onShareClick = onShareClick,
+        onSmsClick = onSmsClick,
+        onLogComplaintClick = onLogComplaintClick,
+        onGoToHomeClick = onGoToHomeClick
     )
 }
 @Composable
 fun TransactionDetailsScreen(
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
-    onLogComplaintClick: () -> Unit
+    onLogComplaintClick: () -> Unit,
+    onGoToHomeClick: () -> Unit,
 ) {
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant,
         topBar = {
             BanklyTitleBar(
-                title = "Transaction Receipt",
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant
+                title = stringResource(R.string.title_transaction_receipt),
             )
         }
     ) { padding ->
@@ -82,7 +83,7 @@ fun TransactionDetailsScreen(
                         modifier = Modifier
                             .padding(top = 32.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.background,
+                                color = MaterialTheme.colorScheme.surfaceVariant,
                                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                             )
                             .padding(vertical = 16.dp, horizontal = 24.dp),
@@ -91,7 +92,7 @@ fun TransactionDetailsScreen(
                     ) {
                         Spacer(modifier = Modifier.height(24.dp))
                         Text(
-                            text = "Total Amount",
+                            text = stringResource(R.string.msg_total_amount),
                             style = MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -128,7 +129,7 @@ fun TransactionDetailsScreen(
                             ""
                         ).toDetailsMap().filter { it.value.isNotEmpty() }
                             .forEach { (label, value) ->
-                                DetailRow(label = label, value = value)
+                                BanklyDetailRow(label = label, value = value)
                             }
                     }
 
@@ -151,7 +152,7 @@ fun TransactionDetailsScreen(
                         modifier = Modifier.weight(1f)
                     )
                     Text(
-                        text = "Send Transaction Receipt",
+                        text = stringResource(R.string.msg_send_transaction_receipt),
                         style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
                     )
                     Divider(
@@ -179,10 +180,16 @@ fun TransactionDetailsScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 BanklyFilledButton(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Log Complaint",
+                    text = stringResource(R.string.action_log_complaint),
                     onClick = onLogComplaintClick,
                     textColor = MaterialTheme.colorScheme.primary,
                     backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                BanklyFilledButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.action_go_to_home),
+                    onClick = onGoToHomeClick,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -195,37 +202,12 @@ fun TransactionDetailsScreen(
 fun TransactionDetailsScreenPreview() {
     BanklyTheme {
         TransactionDetailsScreen(
-            {},
-            {},
-            {}
+            onShareClick = {},
+            onSmsClick = {},
+            onLogComplaintClick = {},
+            onGoToHomeClick = {}
         )
     }
 }
 
-@Composable
-private fun DetailRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = label, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Start)
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.labelLarge,
-            textAlign = TextAlign.End
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun DetailRowPreview() {
-    BanklyTheme {
-        DetailRow("Transaction Type", "Card Payment")
-    }
-}
 

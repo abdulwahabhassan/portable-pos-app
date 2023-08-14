@@ -14,47 +14,44 @@ import com.bankly.core.network.model.response.TokenNetworkResponse
 /**
  * Interface representing network calls to backend
  */
-sealed interface RemoteDataSource {
-    interface BanklyIdentityDataSource {
+interface IdentityServiceDataSource {
 
-        suspend fun getToken(
-            userName: String,
-            password: String
-        ): TokenNetworkResponse
+    suspend fun getToken(
+        userName: String,
+        password: String
+    ): TokenNetworkResponse
 
-        suspend fun forgotPassCode(
-            body: ForgotPassCodeRequestBody
-        ): NetworkResponse<ResultStatus>
+    suspend fun forgotPassCode(
+        body: ForgotPassCodeRequestBody
+    ): NetworkResponse<ResultStatus>
 
-        suspend fun validateOtp(
-            body: ValidateOtpRequestBody
-        ): NetworkResponse<ResultStatus>
+    suspend fun validateOtp(
+        body: ValidateOtpRequestBody
+    ): NetworkResponse<ResultStatus>
 
-        suspend fun resetPassCode(
-            body: ResetPassCodeRequestBody
-        ): NetworkResponse<ResultMessage>
+    suspend fun resetPassCode(
+        body: ResetPassCodeRequestBody
+    ): NetworkResponse<ResultMessage>
 
-        suspend fun changePassCode(
-            body: ChangePassCodeRequestBody
-        ): NetworkResponse<AuthenticatedUser>
+    suspend fun changePassCode(
+        body: ChangePassCodeRequestBody
+    ): NetworkResponse<AuthenticatedUser>
 
-    }
+}
 
-    interface BanklyWalletDataSource {
-        suspend fun getWallet(
-            token: String
-        ): NetworkResponse<WalletResult>
-    }
+interface BanklyWalletDataSource {
+    suspend fun getWallet(
+        token: String
+    ): NetworkResponse<WalletResult>
+}
 
-    interface BanklyPosDataSource {
-    }
+interface BanklyPosDataSource {
+}
 
-    interface BanklyTmsDataSource {
+interface BanklyTmsDataSource {
 
-    }
+}
 
-    interface BanklyNotificationDataSource {
-
-    }
+interface BanklyNotificationDataSource {
 
 }

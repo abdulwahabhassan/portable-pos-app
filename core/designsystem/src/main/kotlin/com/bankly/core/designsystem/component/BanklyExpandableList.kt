@@ -1,9 +1,8 @@
 package com.bankly.core.designsystem.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,22 +31,25 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BanklyExpandableList(
+fun <T>BanklyExpandableList(
     title: String,
-    listItems: List<String>,
+    items: List<T>,
     isExpanded: Boolean,
     onClickExpand: (isExpanded: Boolean) -> Unit,
-    onItemSelected: (String) -> Unit
+    onItemSelected: (item: T) -> Unit,
+    transformItemToString: (T) -> String = { it.toString() },
 ) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         stickyHeader {
             Row(
                 modifier = Modifier
+                    .background(color = MaterialTheme.colorScheme.surfaceVariant)
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -80,7 +80,7 @@ fun BanklyExpandableList(
             }
         }
 
-        items(listItems) { item ->
+        items(items) { item ->
             AnimatedVisibility(visible = isExpanded) {
                 Row(
                     modifier = Modifier
@@ -98,7 +98,7 @@ fun BanklyExpandableList(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
-                    BankListItem(bankName = item)
+                    BankListItem(bankName = transformItemToString(item))
                 }
             }
         }
@@ -137,10 +137,11 @@ internal fun BanklyExpandableListPreview() {
     BanklyTheme {
         BanklyExpandableList(
             "Commercial banks",
-            listOf("Kuda MFB", "Carbon MFB", "GTB Bank", "First Bank of Nigeria (FBN)"),
+            items = listOf("Kuda MFB", "Carbon MFB", "GTB Bank", "First Bank of Nigeria (FBN)"),
             isExpanded = true,
             onClickExpand = {},
-            onItemSelected = {}
+            onItemSelected = {},
+
         )
     }
 }

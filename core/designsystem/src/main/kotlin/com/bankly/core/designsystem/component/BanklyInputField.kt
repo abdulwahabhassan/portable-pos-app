@@ -66,8 +66,8 @@ fun BanklyInputField(
         unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
         disabledTextColor = MaterialTheme.colorScheme.tertiary,
         errorTextColor = MaterialTheme.colorScheme.error,
-        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
-        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
+        focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
         disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
         errorContainerColor = MaterialTheme.colorScheme.errorContainer,
         cursorColor = MaterialTheme.colorScheme.primary,
@@ -236,8 +236,7 @@ fun BanklyInputField(
                                         else MaterialTheme.colorScheme.primary
                                     )
                                 ),
-                            tint = if (isError) MaterialTheme.colorScheme.error
-                            else MaterialTheme.colorScheme.primary
+                            tint =  Color.Unspecified
                         )
                     }
                 }

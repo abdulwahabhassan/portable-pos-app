@@ -14,9 +14,9 @@ fun BanklyTheme(
     val banklyLightColorScheme = lightColorScheme(
         primary = blue06, //Icon tint, Text color
         onPrimary = white,
-        primaryContainer = blue02, //InputTextField background
+        primaryContainer = blue02.copy(0.5f), //InputTextField background
         onPrimaryContainer = grey04, // InputTextField placeholder
-        inversePrimary = blue03, //Disabled Icon and Text color
+        inversePrimary = blue03.copy(0.6f), //Disabled Icon and Text color
 
         secondary = pink04,
         onSecondary = blue06,
@@ -31,9 +31,9 @@ fun BanklyTheme(
         errorContainer = pink02, //Error InputTextField
         onErrorContainer = red,
 
-        background = white,
-        surface = white,
-        surfaceVariant = grey00, //Card background
+        background = grey00,
+        surface = grey00,
+        surfaceVariant = white, //Card background
         outlineVariant = grey01
     )
 

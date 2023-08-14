@@ -52,10 +52,10 @@ class OtpValidationViewModel @Inject constructor(
 
     private fun startResendCodeTimer() {
         viewModelScope.launch {
-            while (state.value.ticks > 0) {
+            while (uiState.value.ticks > 0) {
                 delay(1.seconds)
                 setUiState {
-                    copy(ticks = state.value.ticks - 1)
+                    copy(ticks = uiState.value.ticks - 1)
                 }
             }
         }

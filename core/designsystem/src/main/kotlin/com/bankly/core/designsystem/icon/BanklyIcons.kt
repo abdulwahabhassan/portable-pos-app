@@ -34,4 +34,9 @@ object BanklyIcons {
     val Chevron_Up = R.drawable.ic_chevron_up
     val Chevron_Down = R.drawable.ic_chevron_down
     val Search = R.drawable.ic_search
+    val Dot = R.drawable.ic_dot
+    val BanklyIcon = R.drawable.ic_bankly
+    val ValidationInProgress = R.drawable.ic_validation_in_progress
+    val ValidationPassed = R.drawable.ic_validation_passed
+    val ValidationFailed = R.drawable.ic_validation_failed
 }

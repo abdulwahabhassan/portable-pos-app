@@ -71,7 +71,7 @@ fun CreateNewPassCodeScreen() {
 
 @Composable
 @Preview(showBackground = true)
-fun CreateNewPassCodeScreenPreview() {
+private fun CreateNewPassCodeScreenPreview() {
     BanklyTheme {
         CreateNewPassCodeScreen()
     }

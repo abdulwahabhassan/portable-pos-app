@@ -41,7 +41,7 @@ internal fun LoginRoute(
     onRecoverPassCodeClick: () -> Unit
 ) {
     BackHandler { onBackPress() }
-    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     LoginScreen(
         onLoginSuccess = onLoginSuccess,
         onBackPress = onBackPress,
@@ -74,7 +74,7 @@ internal fun LoginScreen(
         }
     ) { padding ->
         LazyColumn(
-            modifier = Modifier.padding(padding),
+            modifier = Modifier.fillMaxSize().padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

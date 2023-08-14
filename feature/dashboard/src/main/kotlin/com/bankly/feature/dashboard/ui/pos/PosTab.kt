@@ -151,9 +151,7 @@ fun PosScreen(
                                     .align(Alignment.Center)
                                     .fillMaxSize(),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                                        alpha = 0.3f
-                                    ),
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.primary
                                 ),
                                 shape = RoundedCornerShape(25),

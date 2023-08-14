@@ -36,7 +36,7 @@ internal fun SetNewPassCodeRoute(
     onSetNewPassCodeSuccess: (String) -> Unit,
     onBackPress: () -> Unit
 ) {
-    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     SetNewPassCodeScreen(
         screenState = screenState,
         phoneNumber = phoneNumber,

@@ -38,6 +38,7 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.model.Bank
 import com.bankly.feature.cardtransfer.R
 import kotlinx.coroutines.launch
 
@@ -47,7 +48,7 @@ internal fun EnterRecipientDetailsRoute(
     onBackPress: () -> Unit,
     onContinueClick: () -> Unit,
 ) {
-    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     EnterRecipientDetailsScreen(
         screenState = screenState,
         onBackPress = onBackPress,
@@ -75,8 +76,8 @@ internal fun EnterRecipientDetailsScreen(
         topBar = {
             BanklyTitleBar(
                 title = stringResource(R.string.title_card_transfer),
-                isLoading = screenState.accountValidationState is State.Loading,
-                onBackPress = onBackPress
+                isLoading = screenState.shouldShowLoadingIndicator,
+                onBackPress = onBackPress,
             )
         },
         sheetPeekHeight = 0.dp,
@@ -86,14 +87,10 @@ internal fun EnterRecipientDetailsScreen(
         sheetContainerColor = MaterialTheme.colorScheme.surface,
         sheetContent = {
             BankSearchView(
-                bankList = listOf(
-                    "Kuda MFB",
-                    "Carbon MFB",
-                    "GTB Bank",
-                    "First Bank of Nigeria (FBN)"
-                ),
-                onSelectBank = { bankName: String ->
-                    onUiEvent(EnterRecipientDetailsScreenEvent.OnSelectBank(TextFieldValue(text = bankName)))
+                isBankListLoading = screenState.isBankListLoading,
+                bankList = screenState.banks,
+                onSelectBank = { bank: Bank ->
+                    onUiEvent(EnterRecipientDetailsScreenEvent.OnSelectBank(bank))
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
@@ -146,6 +143,7 @@ internal fun EnterRecipientDetailsScreen(
                             keyboardType = KeyboardType.Number
                         ),
                         isError = screenState.isAccountNumberError,
+                        trailingIcon = screenState.validationIcon,
                         feedbackText = if (screenState.accountValidationState is State.Success)
                             screenState.accountValidationState.data
                         else

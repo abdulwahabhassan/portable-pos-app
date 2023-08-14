@@ -68,7 +68,7 @@ fun ConfirmPinScreen() {
 
 @Composable
 @Preview(showBackground = true)
-fun ConfirmPinScreenPreview() {
+private fun ConfirmPinScreenPreview() {
     BanklyTheme {
         ConfirmPinScreen()
     }

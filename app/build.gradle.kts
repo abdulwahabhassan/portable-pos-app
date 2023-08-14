@@ -81,4 +81,5 @@ dependencies {
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:paywithcard"))
     implementation(project(":feature:cardtransfer"))
+    implementation(project(":feature:sendmoney"))
 }

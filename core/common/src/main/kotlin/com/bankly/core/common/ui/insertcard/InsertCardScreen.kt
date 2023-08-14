@@ -78,7 +78,7 @@ fun InsertCardScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun InsertCardScreenPreview() {
+private fun InsertCardScreenPreview() {
     BanklyTheme {
         InsertCardScreen(
             onCardInserted = {},

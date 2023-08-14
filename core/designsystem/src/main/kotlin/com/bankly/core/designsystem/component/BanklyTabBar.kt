@@ -21,17 +21,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
+import java.util.Locale
 
 @Composable
 fun <T : Enum<T>> BanklyTabBar(
-    tabs: List<T> = emptyList(),
+    tabs: List<T>,
     onTabClick: (T) -> Unit,
     selectedTab: T,
+    selectedTabColor: Color = MaterialTheme.colorScheme.primary,
+    selectedTabTextColor: Color = MaterialTheme.colorScheme.onPrimary,
+    unselectedTabTextColor: Color = MaterialTheme.colorScheme.primary,
+    rippleColor: Color = MaterialTheme.colorScheme.primary
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth(1f)
-            .padding(horizontal = 8.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.medium,
@@ -42,12 +46,12 @@ fun <T : Enum<T>> BanklyTabBar(
         tabs.forEach { category ->
             Box(
                 modifier = Modifier
-                    .height(42.dp)
+                    .height(46.dp)
                     .weight(1f)
                     .padding(4.dp)
                     .background(
                         color = if (selectedTab == category) {
-                            MaterialTheme.colorScheme.primary
+                            selectedTabColor
                         } else Color.Unspecified,
                         shape = MaterialTheme.shapes.small,
                     )
@@ -56,7 +60,7 @@ fun <T : Enum<T>> BanklyTabBar(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(
                             bounded = true,
-                            color = MaterialTheme.colorScheme.primary
+                            color = rippleColor
                         ),
                         onClick = {
                             onTabClick(category)
@@ -65,12 +69,17 @@ fun <T : Enum<T>> BanklyTabBar(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = category.name,
+                    text = category.name.lowercase(Locale.ROOT)
+                        .split("_").joinToString(" ") { word ->
+                            word.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                            }
+                        },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = if (selectedTab == category) {
-                            MaterialTheme.colorScheme.onPrimary
+                            selectedTabTextColor
                         } else
-                            MaterialTheme.colorScheme.primary
+                            unselectedTabTextColor
                     )
                 )
             }
@@ -79,20 +88,17 @@ fun <T : Enum<T>> BanklyTabBar(
 }
 
 enum class Sample {
-    Bankly, Bloom
+    BANKLY, BLOOM
 }
 
 @Composable
 @Preview(showBackground = true)
 private fun BanklyTabBarPreview() {
-
     BanklyTheme {
         BanklyTabBar(
             tabs = Sample.values().toList(),
             onTabClick = {},
-            selectedTab = Sample.Bankly
+            selectedTab = Sample.BANKLY
         )
-
     }
-
 }

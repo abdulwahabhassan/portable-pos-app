@@ -6,6 +6,7 @@ import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
+import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraphRoute
 
 internal fun NavHostController.navigateToAuthenticationNavGraph(
     navOptions: NavOptions? = null
@@ -39,6 +40,6 @@ internal fun NavHostController.navigateToPayWithCashNavGraph(
 internal fun NavHostController.navigateToSendMoneyNavGraph(
     navOptions: NavOptions? = null
 ) {
-    this.navigate("", navOptions)
+    this.navigate(sendMoneyNavGraphRoute, navOptions)
 }
 

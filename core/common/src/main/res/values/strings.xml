@@ -5,4 +5,12 @@
     <string name="msg_insert_your_card_into_the_machine">Insert your card into the machine...</string>
     <string name="action_go_to_home">Go to Home</string>
     <string name="action_view_transaction_details">View Transaction Details</string>
+    <string name="msg_send_transaction_receipt">Send Transaction Receipt</string>
+    <string name="action_log_complaint">Log Complaint</string>
+    <string name="msg_total_amount">Total Amount</string>
+    <string name="title_transaction_receipt">Transaction Receipt</string>
+    <string name="title_enter_card_pin">Enter Card PIN</string>
+    <string name="desc_delete_icon">Delete icon</string>
+    <string name="title_commercial_banks">Commercial banks</string>
+    <string name="title_other_banks">Other banks</string>
 </resources>

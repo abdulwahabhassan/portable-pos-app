@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,16 +25,17 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyClickableText(
     text: AnnotatedString,
     onClick: () -> Unit,
-    isEnabled: Boolean = true
+    isEnabled: Boolean = true,
+    backgroundColor: Color = Color.Transparent
 ) {
     Text(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
             .background(
-                shape = MaterialTheme.shapes.small,
-                color = Color.Unspecified
+                shape = CircleShape,
+                color = backgroundColor
             )
-            .clip(MaterialTheme.shapes.small)
+            .clip(CircleShape)
             .clickable(
                 onClick = onClick,
                 enabled = isEnabled,
@@ -44,10 +46,8 @@ fun BanklyClickableText(
                     color = MaterialTheme.colorScheme.primary
                 )
             )
-            .padding(vertical = 4.dp, horizontal = 8.dp),
-        text = buildAnnotatedString {
-            append(text)
-        },
+            .padding(vertical = 4.dp, horizontal = 12.dp),
+        text = text,
         style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary)
     )
 }

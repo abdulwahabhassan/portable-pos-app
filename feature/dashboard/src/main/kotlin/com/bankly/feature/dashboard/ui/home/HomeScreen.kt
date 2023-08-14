@@ -30,7 +30,7 @@ fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onQuickActionCardClick: (QuickAction) -> Unit,
 ) {
-    val screenState = viewModel.state.collectAsStateWithLifecycle().value
+    val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
     HomeScreen(
         screenState = screenState,
         onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },

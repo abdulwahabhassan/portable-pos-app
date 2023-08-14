@@ -14,6 +14,7 @@ data class NetworkResponse<T>(
     val resultType: Int? = null,
     val message: String? = null,
     val validationMessages: List<String>? = null,
+    val responseCode: String? = null
 )
 
 

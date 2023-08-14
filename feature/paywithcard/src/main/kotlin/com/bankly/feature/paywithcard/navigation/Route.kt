@@ -88,13 +88,15 @@ internal fun NavGraphBuilder.transactionResponseRoute(
 internal fun NavGraphBuilder.transactionDetailsRoute(
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
-    onLogComplaintClick: () -> Unit
+    onLogComplaintClick: () -> Unit,
+    onGoToHomeClick: () -> Unit
 ) {
     composable(route = transactionDetailsRoute) {
         TransactionDetailsRoute(
             onShareClick = onShareClick,
             onSmsClick = onSmsClick,
-            onLogComplaintClick = onLogComplaintClick
+            onLogComplaintClick = onLogComplaintClick,
+            onGoToHomeClick = onGoToHomeClick
         )
     }
 }

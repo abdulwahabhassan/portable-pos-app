@@ -82,7 +82,8 @@ fun TransactionResponseScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp),
                     text = stringResource(R.string.action_go_to_home),
-                    onClick = onGoHomeClick
+                    onClick = onGoHomeClick,
+                    backgroundColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             }
         }
@@ -91,7 +92,7 @@ fun TransactionResponseScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun TransactionResponseScreenPreview() {
+private fun TransactionResponseScreenPreview() {
     BanklyTheme {
         TransactionResponseScreen(
             onViewTransactionDetailsClick = {},

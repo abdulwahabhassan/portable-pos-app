@@ -1,6 +1,7 @@
 package com.bankly.feature.cardtransfer.ui.recipientdetails
 
 import androidx.compose.ui.text.input.TextFieldValue
+import com.bankly.core.model.Bank
 
 sealed interface EnterRecipientDetailsScreenEvent {
     class OnContinueClick(
@@ -14,7 +15,7 @@ sealed interface EnterRecipientDetailsScreenEvent {
         EnterRecipientDetailsScreenEvent
 
     class OnEnterAmount(val amountTFV: TextFieldValue) : EnterRecipientDetailsScreenEvent
-    class OnSelectBank(val bankNameTFV: TextFieldValue) : EnterRecipientDetailsScreenEvent
+    class OnSelectBank(val bank: Bank) : EnterRecipientDetailsScreenEvent
     class OnEnterSenderPhoneNumber(val senderPhoneNumberTFV: TextFieldValue) :
         EnterRecipientDetailsScreenEvent
 

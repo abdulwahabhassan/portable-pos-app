@@ -14,6 +14,7 @@ import com.bankly.feature.dashboard.model.QuickAction
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
+import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 
 @Composable
 fun AppNavHost(
@@ -36,12 +37,14 @@ fun AppNavHost(
         dashBoardNavGraph(
             onBackPress = onBackPress,
             onQuickActionCardClick = { quickAction: QuickAction ->
-                when (quickAction) {
-                    QuickAction.PayWithCard -> appState.navigateTo(TopLevelDestination.PAY_WITH_CARD)
-                    QuickAction.PayWithTransfer -> appState.navigateTo(TopLevelDestination.PAY_WITH_TRANSFER)
-                    QuickAction.PayWithCash -> appState.navigateTo(TopLevelDestination.PAY_WITH_CASH)
-                    QuickAction.SendMoney -> appState.navigateTo(TopLevelDestination.SEND_MONEY)
-                }
+                appState.navigateTo(
+                    when (quickAction) {
+                        QuickAction.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
+                        QuickAction.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
+                        QuickAction.PayWithCash -> TopLevelDestination.PAY_WITH_CASH
+                        QuickAction.SendMoney -> TopLevelDestination.SEND_MONEY
+                    }
+                )
             },
             onContinueToPayWithCardClick = { amount: Double ->
                 val encodedAmount = Uri.encode(amount.toString())
@@ -62,6 +65,11 @@ fun AppNavHost(
             appNavController = appState.navHostController
         )
         cardTransferNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
+        sendMoneyNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             }

@@ -14,24 +14,24 @@ data class TransactionDetails(
     val stan: String,
     val amount: String,
     val message: String,
-)
-
-fun TransactionDetails.toDetailsMap(): Map<String, String> {
-    return mapOf(
-        "Transaction Type" to transactionType,
-        "Status" to status,
-        "Description" to description,
-        "Terminal ID" to terminalId,
-        "Card Type" to cardType,
-        "Transaction REF" to transactionRef,
-        "Card Number" to cardNumber.maskCardNumber(),
-        "Date/Time" to dateTime,
-        "Response Code" to responseCode,
-        "RRN" to rrn,
-        "STAN" to stan,
-    )
+) {
+    fun toDetailsMap(): Map<String, String> {
+        return mapOf(
+            "Transaction Type" to transactionType,
+            "Status" to status,
+            "Description" to description,
+            "Terminal ID" to terminalId,
+            "Card Type" to cardType,
+            "Transaction REF" to transactionRef,
+            "Card Number" to cardNumber.maskCardNumber(),
+            "Date/Time" to dateTime,
+            "Response Code" to responseCode,
+            "RRN" to rrn,
+            "STAN" to stan,
+        )
+    }
 }
 
-internal fun String.maskCardNumber(): String {
+private fun String.maskCardNumber(): String {
     return if (this.length > 12) this.replaceRange(6..11, "******") else ""
 }

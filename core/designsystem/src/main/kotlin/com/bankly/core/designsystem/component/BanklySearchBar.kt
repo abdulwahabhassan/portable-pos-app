@@ -41,7 +41,7 @@ fun BanklySearchBar(
                 .fillMaxWidth()
                 .height(56.dp)
                 .background(
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(0.5f),
+                    color = MaterialTheme.colorScheme.primaryContainer,
                     shape = MaterialTheme.shapes.medium,
                 ),
             verticalAlignment = Alignment.CenterVertically,

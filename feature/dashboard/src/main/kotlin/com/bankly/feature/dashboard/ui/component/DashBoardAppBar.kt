@@ -30,7 +30,7 @@ fun DashBoardAppBar(
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(modifier = Modifier.size(24.dp))
         Box(modifier = Modifier.weight(1f)) {

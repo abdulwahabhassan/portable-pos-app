@@ -68,7 +68,7 @@ fun SetPinScreen() {
 
 @Composable
 @Preview(showBackground = true)
-fun SetPinScreenPreview() {
+private fun SetPinScreenPreview() {
     BanklyTheme {
         SetPinScreen()
     }

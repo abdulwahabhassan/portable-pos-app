@@ -33,7 +33,7 @@ fun BanklyPassCodeInputField(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 12.dp),
+            .padding(vertical = 8.dp, horizontal = 16.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -41,11 +41,11 @@ fun BanklyPassCodeInputField(
             val isFocused by remember(passCode) {
                 mutableStateOf(passCode.indexOfFirst { it.isEmpty() } == index)
             }
-            Spacer(modifier = Modifier.width(4.dp).weight(1f))
+            if (index != 0) Spacer(modifier = Modifier.width(8.dp))
             Box(
                 modifier = Modifier
-                    .width(48.dp)
-                    .height(52.dp)
+
+                    .height(68.dp)
                     .background(
                         color = if (isError) MaterialTheme.colorScheme.errorContainer else
                             MaterialTheme.colorScheme.primaryContainer,
@@ -56,7 +56,8 @@ fun BanklyPassCodeInputField(
                         color = if (isFocused) if (isError) MaterialTheme.colorScheme.error
                         else MaterialTheme.colorScheme.primary else Color.Transparent,
                         shape = MaterialTheme.shapes.small
-                    ),
+                    )
+                    .weight(1f),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -69,7 +70,7 @@ fun BanklyPassCodeInputField(
                         ),
                 )
             }
-            Spacer(modifier = Modifier.width(4.dp).weight(1f))
+            if (index != passCode.lastIndex) Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
@@ -90,7 +91,7 @@ private fun BanklyPassCodeInputFieldPreview1() {
 private fun BanklyPassCodeInputFieldPreview2() {
     BanklyTheme {
         BanklyPassCodeInputField(
-            listOf("1", "2", "", "", "", ""),
+            listOf("1", "2", "", "", "", "", "", ""),
             isError = true
         )
     }

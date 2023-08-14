@@ -29,10 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyPassCodeInputField
@@ -99,10 +101,11 @@ fun EnterCardPinScreen(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
             BanklyTitleBar(
-                title = "Enter Card PIN",
+                title = stringResource(R.string.title_enter_card_pin),
                 onBackPress = {
                     triggerCancelDialog()
                 },
@@ -113,7 +116,7 @@ fun EnterCardPinScreen(
             BanklyPassCodeInputField(passCode = pin)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 items(PassCodeKey.values().map {
                     when (it) {
@@ -156,9 +159,7 @@ fun EnterCardPinScreen(
                                     .align(Alignment.Center)
                                     .fillMaxSize(),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                                        alpha = 0.3f
-                                    ),
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.primary
                                 ),
                                 shape = RoundedCornerShape(25),
@@ -175,7 +176,7 @@ fun EnterCardPinScreen(
                                     Icon(
                                         modifier = Modifier.size(20.dp),
                                         painter = painterResource(id = BanklyIcons.Delete),
-                                        contentDescription = "Delete icon",
+                                        contentDescription = stringResource(R.string.desc_delete_icon),
                                         tint = Color.Unspecified
                                     )
                                 } else {
@@ -195,7 +196,7 @@ fun EnterCardPinScreen(
 
         BanklyFilledButton(
             modifier = Modifier
-                .padding(32.dp)
+                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp)
                 .fillMaxWidth(),
             text = "Continue",
             isEnabled = pin.none { it.isEmpty() },

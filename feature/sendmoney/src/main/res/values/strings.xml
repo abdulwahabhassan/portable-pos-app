@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sendmoney">Send Money</string>
+    <string name="msg_select_bank">Select bank</string>
+    <string name="msg_bank_name">Bank Name</string>
+    <string name="msg_enter_account_number">Enter account number</string>
+    <string name="msg_account_number_label">Account Number</string>
+    <string name="msg_enter_amount">Enter amount</string>
+    <string name="msg_amount_label">Amount</string>
+    <string name="msg_enter_narration">Enter narration</string>
+    <string name="msg_narration_label">Narration</string>
+    <string name="action_continue">Continue</string>
+    <string name="msg_enter_phone_number">Enter phone number</string>
+    <string name="msg_phone_number_label">Phone Number</string>
+    <string name="msg_type_label">Type</string>
+    <string name="msg_select_type">Select type</string>
+    <string name="msg_enter_transaction_pin">Enter Transaction PIN</string>
+    <string name="title_confirm_transaction">Confirm Transaction</string>
+    <string name="action_no">No</string>
+    <string name="action_yes_cancel">Yes, cancel</string>
+    <string name="msg_are_you_sure">Are you sure you want to cancel?</string>
+    <string name="title_cancel_transaction">Cancel transaction?</string>
+    <string name="action_forgot_pin">Forgot PIN</string>
+    <string name="title_confirm_transaction_error">Confirm transaction error</string>
+    <string name="action_okay">Okay</string>
+    <string name="title_please_select_transaction_channel">Please select transaction channel</string>
+</resources>

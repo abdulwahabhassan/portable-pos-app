@@ -96,7 +96,8 @@ fun PayWithCardNavHost(
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },
-            onLogComplaintClick = { }
+            onLogComplaintClick = { },
+            onGoToHomeClick = onBackPress
         )
     }
 }

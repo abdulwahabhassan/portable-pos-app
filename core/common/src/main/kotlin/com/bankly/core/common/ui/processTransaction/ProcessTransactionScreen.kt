@@ -82,7 +82,7 @@ fun ProcessTransactionScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun SelectAccountTypeScreenPreview() {
+private fun SelectAccountTypeScreenPreview() {
     BanklyTheme {
         ProcessTransactionScreen(
             onTransactionProcessed = {},

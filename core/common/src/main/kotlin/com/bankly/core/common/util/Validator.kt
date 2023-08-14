@@ -16,4 +16,8 @@ object Validator {
     fun isAmountValid(amount: Double): Boolean {
         return amount > 0 && amount < 1_000_000
     }
+
+    fun isNarrationValid() {
+
+    }
 }

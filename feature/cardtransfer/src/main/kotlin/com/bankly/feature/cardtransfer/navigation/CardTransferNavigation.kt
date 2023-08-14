@@ -82,7 +82,8 @@ fun CardTransferNavHost(
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },
-            onLogComplaintClick = { }
+            onLogComplaintClick = { },
+            onGoToHomeClick = onBackPress
         )
     }
 

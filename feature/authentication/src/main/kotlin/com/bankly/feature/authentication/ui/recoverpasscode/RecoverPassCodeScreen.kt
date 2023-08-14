@@ -34,7 +34,7 @@ internal fun RecoverPassCodeRoute(
     onRecoverPassCodeSuccess: (String) -> Unit,
     onBackPress: () -> Unit
 ) {
-    val screenState by viewModel.state.collectAsStateWithLifecycle()
+    val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     RecoverPassCodeScreen(
         screenState = screenState,
         onRecoverPassCodeSuccess = onRecoverPassCodeSuccess,

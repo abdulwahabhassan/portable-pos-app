@@ -71,7 +71,7 @@ data class BanklyAppState(
             PAY_WITH_CARD -> navHostController.navigateToPayWithCardNavGraph(navOption)
             PAY_WITH_TRANSFER -> navHostController.navigateToPayWithTransferNavGraph(navOption)
             PAY_WITH_CASH -> navHostController.navigateToPayWithCashNavGraph(navOption)
-            SEND_MONEY ->navHostController.navigateToSendMoneyNavGraph(navOption)
+            SEND_MONEY -> navHostController.navigateToSendMoneyNavGraph(navOption)
         }
     }
 }
