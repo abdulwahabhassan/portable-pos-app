@@ -14,6 +14,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -30,51 +31,83 @@ import com.bankly.core.model.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.feature.sendmoney.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryDetailsViewModel
+import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBaseBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryView
-import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryDetailsViewModel
+import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBaseBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun BeneficiaryRoute(
-    newBeneficiaryDetailsViewModel: NewBeneficiaryDetailsViewModel = hiltViewModel(),
-    savedBeneficiaryDetailsViewModel: SavedBeneficiaryDetailsViewModel = hiltViewModel(),
+    newBeneficiaryViewModel: NewBaseBeneficiaryViewModel = hiltViewModel(),
+    savedBeneficiaryViewModel: SavedBaseBeneficiaryViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
-    destination: SendMoneyChannel,
+    sendMoneyChannel: SendMoneyChannel,
     onContinueClick: () -> Unit,
     onCloseClick: () -> Unit
 ) {
-    val newBeneficiaryScreenState by newBeneficiaryDetailsViewModel.uiState.collectAsStateWithLifecycle()
-    val savedBeneficiaryScreenState by savedBeneficiaryDetailsViewModel.uiState.collectAsStateWithLifecycle()
+    val coroutineScope = rememberCoroutineScope()
+    val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
+    val savedBeneficiaryScreenState by savedBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
 
     BeneficiaryScreen(
+        coroutineScope = coroutineScope,
         newBeneficiaryScreenState = newBeneficiaryScreenState,
         savedBeneficiaryScreenState = savedBeneficiaryScreenState,
         onBackPress = onBackPress,
-        channel = destination,
-        onNewBeneficiaryUiEvent = { uiEvent: BeneficiaryDetailsScreenEvent ->
-            newBeneficiaryDetailsViewModel.sendEvent(uiEvent)
+        channel = sendMoneyChannel,
+        onNewBeneficiaryUiEvent = { uiEvent: BeneficiaryScreenEvent ->
+            newBeneficiaryViewModel.sendEvent(uiEvent)
         },
-        onSavedBeneficiaryUiEvent = { uiEvent: BeneficiaryDetailsScreenEvent ->
-            savedBeneficiaryDetailsViewModel.sendEvent(uiEvent)
+        onSavedBeneficiaryUiEvent = { uiEvent: BeneficiaryScreenEvent ->
+            savedBeneficiaryViewModel.sendEvent(uiEvent)
         },
-        onContinueClick = onContinueClick,
+        onNewBeneficiaryContinueButtonClick = {
+            newBeneficiaryViewModel.sendEvent(
+                BeneficiaryScreenEvent.OnContinueClick(
+                    sendMoneyChannel
+                )
+            )
+        },
+        onSavedBeneficiaryContinueButtonClick = {
+            savedBeneficiaryViewModel.sendEvent(
+                BeneficiaryScreenEvent.OnContinueClick(
+                    sendMoneyChannel
+                )
+            )
+        },
         onCloseClick = onCloseClick
     )
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch {
+            newBeneficiaryViewModel.oneShotState.collectLatest { oneShotUiState ->
+                when (oneShotUiState) {
+                    is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
+                        onContinueClick()
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeneficiaryScreen(
-    newBeneficiaryScreenState: BeneficiaryDetailsScreenState,
-    savedBeneficiaryScreenState: BeneficiaryDetailsScreenState,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    newBeneficiaryScreenState: BeneficiaryScreenState,
+    savedBeneficiaryScreenState: BeneficiaryScreenState,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
     channel: SendMoneyChannel,
-    onNewBeneficiaryUiEvent: (BeneficiaryDetailsScreenEvent) -> Unit,
-    onSavedBeneficiaryUiEvent: (BeneficiaryDetailsScreenEvent) -> Unit,
-    onContinueClick: () -> Unit
+    onNewBeneficiaryUiEvent: (BeneficiaryScreenEvent) -> Unit,
+    onSavedBeneficiaryUiEvent: (BeneficiaryScreenEvent) -> Unit,
+    onNewBeneficiaryContinueButtonClick: () -> Unit,
+    onSavedBeneficiaryContinueButtonClick: () -> Unit
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         SheetState(
@@ -82,7 +115,6 @@ fun BeneficiaryScreen(
             initialValue = SheetValue.Hidden
         )
     )
-    val coroutineScope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -107,13 +139,13 @@ fun BeneficiaryScreen(
                     when (newBeneficiaryScreenState.selectedTab) {
                         BeneficiaryTab.NEW_BENEFICIARY -> {
                             onNewBeneficiaryUiEvent(
-                                BeneficiaryDetailsScreenEvent.OnSelectBank(bank = bank)
+                                BeneficiaryScreenEvent.OnSelectBank(bank = bank)
                             )
                         }
 
                         BeneficiaryTab.SAVED_BENEFICIARY -> {
                             onSavedBeneficiaryUiEvent(
-                                BeneficiaryDetailsScreenEvent.OnSelectBank(bank = bank)
+                                BeneficiaryScreenEvent.OnSelectBank(bank = bank)
                             )
                         }
                     }
@@ -136,7 +168,7 @@ fun BeneficiaryScreen(
                     BanklyTabBar(
                         tabs = BeneficiaryTab.values().toList(),
                         onTabClick = { tab ->
-                            onNewBeneficiaryUiEvent(BeneficiaryDetailsScreenEvent.OnTabSelected(tab))
+                            onNewBeneficiaryUiEvent(BeneficiaryScreenEvent.OnTabSelected(tab))
                         },
                         selectedTab = newBeneficiaryScreenState.selectedTab,
                         selectedTabColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -152,7 +184,7 @@ fun BeneficiaryScreen(
                             channel = channel,
                             onTypeSelected = { selectedType ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnTypeSelected(
+                                    BeneficiaryScreenEvent.OnTypeSelected(
                                         typeTFV = newBeneficiaryScreenState.typeTFV.copy(text = selectedType.title),
                                     )
                                 )
@@ -165,7 +197,7 @@ fun BeneficiaryScreen(
                             },
                             onEnterPhoneOrAccountNumber = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterAccountOrPhoneNumber(
+                                    BeneficiaryScreenEvent.OnEnterAccountOrPhoneNumber(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
                                     )
@@ -173,15 +205,15 @@ fun BeneficiaryScreen(
                             },
                             onEnterNarration = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnEnterNarration(textFieldValue)
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnEnterAmount(textFieldValue)
                                 )
                             },
-                            onContinueClick = onContinueClick
+                            onContinueClick = onNewBeneficiaryContinueButtonClick
                         )
                     }
 
@@ -201,7 +233,7 @@ fun BeneficiaryScreen(
                             },
                             onEnterPhoneOrAccountNumber = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterAccountOrPhoneNumber(
+                                    BeneficiaryScreenEvent.OnEnterAccountOrPhoneNumber(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
                                     )
@@ -209,21 +241,21 @@ fun BeneficiaryScreen(
                             },
                             onEnterNarration = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnEnterNarration(textFieldValue)
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnEnterAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnEnterAmount(textFieldValue)
                                 )
                             },
-                            onContinueClick = onContinueClick,
+                            onContinueClick = onSavedBeneficiaryContinueButtonClick,
                             onChangeSelectedSavedBeneficiary = {
-                                onSavedBeneficiaryUiEvent(BeneficiaryDetailsScreenEvent.OnChangeSelectedSavedBeneficiary)
+                                onSavedBeneficiaryUiEvent(BeneficiaryScreenEvent.OnChangeSelectedSavedBeneficiary)
                             },
                             onBeneficiarySelected = { beneficiary: SavedBeneficiary ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryDetailsScreenEvent.OnBeneficiarySelected(beneficiary)
+                                    BeneficiaryScreenEvent.OnBeneficiarySelected(beneficiary)
                                 )
                             }
                         )
@@ -239,14 +271,15 @@ fun BeneficiaryScreen(
 private fun BeneficiaryScreenPreview() {
     BanklyTheme {
         BeneficiaryScreen(
-            newBeneficiaryScreenState = BeneficiaryDetailsScreenState(),
+            newBeneficiaryScreenState = BeneficiaryScreenState(),
             onNewBeneficiaryUiEvent = {},
-            savedBeneficiaryScreenState = BeneficiaryDetailsScreenState(),
+            savedBeneficiaryScreenState = BeneficiaryScreenState(),
             onSavedBeneficiaryUiEvent = {},
             onBackPress = {},
             onCloseClick = {},
             channel = SendMoneyChannel.BANKLY_TO_BANKLY,
-            onContinueClick = {}
+            onNewBeneficiaryContinueButtonClick = {},
+            onSavedBeneficiaryContinueButtonClick = {}
         )
     }
 }

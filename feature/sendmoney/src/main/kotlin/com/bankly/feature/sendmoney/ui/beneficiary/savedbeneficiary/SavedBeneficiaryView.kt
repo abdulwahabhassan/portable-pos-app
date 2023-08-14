@@ -49,13 +49,13 @@ import com.bankly.feature.sendmoney.R
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.feature.sendmoney.model.SendMoneyChannel
 import com.bankly.feature.sendmoney.model.Type
-import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryDetailsScreenState
+import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 import com.bankly.core.designsystem.R as DesignRes
 
 
 @Composable
 fun SavedBeneficiaryView(
-    screenState: BeneficiaryDetailsScreenState,
+    screenState: BeneficiaryScreenState,
     savedBeneficiaries: List<SavedBeneficiary>,
     selectedType: Type,
     onBankNameDropDownIconClick: () -> Unit,
@@ -152,10 +152,7 @@ fun SavedBeneficiaryView(
                             keyboardType = KeyboardType.Number
                         ),
                         isError = screenState.isAccountOrPhoneError,
-                        feedbackText = if (screenState.accountOrPhoneValidationState is State.Success)
-                            screenState.accountOrPhoneValidationState.data
-                        else
-                            screenState.accountOrPhoneFeedBack,
+                        feedbackText = screenState.accountOrPhoneFeedBack,
                         isEnabled = screenState.isUserInputEnabled
                     )
 
@@ -211,7 +208,7 @@ fun SavedBeneficiaryView(
 private fun SavedBeneficiaryPreview() {
     BanklyTheme {
         SavedBeneficiaryView(
-            screenState = BeneficiaryDetailsScreenState(),
+            screenState = BeneficiaryScreenState(),
             savedBeneficiaries = SavedBeneficiary.mockOtherBanks(),
             selectedType = Type.ACCOUNT_NUMBER,
             onBankNameDropDownIconClick = {},

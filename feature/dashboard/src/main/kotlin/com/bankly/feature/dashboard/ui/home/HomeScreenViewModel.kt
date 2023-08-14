@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class HomeScreenViewModel @Inject constructor(
     private val getWalletUseCase: GetWalletUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
-) : BaseViewModel<HomeScreenEvent, HomeScreenState>(HomeScreenState()) {
+) : BaseViewModel<HomeScreenEvent, HomeScreenState, HomeScreenOneShotState>(HomeScreenState()) {
 
     override suspend fun handleUiEvents(event: HomeScreenEvent) {
         when (event) {

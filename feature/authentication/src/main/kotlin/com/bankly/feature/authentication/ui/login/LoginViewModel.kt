@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 class LoginViewModel @Inject constructor(
     private val loginTokenUseCase: GetTokenUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
-) : BaseViewModel<LoginScreenEvent, LoginScreenState>(LoginScreenState()) {
+) : BaseViewModel<LoginScreenEvent, LoginScreenState, LoginScreenOneShotState>(LoginScreenState()) {
 
     override suspend fun handleUiEvents(event: LoginScreenEvent) {
         when (event) {

@@ -80,6 +80,7 @@ fun <T>BanklyExpandableList(
             }
         }
 
+
         items(items) { item ->
             AnimatedVisibility(visible = isExpanded) {
                 Row(

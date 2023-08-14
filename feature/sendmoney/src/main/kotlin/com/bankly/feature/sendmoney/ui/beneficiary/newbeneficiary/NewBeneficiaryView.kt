@@ -15,7 +15,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.model.State
 import com.bankly.core.common.util.DecimalFormatter
 import com.bankly.core.common.util.DecimalInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyFilledButton
@@ -26,11 +25,11 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
 import com.bankly.feature.sendmoney.model.SendMoneyChannel
 import com.bankly.feature.sendmoney.model.Type
-import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryDetailsScreenState
+import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 
 @Composable
 fun NewBeneficiaryView(
-    screenState: BeneficiaryDetailsScreenState,
+    screenState: BeneficiaryScreenState,
     onTypeSelected: (Type) -> Unit,
     selectedType: Type,
     onBankNameDropDownIconClick: () -> Unit,
@@ -99,12 +98,9 @@ fun NewBeneficiaryView(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
-                trailingIcon = screenState.validationIcon,
+                trailingIcon = screenState.validationStatusIcon,
                 isError = screenState.isAccountOrPhoneError,
-                feedbackText = if (screenState.accountOrPhoneValidationState is State.Success)
-                    screenState.accountOrPhoneValidationState.data
-                else
-                    screenState.accountOrPhoneFeedBack,
+                feedbackText = screenState.accountOrPhoneFeedBack,
                 isEnabled = screenState.isUserInputEnabled
             )
 
@@ -158,7 +154,7 @@ fun NewBeneficiaryView(
 private fun NewBeneficiaryViewPreview() {
     BanklyTheme {
         NewBeneficiaryView(
-            screenState = BeneficiaryDetailsScreenState(),
+            screenState = BeneficiaryScreenState(),
             onTypeSelected = {},
             selectedType = Type.ACCOUNT_NUMBER,
             onBankNameDropDownIconClick = {},

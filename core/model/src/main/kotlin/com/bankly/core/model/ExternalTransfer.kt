@@ -6,14 +6,14 @@ data class ExternalTransfer(
     val bankId: String,
     val bankName: String,
     val narration: String,
-    val phoneNumber: String,
+    val phoneNumber: String = "",
     val amountToSend: String,
     val otp: String,
-    val channel: String,
-    val clientRequestId: String,
+    val channel: String = "4",
+    val clientRequestId: String = "",
     val securityQuestionId: String,
     val securityQuestionResponse: String,
     val deviceId: String,
-    val isWeb: String,
+    val isWeb: String = "false",
     val senderName: String
 )

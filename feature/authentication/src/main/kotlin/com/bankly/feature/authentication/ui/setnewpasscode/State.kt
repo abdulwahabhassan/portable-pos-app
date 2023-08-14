@@ -2,6 +2,7 @@ package com.bankly.feature.authentication.ui.setnewpasscode
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.State
+import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.model.Message
 
 data class SetNewPassCodeScreenState(
@@ -20,3 +21,5 @@ data class SetNewPassCodeScreenState(
     val isUserInputEnabled: Boolean
         get() = setNewPassCodeState !is State.Loading
 }
+
+sealed interface SetNewPassCodeScreenOneShotState : OneShotState

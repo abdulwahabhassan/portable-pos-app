@@ -10,28 +10,33 @@ import com.bankly.core.common.util.DecimalFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
+import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
+import com.bankly.core.model.Bank
 import com.bankly.core.model.NameEnquiry
+import com.bankly.feature.cardtransfer.model.TransactionDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class EnterRecipientDetailsViewModel @Inject constructor(
     private val nameEnquiryUseCase: NameEnquiryUseCase,
+    private val getBanksUseCase: GetBanksUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
-) : BaseViewModel<EnterRecipientDetailsScreenEvent, EnterRecipientDetailsScreenState>(
+) : BaseViewModel<EnterRecipientDetailsScreenEvent, EnterRecipientDetailsScreenState, EnterRecipientDetailsScreenOneShotState>(
     EnterRecipientDetailsScreenState()
 ) {
 
+    init {
+        viewModelScope.launch { getBanks() }
+    }
+
     override suspend fun handleUiEvents(event: EnterRecipientDetailsScreenEvent) {
         when (event) {
-            is EnterRecipientDetailsScreenEvent.OnContinueClick -> {
-
-            }
-
             is EnterRecipientDetailsScreenEvent.OnEnterAccountNumber -> {
                 val isEmpty = event.accountNumberTFV.text.trim().isEmpty()
                 val isValid = Validator.isAccountNumberValid(event.accountNumberTFV.text.trim())
@@ -44,12 +49,10 @@ class EnterRecipientDetailsViewModel @Inject constructor(
                         else ""
                     )
                 }
-                if (isValid && isEmpty.not()) {
-                    validateAccountNumber(
-                        accountNumber = event.accountNumberTFV.text,
-                        bankId = uiState.value.selectedBank?.id
-                    )
-                }
+                validateAccountNumber(
+                    accountNumber = event.accountNumberTFV.text,
+                    bankId = uiState.value.selectedBank?.id
+                )
 
             }
 
@@ -79,10 +82,12 @@ class EnterRecipientDetailsViewModel @Inject constructor(
             }
 
             is EnterRecipientDetailsScreenEvent.OnSelectBank -> {
-                setUiState { copy(
-                    bankNameTFV = bankNameTFV.copy(text = event.bank.name),
-                    selectedBank = event.bank
-                ) }
+                setUiState {
+                    copy(
+                        bankNameTFV = bankNameTFV.copy(text = event.bank.name),
+                        selectedBank = event.bank
+                    )
+                }
                 validateAccountNumber(
                     accountNumber = uiState.value.accountNumberTFV.text,
                     bankId = event.bank.id
@@ -103,7 +108,61 @@ class EnterRecipientDetailsViewModel @Inject constructor(
                     )
                 }
             }
+
+            is EnterRecipientDetailsScreenEvent.OnContinueClick -> {
+                val currentState = uiState.value
+                val amount = DecimalFormatter().cleanup(currentState.amountTFV.text)
+                    .replace(",", "").toDouble()
+
+                currentState.nameEnquiryData?.let { nameEnquiry ->
+                    setOneShotState(
+                        EnterRecipientDetailsScreenOneShotState.GoToSelectAccountTypeScreen(
+                            TransactionDetails(
+                                nameEnquiry.accountNumber,
+                                nameEnquiry.accountName,
+                                amount,
+                                nameEnquiry.bankName,
+                                currentState.selectedBank?.id.toString(),
+                                "",
+                                currentState.senderPhoneNumberTFV.text
+                            )
+                        )
+                    )
+                }
+            }
         }
+    }
+
+    private suspend fun getBanks() {
+        getBanksUseCase.invoke(userPreferencesDataStore.data().token)
+            .onEach { resource ->
+                resource.onLoading {
+                    Log.d("debug getBanks", "(onLoading) ...")
+                    setUiState {
+                        copy(bankListState = State.Loading)
+                    }
+                }
+                resource.onReady { banks: List<Bank> ->
+                    Log.d("debug getBanks", "(onReady) banks: $banks")
+                    setUiState {
+                        copy(bankListState = State.Success(banks))
+                    }
+                }
+                resource.onFailure { message ->
+                    Log.d("debug getBanks", "(onFailure) message: $message")
+                    setUiState {
+                        copy(bankListState = State.Error(message))
+                    }
+                }
+            }
+            .catch {
+                Log.d("debug getBanks", "(error caught) message: ${it.message}")
+                it.printStackTrace()
+                setUiState {
+                    copy(bankListState = State.Error(it.message ?: "An unexpected error occurred"))
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun validateAccountNumber(
@@ -111,7 +170,10 @@ class EnterRecipientDetailsViewModel @Inject constructor(
         bankId: Long?
     ) {
         Log.d("debug validateAccountNumber", "account number: $accountNumber, bank id: $bankId")
-        if (bankId != null && accountNumber.isNotEmpty()) {
+        if (bankId != null && accountNumber.isNotEmpty() && Validator.isAccountNumberValid(
+                accountNumber
+            )
+        ) {
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
@@ -126,7 +188,7 @@ class EnterRecipientDetailsViewModel @Inject constructor(
                 resource.onReady { nameEnquiry: NameEnquiry ->
                     Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
                     setUiState {
-                        copy(accountValidationState = State.Success(nameEnquiry.accountName))
+                        copy(accountValidationState = State.Success(nameEnquiry))
                     }
                 }
                 resource.onFailure { message ->

@@ -8,7 +8,7 @@ import com.bankly.core.common.ui.processTransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.ui.transactionresponse.TransactionResponseRoute
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.model.ConfirmTransactionDetails
+import com.bankly.feature.sendmoney.model.ConfirmTransactionDetails
 import com.bankly.feature.sendmoney.model.SendMoneyChannel
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryRoute
 import com.bankly.feature.sendmoney.ui.confirmtransaction.ConfirmTransactionRoute
@@ -55,7 +55,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
             channelEnum?.let {
                 BeneficiaryRoute(
                     onBackPress = onBackPress,
-                    destination = channelEnum,
+                    sendMoneyChannel = channelEnum,
                     onContinueClick = onContinueClick,
                     onCloseClick = onCloseClick
                 )
@@ -74,9 +74,13 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
             confirmTransactionDetails = ConfirmTransactionDetails(
                 "080999200291",
                 "Hassan Abdulwahab",
-                "#20,0000",
-                "#0.00",
-                "#0.00",
+                23000.00,
+                0.00,
+                0.00,
+                SendMoneyChannel.BANKLY_TO_OTHER,
+                "",
+                "",
+                ""
             ),
             onConfirmationSuccess = onConfirmationSuccess,
             onBackPress = onBackPress,

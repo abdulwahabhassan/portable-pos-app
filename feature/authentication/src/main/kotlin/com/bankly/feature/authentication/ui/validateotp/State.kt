@@ -1,6 +1,7 @@
 package com.bankly.feature.authentication.ui.validateotp
 
 import com.bankly.core.common.model.State
+import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.model.Status
 
 data class OtpValidationScreenState(
@@ -18,3 +19,5 @@ data class OtpValidationScreenState(
     val isLoading: Boolean
         get() = otpValidationState is State.Loading || resendOtpState is State.Loading
 }
+
+sealed interface OtpValidationScreenOneShotState : OneShotState

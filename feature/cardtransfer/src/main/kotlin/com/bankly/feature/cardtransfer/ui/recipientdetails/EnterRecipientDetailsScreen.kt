@@ -84,7 +84,7 @@ internal fun EnterRecipientDetailsScreen(
         scaffoldState = bottomSheetScaffoldState,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetDragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
-        sheetContainerColor = MaterialTheme.colorScheme.surface,
+        sheetContainerColor = MaterialTheme.colorScheme.surfaceVariant,
         sheetContent = {
             BankSearchView(
                 isBankListLoading = screenState.isBankListLoading,
@@ -144,10 +144,7 @@ internal fun EnterRecipientDetailsScreen(
                         ),
                         isError = screenState.isAccountNumberError,
                         trailingIcon = screenState.validationIcon,
-                        feedbackText = if (screenState.accountValidationState is State.Success)
-                            screenState.accountValidationState.data
-                        else
-                            screenState.accountNumberFeedBack,
+                        feedbackText = screenState.accountNumberFeedBack,
                         isEnabled = screenState.isUserInputEnabled
                     )
 

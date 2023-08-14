@@ -2,6 +2,7 @@ package com.bankly.feature.authentication.ui.recoverpasscode
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.State
+import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.model.Status
 
 data class RecoverPassCodeScreenState(
@@ -16,3 +17,5 @@ data class RecoverPassCodeScreenState(
     val isUserInputEnabled: Boolean
         get() = recoverPassCodeState !is State.Loading
 }
+
+sealed interface RecoverPassCodeScreenOneShotState : OneShotState

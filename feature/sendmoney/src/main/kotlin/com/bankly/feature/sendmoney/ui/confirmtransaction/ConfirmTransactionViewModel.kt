@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmTransactionViewModel @Inject constructor(
-) : BaseViewModel<ConfirmTransactionScreenEvent, ConfirmTransactionScreenState>(
+) : BaseViewModel<ConfirmTransactionScreenEvent, ConfirmTransactionScreenState, ConfirmTransactionScreenOneShotState>(
     ConfirmTransactionScreenState()
 ) {
     override suspend fun handleUiEvents(event: ConfirmTransactionScreenEvent) {
@@ -28,6 +28,7 @@ class ConfirmTransactionViewModel @Inject constructor(
             ConfirmTransactionScreenEvent.OnCloseClick -> {
                 setUiState { copy(shouldShowWarningDialog = true) }
             }
+
             ConfirmTransactionScreenEvent.OnDismissWarningDialog -> {
                 setUiState { copy(shouldShowWarningDialog = false) }
             }

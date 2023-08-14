@@ -24,7 +24,9 @@ import kotlinx.coroutines.launch
 class OtpValidationViewModel @Inject constructor(
     private val validateOtpUseCase: ValidateOtpUseCase,
     private val forgotPassCodeUseCase: ForgotPassCodeUseCase
-) : BaseViewModel<OtpValidationScreenEvent, OtpValidationScreenState>(OtpValidationScreenState()) {
+) : BaseViewModel<OtpValidationScreenEvent, OtpValidationScreenState, OtpValidationScreenOneShotState>(
+    OtpValidationScreenState()
+) {
 
     override suspend fun handleUiEvents(event: OtpValidationScreenEvent) {
         when (event) {

@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 @HiltViewModel
 class SetNewPassCodeViewModel @Inject constructor(
     private val resetPassCodeUseCase: ResetPassCodeUseCase
-) : BaseViewModel<SetNewPassCodeScreenEvent, SetNewPassCodeScreenState>(SetNewPassCodeScreenState()) {
+) : BaseViewModel<SetNewPassCodeScreenEvent, SetNewPassCodeScreenState, SetNewPassCodeScreenOneShotState>(SetNewPassCodeScreenState()) {
 
     override suspend fun handleUiEvents(event: SetNewPassCodeScreenEvent) {
         when (event) {

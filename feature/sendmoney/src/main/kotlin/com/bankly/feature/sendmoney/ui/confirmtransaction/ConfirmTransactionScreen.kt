@@ -31,8 +31,9 @@ import com.bankly.core.designsystem.component.BanklyPassCodeInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.model.ConfirmTransactionDetails
 import com.bankly.feature.sendmoney.R
+import com.bankly.feature.sendmoney.model.ConfirmTransactionDetails
+import com.bankly.feature.sendmoney.model.SendMoneyChannel
 
 
 @Composable
@@ -225,9 +226,13 @@ private fun ConfirmTransactionScreenPreview() {
             confirmTransactionDetails = ConfirmTransactionDetails(
                 "080999200291",
                 "Hassan Abdulwahab",
-                "#20,0000",
-                "#0.00",
-                "#0.00",
+                23000.00,
+                0.00,
+                0.00,
+                SendMoneyChannel.BANKLY_TO_OTHER,
+                "",
+                "",
+                ""
             ),
             onConfirmationSuccess = {},
             onBackPress = {},

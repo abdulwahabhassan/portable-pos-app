@@ -2,8 +2,11 @@ package com.bankly.feature.cardtransfer.ui.recipientdetails
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.State
+import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.model.Bank
+import com.bankly.core.model.NameEnquiry
+import com.bankly.feature.cardtransfer.model.TransactionDetails
 
 data class EnterRecipientDetailsScreenState(
     val selectedBank: Bank? = null,
@@ -19,7 +22,7 @@ data class EnterRecipientDetailsScreenState(
     val amountFeedBack: String = "",
     val senderPhoneNumberFeedBack: String = "",
     val bankNameFeedBack: String = "",
-    val accountValidationState: State<String> = State.Initial,
+    val accountValidationState: State<NameEnquiry> = State.Initial,
     val bankListState: State<List<Bank>> = State.Initial,
 ) {
     val isContinueButtonEnabled: Boolean
@@ -46,4 +49,13 @@ data class EnterRecipientDetailsScreenState(
         get() = bankListState is State.Loading
     val shouldShowLoadingIndicator: Boolean
         get() = bankListState is State.Loading || accountValidationState is State.Loading
+    val nameEnquiryData: NameEnquiry?
+        get() = when (accountValidationState) {
+            is State.Success -> accountValidationState.data
+            else -> null
+        }
+}
+
+sealed interface EnterRecipientDetailsScreenOneShotState: OneShotState {
+    data class GoToSelectAccountTypeScreen(val transactionDetails: TransactionDetails): EnterRecipientDetailsScreenOneShotState
 }

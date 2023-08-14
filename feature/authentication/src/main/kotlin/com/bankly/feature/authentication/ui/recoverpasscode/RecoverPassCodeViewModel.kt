@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 @HiltViewModel
 class RecoverPassCodeViewModel @Inject constructor(
     private val forgotPassCodeUseCase: ForgotPassCodeUseCase
-) : BaseViewModel<RecoverPassCodeScreenEvent, RecoverPassCodeScreenState>(RecoverPassCodeScreenState()) {
+) : BaseViewModel<RecoverPassCodeScreenEvent, RecoverPassCodeScreenState, RecoverPassCodeScreenOneShotState>(RecoverPassCodeScreenState()) {
 
     override suspend fun handleUiEvents(event: RecoverPassCodeScreenEvent) {
         when (event) {
