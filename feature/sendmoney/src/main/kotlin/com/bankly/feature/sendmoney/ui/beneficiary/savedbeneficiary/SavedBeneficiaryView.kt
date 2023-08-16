@@ -150,6 +150,7 @@ fun SavedBeneficiaryView(
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
                         ),
+                        trailingIcon = screenState.validationStatusIcon,
                         isError = screenState.isAccountOrPhoneError,
                         feedbackText = screenState.accountOrPhoneFeedBack,
                         isEnabled = screenState.isUserInputEnabled
@@ -306,7 +307,8 @@ private fun SavedBeneficiaryItemPreview() {
                 "Hassan Abdulwahab",
                 "Access Bank PLC",
                 "9844803022",
-                DesignRes.drawable.ic_first_bank
+                DesignRes.drawable.ic_first_bank,
+                1
             ),
             onClick = {}
         )

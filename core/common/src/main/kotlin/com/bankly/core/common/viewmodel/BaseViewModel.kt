@@ -71,9 +71,9 @@ abstract class BaseViewModel<E, S, O: OneShotState>(initialState: S) : ViewModel
     /**
      * Sends one shot state to the ui
      */
-    protected fun setOneShotState(event: O) {
+    protected fun setOneShotState(oneShotState: O) {
         viewModelScope.launch {
-            _oneShotState.trySend(event)
+            _oneShotState.trySend(oneShotState)
         }
     }
 }

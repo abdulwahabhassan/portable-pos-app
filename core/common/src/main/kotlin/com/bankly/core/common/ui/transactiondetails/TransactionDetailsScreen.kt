@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bankly.core.common.R
 import com.bankly.core.common.util.Formatter
 import com.bankly.core.designsystem.component.BanklyDetailRow
@@ -127,8 +128,8 @@ fun TransactionDetailsScreen(
                                 BanklyDetailRow(
                                     label = label,
                                     value = value,
-                                    labelStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
-                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium)
+                                    labelStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary, letterSpacing = 0.25.sp),
+                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp)
                                 )
                             }
                     }

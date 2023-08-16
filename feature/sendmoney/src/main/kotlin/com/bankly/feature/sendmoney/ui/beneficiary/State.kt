@@ -12,11 +12,10 @@ import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.core.common.model.AccountNumberType
 
 data class BeneficiaryScreenState(
-    val accountNumberTypeTFV: TextFieldValue = TextFieldValue(text = AccountNumberType.ACCOUNT_NUMBER.title),
+    val accountNumberType: AccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
     val isTypeError: Boolean = false,
     val typeFeedBack: String = "",
     val selectedBank: Bank? = null,
-    val bankNameTFV: TextFieldValue = TextFieldValue(text = selectedBank?.name ?: ""),
     val isBankNameError: Boolean = false,
     val bankNameFeedBack: String = "",
     val accountOrPhoneTFV: TextFieldValue = TextFieldValue(text = ""),
@@ -37,16 +36,18 @@ data class BeneficiaryScreenState(
 ) {
     val isContinueButtonEnabled: Boolean
         get() = accountOrPhoneTFV.text.isNotEmpty() && amountTFV.text.isNotEmpty() &&
-                isAccountOrPhoneError.not() && isAmountError.not() &&
+                isAccountOrPhoneError.not() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
                 isNarrationError.not() && accountOrPhoneValidationState !is State.Loading &&
                 accountOrPhoneValidationState !is State.Error && bankListState !is State.Loading
     val isUserInputEnabled: Boolean
         get() = accountOrPhoneValidationState !is State.Loading && bankListState !is State.Loading
-    val accountNumberType: AccountNumberType
-        get() = when (accountNumberTypeTFV.text) {
-            AccountNumberType.PHONE_NUMBER.title -> AccountNumberType.PHONE_NUMBER
-            else -> AccountNumberType.ACCOUNT_NUMBER
+    val accountNumberTypeTFV: TextFieldValue
+        get() = when (accountNumberType) {
+            AccountNumberType.PHONE_NUMBER -> TextFieldValue(text = accountNumberType.title)
+            AccountNumberType.ACCOUNT_NUMBER -> TextFieldValue(text = accountNumberType.title)
         }
+    val bankNameTFV: TextFieldValue
+        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(text = "")
     val validationStatusIcon: Int?
         get() = when (accountOrPhoneValidationState) {
             State.Initial -> null
@@ -63,13 +64,9 @@ data class BeneficiaryScreenState(
         get() = bankListState is State.Loading
     val shouldShowLoadingIndicator: Boolean
         get() = bankListState is State.Loading || accountOrPhoneValidationState is State.Loading
-    val nameEnquiryData: NameEnquiry?
-        get() = when (accountOrPhoneValidationState) {
-            is State.Success -> accountOrPhoneValidationState.data
-            else -> null
-        }
 }
 
-sealed interface BeneficiaryScreenOneShotState: OneShotState {
-    data class GoToConfirmTransactionScreen(val transactionData: TransactionData): BeneficiaryScreenOneShotState
+sealed interface BeneficiaryScreenOneShotState : OneShotState {
+    data class GoToConfirmTransactionScreen(val transactionData: TransactionData) :
+        BeneficiaryScreenOneShotState
 }

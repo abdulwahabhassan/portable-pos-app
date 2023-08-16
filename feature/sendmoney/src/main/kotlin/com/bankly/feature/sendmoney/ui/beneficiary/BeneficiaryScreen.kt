@@ -68,14 +68,29 @@ internal fun BeneficiaryRoute(
         onNewBeneficiaryContinueButtonClick = {
             newBeneficiaryViewModel.sendEvent(
                 BeneficiaryScreenEvent.OnContinueClick(
-                    sendMoneyChannel
+                    sendMoneyChannel = sendMoneyChannel,
+                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text,
+                    accountName = newBeneficiaryScreenState.accountOrPhoneFeedBack,
+                    amount = newBeneficiaryScreenState.amountTFV.text,
+                    bankName = newBeneficiaryScreenState.bankNameTFV.text,
+                    selectedBankId = newBeneficiaryScreenState.selectedBank?.id,
+                    narration = newBeneficiaryScreenState.narrationTFV.text,
+                    accountNumberType = newBeneficiaryScreenState.accountNumberType
+
                 )
             )
         },
         onSavedBeneficiaryContinueButtonClick = {
             savedBeneficiaryViewModel.sendEvent(
                 BeneficiaryScreenEvent.OnContinueClick(
-                    sendMoneyChannel
+                    sendMoneyChannel = sendMoneyChannel,
+                    accountOrPhoneNumber = savedBeneficiaryScreenState.accountOrPhoneTFV.text,
+                    accountName = savedBeneficiaryScreenState.accountOrPhoneFeedBack,
+                    amount = savedBeneficiaryScreenState.amountTFV.text,
+                    bankName = savedBeneficiaryScreenState.bankNameTFV.text,
+                    selectedBankId = savedBeneficiaryScreenState.selectedBank?.id,
+                    narration = savedBeneficiaryScreenState.narrationTFV.text,
+                    accountNumberType = savedBeneficiaryScreenState.accountNumberType
                 )
             )
         },
@@ -139,13 +154,19 @@ fun BeneficiaryScreen(
                     when (newBeneficiaryScreenState.selectedTab) {
                         BeneficiaryTab.NEW_BENEFICIARY -> {
                             onNewBeneficiaryUiEvent(
-                                BeneficiaryScreenEvent.OnSelectBank(bank = bank)
+                                BeneficiaryScreenEvent.OnSelectBank(
+                                    bank = bank,
+                                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
+                                )
                             )
                         }
 
                         BeneficiaryTab.SAVED_BENEFICIARY -> {
                             onSavedBeneficiaryUiEvent(
-                                BeneficiaryScreenEvent.OnSelectBank(bank = bank)
+                                BeneficiaryScreenEvent.OnSelectBank(
+                                    bank = bank,
+                                    accountOrPhoneNumber = savedBeneficiaryScreenState.accountOrPhoneTFV.text
+                                )
                             )
                         }
                     }
@@ -185,7 +206,7 @@ fun BeneficiaryScreen(
                             onTypeSelected = { selectedType ->
                                 onNewBeneficiaryUiEvent(
                                     BeneficiaryScreenEvent.OnTypeSelected(
-                                        typeTFV = newBeneficiaryScreenState.accountNumberTypeTFV.copy(text = selectedType.title),
+                                        accountNumberType = selectedType,
                                     )
                                 )
                             },
@@ -197,20 +218,22 @@ fun BeneficiaryScreen(
                             },
                             onEnterPhoneOrAccountNumber = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterAccountOrPhoneNumber(
+                                    BeneficiaryScreenEvent.OnInputAccountOrPhoneNumber(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
+                                        selectedBankId = newBeneficiaryScreenState.selectedBank?.id,
+                                        accountNumberType = newBeneficiaryScreenState.accountNumberType
                                     )
                                 )
                             },
                             onEnterNarration = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue)
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue)
                                 )
                             },
                             onContinueClick = onNewBeneficiaryContinueButtonClick
@@ -233,20 +256,22 @@ fun BeneficiaryScreen(
                             },
                             onEnterPhoneOrAccountNumber = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterAccountOrPhoneNumber(
+                                    BeneficiaryScreenEvent.OnInputAccountOrPhoneNumber(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
+                                        selectedBankId = savedBeneficiaryScreenState.selectedBank?.id,
+                                        accountNumberType = savedBeneficiaryScreenState.accountNumberType
                                     )
                                 )
                             },
                             onEnterNarration = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue)
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnEnterAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue)
                                 )
                             },
                             onContinueClick = onSavedBeneficiaryContinueButtonClick,
