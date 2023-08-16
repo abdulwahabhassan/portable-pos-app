@@ -258,9 +258,6 @@ fun BanklyInputField(
 }
 
 
-/**
- * Previews
- */
 @Composable
 @Preview(showBackground = true)
 private fun BanklyInputFieldPreview1() {

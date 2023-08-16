@@ -23,7 +23,7 @@ import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyExpandableList
 import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.model.Bank
+import com.bankly.core.entity.Bank
 
 @Composable
 fun BankSearchView(

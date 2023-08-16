@@ -1,11 +1,11 @@
 package com.bankly.feature.cardtransfer.ui.recipientdetails
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.common.model.State
+import com.bankly.core.sealed.State
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.model.Bank
-import com.bankly.core.model.NameEnquiry
+import com.bankly.core.entity.Bank
+import com.bankly.core.entity.NameEnquiry
 import com.bankly.feature.cardtransfer.model.TransactionDetails
 
 data class EnterRecipientDetailsScreenState(

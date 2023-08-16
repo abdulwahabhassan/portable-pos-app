@@ -83,9 +83,11 @@ fun WalletCard(
 
                     Text(
                         modifier = Modifier.padding(vertical = 4.dp),
-                        text = if (shouldShowWalletBalance) "₦ ${
-                            formatAmount(currentBalance)
-                        }" else "**********",
+                        text = if (shouldShowWalletBalance) formatAmount(
+                            value = currentBalance,
+                            includeNairaSymbol = true,
+                            addSpace = true
+                        ) else "**********",
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.SemiBold

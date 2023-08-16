@@ -1,10 +1,10 @@
 package com.bankly.feature.sendmoney.ui.beneficiary
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.model.Bank
+import com.bankly.core.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
+import com.bankly.core.common.model.SendMoneyChannel
 
 sealed interface BeneficiaryScreenEvent {
     class OnEnterAccountOrPhoneNumber(

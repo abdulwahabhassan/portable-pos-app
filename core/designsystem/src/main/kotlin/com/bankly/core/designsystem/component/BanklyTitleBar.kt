@@ -158,9 +158,7 @@ fun BanklyTitleBar(
     }
 }
 
-/**
- * Previews
- */
+
 @Composable
 @Preview(showBackground = true)
 private fun BanklyTitleBarPreview1() {

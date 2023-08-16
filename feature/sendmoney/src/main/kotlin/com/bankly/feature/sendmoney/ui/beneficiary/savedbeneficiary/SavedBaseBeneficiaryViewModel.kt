@@ -5,8 +5,10 @@ import com.bankly.core.common.util.Validator
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.feature.sendmoney.model.ConfirmTransactionDetails
-import com.bankly.feature.sendmoney.model.Type
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenEvent
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenOneShotState
 import com.bankly.feature.sendmoney.ui.beneficiary.BaseBeneficiaryViewModel
@@ -28,15 +30,15 @@ class SavedBaseBeneficiaryViewModel @Inject constructor(
 
                 val isEmpty = event.accountOrPhoneNumberTFV.text.trim().isEmpty()
                 val isValid =
-                    if (uiState.value.type == Type.PHONE_NUMBER) Validator.isPhoneNumberValid(event.accountOrPhoneNumberTFV.text.trim())
+                    if (uiState.value.accountNumberType == AccountNumberType.PHONE_NUMBER) Validator.isPhoneNumberValid(event.accountOrPhoneNumberTFV.text.trim())
                     else Validator.isAccountNumberValid(event.accountOrPhoneNumberTFV.text.trim())
 
                 setUiState {
                     copy(
                         accountOrPhoneTFV = event.accountOrPhoneNumberTFV,
                         isAccountOrPhoneError = isEmpty || isValid.not(),
-                        accountOrPhoneFeedBack = if (isEmpty) "Please enter ${if (uiState.value.type == Type.PHONE_NUMBER) "phone" else "account"} number"
-                        else if (isValid.not()) "Please enter a valid ${if (uiState.value.type == Type.PHONE_NUMBER) "phone" else "account"} number"
+                        accountOrPhoneFeedBack = if (isEmpty) "Please enter ${if (uiState.value.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
+                        else if (isValid.not()) "Please enter a valid ${if (uiState.value.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
                         else ""
                     )
                 }
@@ -85,7 +87,7 @@ class SavedBaseBeneficiaryViewModel @Inject constructor(
             }
 
             is BeneficiaryScreenEvent.OnTypeSelected -> {
-                setUiState { copy(typeTFV = event.typeTFV) }
+                setUiState { copy(accountNumberTypeTFV = event.typeTFV) }
             }
 
             is BeneficiaryScreenEvent.OnEnterNarration -> {
@@ -130,17 +132,21 @@ class SavedBaseBeneficiaryViewModel @Inject constructor(
                 currentState.nameEnquiryData?.let { nameEnquiry ->
                     setOneShotState(
                         BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen(
-                            ConfirmTransactionDetails(
+                            TransactionData(
+                                when (event.sendMoneyChannel) {
+                                    SendMoneyChannel.BANKLY_TO_BANKLY -> TransactionType.BANK_TRANSFER_INTERNAL
+                                    SendMoneyChannel.BANKLY_TO_OTHER -> TransactionType.BANK_TRANSFER_EXTERNAL
+                                },
                                 nameEnquiry.accountNumber,
                                 nameEnquiry.accountName,
                                 amount,
                                 0.00,
                                 0.00,
-                                sendMoneyChannel = event.sendMoneyChannel,
                                 nameEnquiry.bankName,
                                 currentState.selectedBank?.id.toString(),
-                                currentState.narrationTFV.text.trim()
-
+                                currentState.narrationTFV.text.trim(),
+                                currentState.accountNumberType,
+                                ""
                             )
                         )
                     )

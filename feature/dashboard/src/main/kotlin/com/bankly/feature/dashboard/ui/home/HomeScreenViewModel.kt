@@ -2,13 +2,13 @@ package com.bankly.feature.dashboard.ui.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.onFailure
-import com.bankly.core.common.model.onLoading
-import com.bankly.core.common.model.onReady
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetWalletUseCase
-import com.bankly.core.model.UserWallet
+import com.bankly.core.entity.UserWallet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch

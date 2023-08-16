@@ -23,15 +23,15 @@ import com.bankly.core.designsystem.component.BanklySelectionDialogMenu
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.model.Type
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.AccountNumberType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 
 @Composable
 fun NewBeneficiaryView(
     screenState: BeneficiaryScreenState,
-    onTypeSelected: (Type) -> Unit,
-    selectedType: Type,
+    onTypeSelected: (AccountNumberType) -> Unit,
+    selectedAccountNumberType: AccountNumberType,
     onBankNameDropDownIconClick: () -> Unit,
     onEnterPhoneOrAccountNumber: (TextFieldValue) -> Unit,
     onEnterNarration: (TextFieldValue) -> Unit,
@@ -49,11 +49,11 @@ fun NewBeneficiaryView(
             if (channel == SendMoneyChannel.BANKLY_TO_BANKLY) {
                 BanklySelectionDialogMenu(
                     label = stringResource(id = R.string.msg_type_label),
-                    items = Type.values().toList().map { type: Type -> type.title },
-                    selectedIndex = Type.values().map { type: Type -> type.title }
-                        .indexOf(screenState.typeTFV.text),
+                    items = AccountNumberType.values().toList().map { accountNumberType: AccountNumberType -> accountNumberType.title },
+                    selectedIndex = AccountNumberType.values().map { accountNumberType: AccountNumberType -> accountNumberType.title }
+                        .indexOf(screenState.accountNumberTypeTFV.text),
                     onItemSelected = { index, _ ->
-                        onTypeSelected(Type.values().toList()[index])
+                        onTypeSelected(AccountNumberType.values().toList()[index])
                     },
                     enabled = screenState.isUserInputEnabled,
                     isError = screenState.isTypeError,
@@ -84,15 +84,15 @@ fun NewBeneficiaryView(
                     onEnterPhoneOrAccountNumber(textFieldValue)
                 },
                 placeholderText = stringResource(
-                    when (selectedType) {
-                        Type.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
-                        Type.PHONE_NUMBER -> R.string.msg_enter_phone_number
+                    when (selectedAccountNumberType) {
+                        AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
+                        AccountNumberType.PHONE_NUMBER -> R.string.msg_enter_phone_number
                     }
                 ),
                 labelText = stringResource(
-                    when (selectedType) {
-                        Type.ACCOUNT_NUMBER -> R.string.msg_account_number_label
-                        Type.PHONE_NUMBER -> R.string.msg_phone_number_label
+                    when (selectedAccountNumberType) {
+                        AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_account_number_label
+                        AccountNumberType.PHONE_NUMBER -> R.string.msg_phone_number_label
                     }
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -156,7 +156,7 @@ private fun NewBeneficiaryViewPreview() {
         NewBeneficiaryView(
             screenState = BeneficiaryScreenState(),
             onTypeSelected = {},
-            selectedType = Type.ACCOUNT_NUMBER,
+            selectedAccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
             onBankNameDropDownIconClick = {},
             onEnterPhoneOrAccountNumber = {},
             onEnterNarration = {},

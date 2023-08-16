@@ -1,35 +1,53 @@
 package com.bankly.feature.sendmoney.navigation
 
 import android.net.Uri
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.sealed.Transaction
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 internal fun NavHostController.navigateToBeneficiaryRoute(channel: SendMoneyChannel) {
     val encodedChannel = Uri.encode(channel.name)
     this.navigate(route = "$beneficiaryRoute/$encodedChannel")
 }
 
-internal fun NavHostController.navigateToConfirmTransactionRoute() {
-    this.navigate(confirmTransactionRoute)
+internal fun NavHostController.navigateToConfirmTransactionRoute(transactionData: TransactionData) {
+    val transactionDataString = Json.encodeToString(transactionData)
+    val encodedTransactionDetails = Uri.encode(transactionDataString)
+    this.navigate("$confirmTransactionRoute/$encodedTransactionDetails")
 }
 
-internal fun NavHostController.navigateToProcessTransactionRoute() {
+internal fun NavHostController.navigateToProcessTransactionRoute(transactionData: TransactionData) {
+    val transactionDataString = Json.encodeToString(transactionData)
+    val encodedTransactionData = Uri.encode(transactionDataString)
     val options = NavOptions.Builder()
-        .setPopUpTo(selectChannelRoute, true)
+        .setPopUpTo(graph.startDestinationRoute, true)
         .build()
-    this.navigate(processTransactionRoute, options)
+    this.navigate("$processTransactionRoute/$encodedTransactionData", options)
 }
 
-internal fun NavHostController.navigateToTransactionResponseRoute() {
+internal fun NavHostController.navigateToTransactionSuccessRoute(transaction: Transaction) {
+    val transactionString = Json.encodeToString(transaction)
+    val encodedTransaction = Uri.encode(transactionString)
     val options = NavOptions.Builder()
-        .setPopUpTo(processTransactionRoute, true)
+        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}", true)
         .build()
-    this.navigate(transactionResponseRoute, options)
+    this.navigate("$transactionSuccessRoute/$encodedTransaction", options)
 }
 
-internal fun NavHostController.navigateToTransactionDetailsRoute() {
-    this.navigate(transactionDetailsRoute)
+internal fun NavHostController.navigateToTransactionFailedRoute(message: String) {
+    val encodedMessage = Uri.encode(message)
+    val options = NavOptions.Builder()
+        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}", true)
+        .build()
+    this.navigate("$transactionFailedRoute/$encodedMessage", options)
+}
+
+internal fun NavHostController.navigateToTransactionDetailsRoute(transaction: Transaction) {
+    val transactionString = Json.encodeToString(transaction)
+    val encodedTransaction = Uri.encode(transactionString)
+    this.navigate("$transactionDetailsRoute/$encodedTransaction")
 }

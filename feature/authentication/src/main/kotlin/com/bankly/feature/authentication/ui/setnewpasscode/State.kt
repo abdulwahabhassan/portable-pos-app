@@ -1,9 +1,9 @@
 package com.bankly.feature.authentication.ui.setnewpasscode
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.common.model.State
+import com.bankly.core.sealed.State
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.model.Message
+import com.bankly.core.entity.Message
 
 data class SetNewPassCodeScreenState(
     val passCodeTFV: TextFieldValue = TextFieldValue(text = ""),

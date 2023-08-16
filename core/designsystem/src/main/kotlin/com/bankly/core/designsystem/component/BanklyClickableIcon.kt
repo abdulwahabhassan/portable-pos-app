@@ -79,9 +79,6 @@ fun BanklyClickableIcon(
     )
 }
 
-/**
- * Previews
- */
 @Composable
 @Preview(showBackground = true)
 private fun BanklyClickableIconPreview1() {

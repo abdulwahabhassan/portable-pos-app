@@ -31,11 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
+import com.bankly.core.common.model.SendMoneyChannel
 
 @Composable
 fun SelectChannelRoute(

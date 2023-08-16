@@ -23,7 +23,7 @@ fun BanklyTheme(
 
         tertiary = grey05, //Body text, Title
         onTertiary = white,
-        tertiaryContainer = grey01, //Disabled InputTextField, Disabled Button
+        tertiaryContainer = grey02.copy(alpha = 0.5f), //Disabled InputTextField, Disabled Button
         onTertiaryContainer = blue01,
 
         error = red, //Error text

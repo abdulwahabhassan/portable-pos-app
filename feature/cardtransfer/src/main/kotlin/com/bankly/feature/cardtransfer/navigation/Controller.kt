@@ -5,6 +5,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import com.bankly.core.common.model.TransactionData
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 internal fun NavController.navigateToEnterRecipientDetailsRoute() {
     this.navigate(enterRecipientDetailsRoute)
@@ -22,12 +25,18 @@ internal fun NavHostController.navigateToEnterPinRoute() {
     this.navigate(enterPinRoute, popUpToStartDestinationInclusiveNavOption(this))
 }
 
-internal fun NavHostController.navigateToProcessTransactionRoute() {
-    this.navigate(processTransactionRoute, popUpToStartDestinationInclusiveNavOption(this))
+internal fun NavHostController.navigateToProcessTransactionRoute(transactionData: TransactionData) {
+    val transactionDetailsAsString = Json.encodeToString(transactionData)
+    val encodedTransactionDetails = Uri.encode(transactionDetailsAsString)
+    this.navigate("$processTransactionRoute/$encodedTransactionDetails", popUpToStartDestinationInclusiveNavOption(this))
 }
 
-internal fun NavHostController.navigateToTransactionResponseRoute() {
-    this.navigate(transactionResponseRoute, popUpToStartDestinationInclusiveNavOption(this))
+internal fun NavHostController.navigateToTransactionSuccessRoute() {
+    this.navigate(transactionSuccessRoute, popUpToStartDestinationInclusiveNavOption(this))
+}
+
+internal fun NavHostController.navigateToTransactionFailedRoute() {
+    this.navigate(transactionFailedRoute, popUpToStartDestinationInclusiveNavOption(this))
 }
 
 internal fun NavHostController.navigateToTransactionDetailsRoute() {

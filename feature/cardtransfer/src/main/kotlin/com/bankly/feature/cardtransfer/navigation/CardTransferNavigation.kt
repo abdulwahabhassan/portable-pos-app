@@ -8,7 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bankly.core.model.AccountType
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.AccountType
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.TransactionType
 
 fun NavGraphBuilder.cardTransferNavGraph(
     onBackPress: () -> Unit,
@@ -61,7 +64,21 @@ fun CardTransferNavHost(
 
         enterCardPinRoute(
             onContinueClick = {
-                navHostController.navigateToProcessTransactionRoute()
+                navHostController.navigateToProcessTransactionRoute(
+                    TransactionData(
+                        TransactionType.BANK_TRANSFER_EXTERNAL,
+                        "080999200291",
+                        "Hassan Abdulwahab",
+                        23000.00,
+                        0.00,
+                        0.00,
+                        "",
+                        "",
+                        "",
+                        AccountNumberType.ACCOUNT_NUMBER,
+                        ""
+                    )
+                )
             },
             onBackPress = {
                 navHostController.popBackStack()
@@ -69,16 +86,20 @@ fun CardTransferNavHost(
             onCloseClick = onBackPress
         )
         processTransactionRoute(
-            onTransactionProcessed = {
-                navHostController.navigateToTransactionResponseRoute()
+            onSuccessfulTransaction = {
+                navHostController.navigateToTransactionSuccessRoute()
+            },
+            onFailedTransaction = {
+                navHostController.navigateToTransactionFailedRoute()
             }
         )
-        transactionResponseRoute(
+        transactionSuccessRoute(
             onViewTransactionDetailsClick = {
                 navHostController.navigateToTransactionDetailsRoute()
             },
             onGoHomeClick = onBackPress
         )
+        transactionFailedRoute(onGoHomeClick = {})
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },

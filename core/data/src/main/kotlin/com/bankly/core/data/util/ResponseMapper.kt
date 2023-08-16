@@ -1,21 +1,23 @@
 package com.bankly.core.data.util
 
-import com.bankly.core.model.Bank
-import com.bankly.core.model.Message
-import com.bankly.core.model.NameEnquiry
-import com.bankly.core.model.Status
-import com.bankly.core.model.Token
-import com.bankly.core.model.User
-import com.bankly.core.model.UserWallet
-import com.bankly.core.network.model.AuthenticatedUser
-import com.bankly.core.network.model.BankResult
-import com.bankly.core.network.model.NameEnquiryResult
-import com.bankly.core.network.model.ResultMessage
-import com.bankly.core.network.model.ResultStatus
-import com.bankly.core.network.model.WalletResult
+import com.bankly.core.entity.Bank
+import com.bankly.core.entity.Message
+import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.entity.Status
+import com.bankly.core.entity.Token
+import com.bankly.core.entity.User
+import com.bankly.core.entity.UserWallet
+import com.bankly.core.network.model.result.AuthenticatedUserResult
+import com.bankly.core.network.model.result.BankResult
+import com.bankly.core.network.model.result.NameEnquiryResult
+import com.bankly.core.network.model.result.MessageResult
+import com.bankly.core.network.model.result.StatusResult
+import com.bankly.core.network.model.result.WalletResult
 import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.result.TransactionResult
+import com.bankly.core.sealed.Transaction
 
-fun AuthenticatedUser.asUser() = User(
+fun AuthenticatedUserResult.asUser() = User(
     userId = userId ?: "",
     message = message ?: ""
 )
@@ -26,11 +28,11 @@ fun TokenNetworkResponse.asToken() = Token(
     tokenType = tokenType ?: ""
 )
 
-fun ResultStatus.asStatus() = Status(
+fun StatusResult.asStatus() = Status(
     status = status ?: false
 )
 
-fun ResultMessage.asMessage() = Message(
+fun MessageResult.asMessage() = Message(
     message = message ?: ""
 )
 
@@ -54,4 +56,21 @@ fun NameEnquiryResult.asNameEnquiry() = NameEnquiry(
     accountNumber = accountNumber ?: "",
     bankCode = bankCode ?: "",
     bankName = bankName ?: ""
+)
+
+fun TransactionResult.asExternalTransaction() = Transaction.External(
+    phoneNumber = phoneNumber,
+    amount = amount,
+    reference = reference,
+    accountNumber = accountNumber,
+    sourceWallet = sourceWallet,
+    paymentGateway = paymentGateway,
+    message = message,
+    bankName = bankName,
+    beneficiaryAccount = beneficiaryAccount,
+    accountName = accountName,
+    sourceWalletName = sourceWalletName,
+    dateCreated = dateCreated,
+    statusName = statusName,
+    sessionId = sessionId
 )

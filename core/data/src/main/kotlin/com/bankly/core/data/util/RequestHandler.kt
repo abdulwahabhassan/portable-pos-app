@@ -1,7 +1,7 @@
 package com.bankly.core.data.util
 
 import android.util.Log
-import com.bankly.core.common.model.Result
+import com.bankly.core.sealed.Result
 import com.bankly.core.network.model.response.TokenNetworkResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first

@@ -1,9 +1,9 @@
 package com.bankly.core.network
 
-import com.bankly.core.network.model.AuthenticatedUser
-import com.bankly.core.network.model.ResultMessage
-import com.bankly.core.network.model.ResultStatus
-import com.bankly.core.network.model.WalletResult
+import com.bankly.core.network.model.result.AuthenticatedUserResult
+import com.bankly.core.network.model.result.MessageResult
+import com.bankly.core.network.model.result.StatusResult
+import com.bankly.core.network.model.result.WalletResult
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
@@ -23,19 +23,19 @@ interface IdentityServiceDataSource {
 
     suspend fun forgotPassCode(
         body: ForgotPassCodeRequestBody
-    ): NetworkResponse<ResultStatus>
+    ): NetworkResponse<StatusResult>
 
     suspend fun validateOtp(
         body: ValidateOtpRequestBody
-    ): NetworkResponse<ResultStatus>
+    ): NetworkResponse<StatusResult>
 
     suspend fun resetPassCode(
         body: ResetPassCodeRequestBody
-    ): NetworkResponse<ResultMessage>
+    ): NetworkResponse<MessageResult>
 
     suspend fun changePassCode(
         body: ChangePassCodeRequestBody
-    ): NetworkResponse<AuthenticatedUser>
+    ): NetworkResponse<AuthenticatedUserResult>
 
 }
 

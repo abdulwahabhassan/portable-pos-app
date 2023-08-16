@@ -12,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.common.model.State
+import com.bankly.core.sealed.State
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDetailRow
@@ -32,36 +34,51 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
-import com.bankly.feature.sendmoney.model.ConfirmTransactionDetails
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.TransactionType
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun ConfirmTransactionRoute(
     viewModel: ConfirmTransactionViewModel = hiltViewModel(),
-    confirmTransactionDetails: ConfirmTransactionDetails,
-    onConfirmationSuccess: () -> Unit,
+    transactionData: TransactionData,
+    onConfirmationSuccess: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     ConfirmTransactionScreen(
         screenState = screenState,
-        confirmTransactionDetails = confirmTransactionDetails,
-        onConfirmationSuccess = onConfirmationSuccess,
+        transactionData = transactionData,
         onBackPress = onBackPress,
         onCloseClick = onCloseClick,
         onUiEvent = { uiEvent ->
             viewModel.sendEvent(uiEvent)
         }
     )
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch {
+            viewModel.oneShotState.collectLatest { oneShotUiState ->
+                when (oneShotUiState) {
+                    is ConfirmTransactionScreenOneShotState.GoToTransactionProcessingScreen -> {
+                        onConfirmationSuccess(oneShotUiState.transactionData)
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
 internal fun ConfirmTransactionScreen(
     screenState: ConfirmTransactionScreenState,
-    confirmTransactionDetails: ConfirmTransactionDetails,
-    onConfirmationSuccess: () -> Unit,
+    transactionData: TransactionData,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
     onUiEvent: (ConfirmTransactionScreenEvent) -> Unit
@@ -103,7 +120,7 @@ internal fun ConfirmTransactionScreen(
         ) {
             item {
                 Column(modifier = Modifier.padding(horizontal = 32.dp)) {
-                    confirmTransactionDetails.toDetailsMap().filter { it.value.isNotEmpty() }
+                    transactionData.toDetailsMap().filter { it.value.isNotEmpty() }
                         .forEach { (label, value) ->
                             BanklyDetailRow(label = label, value = value)
                         }
@@ -174,12 +191,7 @@ internal fun ConfirmTransactionScreen(
                                 }
 
                                 PassCodeKey.DONE -> {
-//                                    onUiEvent(
-//                                        ConfirmTransactionScreenEvent.OnDoneClick(
-//                                            screenState.pin.joinToString(""),
-//                                        )
-//                                    )
-                                    onConfirmationSuccess()
+                                    onUiEvent(ConfirmTransactionScreenEvent.OnDoneClick(transactionData))
                                 }
 
                                 else -> {
@@ -223,18 +235,19 @@ private fun ConfirmTransactionScreenPreview() {
     BanklyTheme {
         ConfirmTransactionScreen(
             screenState = ConfirmTransactionScreenState(),
-            confirmTransactionDetails = ConfirmTransactionDetails(
+            transactionData = TransactionData(
+                TransactionType.BANK_TRANSFER_EXTERNAL,
                 "080999200291",
                 "Hassan Abdulwahab",
                 23000.00,
                 0.00,
                 0.00,
-                SendMoneyChannel.BANKLY_TO_OTHER,
                 "",
                 "",
+                "",
+                AccountNumberType.ACCOUNT_NUMBER,
                 ""
             ),
-            onConfirmationSuccess = {},
             onBackPress = {},
             onUiEvent = {},
             onCloseClick = {}

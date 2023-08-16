@@ -1,11 +1,11 @@
 package com.bankly.core.data.util
 
-import com.bankly.core.model.ChangePassCode
-import com.bankly.core.model.ExternalTransfer
-import com.bankly.core.model.ForgotPassCode
-import com.bankly.core.model.InternalTransfer
-import com.bankly.core.model.ResetPassCode
-import com.bankly.core.model.ValidateOtp
+import com.bankly.core.data.ChangePassCodeData
+import com.bankly.core.data.ExternalTransferData
+import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.InternalTransferData
+import com.bankly.core.data.ResetPassCodeData
+import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ExternalTransferRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
@@ -13,26 +13,26 @@ import com.bankly.core.network.model.request.InternalTransferRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
 
-fun ChangePassCode.asRequestBody() = ChangePassCodeRequestBody(
+fun ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
     serialNumber = serialNumber,
     oldPasscode = oldPasscode,
     newPasscode = newPasscode,
     confirmPasscode = confirmPasscode
 )
 
-fun ForgotPassCode.asRequestBody() = ForgotPassCodeRequestBody(
+fun ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
     phoneNumber = phoneNumber
 )
 
-fun ResetPassCode.asRequestBody() = ResetPassCodeRequestBody(
+fun ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
     username = username, password = password, confirmPassword = confirmPassword, code = code
 )
 
-fun ValidateOtp.asRequestBody() = ValidateOtpRequestBody(
+fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
     otp = otp, phoneNumber = phoneNumber
 )
 
-fun InternalTransfer.asRequestBody() = InternalTransferRequestBody(
+fun InternalTransferData.asRequestBody() = InternalTransferRequestBody(
     amount = amount,
     recipientAccount = recipientAccount,
     pin = pin,
@@ -43,7 +43,7 @@ fun InternalTransfer.asRequestBody() = InternalTransferRequestBody(
     deviceId = deviceId
 )
 
-fun ExternalTransfer.asRequestBody() = ExternalTransferRequestBody(
+fun ExternalTransferData.asRequestBody() = ExternalTransferRequestBody(
     accountName = accountName,
     accountNumber = accountNumber,
     bankId = bankId,

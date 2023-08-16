@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.bankly.core.model.AccountType
+import com.bankly.core.common.model.AccountType
 
 @Composable
 fun rememberPayWithCardState(

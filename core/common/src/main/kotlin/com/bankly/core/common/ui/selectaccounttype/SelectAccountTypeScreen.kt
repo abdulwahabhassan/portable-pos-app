@@ -19,7 +19,7 @@ import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyRowCheckBox
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.model.AccountType
+import com.bankly.core.common.model.AccountType
 
 @Composable
 fun SelectAccountTypeRoute(

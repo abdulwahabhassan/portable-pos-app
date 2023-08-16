@@ -1,7 +1,7 @@
 package com.bankly.core.data.util
 
 import com.bankly.core.network.model.response.NetworkResponse
-import com.bankly.core.common.model.Result
+import com.bankly.core.sealed.Result
 import com.bankly.core.network.model.response.TokenNetworkResponse
 
 fun <T> handleResponse(

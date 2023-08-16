@@ -8,7 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.sealed.Transaction
 
 fun NavGraphBuilder.sendMoneyNavGraph(
     onBackPress: () -> Unit
@@ -44,8 +46,10 @@ fun SendMoneyNavHost(
             onBackPress = onBackPress,
         )
         beneficiaryRoute(
-            onContinueClick = {
-                navHostController.navigateToConfirmTransactionRoute()
+            onContinueClick = { transactionData: TransactionData ->
+                navHostController.navigateToConfirmTransactionRoute(
+                    transactionData = transactionData
+                )
             },
             onBackPress = {
                 navHostController.popBackStack()
@@ -53,8 +57,8 @@ fun SendMoneyNavHost(
             onCloseClick = onBackPress
         )
         confirmTransactionRoute(
-            onConfirmationSuccess = {
-                navHostController.navigateToProcessTransactionRoute()
+            onConfirmationSuccess = { transactionData: TransactionData ->
+                navHostController.navigateToProcessTransactionRoute(transactionData = transactionData)
             },
             onBackPress = {
                 navHostController.popBackStack()
@@ -62,14 +66,20 @@ fun SendMoneyNavHost(
             onCloseClick = onBackPress,
         )
         processTransactionRoute(
-            onTransactionProcessed = {
-                navHostController.navigateToTransactionResponseRoute()
+            onSuccessfulTransaction = { transaction: Transaction ->
+                navHostController.navigateToTransactionSuccessRoute(transaction = transaction)
+            },
+            onFailedTransaction = { message: String ->
+                navHostController.navigateToTransactionFailedRoute(message = message)
             }
         )
-        transactionResponseRoute(
-            onViewTransactionDetailsClick = {
-                navHostController.navigateToTransactionDetailsRoute()
+        transactionSuccessRoute(
+            onViewTransactionDetailsClick = { transaction: Transaction ->
+                navHostController.navigateToTransactionDetailsRoute(transaction = transaction)
             },
+            onGoHomeClick = onBackPress
+        )
+        transactionFailedRoute(
             onGoHomeClick = onBackPress
         )
         transactionDetailsRoute(

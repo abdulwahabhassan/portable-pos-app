@@ -1,15 +1,21 @@
 package com.bankly.feature.paywithcard.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.bankly.core.common.ui.entercardpin.EnterCardPinRoute
 import com.bankly.core.common.ui.insertcard.InsertCardRoute
-import com.bankly.core.common.ui.processTransaction.ProcessTransactionRoute
+import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
-import com.bankly.core.common.ui.transactionresponse.TransactionResponseRoute
-import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.model.AccountType
+import com.bankly.core.common.model.AccountType
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.transactionfailed.TransactionFailedRoute
+import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
+import com.bankly.core.sealed.Transaction
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 const val payWithCardNavGraphRoute = "pay_with_card_graph"
 internal const val payWithCardRoute = payWithCardNavGraphRoute.plus("/pay_with_card_route")
@@ -17,7 +23,8 @@ internal const val selectAccountTypeRoute = payWithCardRoute.plus("/select_accou
 internal const val insertCardRoute = payWithCardRoute.plus("/insert_card_screen")
 internal const val enterPinRoute = payWithCardRoute.plus("/enter_pin_screen")
 internal const val processTransactionRoute = payWithCardRoute.plus("/process_transaction_screen")
-internal const val transactionResponseRoute = payWithCardRoute.plus("/transaction_response_screen")
+internal const val transactionSuccessRoute = payWithCardRoute.plus("/transaction_success_screen")
+internal const val transactionFailedRoute = payWithCardRoute.plus("/transaction_failed_screen")
 internal const val transactionDetailsRoute = payWithCardRoute.plus("/transaction_details_screen")
 
 internal fun NavGraphBuilder.selectAccountTypeRoute(
@@ -61,26 +68,60 @@ internal fun NavGraphBuilder.enterCardPinRoute(
 }
 
 internal fun NavGraphBuilder.processTransactionRoute(
-    onTransactionProcessed: () -> Unit,
+    onSuccessfulTransaction: () -> Unit,
+    onFailedTransaction: (String) -> Unit
 ) {
-    composable(route = processTransactionRoute) {
-        ProcessTransactionRoute(
-            onTransactionProcessed = onTransactionProcessed,
+    composable(
+        route = "$processTransactionRoute/{$transactionDetailsArg}",
+        arguments = listOf(
+            navArgument(transactionDetailsArg) { type = NavType.StringType },
+        )
+    ) {
+        it.arguments?.getString(transactionDetailsArg)?.let { transactionData: String ->
+            val data: TransactionData = Json.decodeFromString(transactionData)
+            ProcessTransactionRoute(
+                transactionData = data,
+                onTransactionSuccess = { onSuccessfulTransaction() },
+                onFailedTransaction = onFailedTransaction
+            )
+        }
+    }
+}
+
+internal fun NavGraphBuilder.transactionSuccessRoute(
+    onViewTransactionDetailsClick: () -> Unit,
+    onGoHomeClick: () -> Unit
+) {
+    composable(route = transactionSuccessRoute) {
+        TransactionSuccessRoute(
+            transaction = Transaction.External(
+                "Hassan Abdulwahab",
+                "0428295437",
+                "GTBANK",
+                100.00,
+                "177282",
+                "08123939291",
+                1,
+                18,
+                "Transfer Completed Successfully",
+                "0428094437",
+                "Main",
+                "2023-08-15T21:14:40.5225813Z",
+                "", "Successful",
+            ),
+            onViewTransactionDetailsClick = { onViewTransactionDetailsClick() },
+            onGoToHome = onGoHomeClick,
+            message = ""
         )
     }
 }
 
-internal fun NavGraphBuilder.transactionResponseRoute(
-    onViewTransactionDetailsClick: () -> Unit,
+internal fun NavGraphBuilder.transactionFailedRoute(
     onGoHomeClick: () -> Unit
 ) {
-    composable(route = transactionResponseRoute) {
-        TransactionResponseRoute(
-            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-            onGoHomeClick = onGoHomeClick,
-            title = "Transaction Successful",
-            subTitle = "Your payment was successful",
-            icon = BanklyIcons.Successful
+    composable(route = transactionFailedRoute) {
+        TransactionFailedRoute(
+            onGoToHome = onGoHomeClick,
         )
     }
 }
@@ -93,6 +134,21 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
 ) {
     composable(route = transactionDetailsRoute) {
         TransactionDetailsRoute(
+            transaction = Transaction.External(
+                "Hassan Abdulwahab",
+                "0428295437",
+                "GTBANK",
+                100.00,
+                "177282",
+                "08123939291",
+                1,
+                18,
+                "Transfer Completed Successfully",
+                "0428094437",
+                "Main",
+                "2023-08-15T21:14:40.5225813Z",
+                "", "Successful",
+            ),
             onShareClick = onShareClick,
             onSmsClick = onSmsClick,
             onLogComplaintClick = onLogComplaintClick,

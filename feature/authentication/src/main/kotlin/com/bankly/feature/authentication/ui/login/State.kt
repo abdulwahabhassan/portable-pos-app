@@ -1,9 +1,9 @@
 package com.bankly.feature.authentication.ui.login
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.common.model.State
+import com.bankly.core.sealed.State
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.model.Token
+import com.bankly.core.entity.Token
 
 data class LoginScreenState(
     val phoneNumberTFV: TextFieldValue = TextFieldValue(text = "08167039661"),

@@ -2,18 +2,18 @@ package com.bankly.feature.sendmoney.ui.beneficiary
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.State
-import com.bankly.core.common.model.onFailure
-import com.bankly.core.common.model.onLoading
-import com.bankly.core.common.model.onReady
+import com.bankly.core.sealed.State
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.core.model.Bank
-import com.bankly.core.model.NameEnquiry
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.model.Type
+import com.bankly.core.entity.Bank
+import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.AccountNumberType
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -64,8 +64,8 @@ abstract class BaseBeneficiaryViewModel constructor(
 
     protected suspend fun doNameEnquiry(number: String, bankId: Long?, channel: SendMoneyChannel) {
         Log.d("debug doNameEnquiry", "doNameEnquiry called")
-        when (uiState.value.type) {
-            Type.ACCOUNT_NUMBER -> {
+        when (uiState.value.accountNumberType) {
+            AccountNumberType.ACCOUNT_NUMBER -> {
                 when (channel) {
                     SendMoneyChannel.BANKLY_TO_OTHER -> {
                         validateAccountNumber(
@@ -80,7 +80,7 @@ abstract class BaseBeneficiaryViewModel constructor(
                 }
             }
 
-            Type.PHONE_NUMBER -> {
+            AccountNumberType.PHONE_NUMBER -> {
                 validatePhoneNumber(phoneNumber = number)
             }
         }
@@ -106,7 +106,7 @@ abstract class BaseBeneficiaryViewModel constructor(
                 resource.onReady { nameEnquiry: NameEnquiry ->
                     Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
                     setUiState {
-                        copy(accountOrPhoneValidationState = State.Success(nameEnquiry), accountOrPhoneFeedBack = nameEnquiry.accountName)
+                        copy(accountOrPhoneValidationState = State.Success(nameEnquiry), accountOrPhoneFeedBack = nameEnquiry.accountName, isAccountOrPhoneError = false)
                     }
                 }
                 resource.onFailure { message ->
@@ -144,7 +144,7 @@ abstract class BaseBeneficiaryViewModel constructor(
             resource.onReady { nameEnquiry: NameEnquiry ->
                 Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
                 setUiState {
-                    copy(accountOrPhoneValidationState = State.Success(nameEnquiry), accountOrPhoneFeedBack = nameEnquiry.accountName)
+                    copy(accountOrPhoneValidationState = State.Success(nameEnquiry), accountOrPhoneFeedBack = nameEnquiry.accountName, isAccountOrPhoneError = false)
                 }
             }
             resource.onFailure { message ->

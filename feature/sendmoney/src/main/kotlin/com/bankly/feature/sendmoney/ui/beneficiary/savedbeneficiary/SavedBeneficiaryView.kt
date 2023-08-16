@@ -37,7 +37,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.model.State
 import com.bankly.core.common.util.DecimalFormatter
 import com.bankly.core.common.util.DecimalInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyClickableText
@@ -47,8 +46,8 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.model.Type
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.AccountNumberType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 import com.bankly.core.designsystem.R as DesignRes
 
@@ -57,7 +56,7 @@ import com.bankly.core.designsystem.R as DesignRes
 fun SavedBeneficiaryView(
     screenState: BeneficiaryScreenState,
     savedBeneficiaries: List<SavedBeneficiary>,
-    selectedType: Type,
+    selectedAccountNumberType: AccountNumberType,
     onBankNameDropDownIconClick: () -> Unit,
     onEnterPhoneOrAccountNumber: (TextFieldValue) -> Unit,
     onEnterNarration: (TextFieldValue) -> Unit,
@@ -137,15 +136,15 @@ fun SavedBeneficiaryView(
                             onEnterPhoneOrAccountNumber(textFieldValue)
                         },
                         placeholderText = stringResource(
-                            when (selectedType) {
-                                Type.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
-                                Type.PHONE_NUMBER -> R.string.msg_enter_phone_number
+                            when (selectedAccountNumberType) {
+                                AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
+                                AccountNumberType.PHONE_NUMBER -> R.string.msg_enter_phone_number
                             }
                         ),
                         labelText = stringResource(
-                            when (selectedType) {
-                                Type.ACCOUNT_NUMBER -> R.string.msg_account_number_label
-                                Type.PHONE_NUMBER -> R.string.msg_phone_number_label
+                            when (selectedAccountNumberType) {
+                                AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_account_number_label
+                                AccountNumberType.PHONE_NUMBER -> R.string.msg_phone_number_label
                             }
                         ),
                         keyboardOptions = KeyboardOptions.Default.copy(
@@ -210,7 +209,7 @@ private fun SavedBeneficiaryPreview() {
         SavedBeneficiaryView(
             screenState = BeneficiaryScreenState(),
             savedBeneficiaries = SavedBeneficiary.mockOtherBanks(),
-            selectedType = Type.ACCOUNT_NUMBER,
+            selectedAccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
             onBankNameDropDownIconClick = {},
             onEnterPhoneOrAccountNumber = {},
             onEnterNarration = {},

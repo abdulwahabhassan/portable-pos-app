@@ -1,8 +1,8 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.common.di.IODispatcher
-import com.bankly.core.common.model.Resource
-import com.bankly.core.common.model.Result
+import com.bankly.core.data.di.IODispatcher
+import com.bankly.core.sealed.Resource
+import com.bankly.core.sealed.Result
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asBank
 import com.bankly.core.data.util.asNameEnquiry
@@ -10,15 +10,16 @@ import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.domain.repository.TransferRepository
-import com.bankly.core.model.Bank
-import com.bankly.core.model.ExternalTransfer
-import com.bankly.core.model.InternalTransfer
-import com.bankly.core.model.NameEnquiry
-import com.bankly.core.network.model.BankResult
-import com.bankly.core.network.model.NameEnquiryResult
+import com.bankly.core.entity.Bank
+import com.bankly.core.data.ExternalTransferData
+import com.bankly.core.data.InternalTransferData
+import com.bankly.core.data.util.asExternalTransaction
+import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.TransferService
+import com.bankly.core.sealed.Transaction
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -35,8 +36,8 @@ class DefaultTransferRepository @Inject constructor(
 ) : TransferRepository {
     override suspend fun performExternalTransfer(
         token: String,
-        body: ExternalTransfer
-    ): Flow<Resource<Any>> = flow {
+        body: ExternalTransferData
+    ): Flow<Resource<Transaction.External>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
@@ -51,14 +52,14 @@ class DefaultTransferRepository @Inject constructor(
                 }
             ))) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asExternalTransaction()))
         }
     }
 
 
     override suspend fun performInternalTransfer(
         token: String,
-        body: InternalTransfer
+        body: InternalTransferData
     ): Flow<Resource<Any>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(

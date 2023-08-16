@@ -1,14 +1,14 @@
 package com.bankly.feature.authentication.ui.recoverpasscode
 
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.State
-import com.bankly.core.common.model.onFailure
-import com.bankly.core.common.model.onLoading
-import com.bankly.core.common.model.onReady
+import com.bankly.core.sealed.State
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import com.bankly.core.common.util.Validator.isPhoneNumberValid
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
-import com.bankly.core.model.ForgotPassCode
+import com.bankly.core.data.ForgotPassCodeData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
@@ -45,7 +45,7 @@ class RecoverPassCodeViewModel @Inject constructor(
     }
 
     private suspend fun recoverPassCode(phoneNumber: String) {
-        forgotPassCodeUseCase(body = ForgotPassCode(phoneNumber = phoneNumber))
+        forgotPassCodeUseCase(body = ForgotPassCodeData(phoneNumber = phoneNumber))
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(recoverPassCodeState = State.Loading) }

@@ -1,8 +1,8 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.common.di.IODispatcher
-import com.bankly.core.common.model.Resource
-import com.bankly.core.common.model.Result
+import com.bankly.core.data.di.IODispatcher
+import com.bankly.core.sealed.Resource
+import com.bankly.core.sealed.Result
 import com.bankly.core.data.util.asMessage
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.asStatus
@@ -15,15 +15,15 @@ import com.bankly.core.data.util.handleResponse
 import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.data.util.handleTokenResponse
 import com.bankly.core.domain.repository.UserRepository
-import com.bankly.core.model.ChangePassCode
-import com.bankly.core.model.ForgotPassCode
-import com.bankly.core.model.Message
-import com.bankly.core.model.ResetPassCode
-import com.bankly.core.model.Status
-import com.bankly.core.model.Token
-import com.bankly.core.model.User
-import com.bankly.core.model.UserWallet
-import com.bankly.core.model.ValidateOtp
+import com.bankly.core.data.ChangePassCodeData
+import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.entity.Message
+import com.bankly.core.data.ResetPassCodeData
+import com.bankly.core.entity.Status
+import com.bankly.core.entity.Token
+import com.bankly.core.entity.User
+import com.bankly.core.entity.UserWallet
+import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.network.retrofit.service.IdentityService
 import com.bankly.core.network.retrofit.service.WalletService
 import javax.inject.Inject
@@ -57,7 +57,7 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun forgotPassCode(
-        body: ForgotPassCode
+        body: ForgotPassCodeData
     ): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
@@ -72,7 +72,7 @@ class DefaultUserRepository @Inject constructor(
         }
     }
 
-    override suspend fun validateOtp(body: ValidateOtp): Flow<Resource<Status>> = flow {
+    override suspend fun validateOtp(body: ValidateOtpData): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
@@ -88,7 +88,7 @@ class DefaultUserRepository @Inject constructor(
 
 
     override suspend fun resetPassCode(
-        body: ResetPassCode
+        body: ResetPassCodeData
     ): Flow<Resource<Message>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
@@ -104,7 +104,7 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun changePassCode(
-        body: ChangePassCode
+        body: ChangePassCodeData
     ): Flow<Resource<User>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(

@@ -2,10 +2,10 @@ package com.bankly.feature.authentication.ui.login
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.State
-import com.bankly.core.common.model.onFailure
-import com.bankly.core.common.model.onLoading
-import com.bankly.core.common.model.onReady
+import com.bankly.core.sealed.State
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import com.bankly.core.common.util.Validator.isPhoneNumberValid
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore

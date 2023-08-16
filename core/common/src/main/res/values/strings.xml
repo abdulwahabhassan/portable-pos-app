@@ -13,4 +13,6 @@
     <string name="desc_delete_icon">Delete icon</string>
     <string name="title_commercial_banks">Commercial banks</string>
     <string name="title_other_banks">Other banks</string>
+    <string name="msg_transaction_successful">Transaction Successful</string>
+    <string name="msg_transaction_failed">Transaction Failed</string>
 </resources>

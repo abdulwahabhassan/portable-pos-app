@@ -27,33 +27,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.R
+import com.bankly.core.common.util.Formatter
 import com.bankly.core.designsystem.component.BanklyDetailRow
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.model.TransactionDetails
+import com.bankly.core.sealed.Transaction
 
 @Composable
 fun TransactionDetailsRoute(
+    transaction: Transaction,
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit,
 ) {
     TransactionDetailsScreen(
+        transaction = transaction,
         onShareClick = onShareClick,
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
         onGoToHomeClick = onGoToHomeClick
     )
 }
+
 @Composable
 fun TransactionDetailsScreen(
+    transaction: Transaction,
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
@@ -97,8 +103,11 @@ fun TransactionDetailsScreen(
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         )
-                        Text(text = "₦20,000.00", style = MaterialTheme.typography.titleLarge)
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = Formatter.formatAmount(transaction.amt, true),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
                         val dottedLineColor = MaterialTheme.colorScheme.onPrimaryContainer
                         Canvas(
                             Modifier
@@ -112,24 +121,15 @@ fun TransactionDetailsScreen(
                                 pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
                             )
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        TransactionDetails(
-                            "Card Payment",
-                            "Successful",
-                            "Approved",
-                            "P2683003172",
-                            "MasterCard",
-                            "Josh Osazuwa",
-                            "8938387373820351",
-                            "04-05-2023 12:34:43",
-                            "00",
-                            "67237882",
-                            "8987",
-                            "₦20,000.00",
-                            ""
-                        ).toDetailsMap().filter { it.value.isNotEmpty() }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        transaction.toDetailsMap().filter { it.value.isNotEmpty() }
                             .forEach { (label, value) ->
-                                BanklyDetailRow(label = label, value = value)
+                                BanklyDetailRow(
+                                    label = label,
+                                    value = value,
+                                    labelStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
+                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium)
+                                )
                             }
                     }
 
@@ -202,6 +202,21 @@ fun TransactionDetailsScreen(
 fun TransactionDetailsScreenPreview() {
     BanklyTheme {
         TransactionDetailsScreen(
+            transaction = Transaction.External(
+                "Hassan Abdulwahab",
+                "0428295437",
+                "GTBANK",
+                100.00,
+                "177282",
+                "08123939291",
+                1,
+                18,
+                "Transfer Completed Successfully",
+                "0428094437",
+                "Main",
+                "2023-08-15T21:14:40.5225813Z",
+                "", "Successful",
+            ),
             onShareClick = {},
             onSmsClick = {},
             onLogComplaintClick = {},

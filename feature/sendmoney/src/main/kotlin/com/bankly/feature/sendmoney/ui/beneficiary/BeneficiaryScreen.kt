@@ -27,11 +27,12 @@ import com.bankly.core.common.ui.view.BankSearchView
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.model.Bank
+import com.bankly.core.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
+import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.feature.sendmoney.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBaseBeneficiaryViewModel
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryView
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBaseBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryView
@@ -41,11 +42,11 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun BeneficiaryRoute(
-    newBeneficiaryViewModel: NewBaseBeneficiaryViewModel = hiltViewModel(),
+    newBeneficiaryViewModel: NewBeneficiaryViewModel = hiltViewModel(),
     savedBeneficiaryViewModel: SavedBaseBeneficiaryViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
     sendMoneyChannel: SendMoneyChannel,
-    onContinueClick: () -> Unit,
+    onContinueClick: (TransactionData) -> Unit,
     onCloseClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -86,13 +87,12 @@ internal fun BeneficiaryRoute(
             newBeneficiaryViewModel.oneShotState.collectLatest { oneShotUiState ->
                 when (oneShotUiState) {
                     is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
-                        onContinueClick()
+                        onContinueClick(oneShotUiState.transactionData)
                     }
                 }
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -185,11 +185,11 @@ fun BeneficiaryScreen(
                             onTypeSelected = { selectedType ->
                                 onNewBeneficiaryUiEvent(
                                     BeneficiaryScreenEvent.OnTypeSelected(
-                                        typeTFV = newBeneficiaryScreenState.typeTFV.copy(text = selectedType.title),
+                                        typeTFV = newBeneficiaryScreenState.accountNumberTypeTFV.copy(text = selectedType.title),
                                     )
                                 )
                             },
-                            selectedType = newBeneficiaryScreenState.type,
+                            selectedAccountNumberType = newBeneficiaryScreenState.accountNumberType,
                             onBankNameDropDownIconClick = {
                                 coroutineScope.launch {
                                     bottomSheetScaffoldState.bottomSheetState.expand()
@@ -225,7 +225,7 @@ fun BeneficiaryScreen(
                                 SendMoneyChannel.BANKLY_TO_BANKLY -> SavedBeneficiary.mockBanklyBank()
                             },
                             channel = channel,
-                            selectedType = savedBeneficiaryScreenState.type,
+                            selectedAccountNumberType = savedBeneficiaryScreenState.accountNumberType,
                             onBankNameDropDownIconClick = {
                                 coroutineScope.launch {
                                     bottomSheetScaffoldState.bottomSheetState.expand()

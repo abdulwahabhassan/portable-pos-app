@@ -17,6 +17,7 @@ class BanklyCoreConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
                 apply("org.jetbrains.kotlin.kapt")
                 apply("dagger.hilt.android.plugin")
+                apply("kotlinx-serialization")
             }
             configureToolChain()
             extensions.configure<LibraryExtension> {
@@ -26,6 +27,7 @@ class BanklyCoreConventionPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
                 add("implementation", libs.findLibrary("kotlinx.datetime").get())
+                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
                 add("implementation", libs.findLibrary("hilt.android").get())
                 add("kapt", libs.findLibrary("hilt.compiler").get())
                 add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())

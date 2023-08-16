@@ -1,9 +1,10 @@
 package com.bankly.core.network.retrofit.service
 
-import com.bankly.core.network.model.BankResult
-import com.bankly.core.network.model.NameEnquiryResult
+import com.bankly.core.network.model.result.BankResult
+import com.bankly.core.network.model.result.NameEnquiryResult
 import com.bankly.core.network.model.request.ExternalTransferRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
+import com.bankly.core.network.model.result.TransactionResult
 import kotlinx.serialization.Serializable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ interface FundTransferService {
     suspend fun processExternalTransfer(
         @Header("Authorization") token: String,
         @Body body: ExternalTransferRequestBody
-    ): NetworkResponse<Any>
+    ): NetworkResponse<TransactionResult>
 
     @POST("get/FundTransfer/NameEnquiry/{accountNumber}/{bankId}")
     suspend fun performNameEnquiry(

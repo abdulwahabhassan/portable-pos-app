@@ -10,7 +10,7 @@ import com.bankly.feature.authentication.ui.pin.ConfirmPinScreen
 import com.bankly.feature.authentication.ui.pin.SetPinScreen
 import com.bankly.feature.authentication.ui.recoverpasscode.RecoverPassCodeRoute
 import com.bankly.feature.authentication.ui.setnewpasscode.SetNewPassCodeRoute
-import com.bankly.feature.authentication.ui.success.SuccessfulRoute
+import com.bankly.feature.authentication.ui.success.SuccessRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
 
 const val authenticationNavGraphRoute = "authentication_nav_graph"
@@ -106,7 +106,7 @@ internal fun NavGraphBuilder.successfulRoute(
         )
     ) {
         val message = it.arguments?.getString(successMessageArg)
-        SuccessfulRoute(
+        SuccessRoute(
             message = message ?: "Passcode Reset Successfully",
             subMessage = "You have successfully reset your account passcode. Login to continue",
             buttonText = "Back to login",
