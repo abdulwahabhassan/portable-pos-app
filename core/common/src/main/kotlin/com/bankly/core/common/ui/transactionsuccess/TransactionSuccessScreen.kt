@@ -1,6 +1,5 @@
 package com.bankly.core.common.ui.transactionsuccess
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,19 +26,19 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 
 
 @Composable
 fun TransactionSuccessRoute(
-    transaction: Transaction,
+    transactionReceipt: TransactionReceipt,
     message: String,
-    onViewTransactionDetailsClick: (Transaction) -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
     onGoToHome: () -> Unit
 ) {
     TransactionSuccessScreen(
         message = message,
-        onViewTransactionDetailsClick = { onViewTransactionDetailsClick(transaction) },
+        onViewTransactionDetailsClick = { onViewTransactionDetailsClick(transactionReceipt) },
         onGoToHome = onGoToHome
     )
 }

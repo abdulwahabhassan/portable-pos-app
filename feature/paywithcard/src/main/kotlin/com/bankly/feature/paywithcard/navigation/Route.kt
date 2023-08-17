@@ -13,7 +13,7 @@ import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
@@ -68,20 +68,20 @@ internal fun NavGraphBuilder.enterCardPinRoute(
 }
 
 internal fun NavGraphBuilder.processTransactionRoute(
-    onSuccessfulTransaction: () -> Unit,
+    onSuccessfulTransaction: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit
 ) {
     composable(
-        route = "$processTransactionRoute/{$transactionDetailsArg}",
+        route = "$processTransactionRoute/{$transactionDataArg}",
         arguments = listOf(
-            navArgument(transactionDetailsArg) { type = NavType.StringType },
+            navArgument(transactionDataArg) { type = NavType.StringType },
         )
     ) {
-        it.arguments?.getString(transactionDetailsArg)?.let { transactionData: String ->
+        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
             val data: TransactionData = Json.decodeFromString(transactionData)
             ProcessTransactionRoute(
                 transactionData = data,
-                onTransactionSuccess = { onSuccessfulTransaction() },
+                onTransactionSuccess = onSuccessfulTransaction,
                 onFailedTransaction = onFailedTransaction
             )
         }
@@ -89,40 +89,42 @@ internal fun NavGraphBuilder.processTransactionRoute(
 }
 
 internal fun NavGraphBuilder.transactionSuccessRoute(
-    onViewTransactionDetailsClick: () -> Unit,
-    onGoHomeClick: () -> Unit
+    onGoHomeClick: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
-    composable(route = transactionSuccessRoute) {
-        TransactionSuccessRoute(
-            transaction = Transaction.BankTransfer(
-                "Hassan Abdulwahab",
-                "0428295437",
-                "GTBANK",
-                100.00,
-                "177282",
-                "08123939291",
-                1,
-                18,
-                "Transfer Completed Successfully",
-                "0428094437",
-                "Main",
-                "2023-08-15T21:14:40.5225813Z",
-                "", "Successful",
-            ),
-            onViewTransactionDetailsClick = { onViewTransactionDetailsClick() },
-            onGoToHome = onGoHomeClick,
-            message = ""
+    composable(
+        route = "$transactionSuccessRoute/{$transactionReceiptArg}",
+        arguments = listOf(
+            navArgument(transactionReceiptArg) { type = NavType.StringType },
         )
+    ) {
+        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
+            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+            TransactionSuccessRoute(
+                transactionReceipt = trans,
+                message = trans.msg,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick,
+                onGoToHome = onGoHomeClick,
+            )
+        }
     }
 }
 
 internal fun NavGraphBuilder.transactionFailedRoute(
-    onGoHomeClick: () -> Unit
+    onGoHomeClick: () -> Unit,
 ) {
-    composable(route = transactionFailedRoute) {
-        TransactionFailedRoute(
-            onGoToHome = onGoHomeClick,
+    composable(
+        route = "$transactionFailedRoute/{$messageArg}",
+        arguments = listOf(
+            navArgument(messageArg) { type = NavType.StringType },
         )
+    ) {
+        it.arguments?.getString(messageArg)?.let { message: String ->
+            TransactionFailedRoute(
+                onGoToHome = onGoHomeClick,
+                message = message
+            )
+        }
     }
 }
 
@@ -132,27 +134,22 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit
 ) {
-    composable(route = transactionDetailsRoute) {
-        TransactionDetailsRoute(
-            transaction = Transaction.BankTransfer(
-                "Hassan Abdulwahab",
-                "0428295437",
-                "GTBANK",
-                100.00,
-                "177282",
-                "08123939291",
-                1,
-                18,
-                "Transfer Completed Successfully",
-                "0428094437",
-                "Main",
-                "2023-08-15T21:14:40.5225813Z",
-                "", "Successful",
-            ),
-            onShareClick = onShareClick,
-            onSmsClick = onSmsClick,
-            onLogComplaintClick = onLogComplaintClick,
-            onGoToHomeClick = onGoToHomeClick
+    composable(
+        route = "$transactionDetailsRoute/{$transactionReceiptArg}",
+        arguments = listOf(
+            navArgument(transactionReceiptArg) { type = NavType.StringType },
         )
+    ) {
+        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
+            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+            TransactionDetailsRoute(
+                transactionReceipt = trans,
+                onShareClick = onShareClick,
+                onSmsClick = onSmsClick,
+                onLogComplaintClick = onLogComplaintClick,
+                onGoToHomeClick = onGoToHomeClick
+            )
+        }
+
     }
 }

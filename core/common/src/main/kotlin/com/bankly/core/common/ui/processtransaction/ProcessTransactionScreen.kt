@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 fun ProcessTransactionRoute(
     viewModel: ProcessTransactionViewModel = hiltViewModel(),
     transactionData: TransactionData,
-    onTransactionSuccess: (Transaction) -> Unit,
+    onTransactionSuccess: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -48,7 +48,7 @@ fun ProcessTransactionRoute(
                         onFailedTransaction(oneShotUiState.message)
                     }
                     is ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen -> {
-                        onTransactionSuccess(oneShotUiState.transaction)
+                        onTransactionSuccess(oneShotUiState.transactionReceipt)
                     }
                 }
             }

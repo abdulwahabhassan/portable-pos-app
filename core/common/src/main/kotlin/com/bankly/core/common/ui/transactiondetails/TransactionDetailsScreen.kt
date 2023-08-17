@@ -39,18 +39,18 @@ import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 
 @Composable
 fun TransactionDetailsRoute(
-    transaction: Transaction,
+    transactionReceipt: TransactionReceipt,
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit,
 ) {
     TransactionDetailsScreen(
-        transaction = transaction,
+        transactionReceipt = transactionReceipt,
         onShareClick = onShareClick,
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
@@ -60,7 +60,7 @@ fun TransactionDetailsRoute(
 
 @Composable
 fun TransactionDetailsScreen(
-    transaction: Transaction,
+    transactionReceipt: TransactionReceipt,
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
@@ -105,7 +105,7 @@ fun TransactionDetailsScreen(
                             )
                         )
                         Text(
-                            text = Formatter.formatAmount(transaction.amt, true),
+                            text = Formatter.formatAmount(transactionReceipt.amt, true),
                             style = MaterialTheme.typography.titleLarge
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -123,7 +123,7 @@ fun TransactionDetailsScreen(
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        transaction.toDetailsMap().filter { it.value.isNotEmpty() }
+                        transactionReceipt.toDetailsMap().filter { it.value.isNotEmpty() }
                             .forEach { (label, value) ->
                                 BanklyDetailRow(
                                     label = label,
@@ -203,7 +203,7 @@ fun TransactionDetailsScreen(
 fun TransactionDetailsScreenPreview() {
     BanklyTheme {
         TransactionDetailsScreen(
-            transaction = Transaction.BankTransfer(
+            transactionReceipt = TransactionReceipt.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",

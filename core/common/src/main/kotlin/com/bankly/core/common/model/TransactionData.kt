@@ -61,4 +61,22 @@ data class TransactionData(
             otp = pin,
         )
     }
+
+    companion object {
+        fun mockTransactionData(): TransactionData {
+            return TransactionData(
+                TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
+                "080999200291",
+                "Hassan Abdulwahab",
+                23000.00,
+                0.00,
+                0.00,
+                "",
+                "",
+                "",
+                AccountNumberType.ACCOUNT_NUMBER,
+                ""
+            )
+        }
+    }
 }

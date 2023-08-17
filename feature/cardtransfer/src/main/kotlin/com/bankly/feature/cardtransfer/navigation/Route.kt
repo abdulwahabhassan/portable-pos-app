@@ -13,7 +13,7 @@ import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.cardtransfer.ui.recipientdetails.EnterRecipientDetailsRoute
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -108,7 +108,7 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
 ) {
     composable(route = transactionSuccessRoute) {
         TransactionSuccessRoute(
-            transaction = Transaction.BankTransfer(
+            transactionReceipt = TransactionReceipt.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",
@@ -150,7 +150,7 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
 ) {
     composable(route = transactionDetailsRoute) {
         TransactionDetailsRoute(
-            transaction = Transaction.BankTransfer(
+            transactionReceipt = TransactionReceipt.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",

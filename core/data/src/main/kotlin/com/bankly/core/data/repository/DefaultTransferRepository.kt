@@ -19,7 +19,7 @@ import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.TransferService
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.Result
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class DefaultTransferRepository @Inject constructor(
     override suspend fun performTransferToAccountNumber(
         token: String,
         body: AccountNumberTransferData
-    ): Flow<Resource<Transaction.BankTransfer>> = flow {
+    ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(
@@ -60,7 +60,7 @@ class DefaultTransferRepository @Inject constructor(
     override suspend fun performPhoneNumberTransfer(
         token: String,
         body: PhoneNumberTransferData
-    ): Flow<Resource<Transaction.BankTransfer>> = flow {
+    ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleResponse(
             requestResult = handleRequest(

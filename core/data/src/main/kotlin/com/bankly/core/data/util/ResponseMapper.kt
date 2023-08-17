@@ -16,7 +16,7 @@ import com.bankly.core.network.model.result.WalletResult
 import com.bankly.core.network.model.response.TokenNetworkResponse
 import com.bankly.core.network.model.result.AgentResult
 import com.bankly.core.network.model.result.TransactionResult
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 
 fun AuthenticatedUserResult.asUser() = User(
     userId = userId ?: "",
@@ -66,7 +66,7 @@ fun AgentResult.asNameEnquiry() = NameEnquiry(
     bankName = bankName ?: ""
 )
 
-fun TransactionResult.asBankTransfer() = Transaction.BankTransfer(
+fun TransactionResult.asBankTransfer() = TransactionReceipt.BankTransfer(
     phoneNumber = phoneNumber,
     amount = amount,
     reference = reference,

@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.sendMoneyNavGraph(
     onBackPress: () -> Unit,
@@ -33,7 +33,7 @@ fun NavGraphBuilder.sendMoneyNavGraph(
 }
 
 @Composable
-internal fun SendMoneyNavHost(
+private fun SendMoneyNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit
@@ -71,16 +71,16 @@ internal fun SendMoneyNavHost(
             onForgotPinClick = onForgotPinClick
         )
         processTransactionRoute(
-            onSuccessfulTransaction = { transaction: Transaction ->
-                navHostController.navigateToTransactionSuccessRoute(transaction = transaction)
+            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
             },
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
             }
         )
         transactionSuccessRoute(
-            onViewTransactionDetailsClick = { transaction: Transaction ->
-                navHostController.navigateToTransactionDetailsRoute(transaction = transaction)
+            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
             onGoHomeClick = onBackPress
         )

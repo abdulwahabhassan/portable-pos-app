@@ -13,10 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
+import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
@@ -50,7 +50,7 @@ fun NavGraphBuilder.payWithCardNavGraph(
 }
 
 @Composable
-fun PayWithCardNavHost(
+private fun PayWithCardNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onAccountSelected: (AccountType) -> Unit
@@ -79,19 +79,8 @@ fun PayWithCardNavHost(
         enterCardPinRoute(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
-                    TransactionData(
-                        TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
-                        "080999200291",
-                        "Hassan Abdulwahab",
-                        23000.00,
-                        0.00,
-                        0.00,
-                        "",
-                        "",
-                        "",
-                        AccountNumberType.ACCOUNT_NUMBER,
-                        ""
-                    )
+                    TransactionData.mockTransactionData()
+                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL)
                 )
             },
             onBackPress = {
@@ -100,21 +89,21 @@ fun PayWithCardNavHost(
             onCloseClick = onBackPress
         )
         processTransactionRoute(
-            onSuccessfulTransaction = {
-                navHostController.navigateToTransactionSuccessRoute()
+            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
             },
-            onFailedTransaction = {
-                navHostController.navigateToTransactionFailedRoute()
+            onFailedTransaction = { message: String ->
+                navHostController.navigateToTransactionFailedRoute(message = message)
             }
         )
         transactionSuccessRoute(
-            onViewTransactionDetailsClick = {
-                navHostController.navigateToTransactionDetailsRoute()
+            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
             onGoHomeClick = onBackPress
         )
         transactionFailedRoute(
-            onGoHomeClick = {}
+            onGoHomeClick = onBackPress
         )
         transactionDetailsRoute(
             onShareClick = { },

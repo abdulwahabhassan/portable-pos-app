@@ -5,7 +5,7 @@ import com.bankly.core.common.model.TransactionType
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.TransferUseCase
-import com.bankly.core.sealed.Transaction
+import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,16 +24,16 @@ class ProcessTransactionViewModel @Inject constructor(
     override suspend fun handleUiEvents(event: ProcessTransactionScreenEvent) {
         when (event) {
             is ProcessTransactionScreenEvent.ProcessTransaction -> {
-                when(event.transactionData.transactionType) {
+                when (event.transactionData.transactionType) {
                     TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER -> {
                         transferUseCase.performTransferToAccountNumber(
                             userPreferencesDataStore.data().token,
                             event.transactionData.toAccountNumberTransferData()
                         ).onEach { resource ->
-                            resource.onReady { transaction: Transaction ->
+                            resource.onReady { transactionReceipt: TransactionReceipt ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                        transaction = transaction
+                                        transactionReceipt = transactionReceipt
                                     )
                                 )
                             }
@@ -53,15 +53,16 @@ class ProcessTransactionViewModel @Inject constructor(
                             )
                         }.launchIn(viewModelScope)
                     }
+
                     TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER -> {
                         transferUseCase.performPhoneNumberTransfer(
                             userPreferencesDataStore.data().token,
                             event.transactionData.toPhoneNumberTransferData()
                         ).onEach { resource ->
-                            resource.onReady { transaction: Transaction ->
+                            resource.onReady { transactionReceipt: TransactionReceipt ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                        transaction = transaction
+                                        transactionReceipt = transactionReceipt
                                     )
                                 )
                             }
@@ -83,10 +84,19 @@ class ProcessTransactionViewModel @Inject constructor(
                     }
 
                     TransactionType.CARD_WITHDRAWAL -> {
-
+                        setOneShotState(
+                            ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                message = "This feature is still a work in progress!"
+                            )
+                        )
                     }
-                    TransactionType.CARD_TRANSFER -> {
 
+                    TransactionType.CARD_TRANSFER -> {
+                        setOneShotState(
+                            ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                message = "This feature is still a work in progress!"
+                            )
+                        )
                     }
                 }
 

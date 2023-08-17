@@ -87,7 +87,7 @@ private fun SelectChannelScreen(
 @Preview(showBackground = true)
 private fun SelectChannelScreenPreview() {
     BanklyTheme {
-        SelectChannelScreen({}, {})
+        SelectChannelScreen(onBackPress = {}, onSelectChannel = {})
     }
 }
 
@@ -151,7 +151,8 @@ private fun SendMoneyChannel(
 private fun SendMoneyChannelPreview() {
     BanklyTheme {
         SendMoneyChannel(
-            SendMoneyChannel.BANKLY_TO_BANKLY
-        ) {}
+            destination = SendMoneyChannel.BANKLY_TO_BANKLY,
+            onClick = {}
+        )
     }
 }

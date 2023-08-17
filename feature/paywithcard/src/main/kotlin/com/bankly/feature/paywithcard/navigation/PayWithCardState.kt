@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.bankly.core.common.model.AccountType
 
 @Composable
-fun rememberPayWithCardState(
+internal fun rememberPayWithCardState(
     navHostController: NavHostController = rememberNavController(),
     amount: Double,
     accountType: AccountType? = null
@@ -29,12 +29,8 @@ fun rememberPayWithCardState(
 }
 
 @Stable
-data class PayWithCardState(
+internal data class PayWithCardState(
     val navHostController: NavHostController,
     val amount: Double,
     val accountType: AccountType?
-) {
-    val shouldShowTopAppBar: Boolean
-        @Composable get() = true
-}
-
+)
