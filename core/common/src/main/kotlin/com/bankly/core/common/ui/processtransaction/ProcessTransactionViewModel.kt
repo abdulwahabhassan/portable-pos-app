@@ -1,6 +1,7 @@
 package com.bankly.core.common.ui.processtransaction
 
 import androidx.lifecycle.viewModelScope
+import com.bankly.core.common.model.TransactionType
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.TransferUseCase
@@ -23,32 +24,72 @@ class ProcessTransactionViewModel @Inject constructor(
     override suspend fun handleUiEvents(event: ProcessTransactionScreenEvent) {
         when (event) {
             is ProcessTransactionScreenEvent.ProcessTransaction -> {
-                transferUseCase.performExternalTransfer(
-                    userPreferencesDataStore.data().token,
-                    event.transactionData.toExternalTransactionData()
-                ).onEach { resource ->
-                    resource.onReady { transaction: Transaction ->
-                        setOneShotState(
-                            ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                transaction = transaction
+                when(event.transactionData.transactionType) {
+                    TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER -> {
+                        transferUseCase.performTransferToAccountNumber(
+                            userPreferencesDataStore.data().token,
+                            event.transactionData.toAccountNumberTransferData()
+                        ).onEach { resource ->
+                            resource.onReady { transaction: Transaction ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
+                                        transaction = transaction
+                                    )
+                                )
+                            }
+                            resource.onFailure { message: String ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                        message = message
+                                    )
+                                )
+                            }
+                        }.catch {
+                            it.printStackTrace()
+                            setOneShotState(
+                                ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                    message = it.message ?: "An unexpected error occurred"
+                                )
                             )
-                        )
+                        }.launchIn(viewModelScope)
                     }
-                    resource.onFailure { message: String ->
-                        setOneShotState(
-                            ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                message = message
+                    TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER -> {
+                        transferUseCase.performPhoneNumberTransfer(
+                            userPreferencesDataStore.data().token,
+                            event.transactionData.toPhoneNumberTransferData()
+                        ).onEach { resource ->
+                            resource.onReady { transaction: Transaction ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
+                                        transaction = transaction
+                                    )
+                                )
+                            }
+                            resource.onFailure { message: String ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                        message = message
+                                    )
+                                )
+                            }
+                        }.catch {
+                            it.printStackTrace()
+                            setOneShotState(
+                                ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                    message = it.message ?: "An unexpected error occurred"
+                                )
                             )
-                        )
+                        }.launchIn(viewModelScope)
                     }
-                }.catch {
-                    it.printStackTrace()
-                    setOneShotState(
-                        ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                            message = it.message ?: "An unexpected error occurred"
-                        )
-                    )
-                }.launchIn(viewModelScope)
+
+                    TransactionType.CARD_WITHDRAWAL -> {
+
+                    }
+                    TransactionType.CARD_TRANSFER -> {
+
+                    }
+                }
+
             }
         }
     }

@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SavedBaseBeneficiaryViewModel @Inject constructor(
+internal class SavedBaseBeneficiaryViewModel @Inject constructor(
     nameEnquiryUseCase: NameEnquiryUseCase,
     getBanksUseCase: GetBanksUseCase,
     userPreferencesDataStore: UserPreferencesDataStore

@@ -14,6 +14,7 @@ import com.bankly.core.network.model.result.MessageResult
 import com.bankly.core.network.model.result.StatusResult
 import com.bankly.core.network.model.result.WalletResult
 import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.result.AgentResult
 import com.bankly.core.network.model.result.TransactionResult
 import com.bankly.core.sealed.Transaction
 
@@ -58,7 +59,14 @@ fun NameEnquiryResult.asNameEnquiry() = NameEnquiry(
     bankName = bankName ?: ""
 )
 
-fun TransactionResult.asExternalTransaction() = Transaction.External(
+fun AgentResult.asNameEnquiry() = NameEnquiry(
+    accountName = name ?: "",
+    accountNumber = accountNumber ?: "",
+    bankCode = "",
+    bankName = bankName ?: ""
+)
+
+fun TransactionResult.asBankTransfer() = Transaction.BankTransfer(
     phoneNumber = phoneNumber,
     amount = amount,
     reference = reference,

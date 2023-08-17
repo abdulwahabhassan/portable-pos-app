@@ -33,7 +33,8 @@ import com.bankly.feature.dashboard.model.QuickAction
 @Composable
 fun DashBoardQuickActionCard(
     quickAction: QuickAction,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isEnable: Boolean = true
 ) {
     Card(
         modifier = Modifier
@@ -41,7 +42,7 @@ fun DashBoardQuickActionCard(
             .clip(MaterialTheme.shapes.medium)
             .clickable(
                 onClick = onClick,
-                enabled = true,
+                enabled = isEnable,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
@@ -50,9 +51,12 @@ fun DashBoardQuickActionCard(
                 )
             ),
         shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
+        colors = if (isEnable) CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onTertiaryContainer,
             contentColor = MaterialTheme.colorScheme.primary
+        ) else CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.tertiary
         )
     ) {
         Box(
@@ -83,7 +87,9 @@ fun DashBoardQuickActionCard(
 private fun QuickActionCardPreview() {
     BanklyTheme {
         DashBoardQuickActionCard(
-            QuickAction.PayWithCard
-        ) { }
+            QuickAction.PayWithCard,
+            onClick = { },
+            isEnable = true
+        )
     }
 }

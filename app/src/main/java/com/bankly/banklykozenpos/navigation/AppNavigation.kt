@@ -72,6 +72,9 @@ fun AppNavHost(
         sendMoneyNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
+            },
+            onForgotPinClick = {
+               
             }
         )
     }

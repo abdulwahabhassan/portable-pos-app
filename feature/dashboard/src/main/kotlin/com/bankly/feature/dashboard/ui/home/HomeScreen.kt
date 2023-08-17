@@ -77,6 +77,10 @@ fun HomeScreen(
                     quickAction = quickAction,
                     onClick = {
                         onQuickActionCardClick(quickAction)
+                    },
+                    isEnable = when (quickAction) {
+                        QuickAction.PayWithCard, QuickAction.SendMoney -> true
+                        else -> false
                     }
                 )
             }

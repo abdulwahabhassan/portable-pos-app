@@ -203,7 +203,7 @@ fun TransactionDetailsScreen(
 fun TransactionDetailsScreenPreview() {
     BanklyTheme {
         TransactionDetailsScreen(
-            transaction = Transaction.External(
+            transaction = Transaction.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",

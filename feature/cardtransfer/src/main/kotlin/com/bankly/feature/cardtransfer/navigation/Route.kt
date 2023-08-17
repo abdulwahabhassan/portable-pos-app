@@ -108,7 +108,7 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
 ) {
     composable(route = transactionSuccessRoute) {
         TransactionSuccessRoute(
-            transaction = Transaction.External(
+            transaction = Transaction.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",
@@ -150,7 +150,7 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
 ) {
     composable(route = transactionDetailsRoute) {
         TransactionDetailsRoute(
-            transaction = Transaction.External(
+            transaction = Transaction.BankTransfer(
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",

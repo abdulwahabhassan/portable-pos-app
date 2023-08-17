@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun rememberSendMoneyState(
+internal fun rememberSendMoneyState(
     navHostController: NavHostController = rememberNavController(),
 ): MutableState<PayWithCardState> {
     return remember(
@@ -24,10 +24,7 @@ fun rememberSendMoneyState(
 }
 
 @Stable
-data class PayWithCardState(
+internal data class PayWithCardState(
     val navHostController: NavHostController,
-) {
-    val shouldShowTopAppBar: Boolean
-        @Composable get() = true
-}
+) 
 

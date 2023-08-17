@@ -1,9 +1,8 @@
 package com.bankly.core.common.model
 
 import com.bankly.core.common.util.Formatter
-import com.bankly.core.data.ExternalTransferData
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import com.bankly.core.data.AccountNumberTransferData
+import com.bankly.core.data.PhoneNumberTransferData
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -42,8 +41,8 @@ data class TransactionData(
         )
     }
 
-    fun toExternalTransactionData(): ExternalTransferData {
-        return ExternalTransferData(
+    fun toAccountNumberTransferData(): AccountNumberTransferData {
+        return AccountNumberTransferData(
             accountName = accountName,
             accountNumber = phoneOrAccountNumber,
             bankId = bankId,
@@ -52,8 +51,14 @@ data class TransactionData(
             phoneNumber = phoneOrAccountNumber,
             amountToSend = amount.toString(),
             otp = pin,
-            deviceId = "",
-            clientRequestId = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString()
+        )
+    }
+
+    fun toPhoneNumberTransferData(): PhoneNumberTransferData {
+        return PhoneNumberTransferData(
+            amount = amount.toString(),
+            recipientAccount = phoneOrAccountNumber,
+            otp = pin,
         )
     }
 }

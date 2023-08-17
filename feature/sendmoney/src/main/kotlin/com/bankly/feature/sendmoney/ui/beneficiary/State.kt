@@ -11,7 +11,7 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.core.common.model.AccountNumberType
 
-data class BeneficiaryScreenState(
+internal data class BeneficiaryScreenState(
     val accountNumberType: AccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
     val isTypeError: Boolean = false,
     val typeFeedBack: String = "",
@@ -66,7 +66,7 @@ data class BeneficiaryScreenState(
         get() = bankListState is State.Loading || accountOrPhoneValidationState is State.Loading
 }
 
-sealed interface BeneficiaryScreenOneShotState : OneShotState {
+internal sealed interface BeneficiaryScreenOneShotState : OneShotState {
     data class GoToConfirmTransactionScreen(val transactionData: TransactionData) :
         BeneficiaryScreenOneShotState
 }

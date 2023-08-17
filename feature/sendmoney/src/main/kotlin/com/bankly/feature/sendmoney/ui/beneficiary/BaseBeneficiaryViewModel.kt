@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-abstract class BaseBeneficiaryViewModel constructor(
+internal abstract class BaseBeneficiaryViewModel constructor(
     private val nameEnquiryUseCase: NameEnquiryUseCase,
     private val getBanksUseCase: GetBanksUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore
@@ -99,6 +99,12 @@ abstract class BaseBeneficiaryViewModel constructor(
 
             is BeneficiaryScreenEvent.OnTypeSelected -> {
                 setUiState { copy(accountNumberType = event.accountNumberType) }
+                doNameEnquiry(
+                    number = event.accountOrPhoneNumber,
+                    bankId = event.bankId,
+                    channel = SendMoneyChannel.BANKLY_TO_BANKLY,
+                    accountNumberType = event.accountNumberType
+                )
             }
 
             is BeneficiaryScreenEvent.OnInputNarration -> {
@@ -120,7 +126,10 @@ abstract class BaseBeneficiaryViewModel constructor(
                     copy(
                         accountOrPhoneTFV = accountOrPhoneTFV.copy(text = event.savedBeneficiary.accountNumber),
                         shouldShowSavedBeneficiaryList = false,
-                        selectedBank = Bank(event.savedBeneficiary.bankName, event.savedBeneficiary.bankId)
+                        selectedBank = Bank(
+                            event.savedBeneficiary.bankName,
+                            event.savedBeneficiary.bankId
+                        )
                     )
                 }
                 validateAccountNumber(
@@ -137,9 +146,9 @@ abstract class BaseBeneficiaryViewModel constructor(
                 setOneShotState(
                     BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen(
                         transactionData = TransactionData(
-                            transactionType = when (event.sendMoneyChannel) {
-                                SendMoneyChannel.BANKLY_TO_BANKLY -> TransactionType.BANK_TRANSFER_INTERNAL
-                                SendMoneyChannel.BANKLY_TO_OTHER -> TransactionType.BANK_TRANSFER_EXTERNAL
+                            transactionType = when (event.accountNumberType) {
+                                AccountNumberType.ACCOUNT_NUMBER -> TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER
+                                AccountNumberType.PHONE_NUMBER -> TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER
                             },
                             phoneOrAccountNumber = event.accountOrPhoneNumber,
                             accountName = event.accountName,
@@ -266,51 +275,48 @@ abstract class BaseBeneficiaryViewModel constructor(
 
     private suspend fun validatePhoneNumber(phoneNumber: String) {
         Log.d("debug validatePhoneNumber", "phoneNumber: $phoneNumber")
-        nameEnquiryUseCase.performNameEnquiry(
-            userPreferencesDataStore.data().token,
-            phoneNumber
-        ).onEach { resource ->
-            resource.onLoading {
-                Log.d("debug getBanks", "(onLoading) ...")
-                setUiState {
-                    copy(accountOrPhoneValidationState = State.Loading)
+        if (phoneNumber.isNotEmpty()) {
+            nameEnquiryUseCase.performNameEnquiry(
+                userPreferencesDataStore.data().token,
+                phoneNumber
+            ).onEach { resource ->
+                resource.onLoading {
+                    Log.d("debug getBanks", "(onLoading) ...")
+                    setUiState {
+                        copy(accountOrPhoneValidationState = State.Loading)
+                    }
                 }
-            }
-            resource.onReady { nameEnquiry: NameEnquiry ->
-                Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
+                resource.onReady { nameEnquiry: NameEnquiry ->
+                    Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
+                    setUiState {
+                        copy(
+                            accountOrPhoneValidationState = State.Success(nameEnquiry),
+                            accountOrPhoneFeedBack = nameEnquiry.accountName,
+                            isAccountOrPhoneError = false
+                        )
+                    }
+                }
+                resource.onFailure { message ->
+                    Log.d("debug getBanks", "(onFailure) message: $message")
+                    setUiState {
+                        copy(
+                            accountOrPhoneValidationState = State.Error(message),
+                            accountOrPhoneFeedBack = message,
+                            isAccountOrPhoneError = true
+                        )
+                    }
+                }
+            }.catch {
+                Log.d("debug getBanks", "(error caught) message: ${it.message}")
+                it.printStackTrace()
                 setUiState {
                     copy(
-                        accountOrPhoneValidationState = State.Success(nameEnquiry),
-                        accountOrPhoneFeedBack = nameEnquiry.accountName,
-                        isAccountOrPhoneError = false
+                        accountOrPhoneValidationState = State.Error(
+                            it.message ?: "An unexpected error occurred"
+                        )
                     )
                 }
-            }
-            resource.onFailure { message ->
-                Log.d("debug getBanks", "(onFailure) message: $message")
-                setUiState {
-                    copy(
-                        accountOrPhoneValidationState = State.Error(message),
-                        accountOrPhoneFeedBack = message,
-                        isAccountOrPhoneError = true
-                    )
-                }
-            }
-        }.catch {
-            Log.d("debug getBanks", "(error caught) message: ${it.message}")
-            it.printStackTrace()
-            setUiState {
-                copy(
-                    accountOrPhoneValidationState = State.Error(
-                        it.message ?: "An unexpected error occurred"
-                    )
-                )
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
     }
-
-    companion object {
-        const val BANKLY_BANK_ID: Long = 96
-    }
-
 }

@@ -37,7 +37,7 @@ import com.bankly.feature.sendmoney.R
 import com.bankly.core.common.model.SendMoneyChannel
 
 @Composable
-fun SelectChannelRoute(
+internal fun SelectChannelRoute(
     onBackPress: () -> Unit,
     onSelectChannel: (SendMoneyChannel) -> Unit
 ) {
@@ -48,7 +48,7 @@ fun SelectChannelRoute(
 }
 
 @Composable
-fun SelectChannelScreen(
+private fun SelectChannelScreen(
     onBackPress: () -> Unit,
     onSelectChannel: (SendMoneyChannel) -> Unit
 ) {
@@ -92,7 +92,7 @@ private fun SelectChannelScreenPreview() {
 }
 
 @Composable
-internal fun SendMoneyChannel(
+private fun SendMoneyChannel(
     destination: SendMoneyChannel,
     onClick: (SendMoneyChannel) -> Unit
 ) {

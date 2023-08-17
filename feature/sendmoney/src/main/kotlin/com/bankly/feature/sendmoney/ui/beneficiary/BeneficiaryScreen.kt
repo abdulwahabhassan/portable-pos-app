@@ -107,12 +107,29 @@ internal fun BeneficiaryRoute(
                 }
             }
         }
+        coroutineScope.launch {
+            savedBeneficiaryViewModel.oneShotState.collectLatest { oneShotUiState ->
+                when (oneShotUiState) {
+                    is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
+                        onContinueClick(oneShotUiState.transactionData)
+                    }
+                }
+            }
+        }
+        if (sendMoneyChannel == SendMoneyChannel.BANKLY_TO_BANKLY) {
+            newBeneficiaryViewModel.sendEvent(
+                BeneficiaryScreenEvent.OnSelectBank(
+                    bank = Bank(id = BANKLY_BANK_ID, name = BANKLY_BANK_NAME),
+                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
+                )
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeneficiaryScreen(
+private fun BeneficiaryScreen(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     newBeneficiaryScreenState: BeneficiaryScreenState,
     savedBeneficiaryScreenState: BeneficiaryScreenState,
@@ -207,6 +224,8 @@ fun BeneficiaryScreen(
                                 onNewBeneficiaryUiEvent(
                                     BeneficiaryScreenEvent.OnTypeSelected(
                                         accountNumberType = selectedType,
+                                        bankId = newBeneficiaryScreenState.selectedBank?.id,
+                                        accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
                                     )
                                 )
                             },

@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ConfirmTransactionViewModel @Inject constructor(
+internal class ConfirmTransactionViewModel @Inject constructor(
 ) : BaseViewModel<ConfirmTransactionScreenEvent, ConfirmTransactionScreenState, ConfirmTransactionScreenOneShotState>(
     ConfirmTransactionScreenState()
 ) {
@@ -40,9 +40,4 @@ class ConfirmTransactionViewModel @Inject constructor(
             }
         }
     }
-
-    private suspend fun validatePin(pin: String) {
-        setUiState { copy(confirmTransactionState = State.Success(Status(true))) }
-    }
-
 }

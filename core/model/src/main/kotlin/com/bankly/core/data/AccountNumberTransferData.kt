@@ -1,6 +1,9 @@
 package com.bankly.core.data
 
-data class ExternalTransferData(
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+
+data class AccountNumberTransferData(
     val accountName: String,
     val accountNumber: String,
     val bankId: String,
@@ -10,7 +13,7 @@ data class ExternalTransferData(
     val amountToSend: String,
     val otp: String,
     val channel: String = "4",
-    val clientRequestId: String = "",
+    val clientRequestId: String = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC).toString(),
     val securityQuestionId: String = "",
     val securityQuestionResponse: String = "",
     val deviceId: String = "",

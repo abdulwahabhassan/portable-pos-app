@@ -1,15 +1,15 @@
 package com.bankly.core.data.util
 
+import com.bankly.core.data.AccountNumberTransferData
 import com.bankly.core.data.ChangePassCodeData
-import com.bankly.core.data.ExternalTransferData
 import com.bankly.core.data.ForgotPassCodeData
-import com.bankly.core.data.InternalTransferData
+import com.bankly.core.data.PhoneNumberTransferData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.network.model.request.AccountNumberTransferRequestBody
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
-import com.bankly.core.network.model.request.ExternalTransferRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
-import com.bankly.core.network.model.request.InternalTransferRequestBody
+import com.bankly.core.network.model.request.PhoneNumberTransferRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
 
@@ -32,7 +32,7 @@ fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
     otp = otp, phoneNumber = phoneNumber
 )
 
-fun InternalTransferData.asRequestBody() = InternalTransferRequestBody(
+fun PhoneNumberTransferData.asRequestBody() = PhoneNumberTransferRequestBody(
     amount = amount,
     recipientAccount = recipientAccount,
     pin = pin,
@@ -40,10 +40,11 @@ fun InternalTransferData.asRequestBody() = InternalTransferRequestBody(
     securityQuestionId = securityQuestionId,
     securityQuestionResponse = securityQuestionResponse,
     clientRequestId = clientRequestId,
-    deviceId = deviceId
+    deviceId = deviceId,
+    channel = channel
 )
 
-fun ExternalTransferData.asRequestBody() = ExternalTransferRequestBody(
+fun AccountNumberTransferData.asRequestBody() = AccountNumberTransferRequestBody(
     accountName = accountName,
     accountNumber = accountNumber,
     bankId = bankId,

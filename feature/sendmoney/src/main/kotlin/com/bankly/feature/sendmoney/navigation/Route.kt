@@ -71,7 +71,8 @@ internal fun NavGraphBuilder.beneficiaryRoute(
 internal fun NavGraphBuilder.confirmTransactionRoute(
     onConfirmationSuccess: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    onForgotPinClick: () -> Unit
 ) {
     composable(
         route = "$confirmTransactionRoute/{$transactionDataArg}",
@@ -85,7 +86,8 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
                 transactionData = data,
                 onConfirmationSuccess = onConfirmationSuccess,
                 onBackPress = onBackPress,
-                onCloseClick = onCloseClick
+                onCloseClick = onCloseClick,
+                onForgotPinClick = onForgotPinClick
             )
         }
     }

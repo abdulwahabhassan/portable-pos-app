@@ -28,7 +28,7 @@ import com.bankly.core.common.model.AccountNumberType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 
 @Composable
-fun NewBeneficiaryView(
+internal fun NewBeneficiaryView(
     screenState: BeneficiaryScreenState,
     onTypeSelected: (AccountNumberType) -> Unit,
     selectedAccountNumberType: AccountNumberType,

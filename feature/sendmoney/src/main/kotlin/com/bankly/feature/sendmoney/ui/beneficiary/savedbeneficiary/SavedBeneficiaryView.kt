@@ -53,7 +53,7 @@ import com.bankly.core.designsystem.R as DesignRes
 
 
 @Composable
-fun SavedBeneficiaryView(
+internal fun SavedBeneficiaryView(
     screenState: BeneficiaryScreenState,
     savedBeneficiaries: List<SavedBeneficiary>,
     selectedAccountNumberType: AccountNumberType,

@@ -13,7 +13,8 @@ import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.sealed.Transaction
 
 fun NavGraphBuilder.sendMoneyNavGraph(
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onForgotPinClick: () -> Unit
 ) {
     navigation(
         route = sendMoneyNavGraphRoute,
@@ -24,15 +25,18 @@ fun NavGraphBuilder.sendMoneyNavGraph(
             SendMoneyNavHost(
                 navHostController = sendMoneyState.navHostController,
                 onBackPress = onBackPress,
+                onForgotPinClick = onForgotPinClick
+
             )
         }
     }
 }
 
 @Composable
-fun SendMoneyNavHost(
+internal fun SendMoneyNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onForgotPinClick: () -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -64,6 +68,7 @@ fun SendMoneyNavHost(
                 navHostController.popBackStack()
             },
             onCloseClick = onBackPress,
+            onForgotPinClick = onForgotPinClick
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transaction: Transaction ->

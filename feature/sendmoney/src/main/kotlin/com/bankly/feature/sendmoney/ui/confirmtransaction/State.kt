@@ -5,7 +5,7 @@ import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.entity.Status
 import com.bankly.core.common.model.TransactionData
 
-data class ConfirmTransactionScreenState(
+internal data class ConfirmTransactionScreenState(
     val pin: List<String> = List(4) { "" },
     val shouldShowWarningDialog: Boolean = false,
     val confirmTransactionState: State<Status> = State.Initial,
@@ -18,6 +18,6 @@ data class ConfirmTransactionScreenState(
         get() = confirmTransactionState is State.Loading || confirmTransactionState is State.Loading
 }
 
-sealed interface ConfirmTransactionScreenOneShotState : OneShotState {
+internal sealed interface ConfirmTransactionScreenOneShotState : OneShotState {
     data class GoToTransactionProcessingScreen(val transactionData: TransactionData): ConfirmTransactionScreenOneShotState
 }

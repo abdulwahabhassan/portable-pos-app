@@ -80,7 +80,7 @@ fun PayWithCardNavHost(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
                     TransactionData(
-                        TransactionType.BANK_TRANSFER_EXTERNAL,
+                        TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
                         "080999200291",
                         "Hassan Abdulwahab",
                         23000.00,

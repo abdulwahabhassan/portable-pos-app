@@ -35,7 +35,6 @@ import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionType
 import kotlinx.coroutines.flow.collectLatest
@@ -43,11 +42,12 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun ConfirmTransactionRoute(
+internal fun ConfirmTransactionRoute(
     viewModel: ConfirmTransactionViewModel = hiltViewModel(),
     transactionData: TransactionData,
     onConfirmationSuccess: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
+    onForgotPinClick: () -> Unit,
     onCloseClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -57,6 +57,7 @@ fun ConfirmTransactionRoute(
         transactionData = transactionData,
         onBackPress = onBackPress,
         onCloseClick = onCloseClick,
+        onForgotPinClick = onForgotPinClick,
         onUiEvent = { uiEvent ->
             viewModel.sendEvent(uiEvent)
         }
@@ -76,11 +77,12 @@ fun ConfirmTransactionRoute(
 }
 
 @Composable
-internal fun ConfirmTransactionScreen(
+private fun ConfirmTransactionScreen(
     screenState: ConfirmTransactionScreenState,
     transactionData: TransactionData,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
+    onForgotPinClick: () -> Unit,
     onUiEvent: (ConfirmTransactionScreenEvent) -> Unit
 ) {
 
@@ -174,7 +176,7 @@ internal fun ConfirmTransactionScreen(
                                 }
                             },
                             backgroundColor = MaterialTheme.colorScheme.inversePrimary,
-                            onClick = { })
+                            onClick = onForgotPinClick)
                     }
 
                     BanklyNumericKeyboard(
@@ -236,7 +238,7 @@ private fun ConfirmTransactionScreenPreview() {
         ConfirmTransactionScreen(
             screenState = ConfirmTransactionScreenState(),
             transactionData = TransactionData(
-                TransactionType.BANK_TRANSFER_EXTERNAL,
+                TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
                 "080999200291",
                 "Hassan Abdulwahab",
                 23000.00,
@@ -250,7 +252,8 @@ private fun ConfirmTransactionScreenPreview() {
             ),
             onBackPress = {},
             onUiEvent = {},
-            onCloseClick = {}
+            onCloseClick = {},
+            onForgotPinClick = {}
         )
     }
 }

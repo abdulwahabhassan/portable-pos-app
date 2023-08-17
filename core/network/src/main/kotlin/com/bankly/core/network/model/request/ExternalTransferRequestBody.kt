@@ -3,7 +3,7 @@ package com.bankly.core.network.model.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExternalTransferRequestBody(
+data class AccountNumberTransferRequestBody(
     val accountName: String,
     val accountNumber: String,
     val bankId: String,
