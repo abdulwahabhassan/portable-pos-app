@@ -8,7 +8,7 @@ import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.core.common.model.SendMoneyChannel
 
 internal sealed interface BeneficiaryScreenEvent {
-    data class OnSelectBank(val bank: Bank, val accountOrPhoneNumber: String,) : BeneficiaryScreenEvent
+    data class OnSelectBank(val bank: Bank, val accountOrPhoneNumber: String) : BeneficiaryScreenEvent
     data class OnInputAmount(val amountTFV: TextFieldValue) : BeneficiaryScreenEvent
     data class OnTypeSelected(val accountOrPhoneNumber: String, val bankId: Long?, val accountNumberType: AccountNumberType) : BeneficiaryScreenEvent
     data class OnToggleSaveAsBeneficiary(val toggleState: Boolean) : BeneficiaryScreenEvent

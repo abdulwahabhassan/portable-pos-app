@@ -10,6 +10,6 @@ enum class DashboardTab {
 enum class QuickAction(val title: String, val icon: Int) {
     PayWithCard("Pay with Card", BanklyIcons.PayWithCard),
     PayWithTransfer("Pay with Transfer", BanklyIcons.PayWithTransfer),
-    PayWithCash("Pay with Cash", BanklyIcons.PayWithCash),
+    CardTransfer("Card Transfer", BanklyIcons.CardTransfer),
     SendMoney("Send Money", BanklyIcons.SendMoney)
 }

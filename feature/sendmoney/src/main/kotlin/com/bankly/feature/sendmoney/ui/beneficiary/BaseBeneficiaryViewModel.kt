@@ -72,15 +72,13 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     cleanedUpAmount.replace(",", "").toDouble()
                 )
 
-                val amountFeedBack = if (isEmpty) "Please enter amount"
-                else if (isValid.not()) "Please enter a valid amount"
-                else ""
-
                 setUiState {
                     copy(
                         amountTFV = event.amountTFV.copy(cleanedUpAmount),
                         isAmountError = isEmpty || isValid.not(),
-                        amountFeedBack = amountFeedBack
+                        amountFeedBack = if (isEmpty) "Please enter amount"
+                        else if (isValid.not()) "Please enter a valid amount"
+                        else ""
                     )
                 }
             }
@@ -91,6 +89,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         selectedBank = event.bank
                     )
                 }
+
                 validateAccountNumber(
                     accountNumber = event.accountOrPhoneNumber,
                     bankId = event.bank.id
@@ -173,26 +172,22 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         getBanksUseCase.invoke(userPreferencesDataStore.data().token)
             .onEach { resource ->
                 resource.onLoading {
-                    Log.d("debug getBanks", "(onLoading) ...")
                     setUiState {
                         copy(bankListState = State.Loading)
                     }
                 }
                 resource.onReady { banks: List<Bank> ->
-                    Log.d("debug getBanks", "(onReady) banks: $banks")
                     setUiState {
                         copy(bankListState = State.Success(banks))
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug getBanks", "(onFailure) message: $message")
                     setUiState {
                         copy(bankListState = State.Error(message))
                     }
                 }
             }
             .catch {
-                Log.d("debug getBanks", "(error caught) message: ${it.message}")
                 it.printStackTrace()
                 setUiState {
                     copy(bankListState = State.Error(it.message ?: "An unexpected error occurred"))
@@ -207,7 +202,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         channel: SendMoneyChannel,
         accountNumberType: AccountNumberType
     ) {
-        Log.d("debug doNameEnquiry", "doNameEnquiry called")
         if (channel == SendMoneyChannel.BANKLY_TO_OTHER || accountNumberType == AccountNumberType.ACCOUNT_NUMBER) {
             validateAccountNumber(
                 accountNumber = number,
@@ -226,21 +220,21 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         accountNumber: String,
         bankId: Long?
     ) {
-        Log.d("debug validateAccountNumber", "account number: $accountNumber, bank id: $bankId")
-        if (bankId != null && accountNumber.isNotEmpty()) {
+        val isEmpty = accountNumber.trim().isEmpty()
+        val isValid = Validator.isAccountNumberValid(accountNumber.trim())
+
+        if (bankId != null && isEmpty.not() && isValid) {
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
                 bankId.toString()
             ).onEach { resource ->
                 resource.onLoading {
-                    Log.d("debug getBanks", "(onLoading) ...")
                     setUiState {
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
                 resource.onReady { nameEnquiry: NameEnquiry ->
-                    Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
                     setUiState {
                         copy(
                             accountOrPhoneValidationState = State.Success(nameEnquiry),
@@ -260,7 +254,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     }
                 }
             }.catch {
-                Log.d("debug getBanks", "(error caught) message: ${it.message}")
                 it.printStackTrace()
                 setUiState {
                     copy(
@@ -274,20 +267,17 @@ internal abstract class BaseBeneficiaryViewModel constructor(
     }
 
     private suspend fun validatePhoneNumber(phoneNumber: String) {
-        Log.d("debug validatePhoneNumber", "phoneNumber: $phoneNumber")
         if (phoneNumber.isNotEmpty()) {
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
                 phoneNumber
             ).onEach { resource ->
                 resource.onLoading {
-                    Log.d("debug getBanks", "(onLoading) ...")
                     setUiState {
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
                 resource.onReady { nameEnquiry: NameEnquiry ->
-                    Log.d("debug getBanks", "(onReady) banks: $nameEnquiry")
                     setUiState {
                         copy(
                             accountOrPhoneValidationState = State.Success(nameEnquiry),
@@ -297,7 +287,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug getBanks", "(onFailure) message: $message")
                     setUiState {
                         copy(
                             accountOrPhoneValidationState = State.Error(message),
@@ -307,7 +296,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     }
                 }
             }.catch {
-                Log.d("debug getBanks", "(error caught) message: ${it.message}")
                 it.printStackTrace()
                 setUiState {
                     copy(

@@ -33,17 +33,10 @@ fun NavGraphBuilder.payWithCardNavGraph(
             val parentEntry = remember(backStackEntry) {
                 appNavController.getBackStackEntry(payWithCardRoute)
             }
-            var payWithCardState by rememberPayWithCardState(
-                amount = parentEntry.arguments?.getString(
-                    amountArg
-                )?.toDouble() ?: 0.00,
-            )
+            var payWithCardState by rememberPayWithCardState()
             PayWithCardNavHost(
                 navHostController = payWithCardState.navHostController,
-                onBackPress = onBackPress,
-                onAccountSelected = { accountType: AccountType ->
-                    payWithCardState = payWithCardState.copy(accountType = accountType)
-                }
+                onBackPress = onBackPress
             )
         }
     }
@@ -52,8 +45,7 @@ fun NavGraphBuilder.payWithCardNavGraph(
 @Composable
 private fun PayWithCardNavHost(
     navHostController: NavHostController,
-    onBackPress: () -> Unit,
-    onAccountSelected: (AccountType) -> Unit
+    onBackPress: () -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -61,8 +53,7 @@ private fun PayWithCardNavHost(
         startDestination = selectAccountTypeRoute,
     ) {
         selectAccountTypeRoute(
-            onAccountSelected = { accountType: AccountType ->
-                onAccountSelected(accountType)
+            onAccountSelected = {
                 navHostController.navigateToInsertCardRoute()
             },
             onBackPress = onBackPress,

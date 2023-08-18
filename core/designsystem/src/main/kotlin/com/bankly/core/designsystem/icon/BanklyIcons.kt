@@ -29,6 +29,7 @@ object BanklyIcons {
     val Bank = R.drawable.ic_bank
     val PayWithCard = R.drawable.ic_pay_with_card
     val PayWithTransfer = R.drawable.ic_pay_with_transfer
+    val CardTransfer = R.drawable.ic_card_transfer
     val PayWithCash = R.drawable.ic_pay_with_cash
     val SendMoney = R.drawable.ic_send_money
     val close = R.drawable.ic_close

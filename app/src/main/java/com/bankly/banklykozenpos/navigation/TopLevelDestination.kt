@@ -5,6 +5,6 @@ enum class TopLevelDestination {
     DASHBOARD,
     PAY_WITH_CARD,
     PAY_WITH_TRANSFER,
-    PAY_WITH_CASH,
+    CARD_TRANSFER,
     SEND_MONEY
 }

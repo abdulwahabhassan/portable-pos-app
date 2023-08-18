@@ -3,7 +3,6 @@ package com.bankly.banklykozenpos.navigation
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.ui.BanklyAppState
@@ -41,7 +40,7 @@ fun AppNavHost(
                     when (quickAction) {
                         QuickAction.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
                         QuickAction.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
-                        QuickAction.PayWithCash -> TopLevelDestination.PAY_WITH_CASH
+                        QuickAction.CardTransfer -> TopLevelDestination.CARD_TRANSFER
                         QuickAction.SendMoney -> TopLevelDestination.SEND_MONEY
                     }
                 )

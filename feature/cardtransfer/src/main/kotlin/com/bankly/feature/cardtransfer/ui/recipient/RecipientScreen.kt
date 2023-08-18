@@ -1,4 +1,4 @@
-package com.bankly.feature.cardtransfer.ui.recipientdetails
+package com.bankly.feature.cardtransfer.ui.recipient
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +17,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -27,11 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.sealed.State
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.view.BankSearchView
 import com.bankly.core.common.util.DecimalFormatter
 import com.bankly.core.common.util.DecimalInputVisualTransformation
-import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
@@ -39,37 +40,47 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 import com.bankly.feature.cardtransfer.R
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun EnterRecipientDetailsRoute(
-    viewModel: EnterRecipientDetailsViewModel = hiltViewModel(),
+internal fun RecipientRoute(
+    viewModel: RecipientViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
-    onContinueClick: () -> Unit,
+    onContinueClick: (TransactionData) -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
-    EnterRecipientDetailsScreen(
+    RecipientScreen(
         screenState = screenState,
         onBackPress = onBackPress,
-        onUiEvent = { uiEvent: EnterRecipientDetailsScreenEvent -> viewModel.sendEvent(uiEvent) },
-        onContinueClick = onContinueClick,
-    )
+    ) { uiEvent: RecipientScreenEvent -> viewModel.sendEvent(uiEvent) }
+
+    LaunchedEffect(key1 = Unit) {
+        coroutineScope.launch {
+            viewModel.oneShotState.collectLatest { oneShotUiState ->
+                when (oneShotUiState) {
+                    is RecipientScreenOneShotState.GoToSelectAccountTypeScreen -> {
+                        onContinueClick(oneShotUiState.transactionData)
+                    }
+                }
+            }
+        }
+    }
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EnterRecipientDetailsScreen(
-    screenState: EnterRecipientDetailsScreenState,
+private fun RecipientScreen(
+    screenState: RecipientScreenState,
     onBackPress: () -> Unit,
-    onUiEvent: (EnterRecipientDetailsScreenEvent) -> Unit,
-    onContinueClick: () -> Unit,
+    onUiEvent: (RecipientScreenEvent) -> Unit,
     ) {
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(SheetState(skipPartiallyExpanded = false, initialValue = SheetValue.Hidden))
     val coroutineScope = rememberCoroutineScope()
 
-    Log.d("debug recipient details", "$screenState")
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -89,7 +100,7 @@ internal fun EnterRecipientDetailsScreen(
                 isBankListLoading = screenState.isBankListLoading,
                 bankList = screenState.banks,
                 onSelectBank = { bank: Bank ->
-                    onUiEvent(EnterRecipientDetailsScreenEvent.OnSelectBank(bank))
+                    onUiEvent(RecipientScreenEvent.OnSelectBank(bank, screenState.accountNumberTFV.text))
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
@@ -131,8 +142,9 @@ internal fun EnterRecipientDetailsScreen(
                         textFieldValue = screenState.accountNumberTFV,
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
-                                EnterRecipientDetailsScreenEvent.OnEnterAccountNumber(
-                                    textFieldValue
+                                RecipientScreenEvent.OnAccountNumber(
+                                    textFieldValue,
+                                    screenState.selectedBank?.id
                                 )
                             )
                         },
@@ -151,7 +163,7 @@ internal fun EnterRecipientDetailsScreen(
                         textFieldValue = screenState.amountTFV,
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
-                                EnterRecipientDetailsScreenEvent.OnEnterAmount(textFieldValue)
+                                RecipientScreenEvent.OnAmount(textFieldValue)
                             )
                         },
                         placeholderText = stringResource(R.string.msg_enter_amount),
@@ -169,7 +181,7 @@ internal fun EnterRecipientDetailsScreen(
                         textFieldValue = screenState.senderPhoneNumberTFV,
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
-                                EnterRecipientDetailsScreenEvent.OnEnterSenderPhoneNumber(
+                                RecipientScreenEvent.OnSenderPhoneNumber(
                                     textFieldValue
                                 )
                             )
@@ -194,33 +206,20 @@ internal fun EnterRecipientDetailsScreen(
                     text = stringResource(R.string.action_continue),
                     onClick = {
                         onUiEvent(
-                            EnterRecipientDetailsScreenEvent.OnContinueClick(
+                            RecipientScreenEvent.OnContinueClick(
                                 bankName = screenState.bankNameTFV.text,
                                 accountNumber = screenState.accountNumberTFV.text,
                                 amount = screenState.amountTFV.text,
-                                senderPhoneNumber = screenState.senderPhoneNumberTFV.text
+                                senderPhoneNumber = screenState.senderPhoneNumberTFV.text,
+                                accountName = screenState.accountNumberTFV.text,
+                                selectedBankId = screenState.selectedBank?.id
+
                             )
                         )
-                        onContinueClick()
                     },
                     isEnabled = screenState.isContinueButtonEnabled
                 )
             }
-        }
-    }
-
-    when (val state = screenState.accountValidationState) {
-        is State.Initial, is State.Loading -> {}
-        is State.Error -> {
-            BanklyActionDialog(
-                title = stringResource(R.string.title_account_validation_error),
-                subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_ok)
-            )
-        }
-
-        is State.Success -> {
-//            onUiEvent(com.bankly.feature.cardtransfer.ui.recipientdetails.EnterRecipientDetailsScreenEvent.OnExit)
         }
     }
 }
@@ -230,11 +229,9 @@ internal fun EnterRecipientDetailsScreen(
 @Preview(showBackground = true)
 private fun EnterRecipientDetailsScreenPreview() {
     BanklyTheme {
-        EnterRecipientDetailsScreen(
-            screenState = EnterRecipientDetailsScreenState(),
-            onBackPress = {},
-            onUiEvent = {},
-            onContinueClick = {}
-        )
+        RecipientScreen(
+            screenState = RecipientScreenState(),
+            onBackPress = {}
+        ) {}
     }
 }

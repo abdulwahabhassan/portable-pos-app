@@ -1,19 +1,18 @@
-package com.bankly.feature.cardtransfer.ui.recipientdetails
+package com.bankly.feature.cardtransfer.ui.recipient
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.sealed.State
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.entity.Bank
 import com.bankly.core.entity.NameEnquiry
-import com.bankly.feature.cardtransfer.model.TransactionDetails
+import com.bankly.core.sealed.State
 
-data class EnterRecipientDetailsScreenState(
+internal data class RecipientScreenState(
     val selectedBank: Bank? = null,
-    val bankNameTFV: TextFieldValue = TextFieldValue(text = selectedBank?.name ?: ""),
-    val accountNumberTFV: TextFieldValue = TextFieldValue(text = "0428094437"),
-    val amountTFV: TextFieldValue = TextFieldValue(text = "1000.99"),
-    val senderPhoneNumberTFV: TextFieldValue = TextFieldValue(text = "08167039661"),
+    val accountNumberTFV: TextFieldValue = TextFieldValue(text = ""),
+    val amountTFV: TextFieldValue = TextFieldValue(text = ""),
+    val senderPhoneNumberTFV: TextFieldValue = TextFieldValue(text = ""),
     val isAccountNumberError: Boolean = false,
     val isAmountError: Boolean = false,
     val isBankNameError: Boolean = false,
@@ -26,13 +25,17 @@ data class EnterRecipientDetailsScreenState(
     val bankListState: State<List<Bank>> = State.Initial,
 ) {
     val isContinueButtonEnabled: Boolean
-        get() = bankNameTFV.text.isNotEmpty() && accountNumberTFV.text.isNotEmpty() &&
-                amountTFV.text.isNotEmpty() && senderPhoneNumberTFV.text.isNotEmpty() &&
-                isBankNameError.not() && isAccountNumberError.not() && isAmountError.not() &&
-                isSenderPhoneNumberError.not() && accountValidationState !is State.Loading &&
-                accountValidationState !is State.Error
+        get() = accountNumberTFV.text.isNotEmpty() && isAccountNumberError.not() &&
+                amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
+                isBankNameError.not() && isSenderPhoneNumberError.not() &&
+                accountValidationState !is State.Loading && accountValidationState !is State.Error &&
+                bankListState !is State.Loading
     val isUserInputEnabled: Boolean
         get() = accountValidationState !is State.Loading && bankListState !is State.Loading
+    val bankNameTFV: TextFieldValue
+        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(
+            text = ""
+        )
     val validationIcon: Int?
         get() = when (accountValidationState) {
             State.Initial -> null
@@ -49,13 +52,9 @@ data class EnterRecipientDetailsScreenState(
         get() = bankListState is State.Loading
     val shouldShowLoadingIndicator: Boolean
         get() = bankListState is State.Loading || accountValidationState is State.Loading
-    val nameEnquiryData: NameEnquiry?
-        get() = when (accountValidationState) {
-            is State.Success -> accountValidationState.data
-            else -> null
-        }
 }
 
-sealed interface EnterRecipientDetailsScreenOneShotState: OneShotState {
-    data class GoToSelectAccountTypeScreen(val transactionDetails: TransactionDetails): EnterRecipientDetailsScreenOneShotState
+internal sealed interface RecipientScreenOneShotState : OneShotState {
+    data class GoToSelectAccountTypeScreen(val transactionData: TransactionData) :
+        RecipientScreenOneShotState
 }

@@ -36,7 +36,7 @@ fun HomeTab(
         onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },
         onQuickActionCardClick = onQuickActionCardClick,
 
-    )
+        )
 }
 
 @Composable
@@ -76,11 +76,13 @@ fun HomeScreen(
                 DashBoardQuickActionCard(
                     quickAction = quickAction,
                     onClick = {
-                        onQuickActionCardClick(quickAction)
-                    },
-                    isEnable = when (quickAction) {
-                        QuickAction.PayWithCard, QuickAction.SendMoney -> true
-                        else -> false
+                        when (quickAction) {
+                            QuickAction.PayWithCard,
+                            QuickAction.SendMoney,
+                            QuickAction.CardTransfer -> onQuickActionCardClick(quickAction)
+                            else -> {}
+                        }
+
                     }
                 )
             }

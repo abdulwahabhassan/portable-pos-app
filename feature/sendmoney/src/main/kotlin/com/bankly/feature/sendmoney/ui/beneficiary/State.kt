@@ -35,9 +35,10 @@ internal data class BeneficiaryScreenState(
     val savedBeneficiaries: List<SavedBeneficiary> = SavedBeneficiary.mockOtherBanks(),
 ) {
     val isContinueButtonEnabled: Boolean
-        get() = accountOrPhoneTFV.text.isNotEmpty() && amountTFV.text.isNotEmpty() &&
-                isAccountOrPhoneError.not() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
-                isNarrationError.not() && accountOrPhoneValidationState !is State.Loading &&
+        get() = accountOrPhoneTFV.text.isNotEmpty() && isAccountOrPhoneError.not() &&
+                amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty()
+                && isBankNameError.not() && isNarrationError.not() &&
+                accountOrPhoneValidationState !is State.Loading &&
                 accountOrPhoneValidationState !is State.Error && bankListState !is State.Loading
     val isUserInputEnabled: Boolean
         get() = accountOrPhoneValidationState !is State.Loading && bankListState !is State.Loading
@@ -47,11 +48,13 @@ internal data class BeneficiaryScreenState(
             AccountNumberType.ACCOUNT_NUMBER -> TextFieldValue(text = accountNumberType.title)
         }
     val bankNameTFV: TextFieldValue
-        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(text = "")
+        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(
+            text = ""
+        )
     val validationStatusIcon: Int?
         get() = when (accountOrPhoneValidationState) {
-            State.Initial -> null
-            State.Loading -> BanklyIcons.ValidationInProgress
+            is State.Initial -> null
+            is State.Loading -> BanklyIcons.ValidationInProgress
             is State.Error -> BanklyIcons.ValidationFailed
             is State.Success -> BanklyIcons.ValidationPassed
         }

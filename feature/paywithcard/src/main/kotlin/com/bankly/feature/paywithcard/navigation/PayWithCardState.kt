@@ -11,18 +11,14 @@ import com.bankly.core.common.model.AccountType
 
 @Composable
 internal fun rememberPayWithCardState(
-    navHostController: NavHostController = rememberNavController(),
-    amount: Double,
-    accountType: AccountType? = null
+    navHostController: NavHostController = rememberNavController()
 ): MutableState<PayWithCardState> {
     return remember(
         navHostController
     ) {
         mutableStateOf(
             PayWithCardState(
-                navHostController = navHostController,
-                amount = amount,
-                accountType = accountType
+                navHostController = navHostController
             )
         )
     }
@@ -31,6 +27,4 @@ internal fun rememberPayWithCardState(
 @Stable
 internal data class PayWithCardState(
     val navHostController: NavHostController,
-    val amount: Double,
-    val accountType: AccountType?
 )
