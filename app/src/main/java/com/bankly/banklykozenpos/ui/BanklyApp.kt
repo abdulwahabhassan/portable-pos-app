@@ -1,5 +1,6 @@
 package com.bankly.banklykozenpos.ui
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import com.bankly.banklykozenpos.navigation.AppNavHost
 import com.bankly.core.data.util.NetworkMonitor
@@ -11,10 +12,12 @@ fun BanklyApp(
     appState: BanklyAppState = rememberBanklyAppState(
         networkMonitor = networkMonitor
     ),
-    onCloseApp: () -> Unit
+    onCloseApp: () -> Unit,
+    activity: Activity
 ) {
     AppNavHost(
         appState,
-        onBackPress = onCloseApp
+        onBackPress = onCloseApp,
+        activity = activity
     )
 }

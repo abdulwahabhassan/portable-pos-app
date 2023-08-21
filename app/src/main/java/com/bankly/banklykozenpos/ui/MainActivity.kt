@@ -22,7 +22,8 @@ class MainActivity : ComponentActivity() {
                     networkMonitor = networkMonitor,
                     onCloseApp = {
                         finish()
-                    }
+                    },
+                activity = this
                 )
             }
         }

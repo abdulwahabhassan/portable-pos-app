@@ -1,5 +1,8 @@
 package com.bankly.feature.paywithcard.navigation
 
+import ProcessPayment
+import android.app.Activity
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -17,11 +20,18 @@ import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
 import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 
 fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
-    appNavController: NavHostController
+    appNavController: NavHostController,
+    activity: Activity
 ) {
+    Tools.initializeEmv(activity)
+    ConfigParameters.downloadTmsParams(activity)
+    Tools.transactionType = com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
+
     navigation(
         route = "$payWithCardNavGraphRoute/{$amountArg}",
         startDestination = payWithCardRoute,
@@ -33,10 +43,16 @@ fun NavGraphBuilder.payWithCardNavGraph(
             val parentEntry = remember(backStackEntry) {
                 appNavController.getBackStackEntry(payWithCardRoute)
             }
+            val amount = parentEntry.arguments?.getString(
+                amountArg
+            )?.toDouble() ?: 0.00
+            Log.d("debug amount", "$amount")
+            Tools.transactionAmount = amount.toString()
             var payWithCardState by rememberPayWithCardState()
             PayWithCardNavHost(
                 navHostController = payWithCardState.navHostController,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
+                activity = activity
             )
         }
     }
@@ -45,7 +61,8 @@ fun NavGraphBuilder.payWithCardNavGraph(
 @Composable
 private fun PayWithCardNavHost(
     navHostController: NavHostController,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    activity: Activity
 ) {
     NavHost(
         modifier = Modifier,
@@ -53,8 +70,13 @@ private fun PayWithCardNavHost(
         startDestination = selectAccountTypeRoute,
     ) {
         selectAccountTypeRoute(
-            onAccountSelected = {
-                navHostController.navigateToInsertCardRoute()
+            onAccountSelected = { accountType: AccountType ->
+                Tools.accountType = accountType.name
+                ProcessPayment(activity) { transactionResponse, dialogDismiss ->
+                    dialogDismiss
+                    Log.d("debug transaction data", "$transactionResponse")
+                }
+//                navHostController.navigateToInsertCardRoute()
             },
             onBackPress = onBackPress,
         )

@@ -13,7 +13,6 @@ keystoreProperties.load(keystorePropertiesFile?.let { FileInputStream(it) })
 android {
     namespace = "com.bankly.banklykozenpos"
     compileSdk = 33
-
     defaultConfig {
         applicationId = "com.bankly.banklykozenpos"
         versionCode = 1
@@ -24,7 +23,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     signingConfigs {
         create("config") {
             keyAlias = keystoreProperties["keyAlias"] as String
@@ -48,12 +46,10 @@ android {
             signingConfig = signingConfigs.getByName("config")
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -71,6 +67,8 @@ kapt {
 }
 
 dependencies {
+    implementation ("com.google.android.material:material:1.9.0")
+
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
     implementation(project(":core:common"))

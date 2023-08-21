@@ -1,11 +1,13 @@
 package com.bankly.banklykozenpos.navigation
 
+import android.app.Activity
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.ui.BanklyAppState
+import com.bankly.banklykozenpos.ui.MainActivity
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
@@ -20,7 +22,8 @@ fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = authenticationNavGraphRoute,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    activity: Activity
 ) {
     NavHost(
         modifier = modifier,
@@ -38,7 +41,9 @@ fun AppNavHost(
             onQuickActionCardClick = { quickAction: QuickAction ->
                 appState.navigateTo(
                     when (quickAction) {
-                        QuickAction.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
+                        QuickAction.PayWithCard -> {
+                            TopLevelDestination.PAY_WITH_CARD
+                        }
                         QuickAction.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
                         QuickAction.CardTransfer -> TopLevelDestination.CARD_TRANSFER
                         QuickAction.SendMoney -> TopLevelDestination.SEND_MONEY
@@ -61,7 +66,8 @@ fun AppNavHost(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            appNavController = appState.navHostController
+            appNavController = appState.navHostController,
+            activity = activity
         )
         cardTransferNavGraph(
             onBackPress = {

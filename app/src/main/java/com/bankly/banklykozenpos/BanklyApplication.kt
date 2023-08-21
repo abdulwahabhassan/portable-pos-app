@@ -4,4 +4,10 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BanklyApplication : Application()
+class BanklyApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+    }
+}
+
