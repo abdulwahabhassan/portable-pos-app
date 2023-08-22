@@ -47,7 +47,7 @@ fun NavGraphBuilder.payWithCardNavGraph(
                 amountArg
             )?.toDouble() ?: 0.00
             Log.d("debug amount", "$amount")
-            Tools.transactionAmount = amount.toString()
+            //Tools.transactionAmount = amount.toString()
             var payWithCardState by rememberPayWithCardState()
             PayWithCardNavHost(
                 navHostController = payWithCardState.navHostController,

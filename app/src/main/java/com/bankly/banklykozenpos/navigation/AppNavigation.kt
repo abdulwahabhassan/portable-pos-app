@@ -60,7 +60,8 @@ fun AppNavHost(
                     route = "$payWithCardNavGraphRoute/$encodedAmount",
                     navOptions = navOption
                 )
-            }
+            },
+            activity = activity
         )
         payWithCardNavGraph(
             onBackPress = {

@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.navigation
 
+import android.app.Activity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,12 +14,15 @@ import androidx.navigation.navigation
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.QuickAction
+import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
 
 fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
     onQuickActionCardClick: (QuickAction) -> Unit,
-    onContinueToPayWithCardClick: (Double) -> Unit
+    onContinueToPayWithCardClick: (Double) -> Unit,
+    activity: Activity
 ) {
+    ConfigParameters.downloadTmsParams(activity)
     navigation(
         route = dashBoardNavGraphRoute,
         startDestination = dashBoardRoute,
