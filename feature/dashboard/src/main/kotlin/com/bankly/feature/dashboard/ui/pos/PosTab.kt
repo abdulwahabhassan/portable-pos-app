@@ -195,6 +195,7 @@ fun PosScreen(
             isEnabled = displayedAmount != "0.00",
             onClick = {
                 onContinueClick(displayedAmount.replace(",", "").toDouble())
+                displayedAmount = "0.00"
             }
         )
     }

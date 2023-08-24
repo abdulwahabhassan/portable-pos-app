@@ -11,7 +11,6 @@ class BanklyFeatureConventionPlugin : Plugin<Project> {
                 apply("com.bankly.convention.compose")
             }
             dependencies {
-                //add("api", files("../../app/libs/KozonPaymentLibraryModule-release.aar"))
                 add("implementation", project(":core:designsystem"))
                 add("implementation", project(":core:data"))
                 add("implementation", project(":core:domain"))

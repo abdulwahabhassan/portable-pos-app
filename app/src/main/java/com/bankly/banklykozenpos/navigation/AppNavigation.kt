@@ -23,7 +23,6 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = authenticationNavGraphRoute,
     onBackPress: () -> Unit,
-    activity: Activity
 ) {
     NavHost(
         modifier = modifier,
@@ -61,14 +60,12 @@ fun AppNavHost(
                     navOptions = navOption
                 )
             },
-            activity = activity
         )
         payWithCardNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             appNavController = appState.navHostController,
-            activity = activity
         )
         cardTransferNavGraph(
             onBackPress = {

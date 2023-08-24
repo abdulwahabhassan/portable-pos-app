@@ -13,11 +13,9 @@ fun BanklyApp(
         networkMonitor = networkMonitor
     ),
     onCloseApp: () -> Unit,
-    activity: Activity
 ) {
     AppNavHost(
         appState,
         onBackPress = onCloseApp,
-        activity = activity
     )
 }

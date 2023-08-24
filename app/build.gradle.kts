@@ -12,19 +12,13 @@ keystoreProperties.load(keystorePropertiesFile?.let { FileInputStream(it) })
 
 android {
     namespace = "com.bankly.banklykozenpos"
-    compileSdk = 33
     defaultConfig {
         applicationId = "com.bankly.banklykozenpos"
         versionCode = 1
-        versionName = "0.0.1"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        versionName = "1.0.0"
     }
     signingConfigs {
-        create("config") {
+        create("app-signing-config") {
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
             storeFile = file(keystoreProperties["storeFile"] as String)
@@ -43,21 +37,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("config")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-    packaging {
-        resources {
-            excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+            signingConfig = signingConfigs.getByName("app-signing-config")
         }
     }
 }
@@ -67,7 +47,7 @@ kapt {
 }
 
 dependencies {
-    implementation ("com.google.android.material:material:1.9.0")
+    implementation (libs.google.android.material)
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))

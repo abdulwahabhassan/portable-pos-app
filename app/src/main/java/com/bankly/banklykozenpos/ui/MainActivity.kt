@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -19,21 +20,19 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
-
             BanklyTheme {
-//                ProcessPayment(this) { transactionResponse, dialogDismiss ->
-//                    dialogDismiss
-//                    Log.d("debug transaction data", "$transactionResponse")
-//                }
                 BanklyApp(
                     networkMonitor = networkMonitor,
                     onCloseApp = {
                         finish()
-                    },
-                activity = this
+                    }
                 )
             }
-
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ConfigParameters.downloadTmsParams(this)
     }
 }

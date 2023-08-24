@@ -68,7 +68,7 @@ fun AgentResult.asNameEnquiry() = NameEnquiry(
 
 fun TransactionResult.asBankTransfer() = TransactionReceipt.BankTransfer(
     phoneNumber = phoneNumber,
-    amount = amount,
+    amount = amount.toString(),
     reference = reference,
     accountNumber = accountNumber,
     sourceWallet = sourceWallet,

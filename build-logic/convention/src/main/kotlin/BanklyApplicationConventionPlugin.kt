@@ -2,6 +2,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.bankly.buildlogic.configureCompose
 import com.bankly.buildlogic.configureKotlinAndroid
 import com.bankly.buildlogic.configureToolChain
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -22,12 +23,32 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
             configureToolChain()
             extensions.configure<ApplicationExtension> {
                 defaultConfig.targetSdk = 33
+                compileSdk = 33
+                defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                defaultConfig.vectorDrawables.useSupportLibrary = true
+
                 configureKotlinAndroid(this)
                 configureCompose(this)
+
+                testOptions {
+                    unitTests {
+                        isIncludeAndroidResources = true
+                    }
+                }
+                packaging {
+                    resources {
+                        excludes.add("/META-INF/{AL2.0,LGPL2.1}")
+                    }
+                }
+
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_17
+                    targetCompatibility = JavaVersion.VERSION_17
+                }
             }
+
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                add("implementation", project(":core:designsystem"))
                 add("implementation", libs.findLibrary("androidx.appcompat").get())
                 add("implementation", libs.findLibrary("androidx.core.ktx").get())
                 add("implementation", libs.findLibrary("androidx.core.splashscreen").get())
@@ -42,5 +63,4 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
             }
         }
     }
-
 }

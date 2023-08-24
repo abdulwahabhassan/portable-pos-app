@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -20,16 +21,13 @@ import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
 import com.bankly.core.sealed.TransactionReceipt
-import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
+import com.bankly.feature.paywithcard.util.toTransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 
 fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
     appNavController: NavHostController,
-    activity: Activity
 ) {
-    Tools.initializeEmv(activity)
-    ConfigParameters.downloadTmsParams(activity)
     Tools.transactionType = com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
 
     navigation(
@@ -47,12 +45,11 @@ fun NavGraphBuilder.payWithCardNavGraph(
                 amountArg
             )?.toDouble() ?: 0.00
             Log.d("debug amount", "$amount")
-            //Tools.transactionAmount = amount.toString()
-            var payWithCardState by rememberPayWithCardState()
+            Tools.TransactionAmount = amount
+            val payWithCardState by rememberPayWithCardState()
             PayWithCardNavHost(
                 navHostController = payWithCardState.navHostController,
                 onBackPress = onBackPress,
-                activity = activity
             )
         }
     }
@@ -62,8 +59,9 @@ fun NavGraphBuilder.payWithCardNavGraph(
 private fun PayWithCardNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
-    activity: Activity
 ) {
+    val context = LocalContext.current
+
     NavHost(
         modifier = Modifier,
         navController = navHostController,
@@ -71,12 +69,24 @@ private fun PayWithCardNavHost(
     ) {
         selectAccountTypeRoute(
             onAccountSelected = { accountType: AccountType ->
-                Tools.accountType = accountType.name
-                ProcessPayment(activity) { transactionResponse, dialogDismiss ->
-                    dialogDismiss
-                    Log.d("debug transaction data", "$transactionResponse")
+                val acctType = when(accountType) {
+                    AccountType.SAVINGS -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.SAVINGS
+                            AccountType.DEFAULT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.DEFAULT
+                            AccountType.CREDIT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CREDIT
+                            AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
-//                navHostController.navigateToInsertCardRoute()
+                Tools.SetAccountType(acctType)
+                ProcessPayment(context) { transactionResponse, dialogDismiss ->
+                    dialogDismiss
+                    val receipt = transactionResponse.toTransactionReceipt()
+                    Log.d("debug transaction data", "$transactionResponse")
+                    Log.d("debug transaction receipt", "$receipt")
+                    if (receipt.statusName.equals("Successful", true)) {
+                        navHostController.navigateToTransactionSuccessRoute(receipt)
+                    } else {
+                        navHostController.navigateToTransactionFailedRoute(receipt.message)
+                    }
+                }
             },
             onBackPress = onBackPress,
         )

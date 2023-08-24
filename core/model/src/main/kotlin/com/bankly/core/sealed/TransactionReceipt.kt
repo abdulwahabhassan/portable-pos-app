@@ -9,7 +9,7 @@ sealed class TransactionReceipt(
     val acctName: String,
     val acctNumber: String,
     val bank: String,
-    val amt: Double,
+    val amt: String,
     val ref: String,
     val msg: String,
 ) {
@@ -18,7 +18,7 @@ sealed class TransactionReceipt(
         val accountName: String,
         val accountNumber: String,
         val bankName: String,
-        val amount: Double,
+        val amount: String,
         val reference: String,
         val phoneNumber: String,
         val sourceWallet: Long,
@@ -33,6 +33,29 @@ sealed class TransactionReceipt(
         acctName = accountName,
         acctNumber = accountNumber,
         bank = bankName,
+        amt = amount,
+        ref = reference,
+        msg = message
+    )
+
+    @Serializable
+    data class CardPayment(
+        val cardHolderName: String,
+        val cardNumber: String,
+        val cardType: String,
+        val amount: String,
+        val reference: String,
+        val statusName: String,
+        val message: String,
+        val dateTime: String,
+        val rrn: String,
+        val stan: String,
+        val terminalId: String,
+        val responseCode: String
+    ) : TransactionReceipt(
+        acctName = "",
+        acctNumber = "",
+        bank = "",
         amt = amount,
         ref = reference,
         msg = message
@@ -55,6 +78,20 @@ sealed class TransactionReceipt(
                     "Receiver Bank" to this.bankName,
                 )
             }
+
+            is CardPayment -> {
+                mapOf(
+                    "Transaction Type" to "Card Payment",
+                    "Status" to this.statusName,
+                    "Description" to this.message,
+                    "Terminal ID" to this.terminalId,
+                    "Transaction REF" to this.cardType,
+                    "Date/Time" to Formatter.formatServerDateTime(this.dateTime),
+                    "Response Code" to this.responseCode,
+                    "RRN" to this.rrn,
+                    "STAN" to this.stan,
+                )
+            }
         }
     }
 
@@ -64,7 +101,7 @@ sealed class TransactionReceipt(
                 accountName = "Hassan Abdulwahab",
                 accountNumber = "0428295437",
                 bankName = "GTBANK",
-                amount = 100.00,
+                amount = "100.00",
                 reference = "177282",
                 phoneNumber = "08123939291",
                 sourceWallet = 1,

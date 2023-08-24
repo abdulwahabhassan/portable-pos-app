@@ -8,10 +8,6 @@ import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-internal fun NavHostController.navigateToInsertCardRoute() {
-    this.navigate(insertCardRoute)
-}
-
 internal fun NavHostController.navigateToEnterPinRoute() {
     val options = NavOptions.Builder()
         .setPopUpTo(graph.startDestinationRoute, true)
@@ -32,7 +28,7 @@ internal fun NavHostController.navigateToTransactionSuccessRoute(transactionRece
     val transactionReceiptString = Json.encodeToString(transactionReceipt)
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     val options = NavOptions.Builder()
-        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}", true)
+        .setPopUpTo(graph.startDestinationRoute, false)
         .build()
     this.navigate("$transactionSuccessRoute/$encodedTransactionReceipt", options)
 }
@@ -40,7 +36,7 @@ internal fun NavHostController.navigateToTransactionSuccessRoute(transactionRece
 internal fun NavHostController.navigateToTransactionFailedRoute(message: String) {
     val encodedMessage = Uri.encode(message)
     val options = NavOptions.Builder()
-        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}", true)
+        .setPopUpTo(graph.startDestinationRoute, false)
         .build()
     this.navigate("$transactionFailedRoute/$encodedMessage", options)
 }

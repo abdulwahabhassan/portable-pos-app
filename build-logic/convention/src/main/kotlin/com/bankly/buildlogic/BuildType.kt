@@ -1,6 +1,6 @@
 package com.bankly.buildlogic
 
 enum class BuildType(val applicationIdSuffix: String? = null) {
-    DEBUG(".debug"),
-    RELEASE
+    DEBUG(applicationIdSuffix = ".debug"),
+    RELEASE(applicationIdSuffix = "")
 }

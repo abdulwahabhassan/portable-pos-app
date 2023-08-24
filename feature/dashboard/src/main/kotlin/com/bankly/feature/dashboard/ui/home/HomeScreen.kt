@@ -34,9 +34,7 @@ fun HomeTab(
     HomeScreen(
         screenState = screenState,
         onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },
-        onQuickActionCardClick = onQuickActionCardClick,
-
-        )
+        onQuickActionCardClick = onQuickActionCardClick)
 }
 
 @Composable

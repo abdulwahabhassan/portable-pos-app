@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,9 +21,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
     onQuickActionCardClick: (QuickAction) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
-    activity: Activity
 ) {
-    ConfigParameters.downloadTmsParams(activity)
     navigation(
         route = dashBoardNavGraphRoute,
         startDestination = dashBoardRoute,
