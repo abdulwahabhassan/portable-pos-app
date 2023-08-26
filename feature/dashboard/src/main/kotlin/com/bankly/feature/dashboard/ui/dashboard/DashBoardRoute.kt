@@ -26,7 +26,6 @@ import com.bankly.feature.dashboard.navigation.BottomNavDestination
 import com.bankly.feature.dashboard.ui.component.DashBoardAppBar
 import com.bankly.feature.dashboard.ui.component.DashBoardBottomNavBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashBoardRoute(
     showTopAppBar: Boolean,
@@ -42,7 +41,11 @@ fun DashBoardRoute(
     val showActionDialog = remember { mutableStateOf(false) }
 
     BackHandler {
-        showActionDialog.value = true
+        if (currentTab == DashboardTab.POS) {
+            onTabChange(DashboardTab.Home)
+        } else {
+            showActionDialog.value = true
+        }
     }
 
     if (showActionDialog.value) {

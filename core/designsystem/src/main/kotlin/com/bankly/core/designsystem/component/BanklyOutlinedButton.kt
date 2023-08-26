@@ -76,7 +76,7 @@ private fun BanklyOutlinedButtonPreview2() {
     BanklyTheme {
         BanklyOutlinedButton(
             modifier = Modifier.padding(32.dp),
-            text = "Yes, cancel",
+            text = "Yes",
             onClick = {},
             isEnabled = true,
             backgroundColor = MaterialTheme.colorScheme.errorContainer,

@@ -1,6 +1,5 @@
-package com.bankly.core.common.transactionfailed
+package com.bankly.core.common.ui.transactionfailed
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

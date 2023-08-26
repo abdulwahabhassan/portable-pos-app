@@ -16,7 +16,7 @@ import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
-import com.bankly.core.common.util.DecimalFormatter
+import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -66,15 +66,15 @@ internal abstract class BaseBeneficiaryViewModel constructor(
 
             is BeneficiaryScreenEvent.OnInputAmount -> {
 
-                val cleanedUpAmount = DecimalFormatter().cleanup(event.amountTFV.text)
-                val isEmpty = cleanedUpAmount.isEmpty()
+                val polishedAmount = AmountFormatter().polish(event.amountTFV.text)
+                val isEmpty = polishedAmount.isEmpty()
                 val isValid = if (isEmpty) false else Validator.isAmountValid(
-                    cleanedUpAmount.replace(",", "").toDouble()
+                    polishedAmount.replace(",", "").toDouble()
                 )
 
                 setUiState {
                     copy(
-                        amountTFV = event.amountTFV.copy(cleanedUpAmount),
+                        amountTFV = event.amountTFV.copy(polishedAmount),
                         isAmountError = isEmpty || isValid.not(),
                         amountFeedBack = if (isEmpty) "Please enter amount"
                         else if (isValid.not()) "Please enter a valid amount"
@@ -151,7 +151,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             },
                             phoneOrAccountNumber = event.accountOrPhoneNumber,
                             accountName = event.accountName,
-                            amount = DecimalFormatter().cleanup(event.amount).replace(",", "")
+                            amount = AmountFormatter().polish(event.amount).replace(",", "")
                                 .toDouble(),
                             vat = 0.00,
                             fee = 0.00,

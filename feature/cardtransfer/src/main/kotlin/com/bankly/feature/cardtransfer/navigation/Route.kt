@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.transactionfailed.TransactionFailedRoute
+import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.entercardpin.EnterCardPinRoute
 import com.bankly.core.common.ui.insertcard.InsertCardRoute
 import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute

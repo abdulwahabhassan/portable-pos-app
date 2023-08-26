@@ -1,6 +1,5 @@
 package com.bankly.feature.cardtransfer.ui.recipient
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,11 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.view.BankSearchView
-import com.bankly.core.common.util.DecimalFormatter
-import com.bankly.core.common.util.DecimalInputVisualTransformation
+import com.bankly.core.common.util.AmountFormatter
+import com.bankly.core.common.util.AmountInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
@@ -174,7 +172,7 @@ private fun RecipientScreen(
                         isError = screenState.isAmountError,
                         feedbackText = screenState.amountFeedBack,
                         isEnabled = screenState.isUserInputEnabled,
-                        visualTransformation = DecimalInputVisualTransformation(DecimalFormatter())
+                        visualTransformation = AmountInputVisualTransformation(AmountFormatter())
                     )
 
                     BanklyInputField(

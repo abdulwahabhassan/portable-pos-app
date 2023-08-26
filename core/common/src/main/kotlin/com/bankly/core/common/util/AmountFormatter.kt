@@ -2,17 +2,17 @@ package com.bankly.core.common.util
 
 import java.text.DecimalFormatSymbols
 
-class DecimalFormatter(
+class AmountFormatter(
     symbols: DecimalFormatSymbols = DecimalFormatSymbols.getInstance()
 ) {
 
     private val thousandsSeparator = symbols.groupingSeparator
     private val decimalSeparator = symbols.decimalSeparator
 
-    fun cleanup(input: String): String {
+    fun polish(input: String): String {
 
         if (input.matches("\\D".toRegex())) return ""
-        if (input.matches("0+".toRegex())) return "0"
+        if (input == "0") return ""
 
         val sb = StringBuilder()
 

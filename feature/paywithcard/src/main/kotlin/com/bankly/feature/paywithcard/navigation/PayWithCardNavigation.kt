@@ -1,12 +1,10 @@
 package com.bankly.feature.paywithcard.navigation
 
 import ProcessPayment
-import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavBackStackEntry
@@ -76,8 +74,7 @@ private fun PayWithCardNavHost(
                             AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
                 Tools.SetAccountType(acctType)
-                ProcessPayment(context) { transactionResponse, dialogDismiss ->
-                    dialogDismiss
+                ProcessPayment(context) { transactionResponse, _ ->
                     val receipt = transactionResponse.toTransactionReceipt()
                     Log.d("debug transaction data", "$transactionResponse")
                     Log.d("debug transaction receipt", "$receipt")

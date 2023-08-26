@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -58,9 +59,9 @@ fun PosTab(
 fun PosScreen(
     onContinueClick: (Double) -> Unit
 ) {
-    var displayedAmount by rememberSaveable { mutableStateOf("0.00") }
-    var showActionDialog by rememberSaveable { mutableStateOf(false) }
-    var actionMessage by rememberSaveable { mutableStateOf("") }
+    var displayedAmount by remember { mutableStateOf("0.00") }
+    var showActionDialog by remember { mutableStateOf(false) }
+    var actionMessage by remember { mutableStateOf("") }
 
     if (showActionDialog) {
         BanklyActionDialog(
@@ -195,7 +196,6 @@ fun PosScreen(
             isEnabled = displayedAmount != "0.00",
             onClick = {
                 onContinueClick(displayedAmount.replace(",", "").toDouble())
-                displayedAmount = "0.00"
             }
         )
     }

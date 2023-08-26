@@ -75,7 +75,7 @@ fun EnterCardPinScreen(
             positiveAction = {
                 showActionDialog = false
             },
-            negativeActionText = "Yes, cancel",
+            negativeActionText = "Yes",
             negativeAction = {
                 showActionDialog = false
                 onCloseClick()

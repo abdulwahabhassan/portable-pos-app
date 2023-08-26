@@ -5,14 +5,14 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
-class DecimalInputVisualTransformation(
-    private val decimalFormatter: DecimalFormatter
+class AmountInputVisualTransformation(
+    private val amountFormatter: AmountFormatter
 ) : VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
 
         val inputText = text.text
-        val formattedNumber = decimalFormatter.formatForVisual(inputText)
+        val formattedNumber = amountFormatter.formatForVisual(inputText)
 
         val newText = AnnotatedString(
             text = formattedNumber,

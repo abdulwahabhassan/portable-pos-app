@@ -17,7 +17,7 @@
     <string name="msg_enter_transaction_pin">Enter Transaction PIN</string>
     <string name="title_confirm_transaction">Confirm Transaction</string>
     <string name="action_no">No</string>
-    <string name="action_yes_cancel">Yes, cancel</string>
+    <string name="action_yes_cancel">Yes</string>
     <string name="msg_are_you_sure">Are you sure you want to cancel?</string>
     <string name="title_cancel_transaction">Cancel transaction?</string>
     <string name="action_forgot_pin">Forgot PIN</string>

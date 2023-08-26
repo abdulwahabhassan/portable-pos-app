@@ -15,8 +15,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.util.DecimalFormatter
-import com.bankly.core.common.util.DecimalInputVisualTransformation
+import com.bankly.core.common.util.AmountFormatter
+import com.bankly.core.common.util.AmountInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklySelectionDialogMenu
@@ -117,7 +117,7 @@ internal fun NewBeneficiaryView(
                 isError = screenState.isAmountError,
                 feedbackText = screenState.amountFeedBack,
                 isEnabled = screenState.isUserInputEnabled,
-                visualTransformation = DecimalInputVisualTransformation(DecimalFormatter())
+                visualTransformation = AmountInputVisualTransformation(AmountFormatter())
             )
 
             BanklyInputField(

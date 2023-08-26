@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
-import com.bankly.core.common.util.DecimalFormatter
+import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
@@ -57,16 +57,16 @@ internal class RecipientViewModel @Inject constructor(
             }
 
             is RecipientScreenEvent.OnAmount -> {
-                val cleanedUpAmount = DecimalFormatter().cleanup(event.amountTFV.text)
-                val isEmpty = cleanedUpAmount.isEmpty()
+                val polishedAmount = AmountFormatter().polish(event.amountTFV.text)
+                val isEmpty = polishedAmount.isEmpty()
                 val isValid = if (isEmpty) false
                 else Validator.isAmountValid(
-                    cleanedUpAmount.replace(",", "").toDouble()
+                    polishedAmount.replace(",", "").toDouble()
                 )
 
                 setUiState {
                     copy(
-                        amountTFV = event.amountTFV.copy(cleanedUpAmount),
+                        amountTFV = event.amountTFV.copy(polishedAmount),
                         isAmountError = isEmpty || isValid.not(),
                         amountFeedBack = if (isEmpty) "Please enter amount"
                         else if (isValid.not()) "Please enter a valid amount"

@@ -11,7 +11,7 @@ import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.transactionfailed.TransactionFailedRoute
+import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
 import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.serialization.decodeFromString
@@ -150,6 +150,5 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
                 onGoToHomeClick = onGoToHomeClick
             )
         }
-
     }
 }
