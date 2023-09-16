@@ -44,7 +44,7 @@ fun <T>BanklyExpandableList(
             .fillMaxWidth()
             .padding(top = 8.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         stickyHeader {
             Row(
@@ -53,11 +53,11 @@ fun <T>BanklyExpandableList(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     title,
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary)
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary),
                 )
                 Icon(
                     modifier = Modifier
@@ -70,16 +70,15 @@ fun <T>BanklyExpandableList(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = rememberRipple(
                                 bounded = true,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                                color = MaterialTheme.colorScheme.primary,
+                            ),
                         ),
                     painter = painterResource(if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         }
-
 
         items(items) { item ->
             AnimatedVisibility(visible = isExpanded) {
@@ -93,11 +92,11 @@ fun <T>BanklyExpandableList(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = rememberRipple(
                                 bounded = true,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                                color = MaterialTheme.colorScheme.primary,
+                            ),
                         ),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.Start,
                 ) {
                     BankListItem(bankName = transformItemToString(item))
                 }
@@ -108,24 +107,24 @@ fun <T>BanklyExpandableList(
 
 @Composable
 internal fun BankListItem(
-    bankName: String
+    bankName: String,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+            .padding(horizontal = 24.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.Start,
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = bankName,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         Divider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)

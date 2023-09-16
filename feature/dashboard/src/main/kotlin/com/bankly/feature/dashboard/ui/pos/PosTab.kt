@@ -1,6 +1,5 @@
 package com.bankly.feature.dashboard.ui.pos
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,17 +45,16 @@ import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.dashboard.R
 
-
 @Composable
 fun PosTab(
-    onContinueClick: (Double) -> Unit
+    onContinueClick: (Double) -> Unit,
 ) {
     PosScreen(onContinueClick = onContinueClick)
 }
 
 @Composable
 fun PosScreen(
-    onContinueClick: (Double) -> Unit
+    onContinueClick: (Double) -> Unit,
 ) {
     var displayedAmount by remember { mutableStateOf("0.00") }
     var showActionDialog by remember { mutableStateOf(false) }
@@ -70,7 +67,7 @@ fun PosScreen(
             positiveActionText = "Okay",
             positiveAction = {
                 showActionDialog = false
-            }
+            },
         )
     }
 
@@ -79,28 +76,28 @@ fun PosScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = stringResource(R.string.msg_enter_amount),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
 
             Row(
                 modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = stringResource(R.string.symbol_naira),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 28.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     ),
 
-                    )
+                )
                 Text(
                     modifier = Modifier
                         .padding(start = 4.dp, end = 4.dp),
@@ -109,9 +106,9 @@ fun PosScreen(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontSize = 28.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
                     ),
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
 
@@ -119,15 +116,17 @@ fun PosScreen(
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(16.dp)
+                contentPadding = PaddingValues(16.dp),
             ) {
-                items(PassCodeKey.values().map {
-                    when (it) {
-                        PassCodeKey.DELETE -> PassCodeKey.DONE
-                        PassCodeKey.DONE -> PassCodeKey.DELETE
-                        else -> it
-                    }
-                }.toMutableList()) { item ->
+                items(
+                    PassCodeKey.values().map {
+                        when (it) {
+                            PassCodeKey.DELETE -> PassCodeKey.DONE
+                            PassCodeKey.DONE -> PassCodeKey.DELETE
+                            else -> it
+                        }
+                    }.toMutableList(),
+                ) { item ->
                     if (item == PassCodeKey.DONE) {
                         Box {}
                     } else {
@@ -143,7 +142,7 @@ fun PosScreen(
                                         onValidationError = { message: String ->
                                             actionMessage = message
                                             showActionDialog = true
-                                        }
+                                        },
                                     )
                                 },
                                 modifier = Modifier
@@ -153,7 +152,7 @@ fun PosScreen(
                                     .fillMaxSize(),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.primary
+                                    contentColor = MaterialTheme.colorScheme.primary,
                                 ),
                                 shape = RoundedCornerShape(25),
                                 elevation = ButtonDefaults.buttonElevation(
@@ -161,26 +160,25 @@ fun PosScreen(
                                     0.dp,
                                     0.dp,
                                     0.dp,
-                                    0.dp
+                                    0.dp,
                                 ),
-                                contentPadding = PaddingValues(0.dp)
+                                contentPadding = PaddingValues(0.dp),
                             ) {
                                 if (item == PassCodeKey.DELETE) {
                                     Icon(
                                         modifier = Modifier.size(20.dp),
                                         painter = painterResource(id = BanklyIcons.Delete),
                                         contentDescription = "Delete icon",
-                                        tint = Color.Unspecified
+                                        tint = Color.Unspecified,
                                     )
                                 } else {
                                     Text(
                                         text = item.value,
                                         color = MaterialTheme.colorScheme.primary,
                                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
-                                        textAlign = TextAlign.Center
+                                        textAlign = TextAlign.Center,
                                     )
                                 }
-
                             }
                         }
                     }
@@ -196,7 +194,7 @@ fun PosScreen(
             isEnabled = displayedAmount != "0.00",
             onClick = {
                 onContinueClick(displayedAmount.replace(",", "").toDouble())
-            }
+            },
         )
     }
 }
@@ -205,7 +203,7 @@ private fun handleKeyPress(
     item: PassCodeKey,
     displayValue: String,
     onDisplayValueUpdated: (String) -> Unit,
-    onValidationError: (String) -> Unit
+    onValidationError: (String) -> Unit,
 ) {
     when (item) {
         PassCodeKey.DELETE -> {
@@ -220,7 +218,7 @@ private fun handleKeyPress(
 
         else -> {
             val formattedAmount = formatAmount(
-                displayValue.dropLast(3).replace(",", "") + item.value
+                displayValue.dropLast(3).replace(",", "") + item.value,
             )
             val doubleValue = formattedAmount.replace(",", "").toDouble()
             if (doubleValue <= 1_000_000) {

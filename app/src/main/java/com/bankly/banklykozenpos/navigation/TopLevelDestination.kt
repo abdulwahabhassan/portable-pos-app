@@ -6,5 +6,5 @@ enum class TopLevelDestination {
     PAY_WITH_CARD,
     PAY_WITH_TRANSFER,
     CARD_TRANSFER,
-    SEND_MONEY
+    SEND_MONEY,
 }

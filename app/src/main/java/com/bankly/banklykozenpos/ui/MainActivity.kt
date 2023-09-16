@@ -1,8 +1,6 @@
 package com.bankly.banklykozenpos.ui
 
-import ProcessPayment
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -25,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     networkMonitor = networkMonitor,
                     onCloseApp = {
                         finish()
-                    }
+                    },
                 )
             }
         }

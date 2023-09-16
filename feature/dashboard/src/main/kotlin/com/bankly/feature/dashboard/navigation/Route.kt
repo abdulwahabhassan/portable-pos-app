@@ -26,7 +26,7 @@ internal fun NavGraphBuilder.homeRoute(
         when (currentHomeTab) {
             DashboardTab.POS -> {
                 PosTab(
-                    onContinueClick = onContinueToPayWithCardClick
+                    onContinueClick = onContinueToPayWithCardClick,
                 )
             }
 

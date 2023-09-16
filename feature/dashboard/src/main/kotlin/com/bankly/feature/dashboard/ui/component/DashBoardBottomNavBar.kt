@@ -28,7 +28,7 @@ fun DashBoardBottomNavBar(
     NavigationBar(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.primary,
-        tonalElevation = 0.dp
+        tonalElevation = 0.dp,
     ) {
         destinations.forEach { destination ->
             val selected = currentBottomNavDestination == destination
@@ -45,7 +45,7 @@ fun DashBoardBottomNavBar(
                         painter = painterResource(id = icon!!),
                         contentDescription = stringResource(R.string.desc_navigation_icon),
                         modifier = Modifier.size(24.dp),
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                 },
                 enabled = destination == BottomNavDestination.HOME,
@@ -57,23 +57,21 @@ fun DashBoardBottomNavBar(
                     selectedIconColor = Color.Unspecified,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = Color.Unspecified,
-                    unselectedTextColor = MaterialTheme.colorScheme.inversePrimary
-                )
+                    unselectedTextColor = MaterialTheme.colorScheme.inversePrimary,
+                ),
             )
         }
     }
-
 }
-
 
 @Composable
 @Preview(showBackground = true)
 fun BottomNavBarPreview() {
-   BanklyTheme {
-       DashBoardBottomNavBar(
-           destinations = BottomNavDestination.values().toList(),
-           onNavigateToBottomNavDestination = {},
-           currentBottomNavDestination = BottomNavDestination.HOME
-       )
-   }
+    BanklyTheme {
+        DashBoardBottomNavBar(
+            destinations = BottomNavDestination.values().toList(),
+            onNavigateToBottomNavDestination = {},
+            currentBottomNavDestination = BottomNavDestination.HOME,
+        )
+    }
 }

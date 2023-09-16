@@ -9,17 +9,17 @@ import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @HiltViewModel
 class ProcessTransactionViewModel @Inject constructor(
     private val transferUseCase: TransferUseCase,
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<ProcessTransactionScreenEvent, ProcessTransactionScreenState, ProcessTransactionScreenOneShotState>(
-    ProcessTransactionScreenState()
+    ProcessTransactionScreenState(),
 ) {
     override suspend fun handleUiEvents(event: ProcessTransactionScreenEvent) {
         when (event) {
@@ -28,28 +28,28 @@ class ProcessTransactionViewModel @Inject constructor(
                     TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER -> {
                         transferUseCase.performTransferToAccountNumber(
                             userPreferencesDataStore.data().token,
-                            event.transactionData.toAccountNumberTransferData()
+                            event.transactionData.toAccountNumberTransferData(),
                         ).onEach { resource ->
                             resource.onReady { transactionReceipt: TransactionReceipt ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                        transactionReceipt = transactionReceipt
-                                    )
+                                        transactionReceipt = transactionReceipt,
+                                    ),
                                 )
                             }
                             resource.onFailure { message: String ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                        message = message
-                                    )
+                                        message = message,
+                                    ),
                                 )
                             }
                         }.catch {
                             it.printStackTrace()
                             setOneShotState(
                                 ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                    message = it.message ?: "An unexpected error occurred"
-                                )
+                                    message = it.message ?: "An unexpected error occurred",
+                                ),
                             )
                         }.launchIn(viewModelScope)
                     }
@@ -57,28 +57,28 @@ class ProcessTransactionViewModel @Inject constructor(
                     TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER -> {
                         transferUseCase.performPhoneNumberTransfer(
                             userPreferencesDataStore.data().token,
-                            event.transactionData.toPhoneNumberTransferData()
+                            event.transactionData.toPhoneNumberTransferData(),
                         ).onEach { resource ->
                             resource.onReady { transactionReceipt: TransactionReceipt ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                        transactionReceipt = transactionReceipt
-                                    )
+                                        transactionReceipt = transactionReceipt,
+                                    ),
                                 )
                             }
                             resource.onFailure { message: String ->
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                        message = message
-                                    )
+                                        message = message,
+                                    ),
                                 )
                             }
                         }.catch {
                             it.printStackTrace()
                             setOneShotState(
                                 ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                    message = it.message ?: "An unexpected error occurred"
-                                )
+                                    message = it.message ?: "An unexpected error occurred",
+                                ),
                             )
                         }.launchIn(viewModelScope)
                     }
@@ -86,22 +86,20 @@ class ProcessTransactionViewModel @Inject constructor(
                     TransactionType.CARD_WITHDRAWAL -> {
                         setOneShotState(
                             ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                message = "This feature is still a work in progress!"
-                            )
+                                message = "This feature is still a work in progress!",
+                            ),
                         )
                     }
 
                     TransactionType.CARD_TRANSFER -> {
                         setOneShotState(
                             ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                message = "This feature is still a work in progress!"
-                            )
+                                message = "This feature is still a work in progress!",
+                            ),
                         )
                     }
                 }
-
             }
         }
     }
-
 }

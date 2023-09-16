@@ -11,7 +11,7 @@ data class HomeScreenState(
     val message: String = "",
     val shouldShowErrorDialog: Boolean = false,
     val shouldShowLoadingIcon: Boolean = true,
-    val shouldShowVisibilityIcon: Boolean = false
+    val shouldShowVisibilityIcon: Boolean = false,
 )
 
 sealed interface HomeScreenOneShotState : OneShotState

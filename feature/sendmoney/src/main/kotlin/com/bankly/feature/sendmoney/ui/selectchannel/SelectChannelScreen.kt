@@ -31,26 +31,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
-import com.bankly.core.common.model.SendMoneyChannel
 
 @Composable
 internal fun SelectChannelRoute(
     onBackPress: () -> Unit,
-    onSelectChannel: (SendMoneyChannel) -> Unit
+    onSelectChannel: (SendMoneyChannel) -> Unit,
 ) {
     SelectChannelScreen(
         onBackPress = onBackPress,
-        onSelectChannel = onSelectChannel
+        onSelectChannel = onSelectChannel,
     )
 }
 
 @Composable
 private fun SelectChannelScreen(
     onBackPress: () -> Unit,
-    onSelectChannel: (SendMoneyChannel) -> Unit
+    onSelectChannel: (SendMoneyChannel) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -61,27 +61,26 @@ private fun SelectChannelScreen(
                     append(stringResource(R.string.title_please_select_transaction_channel))
                 },
             )
-        }
+        },
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             items(SendMoneyChannel.values()) { item ->
                 SendMoneyChannel(
                     destination = item,
                     onClick = { sendMoneyChannel: SendMoneyChannel ->
                         onSelectChannel(sendMoneyChannel)
-                    }
+                    },
                 )
             }
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -94,7 +93,7 @@ private fun SelectChannelScreenPreview() {
 @Composable
 private fun SendMoneyChannel(
     destination: SendMoneyChannel,
-    onClick: (SendMoneyChannel) -> Unit
+    onClick: (SendMoneyChannel) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -102,7 +101,7 @@ private fun SendMoneyChannel(
             .shadow(
                 elevation = 1.dp,
                 shape = RoundedCornerShape(16.dp),
-                clip = true
+                clip = true,
             )
             .clip(RoundedCornerShape(16.dp))
             .clickable(
@@ -114,26 +113,26 @@ private fun SendMoneyChannel(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             )
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
             )
             .fillMaxWidth()
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(id = destination.icon),
-            contentDescription = null
+            contentDescription = null,
         )
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
                 text = destination.title,
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             )
             Text(
                 text = destination.description,
@@ -152,7 +151,7 @@ private fun SendMoneyChannelPreview() {
     BanklyTheme {
         SendMoneyChannel(
             destination = SendMoneyChannel.BANKLY_TO_BANKLY,
-            onClick = {}
+            onClick = {},
         )
     }
 }

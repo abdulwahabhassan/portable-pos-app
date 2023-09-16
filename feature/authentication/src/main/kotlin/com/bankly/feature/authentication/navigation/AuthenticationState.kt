@@ -13,12 +13,12 @@ fun rememberAuthenticationState(
     navHostController: NavHostController = rememberNavController(),
 ): MutableState<AuthenticationState> {
     return remember(
-        navHostController
+        navHostController,
     ) {
         mutableStateOf(
             AuthenticationState(
-                navHostController = navHostController
-            )
+                navHostController = navHostController,
+            ),
         )
     }
 }
@@ -30,4 +30,3 @@ data class AuthenticationState(
     val shouldShowTopAppBar: Boolean
         @Composable get() = true
 }
-

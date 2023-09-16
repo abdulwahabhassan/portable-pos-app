@@ -1,7 +1,6 @@
 package com.bankly.core.designsystem.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -15,7 +14,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
@@ -28,7 +26,7 @@ fun BanklyDropDownInputField(
     readOnly: Boolean = false,
     isError: Boolean = false,
     feedbackText: String = "",
-    selectionOptions: List<String>
+    selectionOptions: List<String>,
 ) {
     var bankTFV: TextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     var isDropDownExpanded: Boolean by remember { mutableStateOf(true) }
@@ -48,14 +46,14 @@ fun BanklyDropDownInputField(
             trailingIcon = if (isDropDownExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down,
             onTrailingIconClick = {
                 isDropDownExpanded = true
-            }
+            },
         )
         DropdownMenu(
             modifier = Modifier.fillMaxWidth(),
             expanded = isDropDownExpanded,
             onDismissRequest = {
                 isDropDownExpanded = false
-            }
+            },
         ) {
             selectionOptions.forEach { option: String ->
                 DropdownMenuItem(
@@ -64,7 +62,7 @@ fun BanklyDropDownInputField(
                     onClick = {
                         bankTFV = bankTFV.copy(text = option)
                         isDropDownExpanded = false
-                    }
+                    },
                 )
             }
         }
@@ -78,7 +76,7 @@ fun BanklyDropDownInputFieldPreview() {
         BanklyDropDownInputField(
             placeholderText = "Select bank",
             labelText = "Bank Name",
-            selectionOptions = listOf("GTB", "FCMB", "First Bank of Nigeria (FBN)")
+            selectionOptions = listOf("GTB", "FCMB", "First Bank of Nigeria (FBN)"),
         )
     }
 }

@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.sealed.State
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.sealed.State
 import com.bankly.feature.authentication.R
 
 @Composable
@@ -34,7 +34,7 @@ internal fun SetNewPassCodeRoute(
     phoneNumber: String,
     otp: String,
     onSetNewPassCodeSuccess: (String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     SetNewPassCodeScreen(
@@ -43,9 +43,8 @@ internal fun SetNewPassCodeRoute(
         otp = otp,
         onSetNewPassCodeSuccess = onSetNewPassCodeSuccess,
         onBackPress = onBackPress,
-        onUiEvent = { uiEvent: SetNewPassCodeScreenEvent -> viewModel.sendEvent(uiEvent) }
+        onUiEvent = { uiEvent: SetNewPassCodeScreenEvent -> viewModel.sendEvent(uiEvent) },
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +55,7 @@ internal fun SetNewPassCodeScreen(
     otp: String,
     onSetNewPassCodeSuccess: (String) -> Unit,
     onBackPress: () -> Unit,
-    onUiEvent: (SetNewPassCodeScreenEvent) -> Unit
+    onUiEvent: (SetNewPassCodeScreenEvent) -> Unit,
 ) {
     BackHandler {
         onUiEvent(SetNewPassCodeScreenEvent.OnBackPress)
@@ -73,7 +72,7 @@ internal fun SetNewPassCodeScreen(
             negativeActionText = stringResource(R.string.action_no),
             negativeAction = {
                 onUiEvent(SetNewPassCodeScreenEvent.OnDismissWarningDialog)
-            }
+            },
         )
     }
 
@@ -81,23 +80,22 @@ internal fun SetNewPassCodeScreen(
         topBar = {
             BanklyTitleBar(
                 title = stringResource(R.string.title_set_new_passcode),
-                isLoading = screenState.setNewPassCodeState is State.Loading
+                isLoading = screenState.setNewPassCodeState is State.Loading,
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     BanklyInputField(
                         textFieldValue = screenState.passCodeTFV,
                         onTextFieldValueChange = { textFieldValue ->
@@ -107,11 +105,11 @@ internal fun SetNewPassCodeScreen(
                         labelText = stringResource(R.string.msg_passcode_label),
                         isPasswordField = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Password
+                            keyboardType = KeyboardType.Password,
                         ),
                         isError = screenState.isPassCodeError,
                         feedbackText = screenState.passCodeFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
 
                     BanklyInputField(
@@ -119,19 +117,19 @@ internal fun SetNewPassCodeScreen(
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
                                 SetNewPassCodeScreenEvent.OnEnterConfirmPasscode(
-                                    textFieldValue
-                                )
+                                    textFieldValue,
+                                ),
                             )
                         },
                         placeholderText = stringResource(R.string.msg_enter_confirm_passcode),
                         labelText = stringResource(R.string.msg_confirm_passcode_label),
                         isPasswordField = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Password
+                            keyboardType = KeyboardType.Password,
                         ),
                         isError = screenState.isConfirmPassCodeError,
                         feedbackText = screenState.confirmPassCodeFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
                 }
             }
@@ -148,14 +146,13 @@ internal fun SetNewPassCodeScreen(
                                 passCode = screenState.passCodeTFV.text,
                                 confirmPassCode = screenState.confirmPassCodeTFV.text,
                                 phoneNumber = phoneNumber,
-                                otp = otp
-                            )
+                                otp = otp,
+                            ),
                         )
                     },
-                    isEnabled = screenState.isDoneButtonEnabled
+                    isEnabled = screenState.isDoneButtonEnabled,
                 )
             }
-
         }
     }
 
@@ -165,7 +162,7 @@ internal fun SetNewPassCodeScreen(
             BanklyActionDialog(
                 title = stringResource(R.string.title_reset_passcode_error),
                 subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay)
+                positiveActionText = stringResource(R.string.action_okay),
             )
         }
 
@@ -175,7 +172,6 @@ internal fun SetNewPassCodeScreen(
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -187,7 +183,7 @@ private fun SetNewPassCodeScreenPreview() {
             phoneNumber = "",
             otp = "",
             onBackPress = {},
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

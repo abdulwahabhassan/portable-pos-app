@@ -2,10 +2,10 @@ package com.bankly.feature.sendmoney.ui.beneficiary
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.core.common.model.SendMoneyChannel
 
 internal sealed interface BeneficiaryScreenEvent {
     data class OnSelectBank(val bank: Bank, val accountOrPhoneNumber: String) : BeneficiaryScreenEvent
@@ -24,13 +24,13 @@ internal sealed interface BeneficiaryScreenEvent {
         val bankName: String,
         val selectedBankId: Long?,
         val narration: String,
-        val accountNumberType: AccountNumberType
+        val accountNumberType: AccountNumberType,
     ) : BeneficiaryScreenEvent
 
     data class OnInputAccountOrPhoneNumber(
         val accountOrPhoneNumberTFV: TextFieldValue,
         val sendMoneyChannel: SendMoneyChannel,
         val selectedBankId: Long?,
-        val accountNumberType: AccountNumberType
+        val accountNumberType: AccountNumberType,
     ) : BeneficiaryScreenEvent
 }

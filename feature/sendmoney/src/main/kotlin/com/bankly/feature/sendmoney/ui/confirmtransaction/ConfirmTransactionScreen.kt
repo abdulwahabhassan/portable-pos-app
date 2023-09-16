@@ -24,7 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.sealed.State
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.TransactionType
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDetailRow
@@ -33,13 +35,10 @@ import com.bankly.core.designsystem.component.BanklyPassCodeInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.sealed.State
 import com.bankly.feature.sendmoney.R
-import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.AccountNumberType
-import com.bankly.core.common.model.TransactionType
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 
 @Composable
 internal fun ConfirmTransactionRoute(
@@ -48,7 +47,7 @@ internal fun ConfirmTransactionRoute(
     onConfirmationSuccess: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -60,7 +59,7 @@ internal fun ConfirmTransactionRoute(
         onForgotPinClick = onForgotPinClick,
         onUiEvent = { uiEvent ->
             viewModel.sendEvent(uiEvent)
-        }
+        },
     )
 
     LaunchedEffect(key1 = Unit) {
@@ -83,9 +82,8 @@ private fun ConfirmTransactionScreen(
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
     onForgotPinClick: () -> Unit,
-    onUiEvent: (ConfirmTransactionScreenEvent) -> Unit
+    onUiEvent: (ConfirmTransactionScreenEvent) -> Unit,
 ) {
-
     if (screenState.shouldShowWarningDialog) {
         BanklyActionDialog(
             title = stringResource(id = R.string.title_cancel_transaction),
@@ -94,10 +92,10 @@ private fun ConfirmTransactionScreen(
             positiveAction = {
                 onUiEvent(ConfirmTransactionScreenEvent.OnDismissWarningDialog)
             },
-            negativeActionText = stringResource(R.string.action_yes_cancel) ,
+            negativeActionText = stringResource(R.string.action_yes_cancel),
             negativeAction = {
                 onCloseClick()
-            }
+            },
         )
     }
 
@@ -109,16 +107,16 @@ private fun ConfirmTransactionScreen(
                 isLoading = screenState.isLoading,
                 onCloseClick = {
                     onUiEvent(ConfirmTransactionScreenEvent.OnCloseClick)
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(modifier = Modifier.padding(horizontal = 32.dp)) {
@@ -136,47 +134,48 @@ private fun ConfirmTransactionScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 32.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Divider(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                         Text(
                             text = stringResource(R.string.msg_enter_transaction_pin),
-                            style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                         )
                         Divider(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                     }
 
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = 16.dp),
                     ) {
                         BanklyPassCodeInputField(
-                            passCode = screenState.pin
+                            passCode = screenState.pin,
                         )
                     }
 
                     Row(
                         horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         BanklyClickableText(
                             text = buildAnnotatedString {
                                 withStyle(
                                     style = MaterialTheme.typography.bodyMedium.toSpanStyle()
                                         .copy(
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
+                                            color = MaterialTheme.colorScheme.primary,
+                                        ),
                                 ) {
                                     append(stringResource(R.string.action_forgot_pin))
                                 }
                             },
                             backgroundColor = MaterialTheme.colorScheme.inversePrimary,
-                            onClick = onForgotPinClick)
+                            onClick = onForgotPinClick,
+                        )
                     }
 
                     BanklyNumericKeyboard(
@@ -208,7 +207,7 @@ private fun ConfirmTransactionScreen(
                             }
                         },
                         isKeyPadEnabled = screenState.isKeyPadEnabled,
-                        isDoneKeyEnabled = screenState.isDoneButtonEnabled
+                        isDoneKeyEnabled = screenState.isDoneButtonEnabled,
                     )
                 }
             }
@@ -221,12 +220,11 @@ private fun ConfirmTransactionScreen(
             BanklyActionDialog(
                 title = stringResource(R.string.title_confirm_transaction_error),
                 subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay)
+                positiveActionText = stringResource(R.string.action_okay),
             )
         }
 
         is State.Success -> {
-
         }
     }
 }
@@ -248,12 +246,12 @@ private fun ConfirmTransactionScreenPreview() {
                 "",
                 "",
                 AccountNumberType.ACCOUNT_NUMBER,
-                ""
+                "",
             ),
             onBackPress = {},
             onUiEvent = {},
             onCloseClick = {},
-            onForgotPinClick = {}
+            onForgotPinClick = {},
         )
     }
 }

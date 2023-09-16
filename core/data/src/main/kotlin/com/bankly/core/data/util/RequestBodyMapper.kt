@@ -17,19 +17,23 @@ fun ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
     serialNumber = serialNumber,
     oldPasscode = oldPasscode,
     newPasscode = newPasscode,
-    confirmPasscode = confirmPasscode
+    confirmPasscode = confirmPasscode,
 )
 
 fun ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
-    phoneNumber = phoneNumber
+    phoneNumber = phoneNumber,
 )
 
 fun ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
-    username = username, password = password, confirmPassword = confirmPassword, code = code
+    username = username,
+    password = password,
+    confirmPassword = confirmPassword,
+    code = code,
 )
 
 fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
-    otp = otp, phoneNumber = phoneNumber
+    otp = otp,
+    phoneNumber = phoneNumber,
 )
 
 fun PhoneNumberTransferData.asRequestBody() = PhoneNumberTransferRequestBody(
@@ -41,7 +45,7 @@ fun PhoneNumberTransferData.asRequestBody() = PhoneNumberTransferRequestBody(
     securityQuestionResponse = securityQuestionResponse,
     clientRequestId = clientRequestId,
     deviceId = deviceId,
-    channel = channel
+    channel = channel,
 )
 
 fun AccountNumberTransferData.asRequestBody() = AccountNumberTransferRequestBody(
@@ -59,5 +63,5 @@ fun AccountNumberTransferData.asRequestBody() = AccountNumberTransferRequestBody
     securityQuestionResponse = securityQuestionResponse,
     deviceId = deviceId,
     isWeb = isWeb,
-    senderName = senderName
+    senderName = senderName,
 )

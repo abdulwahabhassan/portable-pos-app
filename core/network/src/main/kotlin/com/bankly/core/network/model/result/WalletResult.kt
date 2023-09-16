@@ -2,9 +2,8 @@ package com.bankly.core.network.model.result
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-data class WalletResult (
+data class WalletResult(
     val id: Long,
     val accountNumber: String,
     val code: String,
@@ -36,5 +35,5 @@ data class WalletResult (
     val isStaffAccount: Boolean,
     val hasGeneratedNewNuban: Boolean,
     val ownerType: Long,
-    val nuban: String
+    val nuban: String,
 )

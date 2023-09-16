@@ -10,7 +10,7 @@ internal sealed interface RecipientScreenEvent {
         val amount: String,
         val bankName: String,
         val selectedBankId: Long?,
-        val senderPhoneNumber: String
+        val senderPhoneNumber: String,
     ) : RecipientScreenEvent
 
     class OnAccountNumber(val accountNumberTFV: TextFieldValue, val selectedBankId: Long?) :
@@ -22,6 +22,4 @@ internal sealed interface RecipientScreenEvent {
         RecipientScreenEvent
 
     object OnExit : RecipientScreenEvent
-
-
 }

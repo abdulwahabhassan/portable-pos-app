@@ -12,6 +12,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun TransactionsRoute() {
     TransactionsScreen()
 }
+
 @Composable
 fun TransactionsScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

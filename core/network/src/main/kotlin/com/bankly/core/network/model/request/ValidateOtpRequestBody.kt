@@ -7,4 +7,3 @@ data class ValidateOtpRequestBody(
     val otp: String,
     val phoneNumber: String,
 )
-

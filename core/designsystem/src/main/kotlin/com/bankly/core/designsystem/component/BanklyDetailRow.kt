@@ -23,21 +23,21 @@ fun BanklyDetailRow(
     label: String,
     value: String,
     labelStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
-    valueStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+    valueStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
     ) {
         Text(text = label, style = labelStyle, textAlign = TextAlign.Start)
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = value,
             style = valueStyle,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
         )
     }
 }

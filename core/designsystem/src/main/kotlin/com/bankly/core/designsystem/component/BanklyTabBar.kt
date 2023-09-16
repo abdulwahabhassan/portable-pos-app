@@ -31,7 +31,7 @@ fun <T : Enum<T>> BanklyTabBar(
     selectedTabColor: Color = MaterialTheme.colorScheme.primary,
     selectedTabTextColor: Color = MaterialTheme.colorScheme.onPrimary,
     unselectedTabTextColor: Color = MaterialTheme.colorScheme.primary,
-    rippleColor: Color = MaterialTheme.colorScheme.primary
+    rippleColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Row(
         modifier = Modifier
@@ -41,7 +41,7 @@ fun <T : Enum<T>> BanklyTabBar(
                 shape = MaterialTheme.shapes.medium,
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         tabs.forEach { category ->
             Box(
@@ -52,7 +52,9 @@ fun <T : Enum<T>> BanklyTabBar(
                     .background(
                         color = if (selectedTab == category) {
                             selectedTabColor
-                        } else Color.Unspecified,
+                        } else {
+                            Color.Unspecified
+                        },
                         shape = MaterialTheme.shapes.small,
                     )
                     .clip(MaterialTheme.shapes.small)
@@ -60,11 +62,11 @@ fun <T : Enum<T>> BanklyTabBar(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(
                             bounded = true,
-                            color = rippleColor
+                            color = rippleColor,
                         ),
                         onClick = {
                             onTabClick(category)
-                        }
+                        },
                     ),
                 contentAlignment = Alignment.Center,
             ) {
@@ -78,9 +80,10 @@ fun <T : Enum<T>> BanklyTabBar(
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = if (selectedTab == category) {
                             selectedTabTextColor
-                        } else
+                        } else {
                             unselectedTabTextColor
-                    )
+                        },
+                    ),
                 )
             }
         }
@@ -98,7 +101,7 @@ private fun BanklyTabBarPreview() {
         BanklyTabBar(
             tabs = Sample.values().toList(),
             onTabClick = {},
-            selectedTab = Sample.BANKLY
+            selectedTab = Sample.BANKLY,
         )
     }
 }

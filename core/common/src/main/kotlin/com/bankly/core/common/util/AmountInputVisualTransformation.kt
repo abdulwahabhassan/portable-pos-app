@@ -6,23 +6,22 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
 class AmountInputVisualTransformation(
-    private val amountFormatter: AmountFormatter
+    private val amountFormatter: AmountFormatter,
 ) : VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
-
         val inputText = text.text
         val formattedNumber = amountFormatter.formatForVisual(inputText)
 
         val newText = AnnotatedString(
             text = formattedNumber,
             spanStyles = text.spanStyles,
-            paragraphStyles = text.paragraphStyles
+            paragraphStyles = text.paragraphStyles,
         )
 
         val offsetMapping = FixedCursorOffsetMapping(
             contentLength = inputText.length,
-            formattedContentLength = formattedNumber.length
+            formattedContentLength = formattedNumber.length,
         )
 
         return TransformedText(newText, offsetMapping)

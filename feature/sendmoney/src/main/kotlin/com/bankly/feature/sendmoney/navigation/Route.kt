@@ -4,10 +4,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
-import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
 import com.bankly.core.sealed.TransactionReceipt
@@ -29,7 +29,7 @@ internal const val transactionDetailsRoute = sendMoneyRoute.plus("/transaction_d
 
 internal fun NavGraphBuilder.selectChannelRoute(
     onSendMoneyChannelSelected: (SendMoneyChannel) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(route = selectChannelRoute) {
         SelectChannelRoute(
@@ -42,13 +42,13 @@ internal fun NavGraphBuilder.selectChannelRoute(
 internal fun NavGraphBuilder.beneficiaryRoute(
     onContinueClick: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     composable(
         route = "$beneficiaryRoute/{$sendMoneyChannelArg}",
         arguments = listOf(
             navArgument(sendMoneyChannelArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(sendMoneyChannelArg)?.let { sendMoneyChannel: String ->
             val channelEnum = when (sendMoneyChannel) {
@@ -61,7 +61,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
                     onBackPress = onBackPress,
                     sendMoneyChannel = channelEnum,
                     onContinueClick = onContinueClick,
-                    onCloseClick = onCloseClick
+                    onCloseClick = onCloseClick,
                 )
             }
         }
@@ -72,13 +72,13 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
     onConfirmationSuccess: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
-    onForgotPinClick: () -> Unit
+    onForgotPinClick: () -> Unit,
 ) {
     composable(
         route = "$confirmTransactionRoute/{$transactionDataArg}",
         arguments = listOf(
             navArgument(transactionDataArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
             val data: TransactionData = Json.decodeFromString(transactionData)
@@ -87,7 +87,7 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
                 onConfirmationSuccess = onConfirmationSuccess,
                 onBackPress = onBackPress,
                 onCloseClick = onCloseClick,
-                onForgotPinClick = onForgotPinClick
+                onForgotPinClick = onForgotPinClick,
             )
         }
     }
@@ -95,20 +95,20 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
 
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String) -> Unit
+    onFailedTransaction: (String) -> Unit,
 ) {
     composable(
         route = "$processTransactionRoute/{$transactionDataArg}",
         arguments = listOf(
             navArgument(transactionDataArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
             val data: TransactionData = Json.decodeFromString(transactionData)
             ProcessTransactionRoute(
                 transactionData = data,
                 onTransactionSuccess = onSuccessfulTransaction,
-                onFailedTransaction = onFailedTransaction
+                onFailedTransaction = onFailedTransaction,
             )
         }
     }
@@ -116,13 +116,13 @@ internal fun NavGraphBuilder.processTransactionRoute(
 
 internal fun NavGraphBuilder.transactionSuccessRoute(
     onGoHomeClick: () -> Unit,
-    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
 ) {
     composable(
         route = "$transactionSuccessRoute/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
             val trans: TransactionReceipt = Json.decodeFromString(transaction)
@@ -143,12 +143,12 @@ internal fun NavGraphBuilder.transactionFailedRoute(
         route = "$transactionFailedRoute/{$messageArg}",
         arguments = listOf(
             navArgument(messageArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(messageArg)?.let { message: String ->
             TransactionFailedRoute(
                 onGoToHome = onGoHomeClick,
-                message = message
+                message = message,
             )
         }
     }
@@ -158,13 +158,13 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
 ) {
     composable(
         route = "$transactionDetailsRoute/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
             val trans: TransactionReceipt = Json.decodeFromString(transaction)
@@ -173,9 +173,8 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
                 onShareClick = onShareClick,
                 onSmsClick = onSmsClick,
                 onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick
+                onGoToHomeClick = onGoToHomeClick,
             )
         }
-
     }
 }

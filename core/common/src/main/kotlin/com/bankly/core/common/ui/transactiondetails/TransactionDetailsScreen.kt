@@ -54,7 +54,7 @@ fun TransactionDetailsRoute(
         onShareClick = onShareClick,
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
-        onGoToHomeClick = onGoToHomeClick
+        onGoToHomeClick = onGoToHomeClick,
     )
 }
 
@@ -71,7 +71,7 @@ fun TransactionDetailsScreen(
             BanklyTitleBar(
                 title = stringResource(R.string.title_transaction_receipt),
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -79,47 +79,47 @@ fun TransactionDetailsScreen(
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Box(
                     contentAlignment = Alignment.TopCenter,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     Column(
                         modifier = Modifier
                             .padding(top = 32.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.surfaceVariant,
-                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                             )
                             .padding(vertical = 16.dp, horizontal = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
                     ) {
                         Spacer(modifier = Modifier.height(24.dp))
                         Text(
                             text = stringResource(R.string.msg_total_amount),
                             style = MaterialTheme.typography.labelMedium.copy(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            ),
                         )
                         Text(
                             text = Formatter.formatAmount(transactionReceipt.amt, true),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         val dottedLineColor = MaterialTheme.colorScheme.onPrimaryContainer
                         Canvas(
                             Modifier
                                 .fillMaxWidth()
-                                .height(1.dp)
+                                .height(1.dp),
                         ) {
                             drawLine(
                                 color = dottedLineColor,
                                 start = Offset(0f, 0f),
                                 end = Offset(size.width, 0f),
-                                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+                                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f),
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
@@ -129,7 +129,7 @@ fun TransactionDetailsScreen(
                                     label = label,
                                     value = value,
                                     labelStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary, letterSpacing = 0.25.sp),
-                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp)
+                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp),
                                 )
                             }
                     }
@@ -138,7 +138,7 @@ fun TransactionDetailsScreen(
                         modifier = Modifier.size(60.dp),
                         painter = painterResource(id = BanklyIcons.Successful),
                         contentDescription = null,
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                 }
             }
@@ -147,35 +147,35 @@ fun TransactionDetailsScreen(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Divider(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                     Text(
                         text = stringResource(R.string.msg_send_transaction_receipt),
-                        style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        style = MaterialTheme.typography.labelMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     )
                     Divider(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     BanklyOutlinedButton(
                         modifier = Modifier.weight(1f),
                         text = "Share",
                         onClick = onShareClick,
-                        backgroundColor = MaterialTheme.colorScheme.background
+                        backgroundColor = MaterialTheme.colorScheme.background,
                     )
                     BanklyOutlinedButton(
                         modifier = Modifier.weight(1f),
                         text = "SMS",
                         onClick = onSmsClick,
-                        backgroundColor = MaterialTheme.colorScheme.background
+                        backgroundColor = MaterialTheme.colorScheme.background,
                     )
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -184,7 +184,7 @@ fun TransactionDetailsScreen(
                     text = stringResource(R.string.action_log_complaint),
                     onClick = onLogComplaintClick,
                     textColor = MaterialTheme.colorScheme.primary,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 BanklyFilledButton(
@@ -221,9 +221,7 @@ fun TransactionDetailsScreenPreview() {
             onShareClick = {},
             onSmsClick = {},
             onLogComplaintClick = {},
-            onGoToHomeClick = {}
+            onGoToHomeClick = {},
         )
     }
 }
-
-

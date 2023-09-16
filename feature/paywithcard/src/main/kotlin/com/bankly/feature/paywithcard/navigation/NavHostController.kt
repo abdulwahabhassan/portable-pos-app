@@ -46,6 +46,3 @@ internal fun NavHostController.navigateToTransactionDetailsRoute(transactionRece
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     this.navigate("$transactionDetailsRoute/$encodedTransactionReceipt")
 }
-
-
-

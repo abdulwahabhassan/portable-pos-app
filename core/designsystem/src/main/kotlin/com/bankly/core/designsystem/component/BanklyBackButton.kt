@@ -3,10 +3,8 @@ package com.bankly.core.designsystem.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.magnifier
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +25,6 @@ fun BanklyBackButton(onClick: () -> Unit) {
         contentDescription = "Left Arrow",
         tint = MaterialTheme.colorScheme.primary,
         modifier = Modifier
-
             .clip(MaterialTheme.shapes.small)
             .clickable(
                 onClick = onClick,
@@ -36,15 +33,15 @@ fun BanklyBackButton(onClick: () -> Unit) {
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             )
             .padding(4.dp)
             .size(32.dp)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.small,
-            )
+            ),
     )
 }
 
@@ -56,7 +53,7 @@ fun BanklyBackButton(onClick: () -> Unit) {
 private fun BanklyBackButtonPreview() {
     BanklyTheme {
         BanklyBackButton(
-            onClick = {}
+            onClick = {},
         )
     }
 }

@@ -2,22 +2,22 @@ package com.bankly.feature.sendmoney.ui.beneficiary
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.sealed.State
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.model.TransactionType
+import com.bankly.core.common.util.AmountFormatter
+import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
 import com.bankly.core.entity.Bank
 import com.bankly.core.entity.NameEnquiry
-import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.core.common.model.AccountNumberType
-import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.TransactionType
-import com.bankly.core.common.util.AmountFormatter
-import com.bankly.core.common.util.Validator
+import com.bankly.core.sealed.State
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,9 +26,9 @@ import kotlinx.coroutines.launch
 internal abstract class BaseBeneficiaryViewModel constructor(
     private val nameEnquiryUseCase: NameEnquiryUseCase,
     private val getBanksUseCase: GetBanksUseCase,
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<BeneficiaryScreenEvent, BeneficiaryScreenState, BeneficiaryScreenOneShotState>(
-    BeneficiaryScreenState()
+    BeneficiaryScreenState(),
 ) {
     init {
         viewModelScope.launch { getBanks() }
@@ -37,20 +37,27 @@ internal abstract class BaseBeneficiaryViewModel constructor(
     override suspend fun handleUiEvents(event: BeneficiaryScreenEvent) {
         when (event) {
             is BeneficiaryScreenEvent.OnInputAccountOrPhoneNumber -> {
-
                 val isEmpty = event.accountOrPhoneNumberTFV.text.trim().isEmpty()
                 val isValid =
-                    if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) Validator.isPhoneNumberValid(
-                        event.accountOrPhoneNumberTFV.text.trim()
-                    ) else Validator.isAccountNumberValid(event.accountOrPhoneNumberTFV.text.trim())
+                    if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) {
+                        Validator.isPhoneNumberValid(
+                            event.accountOrPhoneNumberTFV.text.trim(),
+                        )
+                    } else {
+                        Validator.isAccountNumberValid(event.accountOrPhoneNumberTFV.text.trim())
+                    }
 
                 setUiState {
                     copy(
                         accountOrPhoneTFV = event.accountOrPhoneNumberTFV,
                         isAccountOrPhoneError = isEmpty || isValid.not(),
-                        accountOrPhoneFeedBack = if (isEmpty) "Please enter ${if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
-                        else if (isValid.not()) "Please enter a valid ${if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
-                        else ""
+                        accountOrPhoneFeedBack = if (isEmpty) {
+                            "Please enter ${if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
+                        } else if (isValid.not()) {
+                            "Please enter a valid ${if (event.accountNumberType == AccountNumberType.PHONE_NUMBER) "phone" else "account"} number"
+                        } else {
+                            ""
+                        },
                     )
                 }
 
@@ -59,26 +66,33 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         number = event.accountOrPhoneNumberTFV.text,
                         bankId = event.selectedBankId,
                         channel = event.sendMoneyChannel,
-                        accountNumberType = event.accountNumberType
+                        accountNumberType = event.accountNumberType,
                     )
                 }
             }
 
             is BeneficiaryScreenEvent.OnInputAmount -> {
-
                 val polishedAmount = AmountFormatter().polish(event.amountTFV.text)
                 val isEmpty = polishedAmount.isEmpty()
-                val isValid = if (isEmpty) false else Validator.isAmountValid(
-                    polishedAmount.replace(",", "").toDouble()
-                )
+                val isValid = if (isEmpty) {
+                    false
+                } else {
+                    Validator.isAmountValid(
+                        polishedAmount.replace(",", "").toDouble(),
+                    )
+                }
 
                 setUiState {
                     copy(
                         amountTFV = event.amountTFV.copy(polishedAmount),
                         isAmountError = isEmpty || isValid.not(),
-                        amountFeedBack = if (isEmpty) "Please enter amount"
-                        else if (isValid.not()) "Please enter a valid amount"
-                        else ""
+                        amountFeedBack = if (isEmpty) {
+                            "Please enter amount"
+                        } else if (isValid.not()) {
+                            "Please enter a valid amount"
+                        } else {
+                            ""
+                        },
                     )
                 }
             }
@@ -86,13 +100,13 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             is BeneficiaryScreenEvent.OnSelectBank -> {
                 setUiState {
                     copy(
-                        selectedBank = event.bank
+                        selectedBank = event.bank,
                     )
                 }
 
                 validateAccountNumber(
                     accountNumber = event.accountOrPhoneNumber,
-                    bankId = event.bank.id
+                    bankId = event.bank.id,
                 )
             }
 
@@ -102,7 +116,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     number = event.accountOrPhoneNumber,
                     bankId = event.bankId,
                     channel = SendMoneyChannel.BANKLY_TO_BANKLY,
-                    accountNumberType = event.accountNumberType
+                    accountNumberType = event.accountNumberType,
                 )
             }
 
@@ -127,8 +141,8 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         shouldShowSavedBeneficiaryList = false,
                         selectedBank = Bank(
                             event.savedBeneficiary.bankName,
-                            event.savedBeneficiary.bankId
-                        )
+                            event.savedBeneficiary.bankId,
+                        ),
                     )
                 }
                 validateAccountNumber(
@@ -159,11 +173,10 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             bankId = event.selectedBankId.toString(),
                             narration = event.narration.trim(),
                             accountNumberType = event.accountNumberType,
-                            pin = ""
-                        )
-                    )
+                            pin = "",
+                        ),
+                    ),
                 )
-
             }
         }
     }
@@ -200,7 +213,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         number: String,
         bankId: Long?,
         channel: SendMoneyChannel,
-        accountNumberType: AccountNumberType
+        accountNumberType: AccountNumberType,
     ) {
         if (channel == SendMoneyChannel.BANKLY_TO_OTHER || accountNumberType == AccountNumberType.ACCOUNT_NUMBER) {
             validateAccountNumber(
@@ -208,17 +221,16 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 bankId = when (channel) {
                     SendMoneyChannel.BANKLY_TO_OTHER -> bankId
                     SendMoneyChannel.BANKLY_TO_BANKLY -> BANKLY_BANK_ID
-                }
+                },
             )
         } else {
             validatePhoneNumber(phoneNumber = number)
         }
     }
 
-
     private suspend fun validateAccountNumber(
         accountNumber: String,
-        bankId: Long?
+        bankId: Long?,
     ) {
         val isEmpty = accountNumber.trim().isEmpty()
         val isValid = Validator.isAccountNumberValid(accountNumber.trim())
@@ -227,7 +239,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
-                bankId.toString()
+                bankId.toString(),
             ).onEach { resource ->
                 resource.onLoading {
                     setUiState {
@@ -239,7 +251,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             accountOrPhoneValidationState = State.Success(nameEnquiry),
                             accountOrPhoneFeedBack = nameEnquiry.accountName,
-                            isAccountOrPhoneError = false
+                            isAccountOrPhoneError = false,
                         )
                     }
                 }
@@ -249,7 +261,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             accountOrPhoneValidationState = State.Error(message),
                             accountOrPhoneFeedBack = message,
-                            isAccountOrPhoneError = true
+                            isAccountOrPhoneError = true,
                         )
                     }
                 }
@@ -258,8 +270,8 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 setUiState {
                     copy(
                         accountOrPhoneValidationState = State.Error(
-                            it.message ?: "An unexpected error occurred"
-                        )
+                            it.message ?: "An unexpected error occurred",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)
@@ -270,7 +282,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         if (phoneNumber.isNotEmpty()) {
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
-                phoneNumber
+                phoneNumber,
             ).onEach { resource ->
                 resource.onLoading {
                     setUiState {
@@ -282,7 +294,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             accountOrPhoneValidationState = State.Success(nameEnquiry),
                             accountOrPhoneFeedBack = nameEnquiry.accountName,
-                            isAccountOrPhoneError = false
+                            isAccountOrPhoneError = false,
                         )
                     }
                 }
@@ -291,7 +303,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             accountOrPhoneValidationState = State.Error(message),
                             accountOrPhoneFeedBack = message,
-                            isAccountOrPhoneError = true
+                            isAccountOrPhoneError = true,
                         )
                     }
                 }
@@ -300,8 +312,8 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 setUiState {
                     copy(
                         accountOrPhoneValidationState = State.Error(
-                            it.message ?: "An unexpected error occurred"
-                        )
+                            it.message ?: "An unexpected error occurred",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)

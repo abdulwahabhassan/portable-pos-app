@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ForgotPassCodeRequestBody(
     @SerialName("userName")
-    val phoneNumber: String
+    val phoneNumber: String,
 )

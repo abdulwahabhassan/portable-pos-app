@@ -26,7 +26,6 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
 
-
 @Composable
 fun SuccessRoute(
     message: String,
@@ -54,7 +53,7 @@ fun SuccessfulScreen(
     }
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
@@ -62,37 +61,38 @@ fun SuccessfulScreen(
                 .fillMaxSize()
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Image(
                 modifier = Modifier.size(100.dp),
                 painter = painterResource(id = BanklyIcons.Successful),
-                contentDescription = "Successful Icon"
+                contentDescription = "Successful Icon",
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = message,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary),
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = subMessage,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary)
+                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary),
             )
         }
         Box(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
         ) {
             BanklyFilledButton(
                 modifier = Modifier
                     .padding(32.dp)
-                    .fillMaxWidth(), buttonText,
+                    .fillMaxWidth(),
+                buttonText,
                 onBackToLoginClick,
-                true
+                true,
             )
         }
     }
@@ -106,7 +106,7 @@ fun SuccessfulScreenPreview() {
             message = "Passcode Reset Successfully",
             subMessage = "You have successfully reset your passcode. Login to continue",
             buttonText = stringResource(R.string.action_back_to_log_in),
-            onBackToLoginClick = {}
+            onBackToLoginClick = {},
         )
     }
 }

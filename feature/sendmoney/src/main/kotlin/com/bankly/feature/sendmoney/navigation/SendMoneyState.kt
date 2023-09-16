@@ -13,12 +13,12 @@ internal fun rememberSendMoneyState(
     navHostController: NavHostController = rememberNavController(),
 ): MutableState<PayWithCardState> {
     return remember(
-        navHostController
+        navHostController,
     ) {
         mutableStateOf(
             PayWithCardState(
-                navHostController = navHostController
-            )
+                navHostController = navHostController,
+            ),
         )
     }
 }
@@ -26,5 +26,4 @@ internal fun rememberSendMoneyState(
 @Stable
 internal data class PayWithCardState(
     val navHostController: NavHostController,
-) 
-
+)

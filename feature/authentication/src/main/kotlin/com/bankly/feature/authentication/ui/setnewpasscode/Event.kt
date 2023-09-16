@@ -13,7 +13,7 @@ sealed interface SetNewPassCodeScreenEvent {
         val otp: String,
         val phoneNumber: String,
         val passCode: String,
-        val confirmPassCode: String
+        val confirmPassCode: String,
     ) : SetNewPassCodeScreenEvent
 
     object OnExit : SetNewPassCodeScreenEvent

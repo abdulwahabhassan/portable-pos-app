@@ -18,5 +18,5 @@ data class AccountNumberTransferRequestBody(
     val securityQuestionResponse: String,
     val deviceId: String,
     val isWeb: String,
-    val senderName: String
+    val senderName: String,
 )

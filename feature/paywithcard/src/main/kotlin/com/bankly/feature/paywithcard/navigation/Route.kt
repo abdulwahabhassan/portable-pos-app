@@ -4,13 +4,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.bankly.core.common.model.AccountType
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.entercardpin.EnterCardPinRoute
 import com.bankly.core.common.ui.insertcard.InsertCardRoute
 import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
-import com.bankly.core.common.model.AccountType
-import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
 import com.bankly.core.sealed.TransactionReceipt
@@ -29,12 +29,12 @@ internal const val transactionDetailsRoute = payWithCardRoute.plus("/transaction
 
 internal fun NavGraphBuilder.selectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(route = selectAccountTypeRoute) {
         SelectAccountTypeRoute(
             onAccountSelected = onAccountSelected,
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
         )
     }
 }
@@ -42,13 +42,13 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
 internal fun NavGraphBuilder.insertCardRoute(
     onCardInserted: () -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     composable(route = insertCardRoute) {
         InsertCardRoute(
             onCardInserted = onCardInserted,
             onBackPress = onBackPress,
-            onCloseClick = onCloseClick
+            onCloseClick = onCloseClick,
         )
     }
 }
@@ -56,33 +56,33 @@ internal fun NavGraphBuilder.insertCardRoute(
 internal fun NavGraphBuilder.enterCardPinRoute(
     onContinueClick: (String) -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     composable(route = enterPinRoute) {
         EnterCardPinRoute(
             onContinueClick = onContinueClick,
             onBackPress = onBackPress,
-            onCloseClick = onCloseClick
+            onCloseClick = onCloseClick,
         )
     }
 }
 
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String) -> Unit
+    onFailedTransaction: (String) -> Unit,
 ) {
     composable(
         route = "$processTransactionRoute/{$transactionDataArg}",
         arguments = listOf(
             navArgument(transactionDataArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
             val data: TransactionData = Json.decodeFromString(transactionData)
             ProcessTransactionRoute(
                 transactionData = data,
                 onTransactionSuccess = onSuccessfulTransaction,
-                onFailedTransaction = onFailedTransaction
+                onFailedTransaction = onFailedTransaction,
             )
         }
     }
@@ -90,13 +90,13 @@ internal fun NavGraphBuilder.processTransactionRoute(
 
 internal fun NavGraphBuilder.transactionSuccessRoute(
     onGoHomeClick: () -> Unit,
-    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
 ) {
     composable(
         route = "$transactionSuccessRoute/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
             val trans: TransactionReceipt = Json.decodeFromString(transaction)
@@ -117,12 +117,12 @@ internal fun NavGraphBuilder.transactionFailedRoute(
         route = "$transactionFailedRoute/{$messageArg}",
         arguments = listOf(
             navArgument(messageArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(messageArg)?.let { message: String ->
             TransactionFailedRoute(
                 onGoToHome = onGoHomeClick,
-                message = message
+                message = message,
             )
         }
     }
@@ -132,13 +132,13 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
     onShareClick: () -> Unit,
     onSmsClick: () -> Unit,
     onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
 ) {
     composable(
         route = "$transactionDetailsRoute/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
             val trans: TransactionReceipt = Json.decodeFromString(transaction)
@@ -147,7 +147,7 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
                 onShareClick = onShareClick,
                 onSmsClick = onSmsClick,
                 onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick
+                onGoToHomeClick = onGoToHomeClick,
             )
         }
     }

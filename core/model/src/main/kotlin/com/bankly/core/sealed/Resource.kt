@@ -7,21 +7,21 @@ sealed interface Resource<out T> {
 }
 
 inline fun <T : Any> Resource<T>.onLoading(
-    action: () -> Unit
+    action: () -> Unit,
 ): Resource<T> {
     if (this is Resource.Loading) action()
     return this
 }
 
 inline fun <T : Any> Resource<T>.onReady(
-    action: (data: T) -> Unit
+    action: (data: T) -> Unit,
 ): Resource<T> {
     if (this is Resource.Ready) action(data)
     return this
 }
 
 inline fun <T : Any> Resource<T>.onFailure(
-    action: (message: String) -> Unit
+    action: (message: String) -> Unit,
 ): Resource<T> {
     if (this is Resource.Failed) action(message)
     return this

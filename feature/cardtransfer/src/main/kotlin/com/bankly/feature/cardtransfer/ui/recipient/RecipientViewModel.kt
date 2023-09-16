@@ -17,19 +17,19 @@ import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 internal class RecipientViewModel @Inject constructor(
     private val nameEnquiryUseCase: NameEnquiryUseCase,
     private val getBanksUseCase: GetBanksUseCase,
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<RecipientScreenEvent, RecipientScreenState, RecipientScreenOneShotState>(
-    RecipientScreenState()
+    RecipientScreenState(),
 ) {
 
     init {
@@ -45,32 +45,43 @@ internal class RecipientViewModel @Inject constructor(
                     copy(
                         accountNumberTFV = event.accountNumberTFV,
                         isAccountNumberError = isEmpty || isValid.not(),
-                        accountNumberFeedBack = if (isEmpty) "Please enter account number"
-                        else if (isValid.not()) "Please enter a valid account number"
-                        else ""
+                        accountNumberFeedBack = if (isEmpty) {
+                            "Please enter account number"
+                        } else if (isValid.not()) {
+                            "Please enter a valid account number"
+                        } else {
+                            ""
+                        },
                     )
                 }
                 validateAccountNumber(
                     accountNumber = event.accountNumberTFV.text,
-                    bankId = event.selectedBankId
+                    bankId = event.selectedBankId,
                 )
             }
 
             is RecipientScreenEvent.OnAmount -> {
                 val polishedAmount = AmountFormatter().polish(event.amountTFV.text)
                 val isEmpty = polishedAmount.isEmpty()
-                val isValid = if (isEmpty) false
-                else Validator.isAmountValid(
-                    polishedAmount.replace(",", "").toDouble()
-                )
+                val isValid = if (isEmpty) {
+                    false
+                } else {
+                    Validator.isAmountValid(
+                        polishedAmount.replace(",", "").toDouble(),
+                    )
+                }
 
                 setUiState {
                     copy(
                         amountTFV = event.amountTFV.copy(polishedAmount),
                         isAmountError = isEmpty || isValid.not(),
-                        amountFeedBack = if (isEmpty) "Please enter amount"
-                        else if (isValid.not()) "Please enter a valid amount"
-                        else ""
+                        amountFeedBack = if (isEmpty) {
+                            "Please enter amount"
+                        } else if (isValid.not()) {
+                            "Please enter a valid amount"
+                        } else {
+                            ""
+                        },
                     )
                 }
             }
@@ -82,12 +93,12 @@ internal class RecipientViewModel @Inject constructor(
             is RecipientScreenEvent.OnSelectBank -> {
                 setUiState {
                     copy(
-                        selectedBank = event.bank
+                        selectedBank = event.bank,
                     )
                 }
                 validateAccountNumber(
                     accountNumber = event.accountNumber,
-                    bankId = event.bank.id
+                    bankId = event.bank.id,
                 )
             }
 
@@ -99,9 +110,13 @@ internal class RecipientViewModel @Inject constructor(
                     copy(
                         senderPhoneNumberTFV = event.senderPhoneNumberTFV,
                         isSenderPhoneNumberError = isEmpty || isValid.not(),
-                        senderPhoneNumberFeedBack = if (isEmpty) "Please enter phone number"
-                        else if (isValid.not()) "Please enter a valid phone number"
-                        else ""
+                        senderPhoneNumberFeedBack = if (isEmpty) {
+                            "Please enter phone number"
+                        } else if (isValid.not()) {
+                            "Please enter a valid phone number"
+                        } else {
+                            ""
+                        },
                     )
                 }
             }
@@ -110,8 +125,8 @@ internal class RecipientViewModel @Inject constructor(
                 setOneShotState(
                     RecipientScreenOneShotState.GoToSelectAccountTypeScreen(
                         TransactionData.mockTransactionData()
-                            .copy(transactionType = TransactionType.CARD_TRANSFER)
-                    )
+                            .copy(transactionType = TransactionType.CARD_TRANSFER),
+                    ),
                 )
             }
         }
@@ -147,7 +162,7 @@ internal class RecipientViewModel @Inject constructor(
 
     private suspend fun validateAccountNumber(
         accountNumber: String,
-        bankId: Long?
+        bankId: Long?,
     ) {
         val isEmpty = accountNumber.trim().isEmpty()
         val isValid = Validator.isAccountNumberValid(accountNumber.trim())
@@ -156,7 +171,7 @@ internal class RecipientViewModel @Inject constructor(
             nameEnquiryUseCase.performNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
-                bankId.toString()
+                bankId.toString(),
             ).onEach { resource ->
                 resource.onLoading {
                     setUiState {
@@ -168,7 +183,7 @@ internal class RecipientViewModel @Inject constructor(
                         copy(
                             accountValidationState = State.Success(nameEnquiry),
                             accountNumberFeedBack = nameEnquiry.accountName,
-                            isAccountNumberError = false
+                            isAccountNumberError = false,
                         )
                     }
                 }
@@ -178,7 +193,7 @@ internal class RecipientViewModel @Inject constructor(
                         copy(
                             accountValidationState = State.Error(message),
                             accountNumberFeedBack = message,
-                            isAccountNumberError = true
+                            isAccountNumberError = true,
                         )
                     }
                 }
@@ -187,8 +202,8 @@ internal class RecipientViewModel @Inject constructor(
                 setUiState {
                     copy(
                         accountValidationState = State.Error(
-                            it.message ?: "An unexpected error occurred"
-                        )
+                            it.message ?: "An unexpected error occurred",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)

@@ -7,19 +7,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.bankly.core.common.model.AccountType
 
 @Composable
 internal fun rememberPayWithCardState(
-    navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController(),
 ): MutableState<PayWithCardState> {
     return remember(
-        navHostController
+        navHostController,
     ) {
         mutableStateOf(
             PayWithCardState(
-                navHostController = navHostController
-            )
+                navHostController = navHostController,
+            ),
         )
     }
 }

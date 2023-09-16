@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 
 object BanklyDesignUtil {
     @Composable
-    fun shimmerBrush(showShimmer: Boolean = true, targetValue:Float = 1000f): Brush {
+    fun shimmerBrush(showShimmer: Boolean = true, targetValue: Float = 1000f): Brush {
         return if (showShimmer) {
             val shimmerColors = listOf(
                 MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.6f),
@@ -26,19 +26,20 @@ object BanklyDesignUtil {
                 initialValue = 0f,
                 targetValue = targetValue,
                 animationSpec = infiniteRepeatable(
-                    animation = tween(800), repeatMode = RepeatMode.Reverse
-                )
+                    animation = tween(800),
+                    repeatMode = RepeatMode.Reverse,
+                ),
             )
             Brush.linearGradient(
                 colors = shimmerColors,
                 start = Offset.Zero,
-                end = Offset(x = translateAnimation.value, y = translateAnimation.value)
+                end = Offset(x = translateAnimation.value, y = translateAnimation.value),
             )
         } else {
             Brush.linearGradient(
-                colors = listOf(Color.Transparent,Color.Transparent),
+                colors = listOf(Color.Transparent, Color.Transparent),
                 start = Offset.Zero,
-                end = Offset.Zero
+                end = Offset.Zero,
             )
         }
     }

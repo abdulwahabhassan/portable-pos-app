@@ -60,21 +60,21 @@ fun ProcessTransactionRoute(
 @Composable
 fun ProcessTransactionScreen() {
     BackHandler {
-        //Override and do nothing to prevent user from interrupting the transaction
+        // Override and do nothing to prevent user from interrupting the transaction
     }
     Scaffold(
         topBar = {
             BanklyTitleBar(
                 title = "",
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 CircularProgressIndicator(
@@ -83,7 +83,7 @@ fun ProcessTransactionScreen() {
                         .size(100.dp),
                     strokeWidth = 12.dp,
                     trackColor = MaterialTheme.colorScheme.primaryContainer,
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
             }
             item {
@@ -92,7 +92,7 @@ fun ProcessTransactionScreen() {
                         .padding(24.dp),
                     text = "Just a second, we are processing your transaction",
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
             item {

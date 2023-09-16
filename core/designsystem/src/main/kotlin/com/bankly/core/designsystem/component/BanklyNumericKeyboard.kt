@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 @Preview(showBackground = true)
 fun BanklyNumericKeyboardPreview() {
@@ -35,7 +34,7 @@ fun BanklyNumericKeyboardPreview() {
         BanklyNumericKeyboard(
             onKeyPressed = {},
             isKeyPadEnabled = true,
-            isDoneKeyEnabled = false
+            isDoneKeyEnabled = false,
         )
     }
 }
@@ -51,7 +50,7 @@ fun BanklyNumericKeyboard(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
-        contentPadding = PaddingValues(4.dp)
+        contentPadding = PaddingValues(4.dp),
     ) {
         items(PassCodeKey.values()) { key ->
             Box(
@@ -66,7 +65,7 @@ fun BanklyNumericKeyboard(
                             PassCodeKey.DELETE -> MaterialTheme.colorScheme.onPrimaryContainer
                             else -> MaterialTheme.colorScheme.tertiary
                         },
-                        shape = MaterialTheme.shapes.small
+                        shape = MaterialTheme.shapes.small,
                     )
                     .clickable(
                         onClick = {
@@ -77,18 +76,18 @@ fun BanklyNumericKeyboard(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = rememberRipple(
                             bounded = true,
-                            color = MaterialTheme.colorScheme.tertiaryContainer
-                        )
+                            color = MaterialTheme.colorScheme.tertiaryContainer,
+                        ),
                     ),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Box(
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = key.value,
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onPrimary)
+                        style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onPrimary),
                     )
                 }
             }

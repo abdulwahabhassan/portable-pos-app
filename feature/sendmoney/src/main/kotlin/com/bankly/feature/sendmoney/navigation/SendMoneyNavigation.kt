@@ -8,24 +8,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.sendMoneyNavGraph(
     onBackPress: () -> Unit,
-    onForgotPinClick: () -> Unit
+    onForgotPinClick: () -> Unit,
 ) {
     navigation(
         route = sendMoneyNavGraphRoute,
-        startDestination = sendMoneyRoute
+        startDestination = sendMoneyRoute,
     ) {
         composable(sendMoneyRoute) {
             val sendMoneyState by rememberSendMoneyState()
             SendMoneyNavHost(
                 navHostController = sendMoneyState.navHostController,
                 onBackPress = onBackPress,
-                onForgotPinClick = onForgotPinClick
+                onForgotPinClick = onForgotPinClick,
 
             )
         }
@@ -36,7 +36,7 @@ fun NavGraphBuilder.sendMoneyNavGraph(
 private fun SendMoneyNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
-    onForgotPinClick: () -> Unit
+    onForgotPinClick: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -52,13 +52,13 @@ private fun SendMoneyNavHost(
         beneficiaryRoute(
             onContinueClick = { transactionData: TransactionData ->
                 navHostController.navigateToConfirmTransactionRoute(
-                    transactionData = transactionData
+                    transactionData = transactionData,
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress
+            onCloseClick = onBackPress,
         )
         confirmTransactionRoute(
             onConfirmationSuccess = { transactionData: TransactionData ->
@@ -68,7 +68,7 @@ private fun SendMoneyNavHost(
                 navHostController.popBackStack()
             },
             onCloseClick = onBackPress,
-            onForgotPinClick = onForgotPinClick
+            onForgotPinClick = onForgotPinClick,
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
@@ -76,22 +76,22 @@ private fun SendMoneyNavHost(
             },
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
-            }
+            },
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },
             onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress
+            onGoToHomeClick = onBackPress,
         )
     }
 }

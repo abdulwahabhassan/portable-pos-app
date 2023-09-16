@@ -11,4 +11,3 @@ class BanklyApplication : Application() {
         Tools.initializeEmv(this.applicationContext)
     }
 }
-

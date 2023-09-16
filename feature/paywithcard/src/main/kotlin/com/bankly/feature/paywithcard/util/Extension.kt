@@ -12,14 +12,18 @@ fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {
         reference = this.transactionReference ?: "",
         statusName = if (this.responseCode == "00" && responseMessage?.contains(
                 "transaction approved",
-                true
+                true,
             ) == true
-        ) "Successful" else "Unsuccessful",
+        ) {
+            "Successful"
+        } else {
+            "Unsuccessful"
+        },
         message = this.responseMessage ?: "",
         dateTime = this.transDate + " " + this.transTime,
         rrn = this.rrn ?: "",
         stan = this.stan ?: "",
         terminalId = "",
-        responseCode = this.responseCode ?: ""
+        responseCode = this.responseCode ?: "",
     )
 }

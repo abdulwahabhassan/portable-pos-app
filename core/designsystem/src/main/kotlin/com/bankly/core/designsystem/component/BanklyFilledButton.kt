@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun BanklyFilledButton(
     modifier: Modifier = Modifier,
@@ -36,14 +35,14 @@ fun BanklyFilledButton(
             containerColor = backgroundColor,
             contentColor = textColor,
             disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        )
+            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        ),
 
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -58,7 +57,7 @@ private fun BanklyFilledButtonPreview() {
                 .fillMaxWidth(),
             text = "Pay",
             onClick = {},
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }

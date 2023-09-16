@@ -22,7 +22,7 @@ fun NavGraphBuilder.authenticationNavGraph(
             AuthenticationNavHost(
                 navHostController = authenticationState.navHostController,
                 onLoginSuccess = onLoginSuccess,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }
@@ -32,7 +32,7 @@ fun NavGraphBuilder.authenticationNavGraph(
 fun AuthenticationNavHost(
     navHostController: NavHostController,
     onLoginSuccess: () -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -44,42 +44,42 @@ fun AuthenticationNavHost(
             onBackPress = onBackPress,
             onRecoverPassCodeClick = {
                 navHostController.navigateToRecoverPassCodeRoute()
-            })
+            },
+        )
         recoverPassCodeRoute(
             onRecoverPassCodeSuccess = { phoneNumber: String ->
                 navHostController.navigateToOtpValidationRoute(phoneNumber = phoneNumber)
             },
             onBackPress = {
                 navHostController.popBackStack()
-            }
+            },
         )
         otpValidationRoute(
             onOtpValidationSuccess = { phoneNumber: String, otp: String ->
                 navHostController.navigateToSetNewPassCodeRoute(
                     phoneNumber = phoneNumber,
-                    otp = otp
+                    otp = otp,
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
-            })
+            },
+        )
         setNewPassCodeRoute(
             onSetNewPassCodeSuccess = { message: String ->
                 navHostController.navigateToSuccessfulRoute(message = message)
             },
             onBackPress = {
                 navHostController.popBackStack()
-            })
+            },
+        )
         successfulRoute(
             onBackToLoginClick = {
                 navHostController.popBackStack()
-            }
+            },
         )
         setPinRoute()
         confirmPinRoute()
         createNewPassCodeRoute()
     }
 }
-
-
-

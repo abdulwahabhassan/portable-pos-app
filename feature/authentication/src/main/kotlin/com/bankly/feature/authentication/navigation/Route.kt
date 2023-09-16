@@ -27,46 +27,46 @@ internal const val successfulRoute = authenticationRoute.plus("/successful_scree
 internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit
+    onRecoverPassCodeClick: () -> Unit,
 ) {
     composable(route = loginRoute) {
         LoginRoute(
             onLoginSuccess = onLoginSuccess,
             onBackPress = onBackPress,
-            onRecoverPassCodeClick = onRecoverPassCodeClick
+            onRecoverPassCodeClick = onRecoverPassCodeClick,
         )
     }
 }
 
 internal fun NavGraphBuilder.recoverPassCodeRoute(
     onRecoverPassCodeSuccess: (String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(
         route = recoverPassCodeRoute,
     ) {
         RecoverPassCodeRoute(
             onRecoverPassCodeSuccess = onRecoverPassCodeSuccess,
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
         )
     }
 }
 
 internal fun NavGraphBuilder.otpValidationRoute(
     onOtpValidationSuccess: (phoneNumber: String, otp: String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(
         route = "$otpValidationRoute/{$phoneNumberArg}",
         arguments = listOf(
             navArgument(phoneNumberArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(phoneNumberArg)?.let { phoneNumber: String ->
             OtpValidationRoute(
                 phoneNumber = phoneNumber,
                 onOtpValidationSuccess = onOtpValidationSuccess,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }
@@ -74,14 +74,14 @@ internal fun NavGraphBuilder.otpValidationRoute(
 
 internal fun NavGraphBuilder.setNewPassCodeRoute(
     onSetNewPassCodeSuccess: (String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(
         route = "$setNewPassCodeRoute/{$phoneNumberArg}/{$otpArg}",
         arguments = listOf(
             navArgument(phoneNumberArg) { type = NavType.StringType },
             navArgument(otpArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         it.arguments?.getString(phoneNumberArg)?.let { phoneNumber: String ->
             it.arguments?.getString(otpArg)?.let { otp: String ->
@@ -89,7 +89,7 @@ internal fun NavGraphBuilder.setNewPassCodeRoute(
                     phoneNumber = phoneNumber,
                     otp = otp,
                     onSetNewPassCodeSuccess = onSetNewPassCodeSuccess,
-                    onBackPress = onBackPress
+                    onBackPress = onBackPress,
                 )
             }
         }
@@ -97,27 +97,27 @@ internal fun NavGraphBuilder.setNewPassCodeRoute(
 }
 
 internal fun NavGraphBuilder.successfulRoute(
-    onBackToLoginClick: () -> Unit
+    onBackToLoginClick: () -> Unit,
 ) {
     composable(
         route = "$successfulRoute/{$successMessageArg}",
         arguments = listOf(
             navArgument(successMessageArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         val message = it.arguments?.getString(successMessageArg)
         SuccessRoute(
             message = message ?: "Passcode Reset Successfully",
             subMessage = "You have successfully reset your account passcode. Login to continue",
             buttonText = "Back to login",
-            onBackToLoginClick = onBackToLoginClick
+            onBackToLoginClick = onBackToLoginClick,
         )
     }
 }
 
 internal fun NavGraphBuilder.createNewPassCodeRoute() {
     composable(
-        route = createNewPassCodeRoute
+        route = createNewPassCodeRoute,
     ) {
         CreateNewPassCodeScreen()
     }
@@ -125,7 +125,7 @@ internal fun NavGraphBuilder.createNewPassCodeRoute() {
 
 internal fun NavGraphBuilder.setPinRoute() {
     composable(
-        route = setPinRoute
+        route = setPinRoute,
     ) {
         SetPinScreen()
     }
@@ -133,7 +133,7 @@ internal fun NavGraphBuilder.setPinRoute() {
 
 internal fun NavGraphBuilder.confirmPinRoute() {
     composable(
-        route = confirmPinRoute
+        route = confirmPinRoute,
     ) {
         ConfirmPinScreen()
     }

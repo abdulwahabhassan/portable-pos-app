@@ -2,24 +2,24 @@ package com.bankly.feature.dashboard.ui.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetWalletUseCase
 import com.bankly.core.entity.UserWallet
+import com.bankly.core.sealed.onFailure
+import com.bankly.core.sealed.onLoading
+import com.bankly.core.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val getWalletUseCase: GetWalletUseCase,
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<HomeScreenEvent, HomeScreenState, HomeScreenOneShotState>(HomeScreenState()) {
 
     override suspend fun handleUiEvents(event: HomeScreenEvent) {
@@ -52,10 +52,9 @@ class HomeScreenViewModel @Inject constructor(
                             accountName = userWallet.accountName,
                             shouldShowWalletBalance = shouldShowWalletBalance,
                             shouldShowVisibilityIcon = true,
-                            shouldShowLoadingIcon = false
+                            shouldShowLoadingIcon = false,
                         )
                     }
-
                 }
                 resource.onFailure { message ->
                     Log.d("debug", "failure wallet .. $resource")
@@ -68,7 +67,7 @@ class HomeScreenViewModel @Inject constructor(
                 setUiState {
                     copy(
                         shouldShowErrorDialog = true,
-                        message = it.message ?: "An expected event occurred!"
+                        message = it.message ?: "An expected event occurred!",
                     )
                 }
             }.launchIn(viewModelScope)

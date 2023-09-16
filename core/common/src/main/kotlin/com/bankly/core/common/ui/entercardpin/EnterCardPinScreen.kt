@@ -52,7 +52,7 @@ fun EnterCardPinRoute(
     EnterCardPinScreen(
         onContinueClick = onContinueClick,
         onBackPress = onBackPress,
-        onCloseClick = onCloseClick
+        onCloseClick = onCloseClick,
     )
 }
 
@@ -60,7 +60,7 @@ fun EnterCardPinRoute(
 fun EnterCardPinScreen(
     onContinueClick: (String) -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     var pin by rememberSaveable { mutableStateOf(List(4) { "" }) }
     var showActionDialog by rememberSaveable { mutableStateOf(false) }
@@ -79,7 +79,7 @@ fun EnterCardPinScreen(
             negativeAction = {
                 showActionDialog = false
                 onCloseClick()
-            }
+            },
         )
     }
 
@@ -97,13 +97,13 @@ fun EnterCardPinScreen(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+        ) {
             BanklyTitleBar(
                 title = stringResource(R.string.title_enter_card_pin),
                 onBackPress = {
@@ -111,20 +111,22 @@ fun EnterCardPinScreen(
                 },
                 onCloseClick = {
                     triggerCancelDialog()
-                }
+                },
             )
             BanklyPassCodeInputField(passCode = pin)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             ) {
-                items(PassCodeKey.values().map {
-                    when (it) {
-                        PassCodeKey.DELETE -> PassCodeKey.DONE
-                        PassCodeKey.DONE -> PassCodeKey.DELETE
-                        else -> it
-                    }
-                }.toMutableList()) { item ->
+                items(
+                    PassCodeKey.values().map {
+                        when (it) {
+                            PassCodeKey.DELETE -> PassCodeKey.DONE
+                            PassCodeKey.DONE -> PassCodeKey.DELETE
+                            else -> it
+                        }
+                    }.toMutableList(),
+                ) { item ->
                     if (item == PassCodeKey.DONE) {
                         Box {}
                     } else {
@@ -160,7 +162,7 @@ fun EnterCardPinScreen(
                                     .fillMaxSize(),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.primary
+                                    contentColor = MaterialTheme.colorScheme.primary,
                                 ),
                                 shape = RoundedCornerShape(25),
                                 elevation = ButtonDefaults.buttonElevation(
@@ -168,23 +170,23 @@ fun EnterCardPinScreen(
                                     0.dp,
                                     0.dp,
                                     0.dp,
-                                    0.dp
+                                    0.dp,
                                 ),
-                                contentPadding = PaddingValues(0.dp)
+                                contentPadding = PaddingValues(0.dp),
                             ) {
                                 if (item == PassCodeKey.DELETE) {
                                     Icon(
                                         modifier = Modifier.size(20.dp),
                                         painter = painterResource(id = BanklyIcons.Delete),
                                         contentDescription = stringResource(R.string.desc_delete_icon),
-                                        tint = Color.Unspecified
+                                        tint = Color.Unspecified,
                                     )
                                 } else {
                                     Text(
                                         text = item.value,
                                         color = MaterialTheme.colorScheme.primary,
                                         style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
-                                        textAlign = TextAlign.Center
+                                        textAlign = TextAlign.Center,
                                     )
                                 }
                             }
@@ -202,7 +204,7 @@ fun EnterCardPinScreen(
             isEnabled = pin.none { it.isEmpty() },
             onClick = {
                 onContinueClick(pin.joinToString { "" })
-            }
+            },
         )
     }
 }
@@ -214,7 +216,7 @@ private fun PosScreenPreview() {
         EnterCardPinScreen(
             onContinueClick = {},
             onBackPress = {},
-            onCloseClick = {}
+            onCloseClick = {},
         )
     }
 }

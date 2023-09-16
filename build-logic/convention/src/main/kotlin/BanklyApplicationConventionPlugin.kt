@@ -59,7 +59,6 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
                 add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())
                 add("testImplementation", kotlin("test"))
                 add("androidTestImplementation", kotlin("test"))
-
             }
         }
     }

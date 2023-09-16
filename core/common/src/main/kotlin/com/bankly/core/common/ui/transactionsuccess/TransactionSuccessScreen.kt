@@ -28,18 +28,17 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.sealed.TransactionReceipt
 
-
 @Composable
 fun TransactionSuccessRoute(
     transactionReceipt: TransactionReceipt,
     message: String,
     onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
-    onGoToHome: () -> Unit
+    onGoToHome: () -> Unit,
 ) {
     TransactionSuccessScreen(
         message = message,
         onViewTransactionDetailsClick = { onViewTransactionDetailsClick(transactionReceipt) },
-        onGoToHome = onGoToHome
+        onGoToHome = onGoToHome,
     )
 }
 
@@ -47,11 +46,11 @@ fun TransactionSuccessRoute(
 fun TransactionSuccessScreen(
     message: String,
     onViewTransactionDetailsClick: () -> Unit,
-    onGoToHome: () -> Unit
+    onGoToHome: () -> Unit,
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
@@ -59,13 +58,13 @@ fun TransactionSuccessScreen(
                 .fillMaxSize()
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Image(
                 modifier = Modifier.size(100.dp),
                 painter = painterResource(id = BanklyIcons.Successful),
-                contentDescription = "Successful Icon"
+                contentDescription = "Successful Icon",
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
@@ -73,19 +72,19 @@ fun TransactionSuccessScreen(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.tertiary,
-                    fontWeight = FontWeight.Medium
-                )
+                    fontWeight = FontWeight.Medium,
+                ),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = message,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
             )
         }
         Column(
             modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp).align(Alignment.BottomCenter),
-            verticalArrangement = Arrangement.Bottom
+            verticalArrangement = Arrangement.Bottom,
         ) {
             BanklyFilledButton(
                 modifier = Modifier
@@ -93,7 +92,7 @@ fun TransactionSuccessScreen(
                     .fillMaxWidth(),
                 text = stringResource(R.string.action_view_transaction_details),
                 onClick = onViewTransactionDetailsClick,
-                isEnabled = true
+                isEnabled = true,
             )
             Spacer(modifier = Modifier.height(12.dp))
             BanklyOutlinedButton(
@@ -103,7 +102,7 @@ fun TransactionSuccessScreen(
                 text = stringResource(R.string.action_go_to_home),
                 onClick = onGoToHome,
                 isEnabled = true,
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
@@ -116,7 +115,7 @@ fun SuccessfulScreenPreview() {
         TransactionSuccessScreen(
             message = stringResource(R.string.msg_transaction_successful),
             onViewTransactionDetailsClick = {},
-            onGoToHome = {}
+            onGoToHome = {},
         )
     }
 }

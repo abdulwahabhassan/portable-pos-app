@@ -15,11 +15,10 @@ import coil.size.Size
 import com.bankly.core.designsystem.R
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun BanklyGifImage(
     modifier: Modifier = Modifier,
-    drawable: Int
+    drawable: Int,
 ) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
@@ -36,10 +35,10 @@ fun BanklyGifImage(
             ImageRequest.Builder(context).data(data = drawable).apply(block = {
                 size(Size.ORIGINAL)
             }).build(),
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
         ),
         contentDescription = null,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 

@@ -14,14 +14,13 @@ data class NetworkResponse<T>(
     val resultType: Int? = null,
     val message: String? = null,
     val validationMessages: List<String>? = null,
-    val responseCode: String? = null
+    val responseCode: String? = null,
 )
-
 
 @Serializable
 data class TokenNetworkResponse(
     @SerialName("access_token")
-    val accessToken: String?= null,
+    val accessToken: String? = null,
     @SerialName("expires_in")
     val expiresIn: Long? = null,
     @SerialName("token_type")
@@ -29,5 +28,5 @@ data class TokenNetworkResponse(
     @SerialName("scope")
     val scope: String? = null,
     @SerialName("refresh_token")
-    val refreshToken: String? = null
+    val refreshToken: String? = null,
 )

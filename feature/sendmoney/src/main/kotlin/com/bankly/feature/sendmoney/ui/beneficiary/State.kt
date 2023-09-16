@@ -1,15 +1,15 @@
 package com.bankly.feature.sendmoney.ui.beneficiary
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.sealed.State
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.entity.Bank
 import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.sealed.State
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
-import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.core.common.model.AccountNumberType
 
 internal data class BeneficiaryScreenState(
     val accountNumberType: AccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
@@ -36,10 +36,10 @@ internal data class BeneficiaryScreenState(
 ) {
     val isContinueButtonEnabled: Boolean
         get() = accountOrPhoneTFV.text.isNotEmpty() && isAccountOrPhoneError.not() &&
-                amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty()
-                && isBankNameError.not() && isNarrationError.not() &&
-                accountOrPhoneValidationState !is State.Loading &&
-                accountOrPhoneValidationState !is State.Error && bankListState !is State.Loading
+            amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
+            isBankNameError.not() && isNarrationError.not() &&
+            accountOrPhoneValidationState !is State.Loading &&
+            accountOrPhoneValidationState !is State.Error && bankListState !is State.Loading
     val isUserInputEnabled: Boolean
         get() = accountOrPhoneValidationState !is State.Loading && bankListState !is State.Loading
     val accountNumberTypeTFV: TextFieldValue
@@ -48,9 +48,13 @@ internal data class BeneficiaryScreenState(
             AccountNumberType.ACCOUNT_NUMBER -> TextFieldValue(text = accountNumberType.title)
         }
     val bankNameTFV: TextFieldValue
-        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(
-            text = ""
-        )
+        get() = if (selectedBank != null) {
+            TextFieldValue(text = selectedBank.name)
+        } else {
+            TextFieldValue(
+                text = "",
+            )
+        }
     val validationStatusIcon: Int?
         get() = when (accountOrPhoneValidationState) {
             is State.Initial -> null

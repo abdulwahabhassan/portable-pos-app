@@ -24,11 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun BanklyPassCodeInputField(
     passCode: List<String>,
-    isError: Boolean = false
+    isError: Boolean = false,
 ) {
     Row(
         modifier = Modifier
@@ -44,29 +43,39 @@ fun BanklyPassCodeInputField(
             if (index != 0) Spacer(modifier = Modifier.width(8.dp))
             Box(
                 modifier = Modifier
-
                     .height(68.dp)
                     .background(
-                        color = if (isError) MaterialTheme.colorScheme.errorContainer else
-                            MaterialTheme.colorScheme.primaryContainer,
-                        shape = MaterialTheme.shapes.small
+                        color = if (isError) {
+                            MaterialTheme.colorScheme.errorContainer
+                        } else {
+                            MaterialTheme.colorScheme.primaryContainer
+                        },
+                        shape = MaterialTheme.shapes.small,
                     )
                     .border(
                         width = 1.dp,
-                        color = if (isFocused) if (isError) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.primary else Color.Transparent,
-                        shape = MaterialTheme.shapes.small
+                        color = if (isFocused) if (isError) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            Color.Transparent
+                        },
+                        shape = MaterialTheme.shapes.small,
                     )
                     .weight(1f),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = s,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium
                         .copy(
-                            color = if (isError) MaterialTheme.colorScheme.onErrorContainer
-                            else MaterialTheme.colorScheme.tertiary
+                            color = if (isError) {
+                                MaterialTheme.colorScheme.onErrorContainer
+                            } else {
+                                MaterialTheme.colorScheme.tertiary
+                            },
                         ),
                 )
             }
@@ -75,13 +84,12 @@ fun BanklyPassCodeInputField(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun BanklyPassCodeInputFieldPreview1() {
     BanklyTheme {
         BanklyPassCodeInputField(
-            listOf("1", "2", "", "", "", "")
+            listOf("1", "2", "", "", "", ""),
         )
     }
 }
@@ -92,7 +100,7 @@ private fun BanklyPassCodeInputFieldPreview2() {
     BanklyTheme {
         BanklyPassCodeInputField(
             listOf("1", "2", "", "", "", "", "", ""),
-            isError = true
+            isError = true,
         )
     }
 }
@@ -102,10 +110,7 @@ private fun BanklyPassCodeInputFieldPreview2() {
 private fun BanklyPassCodeInputFieldPreview3() {
     BanklyTheme {
         BanklyPassCodeInputField(
-            listOf("1", "2", "", "")
+            listOf("1", "2", "", ""),
         )
     }
 }
-
-
-

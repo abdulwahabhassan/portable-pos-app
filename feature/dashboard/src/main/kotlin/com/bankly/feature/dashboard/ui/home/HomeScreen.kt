@@ -24,7 +24,6 @@ import com.bankly.feature.dashboard.model.QuickAction
 import com.bankly.feature.dashboard.ui.component.DashBoardQuickActionCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 
-
 @Composable
 fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
@@ -34,7 +33,8 @@ fun HomeTab(
     HomeScreen(
         screenState = screenState,
         onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },
-        onQuickActionCardClick = onQuickActionCardClick)
+        onQuickActionCardClick = onQuickActionCardClick,
+    )
 }
 
 @Composable
@@ -46,7 +46,7 @@ fun HomeScreen(
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp),
 
         ) {
             WalletCard(
@@ -58,7 +58,7 @@ fun HomeScreen(
                 bankName = screenState.bankName,
                 currentBalance = screenState.accountBalance,
                 shouldShowVisibilityIcon = screenState.shouldShowVisibilityIcon,
-                isWalletBalanceLoading = screenState.shouldShowLoadingIcon
+                isWalletBalanceLoading = screenState.shouldShowLoadingIcon,
             )
         }
         Text(
@@ -77,11 +77,11 @@ fun HomeScreen(
                         when (quickAction) {
                             QuickAction.PayWithCard,
                             QuickAction.SendMoney,
-                            QuickAction.CardTransfer -> onQuickActionCardClick(quickAction)
+                            QuickAction.CardTransfer,
+                            -> onQuickActionCardClick(quickAction)
                             else -> {}
                         }
-
-                    }
+                    },
                 )
             }
         }
@@ -94,7 +94,7 @@ fun HomeScreen(
             positiveActionText = "Dismiss",
             positiveAction = {
                 onUiEvent(HomeScreenEvent.OnDismissErrorDialog)
-            }
+            },
         )
     }
 }
@@ -106,7 +106,7 @@ private fun HomeScreenPreview() {
         HomeScreen(
             screenState = HomeScreenState(),
             onUiEvent = {},
-            onQuickActionCardClick = {}
+            onQuickActionCardClick = {},
         )
     }
 }

@@ -12,7 +12,7 @@ internal fun NavController.navigateToRecoverPassCodeRoute() {
 internal fun NavController.navigateToOtpValidationRoute(phoneNumber: String) {
     val encodedPhoneNumber = Uri.encode(phoneNumber)
     this.navigate(
-        route = "$otpValidationRoute/$encodedPhoneNumber"
+        route = "$otpValidationRoute/$encodedPhoneNumber",
     )
 }
 
@@ -21,7 +21,7 @@ internal fun NavController.navigateToSetNewPassCodeRoute(phoneNumber: String, ot
     val encodedOtp = Uri.encode(otp)
     this.navigate(
         route = "$setNewPassCodeRoute/$encodedPhoneNumber/$encodedOtp",
-        navOptions = popUpToStartDestinationNavOption(this)
+        navOptions = popUpToStartDestinationNavOption(this),
     )
 }
 
@@ -29,7 +29,7 @@ internal fun NavController.navigateToSuccessfulRoute(message: String) {
     val encodedSuccessMessage = Uri.encode(message)
     this.navigate(
         route = "$successfulRoute/$encodedSuccessMessage",
-        navOptions = popUpToStartDestinationNavOption(this)
+        navOptions = popUpToStartDestinationNavOption(this),
     )
 }
 

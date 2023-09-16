@@ -26,12 +26,12 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun InsertCardRoute(
     onCardInserted: () -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     InsertCardScreen(
         onCardInserted = onCardInserted,
         onBackPress = onBackPress,
-        onCloseClick = onCloseClick
+        onCloseClick = onCloseClick,
     )
 }
 
@@ -39,16 +39,16 @@ fun InsertCardRoute(
 fun InsertCardScreen(
     onCardInserted: () -> Unit,
     onBackPress: () -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             BanklyTitleBar(
                 onBackPress = onBackPress,
                 title = stringResource(R.string.title_insert_card),
-                onCloseClick = onCloseClick
+                onCloseClick = onCloseClick,
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -56,7 +56,7 @@ fun InsertCardScreen(
                 .padding(padding)
                 .padding(bottom = 150.dp),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Image(
@@ -64,12 +64,12 @@ fun InsertCardScreen(
                         onCardInserted()
                     },
                     painter = painterResource(id = com.bankly.core.designsystem.R.drawable.ic_insert_card_into_pos),
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Text(
                     text = stringResource(R.string.msg_insert_your_card_into_the_machine),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }
@@ -83,7 +83,7 @@ private fun InsertCardScreenPreview() {
         InsertCardScreen(
             onCardInserted = {},
             onBackPress = {},
-            onCloseClick = {}
+            onCloseClick = {},
         )
     }
 }

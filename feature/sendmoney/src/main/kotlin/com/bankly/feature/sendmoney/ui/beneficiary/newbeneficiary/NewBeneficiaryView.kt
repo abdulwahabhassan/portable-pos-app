@@ -15,6 +15,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.AmountInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyFilledButton
@@ -23,8 +25,6 @@ import com.bankly.core.designsystem.component.BanklySelectionDialogMenu
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
-import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.core.common.model.AccountNumberType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 
 @Composable
@@ -37,13 +37,12 @@ internal fun NewBeneficiaryView(
     onEnterNarration: (TextFieldValue) -> Unit,
     onEnterAmount: (TextFieldValue) -> Unit,
     channel: SendMoneyChannel,
-    onContinueClick: () -> Unit
+    onContinueClick: () -> Unit,
 ) {
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
             if (channel == SendMoneyChannel.BANKLY_TO_BANKLY) {
@@ -74,7 +73,7 @@ internal fun NewBeneficiaryView(
                     labelText = stringResource(R.string.msg_bank_name),
                     isError = screenState.isBankNameError,
                     feedbackText = screenState.bankNameFeedBack,
-                    isEnabled = screenState.isUserInputEnabled
+                    isEnabled = screenState.isUserInputEnabled,
                 )
             }
 
@@ -87,21 +86,21 @@ internal fun NewBeneficiaryView(
                     when (selectedAccountNumberType) {
                         AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
                         AccountNumberType.PHONE_NUMBER -> R.string.msg_enter_phone_number
-                    }
+                    },
                 ),
                 labelText = stringResource(
                     when (selectedAccountNumberType) {
                         AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_account_number_label
                         AccountNumberType.PHONE_NUMBER -> R.string.msg_phone_number_label
-                    }
+                    },
                 ),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
+                    keyboardType = KeyboardType.Number,
                 ),
                 trailingIcon = screenState.validationStatusIcon,
                 isError = screenState.isAccountOrPhoneError,
                 feedbackText = screenState.accountOrPhoneFeedBack,
-                isEnabled = screenState.isUserInputEnabled
+                isEnabled = screenState.isUserInputEnabled,
             )
 
             BanklyInputField(
@@ -112,12 +111,12 @@ internal fun NewBeneficiaryView(
                 placeholderText = stringResource(R.string.msg_enter_amount),
                 labelText = stringResource(R.string.msg_amount_label),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Decimal
+                    keyboardType = KeyboardType.Decimal,
                 ),
                 isError = screenState.isAmountError,
                 feedbackText = screenState.amountFeedBack,
                 isEnabled = screenState.isUserInputEnabled,
-                visualTransformation = AmountInputVisualTransformation(AmountFormatter())
+                visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
             )
 
             BanklyInputField(
@@ -128,11 +127,11 @@ internal fun NewBeneficiaryView(
                 placeholderText = stringResource(R.string.msg_enter_narration),
                 labelText = stringResource(R.string.msg_narration_label),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Text
+                    keyboardType = KeyboardType.Text,
                 ),
                 isError = screenState.isNarrationError,
                 feedbackText = screenState.narrationFeedBack,
-                isEnabled = screenState.isUserInputEnabled
+                isEnabled = screenState.isUserInputEnabled,
             )
         }
 
@@ -143,7 +142,7 @@ internal fun NewBeneficiaryView(
                     .padding(24.dp),
                 text = stringResource(R.string.action_continue),
                 onClick = onContinueClick,
-                isEnabled = screenState.isContinueButtonEnabled
+                isEnabled = screenState.isContinueButtonEnabled,
             )
         }
     }
@@ -162,7 +161,7 @@ private fun NewBeneficiaryViewPreview() {
             onEnterNarration = {},
             onEnterAmount = {},
             channel = SendMoneyChannel.BANKLY_TO_BANKLY,
-            onContinueClick = {}
+            onContinueClick = {},
         )
     }
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun BanklyRowCheckBox(isChecked: Boolean, onCheckedChange: ((Boolean) -> Unit), title: String) {
     Row(
@@ -30,22 +29,21 @@ fun BanklyRowCheckBox(isChecked: Boolean, onCheckedChange: ((Boolean) -> Unit), 
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .background(
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
             )
             .clip(MaterialTheme.shapes.medium)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             ) {
                 onCheckedChange(true)
             }
-
             .padding(end = 12.dp, start = 24.dp, bottom = 4.dp, top = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(text = title, style = MaterialTheme.typography.bodyMedium)
         Checkbox(
@@ -54,8 +52,8 @@ fun BanklyRowCheckBox(isChecked: Boolean, onCheckedChange: ((Boolean) -> Unit), 
             colors = CheckboxDefaults.colors(
                 checkedColor = MaterialTheme.colorScheme.primary,
                 uncheckedColor = MaterialTheme.colorScheme.tertiaryContainer,
-                checkmarkColor = MaterialTheme.colorScheme.onPrimary
-            )
+                checkmarkColor = MaterialTheme.colorScheme.onPrimary,
+            ),
         )
     }
 }
@@ -67,7 +65,7 @@ fun RowCheckBoxPreview() {
         BanklyRowCheckBox(
             isChecked = false,
             onCheckedChange = {},
-            title = "Savings"
+            title = "Savings",
         )
     }
 }

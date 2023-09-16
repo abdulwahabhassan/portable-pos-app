@@ -1,8 +1,8 @@
 package com.bankly.feature.authentication.ui.validateotp
 
-import com.bankly.core.sealed.State
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.entity.Status
+import com.bankly.core.sealed.State
 
 data class OtpValidationScreenState(
     val otp: List<String> = List(6) { "" },

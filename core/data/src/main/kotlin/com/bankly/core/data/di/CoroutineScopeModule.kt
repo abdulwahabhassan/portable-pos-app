@@ -14,7 +14,4 @@ object CoroutineScopeModule {
     @Provides
     fun providesApplicationScopeCoroutine(@DefaultDispatcher defaultDispatcher: CoroutineDispatcher): CoroutineScope =
         CoroutineScope(SupervisorJob() + defaultDispatcher)
-
 }
-
-

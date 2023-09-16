@@ -18,7 +18,5 @@ data class AccountNumberTransferData(
     val securityQuestionResponse: String = "",
     val deviceId: String = "",
     val isWeb: String = "false",
-    val senderName: String = ""
+    val senderName: String = "",
 )
-
-

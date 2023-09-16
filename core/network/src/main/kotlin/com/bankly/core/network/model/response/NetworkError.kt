@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class NetworkError(
     val message: String? = null,
     val validationMessages: List<String>? = null,
-    val errorCode: Int? = null
+    val errorCode: Int? = null,
 )
 
 @Serializable
@@ -15,5 +15,5 @@ data class TokenNetworkError(
     @SerialName("error") val error: String? = null,
     @SerialName("error_description") val errorDescription: String? = null,
     @SerialName("status") val status: Long? = null,
-    @SerialName("message") val message: String? = null
+    @SerialName("message") val message: String? = null,
 )

@@ -23,17 +23,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bankly.core.common.model.SendMoneyChannel
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.view.BankSearchView
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
-import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryView
+import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBaseBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryView
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +47,7 @@ internal fun BeneficiaryRoute(
     onBackPress: () -> Unit,
     sendMoneyChannel: SendMoneyChannel,
     onContinueClick: (TransactionData) -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
@@ -75,9 +75,9 @@ internal fun BeneficiaryRoute(
                     bankName = newBeneficiaryScreenState.bankNameTFV.text,
                     selectedBankId = newBeneficiaryScreenState.selectedBank?.id,
                     narration = newBeneficiaryScreenState.narrationTFV.text,
-                    accountNumberType = newBeneficiaryScreenState.accountNumberType
+                    accountNumberType = newBeneficiaryScreenState.accountNumberType,
 
-                )
+                ),
             )
         },
         onSavedBeneficiaryContinueButtonClick = {
@@ -90,11 +90,11 @@ internal fun BeneficiaryRoute(
                     bankName = savedBeneficiaryScreenState.bankNameTFV.text,
                     selectedBankId = savedBeneficiaryScreenState.selectedBank?.id,
                     narration = savedBeneficiaryScreenState.narrationTFV.text,
-                    accountNumberType = savedBeneficiaryScreenState.accountNumberType
-                )
+                    accountNumberType = savedBeneficiaryScreenState.accountNumberType,
+                ),
             )
         },
-        onCloseClick = onCloseClick
+        onCloseClick = onCloseClick,
     )
 
     LaunchedEffect(key1 = Unit) {
@@ -120,8 +120,8 @@ internal fun BeneficiaryRoute(
             newBeneficiaryViewModel.sendEvent(
                 BeneficiaryScreenEvent.OnSelectBank(
                     bank = Bank(id = BANKLY_BANK_ID, name = BANKLY_BANK_NAME),
-                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
-                )
+                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text,
+                ),
             )
         }
     }
@@ -139,13 +139,13 @@ private fun BeneficiaryScreen(
     onNewBeneficiaryUiEvent: (BeneficiaryScreenEvent) -> Unit,
     onSavedBeneficiaryUiEvent: (BeneficiaryScreenEvent) -> Unit,
     onNewBeneficiaryContinueButtonClick: () -> Unit,
-    onSavedBeneficiaryContinueButtonClick: () -> Unit
+    onSavedBeneficiaryContinueButtonClick: () -> Unit,
 ) {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         SheetState(
             skipPartiallyExpanded = false,
-            initialValue = SheetValue.Hidden
-        )
+            initialValue = SheetValue.Hidden,
+        ),
     )
 
     BottomSheetScaffold(
@@ -155,7 +155,7 @@ private fun BeneficiaryScreen(
                 onBackPress = onBackPress,
                 title = channel.screenTitle,
                 onCloseClick = onCloseClick,
-                isLoading = newBeneficiaryScreenState.shouldShowLoadingIndicator || savedBeneficiaryScreenState.shouldShowLoadingIndicator
+                isLoading = newBeneficiaryScreenState.shouldShowLoadingIndicator || savedBeneficiaryScreenState.shouldShowLoadingIndicator,
             )
         },
         sheetPeekHeight = 0.dp,
@@ -173,8 +173,8 @@ private fun BeneficiaryScreen(
                             onNewBeneficiaryUiEvent(
                                 BeneficiaryScreenEvent.OnSelectBank(
                                     bank = bank,
-                                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
-                                )
+                                    accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text,
+                                ),
                             )
                         }
 
@@ -182,8 +182,8 @@ private fun BeneficiaryScreen(
                             onSavedBeneficiaryUiEvent(
                                 BeneficiaryScreenEvent.OnSelectBank(
                                     bank = bank,
-                                    accountOrPhoneNumber = savedBeneficiaryScreenState.accountOrPhoneTFV.text
-                                )
+                                    accountOrPhoneNumber = savedBeneficiaryScreenState.accountOrPhoneTFV.text,
+                                ),
                             )
                         }
                     }
@@ -199,7 +199,7 @@ private fun BeneficiaryScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Column {
                 Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 2.dp)) {
@@ -212,7 +212,7 @@ private fun BeneficiaryScreen(
                         selectedTabColor = MaterialTheme.colorScheme.surfaceVariant,
                         selectedTabTextColor = MaterialTheme.colorScheme.primary,
                         unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        rippleColor = MaterialTheme.colorScheme.surfaceVariant
+                        rippleColor = MaterialTheme.colorScheme.surfaceVariant,
                     )
                 }
                 when (newBeneficiaryScreenState.selectedTab) {
@@ -225,8 +225,8 @@ private fun BeneficiaryScreen(
                                     BeneficiaryScreenEvent.OnTypeSelected(
                                         accountNumberType = selectedType,
                                         bankId = newBeneficiaryScreenState.selectedBank?.id,
-                                        accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text
-                                    )
+                                        accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text,
+                                    ),
                                 )
                             },
                             selectedAccountNumberType = newBeneficiaryScreenState.accountNumberType,
@@ -241,21 +241,21 @@ private fun BeneficiaryScreen(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
                                         selectedBankId = newBeneficiaryScreenState.selectedBank?.id,
-                                        accountNumberType = newBeneficiaryScreenState.accountNumberType
-                                    )
+                                        accountNumberType = newBeneficiaryScreenState.accountNumberType,
+                                    ),
                                 )
                             },
                             onEnterNarration = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue),
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onNewBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue),
                                 )
                             },
-                            onContinueClick = onNewBeneficiaryContinueButtonClick
+                            onContinueClick = onNewBeneficiaryContinueButtonClick,
                         )
                     }
 
@@ -279,18 +279,18 @@ private fun BeneficiaryScreen(
                                         accountOrPhoneNumberTFV = textFieldValue,
                                         sendMoneyChannel = channel,
                                         selectedBankId = savedBeneficiaryScreenState.selectedBank?.id,
-                                        accountNumberType = savedBeneficiaryScreenState.accountNumberType
-                                    )
+                                        accountNumberType = savedBeneficiaryScreenState.accountNumberType,
+                                    ),
                                 )
                             },
                             onEnterNarration = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputNarration(textFieldValue),
                                 )
                             },
                             onEnterAmount = { textFieldValue ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue)
+                                    BeneficiaryScreenEvent.OnInputAmount(textFieldValue),
                                 )
                             },
                             onContinueClick = onSavedBeneficiaryContinueButtonClick,
@@ -299,9 +299,9 @@ private fun BeneficiaryScreen(
                             },
                             onBeneficiarySelected = { beneficiary: SavedBeneficiary ->
                                 onSavedBeneficiaryUiEvent(
-                                    BeneficiaryScreenEvent.OnBeneficiarySelected(beneficiary)
+                                    BeneficiaryScreenEvent.OnBeneficiarySelected(beneficiary),
                                 )
-                            }
+                            },
                         )
                     }
                 }
@@ -323,7 +323,7 @@ private fun BeneficiaryScreenPreview() {
             onCloseClick = {},
             channel = SendMoneyChannel.BANKLY_TO_BANKLY,
             onNewBeneficiaryContinueButtonClick = {},
-            onSavedBeneficiaryContinueButtonClick = {}
+            onSavedBeneficiaryContinueButtonClick = {},
         )
     }
 }

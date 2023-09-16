@@ -34,7 +34,7 @@ import com.bankly.feature.dashboard.model.QuickAction
 fun DashBoardQuickActionCard(
     quickAction: QuickAction,
     onClick: () -> Unit,
-    isEnable: Boolean = true
+    isEnable: Boolean = true,
 ) {
     Card(
         modifier = Modifier
@@ -47,35 +47,40 @@ fun DashBoardQuickActionCard(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             ),
         shape = MaterialTheme.shapes.medium,
-        colors = if (isEnable) CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary
-        ) else CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.tertiary
-        )
+        colors = if (isEnable) {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+            )
+        } else {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.tertiary,
+            )
+        },
     ) {
         Box(
-            contentAlignment = Alignment.TopStart, modifier = Modifier
+            contentAlignment = Alignment.TopStart,
+            modifier = Modifier
                 .padding(12.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column {
                 Icon(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(id = quickAction.icon),
                     contentDescription = stringResource(R.string.desc_pay_with_card),
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = quickAction.title,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -89,7 +94,7 @@ private fun QuickActionCardPreview() {
         DashBoardQuickActionCard(
             QuickAction.PayWithCard,
             onClick = { },
-            isEnable = true
+            isEnable = true,
         )
     }
 }

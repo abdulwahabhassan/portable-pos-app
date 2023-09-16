@@ -55,7 +55,8 @@ fun <T> BanklySelectionDialogMenu(
     Box(modifier = modifier.height(IntrinsicSize.Min)) {
         BanklyInputField(
             textFieldValue = TextFieldValue(
-                text = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: ""),
+                text = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: "",
+            ),
             onTextFieldValueChange = {
             },
             onTrailingIconClick = {
@@ -100,7 +101,7 @@ fun <T> BanklySelectionDialogMenu(
                             drawItem(
                                 item,
                                 selectedItem,
-                                true
+                                true,
                             ) {
                                 onItemSelected(index, item)
                                 expanded = false
@@ -129,10 +130,12 @@ fun BanklySelectionDialogMenuItem(
         else -> MaterialTheme.colorScheme.tertiary
     }
     CompositionLocalProvider(LocalContentColor provides contentColor) {
-        Box(modifier = Modifier
-            .clickable(enabled) { onClick() }
-            .fillMaxWidth()
-            .padding(16.dp)) {
+        Box(
+            modifier = Modifier
+                .clickable(enabled) { onClick() }
+                .fillMaxWidth()
+                .padding(16.dp),
+        ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleSmall,

@@ -50,7 +50,7 @@ fun BanklyTitleBar(
     totalPage: Int = 0,
     isLoading: Boolean = false,
     onCloseClick: (() -> Unit)? = null,
-    backgroundColor: Color = MaterialTheme.colorScheme.background
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
 ) {
     val shouldShowPageNumber by remember(currentPage, totalPage) {
         mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
@@ -60,7 +60,7 @@ fun BanklyTitleBar(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxWidth()
-            .padding(bottom = 24.dp)
+            .padding(bottom = 24.dp),
 
     ) {
         Row(
@@ -68,7 +68,7 @@ fun BanklyTitleBar(
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             if (onBackPress != null) {
                 Box(modifier = Modifier.weight(1f)) {
@@ -78,7 +78,7 @@ fun BanklyTitleBar(
                 Box(
                     modifier = Modifier
                         .size(46.dp)
-                        .weight(1f)
+                        .weight(1f),
                 ) {}
             }
             Text(
@@ -89,7 +89,7 @@ fun BanklyTitleBar(
                     .padding(horizontal = 12.dp),
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 1,
             )
             if (shouldShowPageNumber) {
                 Text(
@@ -100,7 +100,7 @@ fun BanklyTitleBar(
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
-                        .width(90.dp)
+                        .width(90.dp),
                 )
             } else if (onCloseClick != null) {
                 Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
@@ -114,7 +114,6 @@ fun BanklyTitleBar(
             } else {
                 Box(modifier = Modifier.weight(1f))
             }
-
         }
         if (isLoading) {
             LinearProgressIndicator(
@@ -124,13 +123,13 @@ fun BanklyTitleBar(
                     .fillMaxWidth(),
                 strokeCap = StrokeCap.Round,
                 color = MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.primaryContainer
+                trackColor = MaterialTheme.colorScheme.primaryContainer,
             )
         } else {
             Spacer(
                 modifier = Modifier
                     .padding(bottom = 12.dp)
-                    .height(2.dp)
+                    .height(2.dp),
             )
         }
         if (shouldShowPageNumber) {
@@ -141,7 +140,7 @@ fun BanklyTitleBar(
                 progress = (currentPage.toFloat() / totalPage.toFloat()) * 1f,
                 strokeCap = StrokeCap.Round,
                 color = MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.primaryContainer
+                trackColor = MaterialTheme.colorScheme.primaryContainer,
             )
         }
 
@@ -152,12 +151,11 @@ fun BanklyTitleBar(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 48.dp)
+                    .padding(horizontal = 48.dp),
             )
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -170,8 +168,7 @@ private fun BanklyTitleBarPreview1() {
             currentPage = 1,
             totalPage = 2,
 
-            )
-
+        )
     }
 }
 
@@ -180,7 +177,7 @@ private fun BanklyTitleBarPreview1() {
 private fun BanklyTitleBarPreview2() {
     BanklyTheme {
         BanklyTitleBar(
-            title = "Log In"
+            title = "Log In",
         )
     }
 }
@@ -191,7 +188,7 @@ private fun BanklyTitleBarPreview3() {
     BanklyTheme {
         BanklyTitleBar(
             title = "Log In",
-            subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") }
+            subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
         )
     }
 }
@@ -205,7 +202,7 @@ private fun BanklyTitleBarPreview4() {
             subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
             currentPage = 3,
             totalPage = 10,
-            isLoading = true
+            isLoading = true,
         )
     }
 }
@@ -217,7 +214,7 @@ private fun BanklyTitleBarPreview5() {
         BanklyTitleBar(
             onBackPress = { },
             title = "Log In",
-            isLoading = true
+            isLoading = true,
         )
     }
 }
@@ -230,8 +227,7 @@ private fun BanklyTitleBarPreview6() {
             onBackPress = { },
             title = "Select Account Type",
             isLoading = true,
-            onCloseClick = {}
+            onCloseClick = {},
         )
     }
 }
-

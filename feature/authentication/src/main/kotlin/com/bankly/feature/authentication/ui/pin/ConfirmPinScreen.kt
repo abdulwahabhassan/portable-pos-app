@@ -27,14 +27,14 @@ fun ConfirmPinScreen() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
             BanklyTitleBar(
                 onBackPress = {},
                 title = stringResource(R.string.msg_confirm_pin),
                 currentPage = 3,
-                totalPage = 3
+                totalPage = 3,
             )
             BanklyPassCodeInputField(passCode = pin, isError = isError)
         }
@@ -64,7 +64,6 @@ fun ConfirmPinScreen() {
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

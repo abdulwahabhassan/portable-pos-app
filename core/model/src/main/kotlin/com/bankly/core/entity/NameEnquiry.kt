@@ -4,5 +4,5 @@ data class NameEnquiry(
     val accountName: String,
     val accountNumber: String,
     val bankCode: String,
-    val bankName: String
+    val bankName: String,
 )

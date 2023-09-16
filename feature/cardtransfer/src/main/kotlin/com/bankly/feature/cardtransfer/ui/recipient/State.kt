@@ -26,16 +26,20 @@ internal data class RecipientScreenState(
 ) {
     val isContinueButtonEnabled: Boolean
         get() = accountNumberTFV.text.isNotEmpty() && isAccountNumberError.not() &&
-                amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
-                isBankNameError.not() && isSenderPhoneNumberError.not() &&
-                accountValidationState !is State.Loading && accountValidationState !is State.Error &&
-                bankListState !is State.Loading
+            amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
+            isBankNameError.not() && isSenderPhoneNumberError.not() &&
+            accountValidationState !is State.Loading && accountValidationState !is State.Error &&
+            bankListState !is State.Loading
     val isUserInputEnabled: Boolean
         get() = accountValidationState !is State.Loading && bankListState !is State.Loading
     val bankNameTFV: TextFieldValue
-        get() = if (selectedBank != null) TextFieldValue(text = selectedBank.name) else TextFieldValue(
-            text = ""
-        )
+        get() = if (selectedBank != null) {
+            TextFieldValue(text = selectedBank.name)
+        } else {
+            TextFieldValue(
+                text = "",
+            )
+        }
     val validationIcon: Int?
         get() = when (accountValidationState) {
             State.Initial -> null

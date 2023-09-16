@@ -1,15 +1,15 @@
 package com.bankly.core.network
 
-import com.bankly.core.network.model.result.AuthenticatedUserResult
-import com.bankly.core.network.model.result.MessageResult
-import com.bankly.core.network.model.result.StatusResult
-import com.bankly.core.network.model.result.WalletResult
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
 import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.result.AuthenticatedUserResult
+import com.bankly.core.network.model.result.MessageResult
+import com.bankly.core.network.model.result.StatusResult
+import com.bankly.core.network.model.result.WalletResult
 
 /**
  * Interface representing network calls to backend
@@ -18,40 +18,34 @@ interface IdentityServiceDataSource {
 
     suspend fun getToken(
         userName: String,
-        password: String
+        password: String,
     ): TokenNetworkResponse
 
     suspend fun forgotPassCode(
-        body: ForgotPassCodeRequestBody
+        body: ForgotPassCodeRequestBody,
     ): NetworkResponse<StatusResult>
 
     suspend fun validateOtp(
-        body: ValidateOtpRequestBody
+        body: ValidateOtpRequestBody,
     ): NetworkResponse<StatusResult>
 
     suspend fun resetPassCode(
-        body: ResetPassCodeRequestBody
+        body: ResetPassCodeRequestBody,
     ): NetworkResponse<MessageResult>
 
     suspend fun changePassCode(
-        body: ChangePassCodeRequestBody
+        body: ChangePassCodeRequestBody,
     ): NetworkResponse<AuthenticatedUserResult>
-
 }
 
 interface BanklyWalletDataSource {
     suspend fun getWallet(
-        token: String
+        token: String,
     ): NetworkResponse<WalletResult>
 }
 
-interface BanklyPosDataSource {
-}
+interface BanklyPosDataSource
 
-interface BanklyTmsDataSource {
+interface BanklyTmsDataSource
 
-}
-
-interface BanklyNotificationDataSource {
-
-}
+interface BanklyNotificationDataSource

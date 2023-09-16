@@ -5,11 +5,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,7 +20,7 @@ object NetworkClientModule {
         addInterceptor(
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
-            }
+            },
         )
         addInterceptor(
             Interceptor { chain ->
@@ -30,9 +30,9 @@ object NetworkClientModule {
                         .addHeader("Content-Type", "application/json")
                         .addHeader("x-api-key", BuildConfig.PROD_X_API_KEY)
                         .addHeader("Accept", "*/*")
-                        .build()
+                        .build(),
                 )
-            }
+            },
         )
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)

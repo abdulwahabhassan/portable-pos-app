@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
  *
  */
 
-abstract class BaseViewModel<E, S, O: OneShotState>(initialState: S) : ViewModel() {
+abstract class BaseViewModel<E, S, O : OneShotState>(initialState: S) : ViewModel() {
     /**
      * [E] stands for Event
      * [S] stands for State

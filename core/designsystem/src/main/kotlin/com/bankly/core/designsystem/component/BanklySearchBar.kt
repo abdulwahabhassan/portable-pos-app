@@ -58,7 +58,7 @@ fun BanklySearchBar(
                         ),
                     ),
 
-                ) {
+            ) {
                 Icon(
                     modifier = modifier
                         .align(Alignment.Center)

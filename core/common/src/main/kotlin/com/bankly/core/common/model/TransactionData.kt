@@ -28,16 +28,16 @@ data class TransactionData(
             "Account Name" to accountName,
             "Amount" to Formatter.formatAmount(
                 value = amount.toString(),
-                includeNairaSymbol = true
+                includeNairaSymbol = true,
             ),
             "VAT" to Formatter.formatAmount(
                 value = vat.toString(),
-                includeNairaSymbol = true
+                includeNairaSymbol = true,
             ),
             "Fee" to Formatter.formatAmount(
                 value = fee.toString(),
-                includeNairaSymbol = true
-            )
+                includeNairaSymbol = true,
+            ),
         )
     }
 
@@ -75,7 +75,7 @@ data class TransactionData(
                 "",
                 "",
                 AccountNumberType.ACCOUNT_NUMBER,
-                ""
+                "",
             )
         }
     }

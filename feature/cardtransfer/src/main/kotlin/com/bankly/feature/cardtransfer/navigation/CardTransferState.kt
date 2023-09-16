@@ -13,12 +13,12 @@ internal fun rememberCardTransferState(
     navHostController: NavHostController = rememberNavController(),
 ): MutableState<CardTransferState> {
     return remember(
-        navHostController
+        navHostController,
     ) {
         mutableStateOf(
             CardTransferState(
-                navHostController = navHostController
-            )
+                navHostController = navHostController,
+            ),
         )
     }
 }
@@ -27,4 +27,3 @@ internal fun rememberCardTransferState(
 internal data class CardTransferState(
     val navHostController: NavHostController,
 )
-

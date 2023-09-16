@@ -19,13 +19,13 @@ fun rememberDashBoardState(
 ): MutableState<DashBoardState> {
     return remember(
         currentTab,
-        navHostController
+        navHostController,
     ) {
         mutableStateOf(
             DashBoardState(
                 currentTab = currentTab,
-                navHostController = navHostController
-            )
+                navHostController = navHostController,
+            ),
         )
     }
 }

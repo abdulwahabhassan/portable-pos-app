@@ -7,7 +7,7 @@ data class SavedBeneficiary(
     val bankName: String,
     val accountNumber: String,
     val bankLogo: Int? = null,
-    val bankId: Long
+    val bankId: Long,
 ) {
     companion object {
         fun mockOtherBanks(): List<SavedBeneficiary> {
@@ -17,15 +17,15 @@ data class SavedBeneficiary(
                     "FIRST BANK",
                     "3090232555",
                     R.drawable.ic_first_bank,
-                    10
+                    10,
                 ),
                 SavedBeneficiary(
                     "Hassan Abdulwahab",
                     "GTB",
                     "0428094437",
                     R.drawable.ic_gt_bank,
-                    11
-                )
+                    11,
+                ),
             )
         }
 
@@ -36,18 +36,16 @@ data class SavedBeneficiary(
                     "BANKLY MFB",
                     "5003004092",
                     R.drawable.ic_bankly,
-                    96
+                    96,
                 ),
                 SavedBeneficiary(
                     "Hassan Abdulwahab",
                     "BANKLY MFB",
                     "5010181913",
                     R.drawable.ic_bankly,
-                    96
+                    96,
                 ),
             )
         }
-
     }
 }
-

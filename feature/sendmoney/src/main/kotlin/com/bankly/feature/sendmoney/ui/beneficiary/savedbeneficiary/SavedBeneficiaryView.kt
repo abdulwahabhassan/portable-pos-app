@@ -37,6 +37,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.model.AccountNumberType
+import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.AmountInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyClickableText
@@ -46,11 +48,8 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.sendmoney.R
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
-import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.core.common.model.AccountNumberType
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
 import com.bankly.core.designsystem.R as DesignRes
-
 
 @Composable
 internal fun SavedBeneficiaryView(
@@ -64,7 +63,7 @@ internal fun SavedBeneficiaryView(
     channel: SendMoneyChannel,
     onContinueClick: () -> Unit,
     onChangeSelectedSavedBeneficiary: () -> Unit,
-    onBeneficiarySelected: (SavedBeneficiary) -> Unit
+    onBeneficiarySelected: (SavedBeneficiary) -> Unit,
 ) {
     if (screenState.shouldShowSavedBeneficiaryList) {
         LazyColumn(
@@ -73,14 +72,14 @@ internal fun SavedBeneficiaryView(
                 .padding(top = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 24.dp)
+            contentPadding = PaddingValues(bottom = 24.dp),
         ) {
             items(savedBeneficiaries) { item: SavedBeneficiary ->
                 SavedBeneficiaryItemView(
                     savedBeneficiary = item,
                     onClick = { beneficiary: SavedBeneficiary ->
                         onBeneficiarySelected(beneficiary)
-                    }
+                    },
                 )
             }
         }
@@ -88,30 +87,30 @@ internal fun SavedBeneficiaryView(
         Column {
             Row(
                 modifier = Modifier
-                    .align(Alignment.End)
+                    .align(Alignment.End),
             ) {
                 BanklyClickableText(
                     text = buildAnnotatedString {
                         withStyle(
-                            style = MaterialTheme.typography.bodyMedium.toSpanStyle()
+                            style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
                         ) {
                             append("Wrong beneficiary?")
                         }
                         append(" ")
                         withStyle(
                             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.primary)
-                                .toSpanStyle()
+                                .toSpanStyle(),
                         ) {
                             append("Change")
                         }
                     },
-                    onClick = onChangeSelectedSavedBeneficiary
+                    onClick = onChangeSelectedSavedBeneficiary,
                 )
             }
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 item {
                     if (channel == SendMoneyChannel.BANKLY_TO_OTHER) {
@@ -126,7 +125,7 @@ internal fun SavedBeneficiaryView(
                             labelText = stringResource(R.string.msg_bank_name),
                             isError = screenState.isBankNameError,
                             feedbackText = screenState.bankNameFeedBack,
-                            isEnabled = screenState.isUserInputEnabled
+                            isEnabled = screenState.isUserInputEnabled,
                         )
                     }
 
@@ -139,21 +138,21 @@ internal fun SavedBeneficiaryView(
                             when (selectedAccountNumberType) {
                                 AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_enter_account_number
                                 AccountNumberType.PHONE_NUMBER -> R.string.msg_enter_phone_number
-                            }
+                            },
                         ),
                         labelText = stringResource(
                             when (selectedAccountNumberType) {
                                 AccountNumberType.ACCOUNT_NUMBER -> R.string.msg_account_number_label
                                 AccountNumberType.PHONE_NUMBER -> R.string.msg_phone_number_label
-                            }
+                            },
                         ),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number
+                            keyboardType = KeyboardType.Number,
                         ),
                         trailingIcon = screenState.validationStatusIcon,
                         isError = screenState.isAccountOrPhoneError,
                         feedbackText = screenState.accountOrPhoneFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
 
                     BanklyInputField(
@@ -164,12 +163,12 @@ internal fun SavedBeneficiaryView(
                         placeholderText = stringResource(R.string.msg_enter_amount),
                         labelText = stringResource(R.string.msg_amount_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Decimal
+                            keyboardType = KeyboardType.Decimal,
                         ),
                         isError = screenState.isAmountError,
                         feedbackText = screenState.amountFeedBack,
                         isEnabled = screenState.isUserInputEnabled,
-                        visualTransformation = AmountInputVisualTransformation(AmountFormatter())
+                        visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
                     )
 
                     BanklyInputField(
@@ -180,11 +179,11 @@ internal fun SavedBeneficiaryView(
                         placeholderText = stringResource(R.string.msg_enter_narration),
                         labelText = stringResource(R.string.msg_narration_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Text
+                            keyboardType = KeyboardType.Text,
                         ),
                         isError = screenState.isNarrationError,
                         feedbackText = screenState.narrationFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
                 }
 
@@ -195,7 +194,7 @@ internal fun SavedBeneficiaryView(
                             .padding(24.dp),
                         text = stringResource(R.string.action_continue),
                         onClick = onContinueClick,
-                        isEnabled = screenState.isContinueButtonEnabled
+                        isEnabled = screenState.isContinueButtonEnabled,
                     )
                 }
             }
@@ -218,7 +217,7 @@ private fun SavedBeneficiaryPreview() {
             channel = SendMoneyChannel.BANKLY_TO_BANKLY,
             onContinueClick = {},
             onChangeSelectedSavedBeneficiary = {},
-            onBeneficiarySelected = {}
+            onBeneficiarySelected = {},
         )
     }
 }
@@ -226,7 +225,7 @@ private fun SavedBeneficiaryPreview() {
 @Composable
 private fun SavedBeneficiaryItemView(
     savedBeneficiary: SavedBeneficiary,
-    onClick: (SavedBeneficiary) -> Unit
+    onClick: (SavedBeneficiary) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -234,7 +233,7 @@ private fun SavedBeneficiaryItemView(
             .shadow(
                 elevation = 1.dp,
                 shape = RoundedCornerShape(16.dp),
-                clip = true
+                clip = true,
             )
             .clip(RoundedCornerShape(16.dp))
             .clickable(
@@ -246,17 +245,17 @@ private fun SavedBeneficiaryItemView(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             )
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
             )
             .fillMaxWidth()
             .padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             modifier = Modifier
@@ -269,7 +268,7 @@ private fun SavedBeneficiaryItemView(
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
                 text = savedBeneficiary.name,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -285,7 +284,7 @@ private fun SavedBeneficiaryItemView(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     painter = painterResource(id = BanklyIcons.Dot),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.tertiary
+                    tint = MaterialTheme.colorScheme.tertiary,
                 )
                 Text(
                     text = savedBeneficiary.accountNumber,
@@ -308,9 +307,9 @@ private fun SavedBeneficiaryItemPreview() {
                 "Access Bank PLC",
                 "9844803022",
                 DesignRes.drawable.ic_first_bank,
-                1
+                1,
             ),
-            onClick = {}
+            onClick = {},
         )
     }
 }

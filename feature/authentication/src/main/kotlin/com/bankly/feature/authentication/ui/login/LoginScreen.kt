@@ -24,13 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.sealed.State
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.sealed.State
 import com.bankly.feature.authentication.R
 
 @Composable
@@ -38,7 +38,7 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit
+    onRecoverPassCodeClick: () -> Unit,
 ) {
     BackHandler { onBackPress() }
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,9 +47,8 @@ internal fun LoginRoute(
         onBackPress = onBackPress,
         onRecoverPassCodeClick = onRecoverPassCodeClick,
         screenState = screenState,
-        onUiEvent = { uiEvent: LoginScreenEvent -> viewModel.sendEvent(uiEvent) }
+        onUiEvent = { uiEvent: LoginScreenEvent -> viewModel.sendEvent(uiEvent) },
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +58,7 @@ internal fun LoginScreen(
     onBackPress: () -> Unit,
     onRecoverPassCodeClick: () -> Unit,
     screenState: LoginScreenState,
-    onUiEvent: (LoginScreenEvent) -> Unit
+    onUiEvent: (LoginScreenEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -69,19 +68,19 @@ internal fun LoginScreen(
                 subTitle = buildAnnotatedString {
                     append(stringResource(R.string.msg_login_screen_subtitle))
                 },
-                isLoading = screenState.loginState is State.Loading
+                isLoading = screenState.loginState is State.Loading,
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     BanklyInputField(
                         textFieldValue = screenState.phoneNumberTFV,
@@ -92,10 +91,10 @@ internal fun LoginScreen(
                         placeholderText = stringResource(R.string.msg_phone_number_sample),
                         labelText = stringResource(R.string.label_phone_number),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Phone
+                            keyboardType = KeyboardType.Phone,
                         ),
                         isError = screenState.isPhoneNumberError,
-                        feedbackText = screenState.phoneNumberFeedBack
+                        feedbackText = screenState.phoneNumberFeedBack,
                     )
 
                     BanklyInputField(
@@ -108,10 +107,10 @@ internal fun LoginScreen(
                         labelText = stringResource(R.string.msg_passcode_label),
                         isPasswordField = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Password
+                            keyboardType = KeyboardType.Password,
                         ),
                         isError = screenState.isPassCodeError,
-                        feedbackText = screenState.passCodeFeedBack
+                        feedbackText = screenState.passCodeFeedBack,
                     )
 
                     BanklyClickableText(
@@ -119,8 +118,8 @@ internal fun LoginScreen(
                             append(stringResource(R.string.msg_forgot_passcode))
                             withStyle(
                                 style = MaterialTheme.typography.bodyLarge.copy(
-                                    color = MaterialTheme.colorScheme.primary
-                                ).toSpanStyle()
+                                    color = MaterialTheme.colorScheme.primary,
+                                ).toSpanStyle(),
                             ) { append(stringResource(R.string.action_recover_passcode)) }
                         },
                         onClick = onRecoverPassCodeClick,
@@ -140,11 +139,11 @@ internal fun LoginScreen(
                         onUiEvent(
                             LoginScreenEvent.OnLoginClick(
                                 screenState.phoneNumberTFV.text,
-                                screenState.passCodeTFV.text
-                            )
+                                screenState.passCodeTFV.text,
+                            ),
                         )
                     },
-                    isEnabled = screenState.isLoginButtonEnabled
+                    isEnabled = screenState.isLoginButtonEnabled,
                 )
             }
         }
@@ -156,7 +155,7 @@ internal fun LoginScreen(
             BanklyActionDialog(
                 title = stringResource(R.string.title_login_error),
                 subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay)
+                positiveActionText = stringResource(R.string.action_okay),
             )
         }
 
@@ -176,7 +175,7 @@ private fun LoginScreenPreview() {
             onBackPress = {},
             onRecoverPassCodeClick = {},
             screenState = LoginScreenState(),
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

@@ -11,9 +11,9 @@ import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.navigation.TopLevelDestination
 import com.bankly.banklykozenpos.navigation.TopLevelDestination.*
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToCardTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
-import com.bankly.banklykozenpos.navigation.navigateToCardTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToSendMoneyNavGraph
 import com.bankly.core.data.util.NetworkMonitor
@@ -31,12 +31,12 @@ fun rememberBanklyAppState(
     return remember(
         navHostController,
         coroutineScope,
-        networkMonitor
+        networkMonitor,
     ) {
         BanklyAppState(
             navHostController,
             coroutineScope,
-            networkMonitor
+            networkMonitor,
         )
     }
 }

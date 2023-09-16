@@ -1,24 +1,24 @@
 package com.bankly.feature.authentication.ui.setnewpasscode
 
 import androidx.lifecycle.viewModelScope
+import com.bankly.core.common.util.Validator.doPassCodesMatch
+import com.bankly.core.common.viewmodel.BaseViewModel
+import com.bankly.core.data.ResetPassCodeData
+import com.bankly.core.domain.usecase.ResetPassCodeUseCase
+import com.bankly.core.entity.Message
 import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
-import com.bankly.core.common.util.Validator.doPassCodesMatch
-import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.domain.usecase.ResetPassCodeUseCase
-import com.bankly.core.entity.Message
-import com.bankly.core.data.ResetPassCodeData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @HiltViewModel
 class SetNewPassCodeViewModel @Inject constructor(
-    private val resetPassCodeUseCase: ResetPassCodeUseCase
+    private val resetPassCodeUseCase: ResetPassCodeUseCase,
 ) : BaseViewModel<SetNewPassCodeScreenEvent, SetNewPassCodeScreenState, SetNewPassCodeScreenOneShotState>(SetNewPassCodeScreenState()) {
 
     override suspend fun handleUiEvents(event: SetNewPassCodeScreenEvent) {
@@ -28,7 +28,7 @@ class SetNewPassCodeViewModel @Inject constructor(
                     phoneNumber = event.phoneNumber,
                     passCode = event.passCode,
                     confirmPassCode = event.confirmPassCode,
-                    otp = event.otp
+                    otp = event.otp,
                 )
             }
 
@@ -41,14 +41,18 @@ class SetNewPassCodeViewModel @Inject constructor(
                     val isEmpty = event.confirmPassCodeTFV.text.trim().isEmpty()
                     val isAMatch = doPassCodesMatch(
                         event.confirmPassCodeTFV.text.trim(),
-                        passCodeTFV.text.trim()
+                        passCodeTFV.text.trim(),
                     )
                     copy(
                         confirmPassCodeTFV = event.confirmPassCodeTFV,
                         isConfirmPassCodeError = isEmpty || isAMatch.not(),
-                        confirmPassCodeFeedBack = if (isEmpty) "Please enter passcode"
-                        else if (isAMatch.not()) "Passcode does not match"
-                        else ""
+                        confirmPassCodeFeedBack = if (isEmpty) {
+                            "Please enter passcode"
+                        } else if (isAMatch.not()) {
+                            "Passcode does not match"
+                        } else {
+                            ""
+                        },
                     )
                 }
             }
@@ -59,7 +63,7 @@ class SetNewPassCodeViewModel @Inject constructor(
                     copy(
                         passCodeTFV = event.passCodeTFV,
                         isPassCodeError = isEmpty,
-                        passCodeFeedBack = if (isEmpty) "Please enter passcode" else ""
+                        passCodeFeedBack = if (isEmpty) "Please enter passcode" else "",
                     )
                 }
             }
@@ -75,15 +79,18 @@ class SetNewPassCodeViewModel @Inject constructor(
     }
 
     private suspend fun resetPassCode(
-        passCode: String, confirmPassCode: String, phoneNumber: String, otp: String
+        passCode: String,
+        confirmPassCode: String,
+        phoneNumber: String,
+        otp: String,
     ) {
         resetPassCodeUseCase(
             body = ResetPassCodeData(
                 username = phoneNumber,
                 password = passCode,
                 confirmPassword = confirmPassCode,
-                code = otp
-            )
+                code = otp,
+            ),
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -100,8 +107,8 @@ class SetNewPassCodeViewModel @Inject constructor(
                 setUiState {
                     copy(
                         setNewPassCodeState = State.Error(
-                            it.localizedMessage ?: "An unexpected event occurred!"
-                        )
+                            it.localizedMessage ?: "An unexpected event occurred!",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)

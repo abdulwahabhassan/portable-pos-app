@@ -42,26 +42,29 @@ fun WalletCard(
     bankName: String,
     currentBalance: Double,
     shouldShowVisibilityIcon: Boolean,
-    isWalletBalanceLoading: Boolean
+    isWalletBalanceLoading: Boolean,
 ) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
             .height(130.dp)
             .width(380.dp).run {
-                if (isWalletBalanceLoading) background(
-                    BanklyDesignUtil.shimmerBrush(),
-                    shape = MaterialTheme.shapes.medium
-                )
-                else background(
-                    MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium
-                )
+                if (isWalletBalanceLoading) {
+                    background(
+                        BanklyDesignUtil.shimmerBrush(),
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                } else {
+                    background(
+                        MaterialTheme.colorScheme.primary,
+                        shape = MaterialTheme.shapes.medium,
+                    )
+                }
             },
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Row(
                 Modifier
@@ -69,29 +72,33 @@ fun WalletCard(
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                     .weight(1.8f),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = "Account Balance",
                             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                     }
 
                     Text(
                         modifier = Modifier.padding(vertical = 4.dp),
-                        text = if (shouldShowWalletBalance) formatAmount(
-                            value = currentBalance,
-                            includeNairaSymbol = true,
-                            addSpace = true
-                        ) else "**********",
+                        text = if (shouldShowWalletBalance) {
+                            formatAmount(
+                                value = currentBalance,
+                                includeNairaSymbol = true,
+                                addSpace = true,
+                            )
+                        } else {
+                            "**********"
+                        },
                         color = MaterialTheme.colorScheme.onPrimary,
                         style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        )
+                            fontWeight = FontWeight.SemiBold,
+                        ),
                     )
                 }
                 if (shouldShowVisibilityIcon) {
@@ -101,7 +108,7 @@ fun WalletCard(
                         onClick = {
                             onToggleWalletBalanceVisibility(!shouldShowWalletBalance)
                         },
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }
@@ -110,29 +117,29 @@ fun WalletCard(
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp),
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                     .weight(1f),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (!isWalletBalanceLoading) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = BanklyIcons.Bank),
                         contentDescription = stringResource(R.string.desc_visibility_icon),
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = "$bankName: $accountNumber",
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
+                            color = MaterialTheme.colorScheme.onPrimary,
+                        ),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     BanklyClickableIcon(
@@ -140,7 +147,7 @@ fun WalletCard(
                         icon = BanklyIcons.Copy,
                         onClick = {
                             context.copyToClipboard(accountNumber)
-                        }
+                        },
                     )
                 } else {
                     Spacer(modifier = Modifier.height(24.dp))
@@ -161,7 +168,7 @@ private fun WalletCardPreview() {
             "Ampersand (BANKLY)",
             0.00,
             true,
-            false
+            false,
         )
     }
 }

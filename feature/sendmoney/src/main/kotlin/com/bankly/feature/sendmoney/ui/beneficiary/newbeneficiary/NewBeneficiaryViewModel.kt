@@ -11,7 +11,9 @@ import javax.inject.Inject
 internal class NewBeneficiaryViewModel @Inject constructor(
     nameEnquiryUseCase: NameEnquiryUseCase,
     getBanksUseCase: GetBanksUseCase,
-    userPreferencesDataStore: UserPreferencesDataStore
+    userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseBeneficiaryViewModel(
-    nameEnquiryUseCase, getBanksUseCase, userPreferencesDataStore
+    nameEnquiryUseCase,
+    getBanksUseCase,
+    userPreferencesDataStore,
 )

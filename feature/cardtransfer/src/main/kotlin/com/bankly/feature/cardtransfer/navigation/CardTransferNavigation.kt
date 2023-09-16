@@ -8,7 +8,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
@@ -25,7 +24,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
             val cardTransferState by rememberCardTransferState()
             CardTransferNavHost(
                 navHostController = cardTransferState.navHostController,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }
@@ -34,7 +33,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
 @Composable
 private fun CardTransferNavHost(
     navHostController: NavHostController,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -45,7 +44,7 @@ private fun CardTransferNavHost(
             onBackPress = onBackPress,
             onContinueClick = {
                 navHostController.navigateToSelectAccountTypeRoute()
-            }
+            },
         )
         selectAccountTypeRoute(
             onAccountSelected = { accountType: AccountType ->
@@ -60,20 +59,20 @@ private fun CardTransferNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress
+            onCloseClick = onBackPress,
         )
 
         enterCardPinRoute(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
                     TransactionData.mockTransactionData()
-                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL)
+                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL),
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress
+            onCloseClick = onBackPress,
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
@@ -81,27 +80,22 @@ private fun CardTransferNavHost(
             },
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
-            }
+            },
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },
             onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress
+            onGoToHomeClick = onBackPress,
         )
     }
 }
-
-
-
-
-

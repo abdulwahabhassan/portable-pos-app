@@ -11,8 +11,12 @@ object Formatter {
         }
 
         val df = DecimalFormat("##,###,##0.00")
-        return if (includeNairaSymbol) "₦${if (addSpace) " " else ""}${df.format(valueToBeFormatted)}" else df.format(
-            valueToBeFormatted
-        )
+        return if (includeNairaSymbol) {
+            "₦${if (addSpace) " " else ""}${df.format(valueToBeFormatted)}"
+        } else {
+            df.format(
+                valueToBeFormatted,
+            )
+        }
     }
 }

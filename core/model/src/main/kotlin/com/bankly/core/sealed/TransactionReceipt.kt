@@ -3,7 +3,6 @@ package com.bankly.core.sealed
 import com.bankly.core.util.Formatter
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 sealed class TransactionReceipt(
     val acctName: String,
@@ -28,14 +27,14 @@ sealed class TransactionReceipt(
         val sourceWalletName: String,
         val dateCreated: String,
         val statusName: String,
-        val sessionId: String
+        val sessionId: String,
     ) : TransactionReceipt(
         acctName = accountName,
         acctNumber = accountNumber,
         bank = bankName,
         amt = amount,
         ref = reference,
-        msg = message
+        msg = message,
     )
 
     @Serializable
@@ -51,14 +50,14 @@ sealed class TransactionReceipt(
         val rrn: String,
         val stan: String,
         val terminalId: String,
-        val responseCode: String
+        val responseCode: String,
     ) : TransactionReceipt(
         acctName = "",
         acctNumber = "",
         bank = "",
         amt = amount,
         ref = reference,
-        msg = message
+        msg = message,
     )
 
     fun toDetailsMap(): Map<String, String> {
@@ -115,4 +114,3 @@ sealed class TransactionReceipt(
         }
     }
 }
-

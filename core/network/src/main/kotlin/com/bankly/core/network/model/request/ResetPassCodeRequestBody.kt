@@ -7,5 +7,5 @@ data class ResetPassCodeRequestBody(
     val username: String,
     val password: String,
     val confirmPassword: String,
-    val code: String
+    val code: String,
 )

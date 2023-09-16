@@ -1,6 +1,6 @@
 import com.bankly.buildlogic.BuildType
-import java.util.Properties
 import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.bankly.convention.application")
@@ -35,7 +35,7 @@ android {
             applicationIdSuffix = BuildType.RELEASE.applicationIdSuffix
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs.getByName("app-signing-config")
         }
@@ -47,7 +47,7 @@ kapt {
 }
 
 dependencies {
-    implementation (libs.google.android.material)
+    implementation(libs.google.android.material)
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))

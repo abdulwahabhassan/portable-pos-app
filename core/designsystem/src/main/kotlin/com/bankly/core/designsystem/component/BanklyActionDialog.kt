@@ -48,7 +48,7 @@ fun BanklyActionDialog(
     positiveActionText: String? = null,
     positiveAction: () -> Unit = {},
     negativeActionText: String? = null,
-    negativeAction: () -> Unit = {}
+    negativeAction: () -> Unit = {},
 ) {
     var showDialog by remember { mutableStateOf(true) }
     if (showDialog) {
@@ -56,12 +56,12 @@ fun BanklyActionDialog(
             onDismissRequest = {
                 showDialog = false
             },
-            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(
@@ -69,21 +69,21 @@ fun BanklyActionDialog(
                             .fillMaxWidth()
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
                     ) {
                         icon?.let {
                             Icon(
                                 modifier = Modifier.size(40.dp),
                                 painter = painterResource(id = icon),
                                 contentDescription = "Error alert icon",
-                                tint = Color.Unspecified
+                                tint = Color.Unspecified,
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = title,
                             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         subtitle?.let {
@@ -92,13 +92,13 @@ fun BanklyActionDialog(
                                 style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Center,
                                 overflow = TextOverflow.Ellipsis,
-                                maxLines = 10
+                                maxLines = 10,
                             )
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             if (positiveActionText != null) {
                                 BanklyOutlinedButton(
@@ -110,7 +110,7 @@ fun BanklyActionDialog(
                                     onClick = {
                                         showDialog = false
                                         positiveAction()
-                                    }
+                                    },
                                 )
                             }
                             if (negativeActionText != null) {
@@ -129,7 +129,6 @@ fun BanklyActionDialog(
                                 )
                             }
                         }
-
                     }
                 }
             }
@@ -147,11 +146,9 @@ fun ActionDialogPreview1() {
             subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_cancel),
             positiveActionText = stringResource(R.string.action_no),
             positiveAction = {
-
             },
-            negativeActionText = stringResource(R.string.action_yes_cancel)
+            negativeActionText = stringResource(R.string.action_yes_cancel),
         ) {
-
         }
     }
 }
@@ -165,8 +162,7 @@ fun ActionDialogPreview2() {
             title = stringResource(R.string.msg_check_your_internet_connection),
             positiveActionText = "Okay",
             positiveAction = {
-
-            }
+            },
         )
     }
 }

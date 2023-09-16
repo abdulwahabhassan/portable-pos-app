@@ -24,7 +24,6 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
 
-
 @Composable
 fun CreateNewPassCodeScreen() {
     var passcode by remember() { mutableStateOf(TextFieldValue()) }
@@ -32,17 +31,16 @@ fun CreateNewPassCodeScreen() {
     val isPassCodeError by remember { mutableStateOf(false) }
     val passCodeFeedBack by remember { mutableStateOf("") }
 
-
     LazyColumn(
         modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         item {
             BanklyTitleBar(
                 title = stringResource(R.string.msg_new_passcode),
                 subTitle = buildAnnotatedString { append(stringResource(R.string.msg_create_new_passcode)) },
                 currentPage = 1,
-                totalPage = 3
+                totalPage = 3,
             )
             BanklyInputField(
                 textFieldValue = passcode,
@@ -53,7 +51,7 @@ fun CreateNewPassCodeScreen() {
                 labelText = "Passcode",
                 isPasswordField = true,
                 isError = isPassCodeError,
-                feedbackText = passCodeFeedBack
+                feedbackText = passCodeFeedBack,
             )
         }
 
@@ -64,12 +62,11 @@ fun CreateNewPassCodeScreen() {
                     .fillMaxWidth(),
                 text = stringResource(R.string.action_continue),
                 onClick = { },
-                isEnabled = isEnabled
+                isEnabled = isEnabled,
             )
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)

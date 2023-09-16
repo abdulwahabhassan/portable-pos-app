@@ -1,21 +1,18 @@
 package com.bankly.feature.dashboard.navigation
 
-import android.app.Activity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.QuickAction
-import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
+import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
 fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
@@ -47,14 +44,14 @@ fun NavGraphBuilder.dashBoardNavGraph(
                                 onQuickActionCardClick(quickAction)
                             }
                         },
-                        onContinueToPayWithCardClick = onContinueToPayWithCardClick
+                        onContinueToPayWithCardClick = onContinueToPayWithCardClick,
                     )
                 },
                 currentTab = dashBoardState.currentTab,
                 onTabChange = { tab: DashboardTab ->
                     dashBoardState = dashBoardState.copy(currentTab = tab)
                 },
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }
@@ -66,7 +63,7 @@ fun DashBoardBottomNavHost(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     onQuickActionCardClick: (QuickAction) -> Unit,
-    onContinueToPayWithCardClick: (Double) -> Unit
+    onContinueToPayWithCardClick: (Double) -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -76,7 +73,7 @@ fun DashBoardBottomNavHost(
         homeRoute(
             currentHomeTab = currentHomeTab,
             onQuickActionCardClick = onQuickActionCardClick,
-            onContinueToPayWithCardClick = onContinueToPayWithCardClick
+            onContinueToPayWithCardClick = onContinueToPayWithCardClick,
         )
         transactionsRoute()
         supportRoute()

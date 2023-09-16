@@ -65,7 +65,6 @@ internal fun RecipientRoute(
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,7 +73,7 @@ private fun RecipientScreen(
     screenState: RecipientScreenState,
     onBackPress: () -> Unit,
     onUiEvent: (RecipientScreenEvent) -> Unit,
-    ) {
+) {
     val bottomSheetScaffoldState =
         rememberBottomSheetScaffoldState(SheetState(skipPartiallyExpanded = false, initialValue = SheetValue.Hidden))
     val coroutineScope = rememberCoroutineScope()
@@ -111,14 +110,13 @@ private fun RecipientScreen(
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-
                     BanklyInputField(
                         textFieldValue = screenState.bankNameTFV,
                         onTextFieldValueChange = { },
@@ -133,7 +131,7 @@ private fun RecipientScreen(
                         labelText = stringResource(R.string.msg_select_bank),
                         isError = screenState.isBankNameError,
                         feedbackText = screenState.bankNameFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
 
                     BanklyInputField(
@@ -142,37 +140,37 @@ private fun RecipientScreen(
                             onUiEvent(
                                 RecipientScreenEvent.OnAccountNumber(
                                     textFieldValue,
-                                    screenState.selectedBank?.id
-                                )
+                                    screenState.selectedBank?.id,
+                                ),
                             )
                         },
                         placeholderText = stringResource(R.string.msg_enter_account_number),
                         labelText = stringResource(R.string.msg_account_number_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number
+                            keyboardType = KeyboardType.Number,
                         ),
                         isError = screenState.isAccountNumberError,
                         trailingIcon = screenState.validationIcon,
                         feedbackText = screenState.accountNumberFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
 
                     BanklyInputField(
                         textFieldValue = screenState.amountTFV,
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
-                                RecipientScreenEvent.OnAmount(textFieldValue)
+                                RecipientScreenEvent.OnAmount(textFieldValue),
                             )
                         },
                         placeholderText = stringResource(R.string.msg_enter_amount),
                         labelText = stringResource(R.string.msg_amount_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Decimal
+                            keyboardType = KeyboardType.Decimal,
                         ),
                         isError = screenState.isAmountError,
                         feedbackText = screenState.amountFeedBack,
                         isEnabled = screenState.isUserInputEnabled,
-                        visualTransformation = AmountInputVisualTransformation(AmountFormatter())
+                        visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
                     )
 
                     BanklyInputField(
@@ -180,18 +178,18 @@ private fun RecipientScreen(
                         onTextFieldValueChange = { textFieldValue ->
                             onUiEvent(
                                 RecipientScreenEvent.OnSenderPhoneNumber(
-                                    textFieldValue
-                                )
+                                    textFieldValue,
+                                ),
                             )
                         },
                         placeholderText = stringResource(R.string.msg_enter_sender_phone_number),
                         labelText = stringResource(R.string.msg_sender_phone_number_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Phone
+                            keyboardType = KeyboardType.Phone,
                         ),
                         isError = screenState.isSenderPhoneNumberError,
                         feedbackText = screenState.senderPhoneNumberFeedBack,
-                        isEnabled = screenState.isUserInputEnabled
+                        isEnabled = screenState.isUserInputEnabled,
                     )
                 }
             }
@@ -210,18 +208,17 @@ private fun RecipientScreen(
                                 amount = screenState.amountTFV.text,
                                 senderPhoneNumber = screenState.senderPhoneNumberTFV.text,
                                 accountName = screenState.accountNumberTFV.text,
-                                selectedBankId = screenState.selectedBank?.id
+                                selectedBankId = screenState.selectedBank?.id,
 
-                            )
+                            ),
                         )
                     },
-                    isEnabled = screenState.isContinueButtonEnabled
+                    isEnabled = screenState.isContinueButtonEnabled,
                 )
             }
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -229,7 +226,7 @@ private fun EnterRecipientDetailsScreenPreview() {
     BanklyTheme {
         RecipientScreen(
             screenState = RecipientScreenState(),
-            onBackPress = {}
+            onBackPress = {},
         ) {}
     }
 }

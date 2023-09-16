@@ -1,8 +1,8 @@
 package com.bankly.core.data.util
 
 import android.util.Log
-import com.bankly.core.sealed.Result
 import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -24,7 +24,7 @@ suspend fun <T> handleRequest(
             val response = handleHttpException(e, json)
             Result.Error(
                 message = response?.validationMessages?.joinToString(", \n")
-                    ?: response?.message ?: "Something went wrong!"
+                    ?: response?.message ?: "Something went wrong!",
             )
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "Something went wrong!")
@@ -48,7 +48,7 @@ suspend fun handleTokenRequest(
             val response = handleTokenHttpException(e, json)
             Result.Error(
                 message = response?.errorDescription ?: response?.error ?: response?.message
-                ?: "Something went wrong, we're fixing it"
+                    ?: "Something went wrong, we're fixing it",
             )
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "Something went wrong!")

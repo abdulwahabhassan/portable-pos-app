@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BanklyInputField(
@@ -55,9 +52,9 @@ fun BanklyInputField(
     trailingIcon: Int? = null,
     onTrailingIconClick: () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.tertiary
+        color = MaterialTheme.colorScheme.tertiary,
     ),
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -104,19 +101,19 @@ fun BanklyInputField(
         focusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
         unfocusedPlaceholderColor = MaterialTheme.colorScheme.onPrimaryContainer,
         disabledPlaceholderColor = MaterialTheme.colorScheme.tertiary,
-        errorPlaceholderColor = MaterialTheme.colorScheme.error
+        errorPlaceholderColor = MaterialTheme.colorScheme.error,
     )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 8.dp),
     ) {
         if (labelText.isNotEmpty()) {
             Text(
                 text = labelText,
                 style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier.padding(horizontal = 24.dp),
             )
         }
         if (isPasswordField) {
@@ -126,12 +123,18 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused)
-                            if (!isEnabled) MaterialTheme.colorScheme.tertiary
-                            else if (isError) MaterialTheme.colorScheme.error
-                            else MaterialTheme.colorScheme.primary
-                        else Color.Transparent,
-                        shape = MaterialTheme.shapes.medium
+                        color = if (isFocused) {
+                            if (!isEnabled) {
+                                MaterialTheme.colorScheme.tertiary
+                            } else if (isError) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            }
+                        } else {
+                            Color.Transparent
+                        },
+                        shape = MaterialTheme.shapes.medium,
                     )
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
@@ -146,20 +149,26 @@ fun BanklyInputField(
                     Text(
                         text = placeholderText,
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
                     )
                 },
                 keyboardOptions = keyboardOptions,
                 textStyle = MaterialTheme.typography.bodyMedium,
                 shape = MaterialTheme.shapes.medium,
-                visualTransformation = if (isVisible) VisualTransformation.None
-                else PasswordVisualTransformation('*'),
+                visualTransformation = if (isVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation('*')
+                },
                 trailingIcon = {
                     Icon(
                         painter = painterResource(
-                            id = if (isVisible) BanklyIcons.VisibilityOff
-                            else BanklyIcons.VisibilityOn
+                            id = if (isVisible) {
+                                BanklyIcons.VisibilityOff
+                            } else {
+                                BanklyIcons.VisibilityOn
+                            },
                         ),
                         contentDescription = "Visibility Icon",
                         modifier = Modifier
@@ -174,15 +183,21 @@ fun BanklyInputField(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(
                                     bounded = true,
-                                    color = if (isError) MaterialTheme.colorScheme.error
-                                    else MaterialTheme.colorScheme.primary
-                                )
+                                    color = if (isError) {
+                                        MaterialTheme.colorScheme.error
+                                    } else {
+                                        MaterialTheme.colorScheme.primary
+                                    },
+                                ),
                             ),
-                        tint = if (isError) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.primary
+                        tint = if (isError) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        },
                     )
                 },
-                colors = textFieldColors
+                colors = textFieldColors,
             )
         } else {
             TextField(
@@ -191,12 +206,18 @@ fun BanklyInputField(
                     .padding(horizontal = 24.dp, vertical = 8.dp)
                     .border(
                         width = 1.dp,
-                        color = if (isFocused)
-                            if (!isEnabled) MaterialTheme.colorScheme.tertiary
-                            else if (isError) MaterialTheme.colorScheme.error
-                            else MaterialTheme.colorScheme.primary
-                        else Color.Transparent,
-                        shape = MaterialTheme.shapes.medium
+                        color = if (isFocused) {
+                            if (!isEnabled) {
+                                MaterialTheme.colorScheme.tertiary
+                            } else if (isError) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            }
+                        } else {
+                            Color.Transparent
+                        },
+                        shape = MaterialTheme.shapes.medium,
                     )
                     .onFocusChanged { focusState ->
                         isFocused = focusState.isFocused
@@ -205,7 +226,7 @@ fun BanklyInputField(
                 placeholder = {
                     Text(
                         text = placeholderText,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 },
                 visualTransformation = visualTransformation,
@@ -233,30 +254,36 @@ fun BanklyInputField(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(
                                         bounded = true,
-                                        color = if (isError) MaterialTheme.colorScheme.error
-                                        else MaterialTheme.colorScheme.primary
-                                    )
+                                        color = if (isError) {
+                                            MaterialTheme.colorScheme.error
+                                        } else {
+                                            MaterialTheme.colorScheme.primary
+                                        },
+                                    ),
                                 ),
-                            tint =  Color.Unspecified
+                            tint = Color.Unspecified,
                         )
                     }
-                }
+                },
             )
         }
         Text(
             text = feedbackText,
             style = MaterialTheme.typography.bodySmall.copy(
-                color = if (!isEnabled) MaterialTheme.colorScheme.tertiary
-                else if (isError) MaterialTheme.colorScheme.error
-                else MaterialTheme.colorScheme.primary
+                color = if (!isEnabled) {
+                    MaterialTheme.colorScheme.tertiary
+                } else if (isError) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.primary
+                },
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp),
         )
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -282,7 +309,7 @@ private fun BanklyInputFieldPreview2() {
             placeholderText = "Input password",
             isPasswordField = true,
             isError = true,
-            feedbackText = "Invalid input"
+            feedbackText = "Invalid input",
         )
     }
 }

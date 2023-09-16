@@ -1,31 +1,31 @@
 package com.bankly.feature.authentication.ui.validateotp
 
 import androidx.lifecycle.viewModelScope
+import com.bankly.core.common.viewmodel.BaseViewModel
+import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
+import com.bankly.core.domain.usecase.ValidateOtpUseCase
+import com.bankly.core.entity.Status
 import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
-import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
-import com.bankly.core.domain.usecase.ValidateOtpUseCase
-import com.bankly.core.data.ForgotPassCodeData
-import com.bankly.core.entity.Status
-import com.bankly.core.data.ValidateOtpData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class OtpValidationViewModel @Inject constructor(
     private val validateOtpUseCase: ValidateOtpUseCase,
-    private val forgotPassCodeUseCase: ForgotPassCodeUseCase
+    private val forgotPassCodeUseCase: ForgotPassCodeUseCase,
 ) : BaseViewModel<OtpValidationScreenEvent, OtpValidationScreenState, OtpValidationScreenOneShotState>(
-    OtpValidationScreenState()
+    OtpValidationScreenState(),
 ) {
 
     override suspend fun handleUiEvents(event: OtpValidationScreenEvent) {
@@ -80,8 +80,8 @@ class OtpValidationViewModel @Inject constructor(
                 setUiState {
                     copy(
                         resendOtpState = State.Error(
-                            it.localizedMessage ?: "An unexpected event occurred!"
-                        )
+                            it.localizedMessage ?: "An unexpected event occurred!",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)
@@ -105,12 +105,10 @@ class OtpValidationViewModel @Inject constructor(
                 setUiState {
                     copy(
                         resendOtpState = State.Error(
-                            it.localizedMessage ?: "An unexpected event occurred!"
-                        )
+                            it.localizedMessage ?: "An unexpected event occurred!",
+                        ),
                     )
                 }
             }.launchIn(viewModelScope)
     }
 }
-
-

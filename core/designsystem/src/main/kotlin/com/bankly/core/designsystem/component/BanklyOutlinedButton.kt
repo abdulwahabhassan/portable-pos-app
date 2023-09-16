@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun BanklyOutlinedButton(
     modifier: Modifier = Modifier,
@@ -28,7 +27,7 @@ fun BanklyOutlinedButton(
     isEnabled: Boolean = true,
     backgroundColor: Color = Color.Transparent,
     textColor: Color = MaterialTheme.colorScheme.primary,
-    outlineColor: Color = MaterialTheme.colorScheme.primary
+    outlineColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Button(
         onClick = onClick,
@@ -37,7 +36,7 @@ fun BanklyOutlinedButton(
             .border(
                 width = 1.dp,
                 color = if (isEnabled) outlineColor else MaterialTheme.colorScheme.tertiary,
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
             ),
         enabled = isEnabled,
         shape = MaterialTheme.shapes.small,
@@ -45,14 +44,14 @@ fun BanklyOutlinedButton(
             containerColor = backgroundColor,
             contentColor = textColor,
             disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        )
+            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+        ),
 
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -65,7 +64,7 @@ private fun BanklyOutlinedButtonPreview1() {
             modifier = Modifier.fillMaxWidth().padding(32.dp),
             text = "No",
             onClick = {},
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }
@@ -81,7 +80,7 @@ private fun BanklyOutlinedButtonPreview2() {
             isEnabled = true,
             backgroundColor = MaterialTheme.colorScheme.errorContainer,
             textColor = MaterialTheme.colorScheme.error,
-            outlineColor = Color.Unspecified
+            outlineColor = Color.Unspecified,
         )
     }
 }
@@ -95,13 +94,13 @@ private fun BanklyOutlinedButtonPreview3() {
                 modifier = Modifier.weight(1f).padding(16.dp),
                 text = "Disabled",
                 onClick = {},
-                isEnabled = false
+                isEnabled = false,
             )
             BanklyOutlinedButton(
                 modifier = Modifier.weight(1f).padding(16.dp),
                 text = "No",
                 onClick = {},
-                isEnabled = true
+                isEnabled = true,
             )
         }
     }
@@ -118,8 +117,7 @@ private fun BanklyOutlinedButtonPreview4() {
             isEnabled = false,
             backgroundColor = MaterialTheme.colorScheme.errorContainer,
             textColor = MaterialTheme.colorScheme.error,
-            outlineColor = Color.Unspecified
+            outlineColor = Color.Unspecified,
         )
     }
 }
-

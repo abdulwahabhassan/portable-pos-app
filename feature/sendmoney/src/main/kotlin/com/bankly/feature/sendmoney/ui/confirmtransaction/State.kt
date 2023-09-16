@@ -1,9 +1,9 @@
 package com.bankly.feature.sendmoney.ui.confirmtransaction
 
-import com.bankly.core.sealed.State
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.entity.Status
-import com.bankly.core.common.model.TransactionData
+import com.bankly.core.sealed.State
 
 internal data class ConfirmTransactionScreenState(
     val pin: List<String> = List(4) { "" },
@@ -19,5 +19,5 @@ internal data class ConfirmTransactionScreenState(
 }
 
 internal sealed interface ConfirmTransactionScreenOneShotState : OneShotState {
-    data class GoToTransactionProcessingScreen(val transactionData: TransactionData): ConfirmTransactionScreenOneShotState
+    data class GoToTransactionProcessingScreen(val transactionData: TransactionData) : ConfirmTransactionScreenOneShotState
 }

@@ -9,37 +9,35 @@ import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraphRoute
 
 internal fun NavHostController.navigateToAuthenticationNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     this.navigate(authenticationNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.navigateToDashBoardNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     this.navigate(dashBoardNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.navigateToPayWithCardNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     this.navigate(payWithCardNavGraphRoute, navOptions)
 }
 internal fun NavHostController.navigateToPayWithTransferNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
-
 }
 
 internal fun NavHostController.navigateToCardTransferNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     this.navigate(cardTransferNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.navigateToSendMoneyNavGraph(
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     this.navigate(sendMoneyNavGraphRoute, navOptions)
 }
-

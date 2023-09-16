@@ -20,26 +20,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.sealed.State
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.sealed.State
 import com.bankly.feature.authentication.R
 
 @Composable
 internal fun RecoverPassCodeRoute(
     viewModel: RecoverPassCodeViewModel = hiltViewModel(),
     onRecoverPassCodeSuccess: (String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     RecoverPassCodeScreen(
         screenState = screenState,
         onRecoverPassCodeSuccess = onRecoverPassCodeSuccess,
         onBackPress = onBackPress,
-        onUiEvent = { uiEvent: RecoverPassCodeScreenEvent -> viewModel.sendEvent(uiEvent) }
+        onUiEvent = { uiEvent: RecoverPassCodeScreenEvent -> viewModel.sendEvent(uiEvent) },
     )
 }
 
@@ -49,7 +49,7 @@ internal fun RecoverPassCodeScreen(
     screenState: RecoverPassCodeScreenState,
     onRecoverPassCodeSuccess: (String) -> Unit,
     onBackPress: () -> Unit,
-    onUiEvent: (RecoverPassCodeScreenEvent) -> Unit
+    onUiEvent: (RecoverPassCodeScreenEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -59,21 +59,21 @@ internal fun RecoverPassCodeScreen(
                 subTitle = buildAnnotatedString {
                     append(stringResource(R.string.msg_enter_phone_number_to_reset))
                 },
-                isLoading = screenState.recoverPassCodeState is State.Loading
+                isLoading = screenState.recoverPassCodeState is State.Loading,
             )
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     BanklyInputField(
                         textFieldValue = screenState.phoneNumberTFV,
@@ -84,10 +84,10 @@ internal fun RecoverPassCodeScreen(
                         placeholderText = stringResource(R.string.msg_phone_number_sample),
                         labelText = "Phone Number",
                         keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number
+                            keyboardType = KeyboardType.Number,
                         ),
                         isError = screenState.isPhoneNumberError,
-                        feedbackText = screenState.phoneNumberFeedBack
+                        feedbackText = screenState.phoneNumberFeedBack,
                     )
                 }
             }
@@ -101,7 +101,7 @@ internal fun RecoverPassCodeScreen(
                     onClick = {
                         onUiEvent(RecoverPassCodeScreenEvent.OnSendCodeClick(screenState.phoneNumberTFV.text))
                     },
-                    isEnabled = screenState.isSendCodeButtonEnabled
+                    isEnabled = screenState.isSendCodeButtonEnabled,
                 )
             }
         }
@@ -113,7 +113,7 @@ internal fun RecoverPassCodeScreen(
             BanklyActionDialog(
                 title = stringResource(R.string.title_recover_passcode_error),
                 subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay)
+                positiveActionText = stringResource(R.string.action_okay),
             )
         }
 
@@ -132,7 +132,7 @@ private fun RecoverPassCodeScreenPreview() {
             screenState = RecoverPassCodeScreenState(),
             onRecoverPassCodeSuccess = {},
             onBackPress = {},
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

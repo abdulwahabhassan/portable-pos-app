@@ -39,7 +39,7 @@ fun BankSearchView(
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             CircularProgressIndicator(
                 modifier = Modifier
@@ -47,7 +47,7 @@ fun BankSearchView(
                     .size(50.dp),
                 strokeWidth = 8.dp,
                 trackColor = MaterialTheme.colorScheme.primaryContainer,
-                strokeCap = StrokeCap.Round
+                strokeCap = StrokeCap.Round,
             )
         }
     } else {
@@ -64,7 +64,7 @@ fun BankSearchView(
                     isCommercialBankListExpanded = true
                     isMFBBankListExpanded = true
                 },
-                searchPlaceholder = "Search bank name"
+                searchPlaceholder = "Search bank name",
             )
             BanklyExpandableList(
                 title = stringResource(R.string.title_commercial_banks),
@@ -74,7 +74,7 @@ fun BankSearchView(
                     isCommercialBankListExpanded = !isCommercialBankListExpanded
                 },
                 onItemSelected = onSelectBank,
-                transformItemToString = { bank: Bank -> bank.name }
+                transformItemToString = { bank: Bank -> bank.name },
             )
             BanklyExpandableList(
                 title = stringResource(R.string.title_other_banks),
@@ -84,7 +84,7 @@ fun BankSearchView(
                     isMFBBankListExpanded = !isMFBBankListExpanded
                 },
                 onItemSelected = onSelectBank,
-                transformItemToString = { bank: Bank -> bank.name }
+                transformItemToString = { bank: Bank -> bank.name },
             )
         }
     }
@@ -99,7 +99,7 @@ internal fun BankSearchViewPreview() {
         BankSearchView(
             isBankListLoading = false,
             bankList = emptyList(),
-            onSelectBank = {}
+            onSelectBank = {},
         )
     }
 }

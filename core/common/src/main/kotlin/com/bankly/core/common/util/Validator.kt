@@ -18,6 +18,5 @@ object Validator {
     }
 
     fun isNarrationValid() {
-
     }
 }

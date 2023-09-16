@@ -1,8 +1,6 @@
 package com.bankly.feature.cardtransfer.navigation
 
 import android.net.Uri
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.bankly.core.common.model.TransactionData

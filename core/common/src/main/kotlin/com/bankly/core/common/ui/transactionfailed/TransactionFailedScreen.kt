@@ -26,26 +26,25 @@ import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
-
 @Composable
 fun TransactionFailedRoute(
     message: String = "",
-    onGoToHome: () -> Unit
+    onGoToHome: () -> Unit,
 ) {
     TransactionFailedScreen(
         message = message,
-        onGoToHome = onGoToHome
+        onGoToHome = onGoToHome,
     )
 }
 
 @Composable
-fun  TransactionFailedScreen(
+fun TransactionFailedScreen(
     message: String,
-    onGoToHome: () -> Unit
+    onGoToHome: () -> Unit,
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
@@ -53,30 +52,30 @@ fun  TransactionFailedScreen(
                 .fillMaxSize()
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Image(
                 modifier = Modifier.size(100.dp),
                 painter = painterResource(id = BanklyIcons.Failed),
-                contentDescription = "Successful Icon"
+                contentDescription = "Successful Icon",
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = stringResource(R.string.msg_transaction_failed),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Medium)
+                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Medium),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = message,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
             )
         }
         Box(
             modifier = Modifier
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
         ) {
             BanklyOutlinedButton(
                 modifier = Modifier
@@ -85,7 +84,7 @@ fun  TransactionFailedScreen(
                 text = stringResource(R.string.action_go_to_home),
                 onClick = onGoToHome,
                 isEnabled = true,
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
@@ -97,7 +96,7 @@ fun SuccessfulScreenPreview() {
     BanklyTheme {
         TransactionFailedScreen(
             message = stringResource(R.string.msg_transaction_failed),
-            onGoToHome = {}
+            onGoToHome = {},
         )
     }
 }

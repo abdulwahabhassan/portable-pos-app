@@ -26,14 +26,14 @@ fun BanklyClickableText(
     text: AnnotatedString,
     onClick: () -> Unit,
     isEnabled: Boolean = true,
-    backgroundColor: Color = Color.Transparent
+    backgroundColor: Color = Color.Transparent,
 ) {
     Text(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .background(
                 shape = CircleShape,
-                color = backgroundColor
+                color = backgroundColor,
             )
             .clip(CircleShape)
             .clickable(
@@ -43,12 +43,12 @@ fun BanklyClickableText(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = true,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                    color = MaterialTheme.colorScheme.primary,
+                ),
             )
             .padding(vertical = 4.dp, horizontal = 12.dp),
         text = text,
-        style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary)
+        style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary),
     )
 }
 
@@ -61,13 +61,13 @@ private fun BanklyClickableTextPreview1() {
                 append("Had coffee yet? ")
                 withStyle(
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.primary
-                    ).toSpanStyle()
+                        color = MaterialTheme.colorScheme.primary,
+                    ).toSpanStyle(),
                 ) {
                     append("Order a cup!")
                 }
             },
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -80,9 +80,7 @@ private fun BanklyClickableTextPreview2() {
             text = buildAnnotatedString {
                 append("Click Me")
             },
-            onClick = {}
+            onClick = {},
         )
     }
 }
-
-

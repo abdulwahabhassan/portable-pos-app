@@ -33,14 +33,14 @@ fun NavGraphBuilder.payWithCardNavGraph(
         startDestination = payWithCardRoute,
         arguments = listOf(
             navArgument(amountArg) { type = NavType.StringType },
-        )
+        ),
     ) {
         composable(payWithCardRoute) { backStackEntry: NavBackStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 appNavController.getBackStackEntry(payWithCardRoute)
             }
             val amount = parentEntry.arguments?.getString(
-                amountArg
+                amountArg,
             )?.toDouble() ?: 0.00
             Log.d("debug amount", "$amount")
             Tools.TransactionAmount = amount
@@ -67,11 +67,11 @@ private fun PayWithCardNavHost(
     ) {
         selectAccountTypeRoute(
             onAccountSelected = { accountType: AccountType ->
-                val acctType = when(accountType) {
+                val acctType = when (accountType) {
                     AccountType.SAVINGS -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.SAVINGS
-                            AccountType.DEFAULT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.DEFAULT
-                            AccountType.CREDIT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CREDIT
-                            AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
+                    AccountType.DEFAULT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.DEFAULT
+                    AccountType.CREDIT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CREDIT
+                    AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
                 Tools.SetAccountType(acctType)
                 ProcessPayment(context) { transactionResponse, _ ->
@@ -94,19 +94,19 @@ private fun PayWithCardNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress
+            onCloseClick = onBackPress,
         )
         enterCardPinRoute(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
                     TransactionData.mockTransactionData()
-                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL)
+                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL),
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress
+            onCloseClick = onBackPress,
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
@@ -114,22 +114,22 @@ private fun PayWithCardNavHost(
             },
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
-            }
+            },
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
-            onGoHomeClick = onBackPress
+            onGoHomeClick = onBackPress,
         )
         transactionDetailsRoute(
             onShareClick = { },
             onSmsClick = { },
             onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress
+            onGoToHomeClick = onBackPress,
         )
     }
 }

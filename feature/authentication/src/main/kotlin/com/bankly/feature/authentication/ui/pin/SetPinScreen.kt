@@ -27,14 +27,14 @@ fun SetPinScreen() {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
             BanklyTitleBar(
                 onBackPress = {},
                 title = stringResource(R.string.msg_set_pin),
                 currentPage = 2,
-                totalPage = 3
+                totalPage = 3,
             )
             BanklyPassCodeInputField(passCode = pin, isError = isError)
         }
@@ -64,7 +64,6 @@ fun SetPinScreen() {
         }
     }
 }
-
 
 @Composable
 @Preview(showBackground = true)
