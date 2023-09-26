@@ -13,6 +13,7 @@ import com.bankly.feature.dashboard.model.QuickAction
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
+import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 
 @Composable
@@ -38,9 +39,7 @@ fun AppNavHost(
             onQuickActionCardClick = { quickAction: QuickAction ->
                 appState.navigateTo(
                     when (quickAction) {
-                        QuickAction.PayWithCard -> {
-                            TopLevelDestination.PAY_WITH_CARD
-                        }
+                        QuickAction.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
                         QuickAction.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
                         QuickAction.CardTransfer -> TopLevelDestination.CARD_TRANSFER
                         QuickAction.SendMoney -> TopLevelDestination.SEND_MONEY
@@ -76,6 +75,9 @@ fun AppNavHost(
             },
             onForgotPinClick = {
             },
+        )
+        payWithTransferNavGraph(
+            onBackPress = onBackPress,
         )
     }
 }

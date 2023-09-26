@@ -45,3 +45,8 @@ internal val red: Color = Color(0xFFFF4648)
 
 internal val green01: Color = Color(0xFFCFE7DD)
 internal val green02: Color = Color(0xFF28C76F)
+
+object BanklySuccessColor {
+    val successColor: Color = green02
+    val successBackgroundColor: Color = green01
+}

@@ -6,8 +6,8 @@ import com.bankly.core.entity.Token
 import com.bankly.core.sealed.State
 
 data class LoginScreenState(
-    val phoneNumberTFV: TextFieldValue = TextFieldValue(text = ""),
-    val passCodeTFV: TextFieldValue = TextFieldValue(text = ""),
+    val phoneNumberTFV: TextFieldValue = TextFieldValue(text = "08167039661"),
+    val passCodeTFV: TextFieldValue = TextFieldValue(text = "Gdz36Val"),
     val isPhoneNumberError: Boolean = false,
     val isPassCodeError: Boolean = false,
     val phoneNumberFeedBack: String = "",

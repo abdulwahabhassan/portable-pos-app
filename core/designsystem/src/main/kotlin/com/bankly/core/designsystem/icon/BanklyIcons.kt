@@ -41,4 +41,6 @@ object BanklyIcons {
     val ValidationInProgress = R.drawable.ic_validation_in_progress
     val ValidationPassed = R.drawable.ic_validation_passed
     val ValidationFailed = R.drawable.ic_validation_failed
+    val Info = R.drawable.ic_info
+    val Transfer_Inward = R.drawable.ic_box_arrow_down_left
 }

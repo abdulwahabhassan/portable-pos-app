@@ -78,6 +78,7 @@ fun HomeScreen(
                             QuickAction.PayWithCard,
                             QuickAction.SendMoney,
                             QuickAction.CardTransfer,
+                            QuickAction.PayWithTransfer,
                             -> onQuickActionCardClick(quickAction)
                             else -> {}
                         }
