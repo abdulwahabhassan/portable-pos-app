@@ -90,7 +90,7 @@ fun WalletCard(
                             formatAmount(
                                 value = currentBalance,
                                 includeNairaSymbol = true,
-                                addSpace = true,
+                                addSpaceBetweenSymbolAndAmount = true,
                             )
                         } else {
                             "**********"

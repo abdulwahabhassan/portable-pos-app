@@ -130,7 +130,7 @@ internal fun NavGraphBuilder.transactionFailedRoute(
 
 internal fun NavGraphBuilder.transactionDetailsRoute(
     onShareClick: () -> Unit,
-    onSmsClick: () -> Unit,
+    onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit,
 ) {

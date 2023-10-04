@@ -3,7 +3,7 @@ package com.bankly.core.common.util
 import java.text.DecimalFormat
 
 object Formatter {
-    fun formatAmount(value: Any, includeNairaSymbol: Boolean = false, addSpace: Boolean = false): String {
+    fun formatAmount(value: Any, includeNairaSymbol: Boolean = false, addSpaceBetweenSymbolAndAmount: Boolean = false): String {
         val valueToBeFormatted: Number = if (value is String) {
             value.toDouble()
         } else {
@@ -12,7 +12,7 @@ object Formatter {
 
         val df = DecimalFormat("##,###,##0.00")
         return if (includeNairaSymbol) {
-            "₦${if (addSpace) " " else ""}${df.format(valueToBeFormatted)}"
+            "₦${if (addSpaceBetweenSymbolAndAmount) " " else ""}${df.format(valueToBeFormatted)}"
         } else {
             df.format(
                 valueToBeFormatted,

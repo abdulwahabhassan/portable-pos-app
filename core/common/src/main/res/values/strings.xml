@@ -15,4 +15,9 @@
     <string name="title_other_banks">Other banks</string>
     <string name="msg_transaction_successful">Transaction Successful</string>
     <string name="msg_transaction_failed">Transaction Failed</string>
+    <string name="title_send_receipt">Send Receipt</string>
+    <string name="msg_enter_phone_number">Enter phone number</string>
+    <string name="action_continue">Continue</string>
+    <string name="msg_send_receipt_fee_charge_warning">Kindly note, you will be charged the cost of sending this receipt.</string>
+    <string name="action_done">Done</string>
 </resources>

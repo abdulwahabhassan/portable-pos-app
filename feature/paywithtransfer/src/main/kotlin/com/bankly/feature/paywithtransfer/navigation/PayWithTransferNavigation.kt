@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.payWithTransferNavGraph(
     onBackPress: () -> Unit,
@@ -38,6 +39,31 @@ private fun PayWithTransferNavHost(
     ) {
         payWithTransferRoute(
             onBackPress = onBackPress,
+            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
+            },
+            onGoToHomeClick = onBackPress
+        )
+        transactionDetailsRoute(
+            onShareClick = { },
+            onSmsClick = { transactionReceipt ->
+                navHostController.navigateToSendReceiptRoute(transactionReceipt = transactionReceipt)
+            },
+            onLogComplaintClick = { },
+            onGoToHomeClick = onBackPress,
+        )
+        sendReceiptRoute(
+            onGoToSuccessScreen = {
+                navHostController.navigateToDoneRoute(title = "Receipt Sent", message = "Your receipt has been sent")
+            },
+            onBackPress = {
+                navHostController.popBackStack()
+            }
+        )
+        doneRoute(
+            onDoneClick = {
+                navHostController.popBackStack()
+            },
         )
     }
 }

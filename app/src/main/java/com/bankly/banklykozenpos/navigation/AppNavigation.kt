@@ -77,7 +77,9 @@ fun AppNavHost(
             },
         )
         payWithTransferNavGraph(
-            onBackPress = onBackPress,
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            },
         )
     }
 }

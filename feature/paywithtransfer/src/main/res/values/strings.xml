@@ -3,7 +3,8 @@
     <string name="title_account_details">Account Details</string>
     <string name="title_account_number">Account Number:</string>
     <string name="title_bank_name">Bank Name:</string>
-    <string name="title_account_name">Account Name</string>
+    <string name="title_account_name">Account Name:</string>
     <string name="msg_pop_up_box_hint">A popup box will appear to confirm transfer from customers</string>
     <string name="pay_with_transfer">Pay With Transfer</string>
+    <string name="symbol_plus_sign">+</string>
 </resources>

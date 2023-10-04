@@ -50,3 +50,7 @@ object BanklySuccessColor {
     val successColor: Color = green02
     val successBackgroundColor: Color = green01
 }
+
+object PreviewColor {
+    const val background: Long = 0xFFFFFFFF
+}

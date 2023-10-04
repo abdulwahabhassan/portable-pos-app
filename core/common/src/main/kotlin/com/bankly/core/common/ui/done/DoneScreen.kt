@@ -1,4 +1,4 @@
-package com.bankly.core.common.ui.transactionsuccess
+package com.bankly.core.common.ui.done
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,31 +23,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyFilledButton
-import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.sealed.TransactionReceipt
 
 @Composable
-fun TransactionSuccessRoute(
-    transactionReceipt: TransactionReceipt,
+fun DoneRoute(
+    title: String,
     message: String,
-    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
-    onGoToHome: () -> Unit,
+    onDoneClick: () -> Unit,
 ) {
-    TransactionSuccessScreen(
+    DoneScreen(
+        title = title,
         message = message,
-        onViewTransactionDetailsClick = { onViewTransactionDetailsClick(transactionReceipt) },
-        onGoToHome = onGoToHome,
+        onDoneClick = onDoneClick,
     )
 }
 
 @Composable
-fun TransactionSuccessScreen(
+fun DoneScreen(
+    title: String,
     message: String,
-    onViewTransactionDetailsClick: () -> Unit,
-    onGoToHome: () -> Unit,
+    onDoneClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -69,7 +67,7 @@ fun TransactionSuccessScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(R.string.msg_transaction_successful),
+                text = title,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.tertiary,
@@ -91,19 +89,9 @@ fun TransactionSuccessScreen(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
                     .fillMaxWidth(),
-                text = stringResource(R.string.action_view_transaction_details),
-                onClick = onViewTransactionDetailsClick,
+                text = stringResource(R.string.action_done),
+                onClick = onDoneClick,
                 isEnabled = true,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            BanklyOutlinedButton(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .fillMaxWidth(),
-                text = stringResource(R.string.action_go_to_home),
-                onClick = onGoToHome,
-                isEnabled = true,
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
@@ -113,10 +101,10 @@ fun TransactionSuccessScreen(
 @Preview(showBackground = true, backgroundColor = PreviewColor.background)
 fun SuccessfulScreenPreview() {
     BanklyTheme {
-        TransactionSuccessScreen(
-            message = stringResource(R.string.msg_transaction_successful),
-            onViewTransactionDetailsClick = {},
-            onGoToHome = {},
+        DoneScreen(
+            title = stringResource(R.string.msg_transaction_successful),
+            message = "",
+            onDoneClick = {},
         )
     }
 }

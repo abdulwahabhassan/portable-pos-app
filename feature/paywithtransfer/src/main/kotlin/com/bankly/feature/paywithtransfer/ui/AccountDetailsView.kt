@@ -25,15 +25,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.component.BanklyClickableIcon
+import com.bankly.core.designsystem.component.BanklyInfoText
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.paywithtransfer.R
 
 @Composable
 internal fun AccountDetailsView(
     onBackPress: () -> Unit,
+    isExpanded: Boolean,
+    onExpandIconClick: (Boolean) -> Unit,
 ) {
-    var isExpanded: Boolean by remember { mutableStateOf(true) }
+    
 
     Column(
         modifier = Modifier
@@ -68,7 +72,7 @@ internal fun AccountDetailsView(
             BanklyClickableIcon(
                 icon = if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down,
                 onClick = {
-                    isExpanded = !isExpanded
+                    onExpandIconClick(isExpanded)
                 },
             )
         }
@@ -125,33 +129,16 @@ internal fun AccountDetailsView(
                     )
                 }
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(id = BanklyIcons.Info),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                    )
-                    Text(
-                        text = stringResource(R.string.msg_pop_up_box_hint),
-                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
-                    )
-                }
+                BanklyInfoText(stringResource(R.string.msg_pop_up_box_hint))
             }
         }
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.background)
 private fun AccountDetailsPreview() {
     BanklyTheme {
-        AccountDetailsView(onBackPress = {})
+        AccountDetailsView(onBackPress = {}, isExpanded = true, onExpandIconClick = {})
     }
 }

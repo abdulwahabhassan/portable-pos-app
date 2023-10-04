@@ -45,7 +45,7 @@ import com.bankly.core.sealed.TransactionReceipt
 fun TransactionDetailsRoute(
     transactionReceipt: TransactionReceipt,
     onShareClick: () -> Unit,
-    onSmsClick: () -> Unit,
+    onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit,
 ) {
@@ -62,7 +62,7 @@ fun TransactionDetailsRoute(
 fun TransactionDetailsScreen(
     transactionReceipt: TransactionReceipt,
     onShareClick: () -> Unit,
-    onSmsClick: () -> Unit,
+    onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: () -> Unit,
 ) {
@@ -174,7 +174,9 @@ fun TransactionDetailsScreen(
                     BanklyOutlinedButton(
                         modifier = Modifier.weight(1f),
                         text = "SMS",
-                        onClick = onSmsClick,
+                        onClick = {
+                            onSmsClick(transactionReceipt)
+                        },
                         backgroundColor = MaterialTheme.colorScheme.background,
                     )
                 }

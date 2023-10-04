@@ -1,4 +1,4 @@
-package com.bankly.feature.authentication.ui.recoverpasscode
+package com.bankly.core.common.ui.sendreceipt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,59 +7,74 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.BanklyActionDialog
+import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyFilledButton
+import com.bankly.core.designsystem.component.BanklyInfoText
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.sealed.State
-import com.bankly.feature.authentication.R
+import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenEvent
+import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenOneShotState
+import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Composable
-internal fun RecoverPassCodeRoute(
-    viewModel: RecoverPassCodeViewModel = hiltViewModel(),
-    onRecoverPassCodeSuccess: (String) -> Unit,
+fun SendReceiptRoute(
+    viewModel: SendReceiptViewModel = hiltViewModel(),
+    onGoToSuccessScreen: (String) -> Unit,
     onBackPress: () -> Unit,
+    transactionReceipt: TransactionReceipt,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
-    RecoverPassCodeScreen(
+    val coroutineScope = rememberCoroutineScope()
+
+    SendReceiptScreen(
         screenState = screenState,
-        onRecoverPassCodeSuccess = onRecoverPassCodeSuccess,
         onBackPress = onBackPress,
-        onUiEvent = { uiEvent: RecoverPassCodeScreenEvent -> viewModel.sendEvent(uiEvent) },
+        onUiEvent = { uiEvent: SendReceiptScreenEvent -> viewModel.sendEvent(uiEvent) },
     )
+
+    LaunchedEffect(key1 = Unit, block = {
+        coroutineScope.launch {
+            viewModel.oneShotState.collectLatest { oneShotUiState ->
+                when (oneShotUiState) {
+                    is SendReceiptScreenOneShotState.GoToSuccessfulScreen -> {
+                        onGoToSuccessScreen("Receipt Sent")
+                    }
+                }
+            }
+        }
+    })
 }
 
 @Composable
-internal fun RecoverPassCodeScreen(
-    screenState: RecoverPassCodeScreenState,
-    onRecoverPassCodeSuccess: (String) -> Unit,
+private fun SendReceiptScreen(
+    screenState: SendReceiptScreenState,
     onBackPress: () -> Unit,
-    onUiEvent: (RecoverPassCodeScreenEvent) -> Unit,
+    onUiEvent: (SendReceiptScreenEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
             BanklyTitleBar(
                 onBackPress = onBackPress,
-                title = stringResource(R.string.title_recover_passcode),
-                subTitle = buildAnnotatedString {
-                    append(stringResource(R.string.msg_enter_phone_number_to_reset))
-                },
-                isLoading = screenState.recoverPassCodeState is State.Loading,
+                title = stringResource(R.string.title_send_receipt),
+                isLoading = screenState.isLoading,
             )
         },
     ) { padding ->
@@ -78,10 +93,10 @@ internal fun RecoverPassCodeScreen(
                     BanklyInputField(
                         textFieldValue = screenState.phoneNumberTFV,
                         onTextFieldValueChange = { textFieldValue ->
-                            onUiEvent(RecoverPassCodeScreenEvent.OnEnterPhoneNumber(textFieldValue))
+                            onUiEvent(SendReceiptScreenEvent.OnEnterPhoneNumber(textFieldValue))
                         },
                         isEnabled = screenState.isUserInputEnabled,
-                        placeholderText = stringResource(R.string.msg_phone_number_sample),
+                        placeholderText = stringResource(R.string.msg_enter_phone_number),
                         labelText = "Phone Number",
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,
@@ -89,6 +104,7 @@ internal fun RecoverPassCodeScreen(
                         isError = screenState.isPhoneNumberError,
                         feedbackText = screenState.phoneNumberFeedBack,
                     )
+                    BanklyInfoText(text = stringResource(R.string.msg_send_receipt_fee_charge_warning))
                 }
             }
 
@@ -97,40 +113,23 @@ internal fun RecoverPassCodeScreen(
                     modifier = Modifier
                         .padding(32.dp)
                         .fillMaxWidth(),
-                    text = stringResource(R.string.action_send_code),
+                    text = stringResource(R.string.action_continue),
                     onClick = {
-                        onUiEvent(RecoverPassCodeScreenEvent.OnSendCodeClick(screenState.phoneNumberTFV.text))
+                        onUiEvent(SendReceiptScreenEvent.OnContinueClick(screenState.phoneNumberTFV.text))
                     },
-                    isEnabled = screenState.isSendCodeButtonEnabled,
+                    isEnabled = screenState.isContinueButtonEnabled,
                 )
             }
-        }
-    }
-
-    when (val state = screenState.recoverPassCodeState) {
-        is State.Initial, State.Loading -> {}
-        is State.Error -> {
-            BanklyActionDialog(
-                title = stringResource(R.string.title_recover_passcode_error),
-                subtitle = state.message,
-                positiveActionText = stringResource(R.string.action_okay),
-            )
-        }
-
-        is State.Success -> {
-            onUiEvent(RecoverPassCodeScreenEvent.OnExit)
-            onRecoverPassCodeSuccess(screenState.phoneNumberTFV.text)
         }
     }
 }
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.background)
-private fun RecoverPassCodeScreenPreview() {
+private fun SendReceiptScreenPreview() {
     BanklyTheme {
-        RecoverPassCodeScreen(
-            screenState = RecoverPassCodeScreenState(),
-            onRecoverPassCodeSuccess = {},
+        SendReceiptScreen(
+            screenState = SendReceiptScreenState(),
             onBackPress = {},
             onUiEvent = {},
         )

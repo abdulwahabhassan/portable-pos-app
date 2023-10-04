@@ -60,37 +60,70 @@ sealed class TransactionReceipt(
         msg = message,
     )
 
+    @Serializable
+    data class PayWithTransfer(
+        val senderAccountName: String,
+        val senderAccountNumber: String,
+        val senderBankName: String,
+        val amount: String,
+        val reference: String,
+        val receiverAccountNumber: String,
+        val message: String,
+        val receiverName: String,
+        val receiverBankName: String,
+        val dateCreated: String,
+        val statusName: String,
+        val sessionId: String,
+    ) : TransactionReceipt(
+        acctName = senderAccountName,
+        acctNumber = senderAccountNumber,
+        bank = senderBankName,
+        amt = amount,
+        ref = reference,
+        msg = message,
+    )
+
+
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
-            is BankTransfer -> {
-                mapOf(
-                    "Transaction Type" to "Bank Transfer",
-                    "Type" to "Debit",
-                    "Status" to this.statusName,
-                    "Description" to this.message,
-                    "Session ID" to this.sessionId,
-                    "Transaction REF" to this.reference,
-                    "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
-                    "Sender Phone" to this.phoneNumber,
-                    "Receiver Account" to this.beneficiaryAccount,
-                    "Receiver Name" to this.accountName,
-                    "Receiver Bank" to this.bankName,
-                )
-            }
+            is BankTransfer ->  mapOf(
+                "Transaction Type" to "Bank Transfer",
+                "Type" to "Debit",
+                "Status" to this.statusName,
+                "Description" to this.message,
+                "Session ID" to this.sessionId,
+                "Transaction REF" to this.reference,
+                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
+                "Sender Phone" to this.phoneNumber,
+                "Receiver Account" to this.beneficiaryAccount,
+                "Receiver Name" to this.accountName,
+                "Receiver Bank" to this.bankName,
+            )
 
-            is CardPayment -> {
-                mapOf(
-                    "Transaction Type" to "Card Payment",
-                    "Status" to this.statusName,
-                    "Description" to this.message,
-                    "Terminal ID" to this.terminalId,
-                    "Transaction REF" to this.cardType,
-                    "Date/Time" to Formatter.formatServerDateTime(this.dateTime),
-                    "Response Code" to this.responseCode,
-                    "RRN" to this.rrn,
-                    "STAN" to this.stan,
-                )
-            }
+            is CardPayment -> mapOf(
+                "Transaction Type" to "Card Payment",
+                "Status" to this.statusName,
+                "Description" to this.message,
+                "Terminal ID" to this.terminalId,
+                "Transaction REF" to this.cardType,
+                "Date/Time" to Formatter.formatServerDateTime(this.dateTime),
+                "Response Code" to this.responseCode,
+                "RRN" to this.rrn,
+                "STAN" to this.stan,
+            )
+
+            is PayWithTransfer -> mapOf(
+                "Transaction Type" to "Transfer Payment",
+                "Type" to "Credit",
+                "Status" to this.statusName,
+                "Description" to this.message,
+                "Session ID" to this.sessionId,
+                "Transaction REF" to this.reference,
+                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
+                "Sender Account" to this.receiverName,
+                "Sender Name" to this.senderAccountName,
+                "Sender Bank" to this.senderBankName,
+            )
         }
     }
 
