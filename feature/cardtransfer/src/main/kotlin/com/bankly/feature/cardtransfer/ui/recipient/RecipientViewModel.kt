@@ -11,7 +11,7 @@ import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
 import com.bankly.core.entity.Bank
-import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
@@ -168,7 +168,7 @@ internal class RecipientViewModel @Inject constructor(
         val isValid = Validator.isAccountNumberValid(accountNumber.trim())
 
         if (bankId != null && isEmpty.not() && isValid) {
-            nameEnquiryUseCase.performNameEnquiry(
+            nameEnquiryUseCase.performBankAccountNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
                 bankId.toString(),
@@ -178,11 +178,11 @@ internal class RecipientViewModel @Inject constructor(
                         copy(accountValidationState = State.Loading)
                     }
                 }
-                resource.onReady { nameEnquiry: NameEnquiry ->
+                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
                     setUiState {
                         copy(
-                            accountValidationState = State.Success(nameEnquiry),
-                            accountNumberFeedBack = nameEnquiry.accountName,
+                            accountValidationState = State.Success(accountNameEnquiry),
+                            accountNumberFeedBack = accountNameEnquiry.accountName,
                             isAccountNumberError = false,
                         )
                     }

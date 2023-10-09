@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 
 /**
  * @param onBackPress The action to be performed when navigation icon is clicked
@@ -60,8 +61,7 @@ fun BanklyTitleBar(
         modifier = Modifier
             .background(color = backgroundColor)
             .fillMaxWidth()
-            .padding(bottom = 24.dp),
-
+            .padding(bottom = if (subTitle.isNotEmpty()) 24.dp else 0.dp),
     ) {
         Row(
             modifier = Modifier
@@ -96,7 +96,7 @@ fun BanklyTitleBar(
                     text = "Step $currentPage/$totalPage",
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.tertiary),
+                    style = MaterialTheme.typography.bodySmall.copy(MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
@@ -106,7 +106,7 @@ fun BanklyTitleBar(
                 Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
                     BanklyClickableIcon(
                         modifier = Modifier.size(36.dp),
-                        icon = BanklyIcons.close,
+                        icon = BanklyIcons.Cancel,
                         onClick = onCloseClick,
                         rippleColor = MaterialTheme.colorScheme.error,
                     )
@@ -147,7 +147,7 @@ fun BanklyTitleBar(
         if (subTitle.isNotEmpty()) {
             Text(
                 text = subTitle,
-                style = MaterialTheme.typography.bodyLarge.copy(MaterialTheme.colorScheme.tertiary),
+                style = MaterialTheme.typography.bodyMedium.copy(MaterialTheme.colorScheme.tertiary),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,7 +158,7 @@ fun BanklyTitleBar(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview1() {
     BanklyTheme {
         BanklyTitleBar(
@@ -173,7 +173,7 @@ private fun BanklyTitleBarPreview1() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview2() {
     BanklyTheme {
         BanklyTitleBar(
@@ -183,7 +183,7 @@ private fun BanklyTitleBarPreview2() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview3() {
     BanklyTheme {
         BanklyTitleBar(
@@ -194,7 +194,7 @@ private fun BanklyTitleBarPreview3() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview4() {
     BanklyTheme {
         BanklyTitleBar(
@@ -208,19 +208,21 @@ private fun BanklyTitleBarPreview4() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview5() {
     BanklyTheme {
         BanklyTitleBar(
             onBackPress = { },
             title = "Log In",
             isLoading = true,
+            currentPage = 1,
+            totalPage = 5
         )
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyTitleBarPreview6() {
     BanklyTheme {
         BanklyTitleBar(

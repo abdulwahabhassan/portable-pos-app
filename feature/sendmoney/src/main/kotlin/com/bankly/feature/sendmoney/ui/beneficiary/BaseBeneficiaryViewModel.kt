@@ -13,7 +13,7 @@ import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
 import com.bankly.core.entity.Bank
-import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
@@ -236,7 +236,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         val isValid = Validator.isAccountNumberValid(accountNumber.trim())
 
         if (bankId != null && isEmpty.not() && isValid) {
-            nameEnquiryUseCase.performNameEnquiry(
+            nameEnquiryUseCase.performBankAccountNameEnquiry(
                 userPreferencesDataStore.data().token,
                 accountNumber,
                 bankId.toString(),
@@ -246,11 +246,11 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
-                resource.onReady { nameEnquiry: NameEnquiry ->
+                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
                     setUiState {
                         copy(
-                            accountOrPhoneValidationState = State.Success(nameEnquiry),
-                            accountOrPhoneFeedBack = nameEnquiry.accountName,
+                            accountOrPhoneValidationState = State.Success(accountNameEnquiry),
+                            accountOrPhoneFeedBack = accountNameEnquiry.accountName,
                             isAccountOrPhoneError = false,
                         )
                     }
@@ -280,7 +280,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
 
     private suspend fun validatePhoneNumber(phoneNumber: String) {
         if (phoneNumber.isNotEmpty()) {
-            nameEnquiryUseCase.performNameEnquiry(
+            nameEnquiryUseCase.performBankAccountNameEnquiry(
                 userPreferencesDataStore.data().token,
                 phoneNumber,
             ).onEach { resource ->
@@ -289,11 +289,11 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
-                resource.onReady { nameEnquiry: NameEnquiry ->
+                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
                     setUiState {
                         copy(
-                            accountOrPhoneValidationState = State.Success(nameEnquiry),
-                            accountOrPhoneFeedBack = nameEnquiry.accountName,
+                            accountOrPhoneValidationState = State.Success(accountNameEnquiry),
+                            accountOrPhoneFeedBack = accountNameEnquiry.accountName,
                             isAccountOrPhoneError = false,
                         )
                     }

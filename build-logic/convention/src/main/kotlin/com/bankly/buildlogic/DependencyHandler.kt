@@ -16,7 +16,7 @@ fun DependencyHandler.groupedCompose(libs: VersionCatalog) {
     add("api", libs.findLibrary("androidx.compose.runtime").get())
     add("api", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
     add("api", libs.findLibrary("androidx.compose.ui.util").get())
-    add("debugApi", libs.findLibrary("androidx.compose.ui.tooling").get())
+    add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
     add("implementation", libs.findLibrary("coil.kt.compose").get())
     add("implementation", libs.findLibrary("androidx.navigation.compose").get())
     add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())

@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,13 +30,14 @@ fun BanklyClickableIcon(
     onClick: () -> Unit,
     color: Color = Color.Unspecified,
     rippleColor: Color = MaterialTheme.colorScheme.primary,
+    shape: Shape = MaterialTheme.shapes.small,
 ) {
     Icon(
         painter = painterResource(id = icon),
         contentDescription = stringResource(R.string.desc_clickable_icon),
         tint = color,
         modifier = modifier
-            .clip(MaterialTheme.shapes.small)
+            .clip(shape)
             .clickable(
                 onClick = onClick,
                 enabled = true,

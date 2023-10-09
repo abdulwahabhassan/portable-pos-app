@@ -20,20 +20,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.dashboard.R
-import com.bankly.feature.dashboard.model.QuickAction
-import com.bankly.feature.dashboard.ui.component.DashBoardQuickActionCard
+import com.bankly.feature.dashboard.model.Feature
+import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 
 @Composable
 fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    onQuickActionCardClick: (QuickAction) -> Unit,
+    onFeatureCardClick: (Feature) -> Unit,
 ) {
     val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
     HomeScreen(
         screenState = screenState,
         onUiEvent = { uiEvent: HomeScreenEvent -> viewModel.sendEvent(uiEvent) },
-        onQuickActionCardClick = onQuickActionCardClick,
+        onFeatureCardClick = onFeatureCardClick,
     )
 }
 
@@ -41,7 +41,7 @@ fun HomeTab(
 fun HomeScreen(
     screenState: HomeScreenState,
     onUiEvent: (HomeScreenEvent) -> Unit,
-    onQuickActionCardClick: (QuickAction) -> Unit,
+    onFeatureCardClick: (Feature) -> Unit,
 ) {
     Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -70,18 +70,11 @@ fun HomeScreen(
             color = MaterialTheme.colorScheme.primary,
         )
         LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp)) {
-            items(QuickAction.values()) { quickAction: QuickAction ->
-                DashBoardQuickActionCard(
-                    quickAction = quickAction,
+            items(Feature.values().filter { it.isQuickAction }) { feature: Feature ->
+                FeatureCard(
+                    feature = feature,
                     onClick = {
-                        when (quickAction) {
-                            QuickAction.PayWithCard,
-                            QuickAction.SendMoney,
-                            QuickAction.CardTransfer,
-                            QuickAction.PayWithTransfer,
-                            -> onQuickActionCardClick(quickAction)
-                            else -> {}
-                        }
+                        onFeatureCardClick(feature)
                     },
                 )
             }
@@ -107,7 +100,7 @@ private fun HomeScreenPreview() {
         HomeScreen(
             screenState = HomeScreenState(),
             onUiEvent = {},
-            onQuickActionCardClick = {},
+            onFeatureCardClick = {},
         )
     }
 }

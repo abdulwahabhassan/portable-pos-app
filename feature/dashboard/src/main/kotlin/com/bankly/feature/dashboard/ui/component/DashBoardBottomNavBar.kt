@@ -48,7 +48,7 @@ fun DashBoardBottomNavBar(
                         tint = Color.Unspecified,
                     )
                 },
-                enabled = destination == BottomNavDestination.HOME,
+                enabled = true,
                 label = { Text(destination.title ?: "", style = MaterialTheme.typography.labelSmall.copy()) },
 
                 alwaysShowLabel = true,

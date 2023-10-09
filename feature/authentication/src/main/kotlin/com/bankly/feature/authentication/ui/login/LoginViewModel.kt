@@ -90,7 +90,7 @@ class LoginViewModel @Inject constructor(
                     copy(
                         loginState = State.Error(
                             message = it.localizedMessage ?: it.message
-                                ?: "An unexpected event occurred!",
+                            ?: "An unexpected event occurred!",
                         ),
                     )
                 }

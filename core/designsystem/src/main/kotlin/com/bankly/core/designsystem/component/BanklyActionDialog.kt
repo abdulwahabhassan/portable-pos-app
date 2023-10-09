@@ -82,7 +82,7 @@ fun BanklyActionDialog(
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                             textAlign = TextAlign.Center,
                         )
                         Spacer(modifier = Modifier.height(16.dp))

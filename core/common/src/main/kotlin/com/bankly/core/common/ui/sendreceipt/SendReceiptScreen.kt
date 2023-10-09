@@ -125,7 +125,7 @@ private fun SendReceiptScreen(
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun SendReceiptScreenPreview() {
     BanklyTheme {
         SendReceiptScreen(

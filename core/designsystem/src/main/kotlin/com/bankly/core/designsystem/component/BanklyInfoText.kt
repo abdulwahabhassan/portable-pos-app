@@ -42,7 +42,7 @@ fun BanklyInfoText(text: String) {
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 fun BanklyInfoTextPreview() {
     BanklyTheme {
         BanklyInfoText("This transaction will attract a service charge")

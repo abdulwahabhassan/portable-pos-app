@@ -20,4 +20,15 @@
     <string name="action_continue">Continue</string>
     <string name="msg_send_receipt_fee_charge_warning">Kindly note, you will be charged the cost of sending this receipt.</string>
     <string name="action_done">Done</string>
+    <string name="msg_enter_transaction_pin">Enter Transaction PIN</string>
+    <string name="title_confirm_transaction">Confirm Transaction</string>
+    <string name="action_no">No</string>
+    <string name="action_yes_cancel">Yes</string>
+    <string name="msg_are_you_sure">Are you sure you want to cancel?</string>
+    <string name="title_cancel_transaction">Cancel transaction?</string>
+    <string name="action_forgot_pin">Forgot PIN</string>
+    <string name="title_confirm_transaction_error">Confirm transaction error</string>
+    <string name="action_okay">Okay</string>
+    <string name="msg_it_s_quite_lonely_here">It\'s quite lonely here</string>
+    <string name="title_empty">Empty</string>
 </resources>

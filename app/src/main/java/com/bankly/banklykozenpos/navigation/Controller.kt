@@ -5,6 +5,7 @@ import androidx.navigation.NavOptions
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
+import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraphRoute
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraphRoute
@@ -42,4 +43,10 @@ internal fun NavHostController.navigateToSendMoneyNavGraph(
     navOptions: NavOptions? = null,
 ) {
     this.navigate(sendMoneyNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToPayBillsNavGraph(
+    navOptions: NavOptions? = null,
+) {
+    this.navigate(billPaymentNavGraphRoute, navOptions)
 }

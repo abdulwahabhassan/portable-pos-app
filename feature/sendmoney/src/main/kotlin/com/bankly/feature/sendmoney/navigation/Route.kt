@@ -12,14 +12,14 @@ import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryRoute
-import com.bankly.feature.sendmoney.ui.confirmtransaction.ConfirmTransactionRoute
+import com.bankly.core.common.ui.confirmtransaction.ConfirmTransactionRoute
 import com.bankly.feature.sendmoney.ui.selectchannel.SelectChannelRoute
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 const val sendMoneyNavGraphRoute = "send_money_graph"
 internal const val sendMoneyRoute = sendMoneyNavGraphRoute.plus("/send_money_route")
-internal const val selectChannelRoute = sendMoneyRoute.plus("/select_select_channel_screen")
+internal const val selectChannelRoute = sendMoneyRoute.plus("/select_channel_screen")
 internal const val beneficiaryRoute = sendMoneyRoute.plus("/beneficiary_screen")
 internal const val confirmTransactionRoute = sendMoneyRoute.plus("/confirm_transaction_screen")
 internal const val processTransactionRoute = sendMoneyRoute.plus("/process_transaction_screen")

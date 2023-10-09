@@ -2,6 +2,7 @@ package com.bankly.core.network.di
 
 import com.bankly.core.network.retrofit.model.BanklyBaseUrl
 import com.bankly.core.network.retrofit.service.AgentService
+import com.bankly.core.network.retrofit.service.BillsService
 import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.IdentityService
 import com.bankly.core.network.retrofit.service.TransferService
@@ -98,5 +99,21 @@ object RetrofitModule {
             )
             .build()
             .create(AgentService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesBillsService(
+        client: OkHttpClient,
+        json: Json,
+    ): BillsService {
+        return Retrofit.Builder()
+            .baseUrl(BanklyBaseUrl.Bills.value)
+            .client(client)
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+            .create(BillsService::class.java)
     }
 }

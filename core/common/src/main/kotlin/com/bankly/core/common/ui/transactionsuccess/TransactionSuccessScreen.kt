@@ -110,7 +110,7 @@ fun TransactionSuccessScreen(
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 fun SuccessfulScreenPreview() {
     BanklyTheme {
         TransactionSuccessScreen(

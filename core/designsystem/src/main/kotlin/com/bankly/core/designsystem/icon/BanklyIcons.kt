@@ -31,8 +31,15 @@ object BanklyIcons {
     val PayWithTransfer = R.drawable.ic_pay_with_transfer
     val CardTransfer = R.drawable.ic_card_transfer
     val PayWithCash = R.drawable.ic_pay_with_cash
+    val PayWithUssd = R.drawable.ic_pay_with_ussd
+    val PayBills = R.drawable.ic_pay_bills
+    val Float = R.drawable.ic_float
+    val CheckBalance = R.drawable.ic_check_balance
+    val EndOfDay = R.drawable.ic_end_of_day
+    val NetworkChecker = R.drawable.ic_network_checker
+    val Settings = R.drawable.ic_settings
     val SendMoney = R.drawable.ic_send_money
-    val close = R.drawable.ic_close
+    val Cancel = R.drawable.ic_cancel
     val Chevron_Up = R.drawable.ic_chevron_up
     val Chevron_Down = R.drawable.ic_chevron_down
     val Search = R.drawable.ic_search
@@ -43,4 +50,11 @@ object BanklyIcons {
     val ValidationFailed = R.drawable.ic_validation_failed
     val Info = R.drawable.ic_info
     val Transfer_Inward = R.drawable.ic_box_arrow_down_left
+    val Mobile_Phone = R.drawable.ic_mobile_phone
+    val Mobile_Phone_Connectivity = R.drawable.ic_mobile_phone_with_signal
+    val Tv_With_Remote_Control = R.drawable.ic_tv_with_remote_control
+    val Spark = R.drawable.ic_spark
+    val Mtn = R.drawable.ic_mtn_logo
+    val Close = R.drawable.ic_close
+    val SadFace = R.drawable.ic_sad_face
 }

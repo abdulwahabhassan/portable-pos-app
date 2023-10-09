@@ -61,4 +61,5 @@ dependencies {
     implementation(project(":feature:cardtransfer"))
     implementation(project(":feature:sendmoney"))
     implementation(project(":feature:paywithtransfer"))
+    implementation(project(":feature:paybills"))
 }

@@ -52,7 +52,7 @@ internal fun TransferAlertView(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Transfer Alert",
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -97,7 +97,7 @@ internal fun TransferAlertView(
 
 }
 
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 @Composable
 private fun TransferAlertPreview() {
     BanklyTheme {

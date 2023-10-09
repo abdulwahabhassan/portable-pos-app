@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sendmoney">Send Money</string>
+    <string name="msg_select_bank">Select bank</string>
+    <string name="msg_bank_name">Bank Name</string>
+    <string name="msg_enter_account_number">Enter account number</string>
+    <string name="msg_account_number_label">Account Number</string>
+    <string name="msg_enter_amount">Enter amount</string>
+    <string name="msg_amount_label">Amount</string>
+    <string name="msg_enter_narration">Enter narration</string>
+    <string name="msg_narration_label">Narration</string>
+    <string name="action_continue">Continue</string>
+    <string name="msg_enter_phone_number">Enter phone number</string>
+    <string name="msg_phone_number_label">Phone Number</string>
+    <string name="msg_type_label">Type</string>
+    <string name="msg_select_type">Select type</string>
+    <string name="msg_network_provider">Network Provider</string>
+    <string name="msg_select_provider">Select provider</string>
+    <string name="msg_electricity_provider">Electricity Provider</string>
+    <string name="msg_cable_tv_provider">Cable TV Provider</string>
+    <string name="msg_select_data_plan">Select data plan</string>
+    <string name="title_data_plan">Data Plan</string>
+    <string name="msg_select_cable_plan">Select cable plan</string>
+    <string name="title_cable_plan">Cable Plan</string>
+    <string name="msg_select_electricity_package">Select Package</string>
+    <string name="title_electricity_package">Package</string>
+    <string name="msg_enter_meter_number">Enter meter number</string>
+    <string name="msg_meter_number_label">Meter Number</string>
+    <string name="msg_enter_id_or_card_number">Enter ID/card number</string>
+    <string name="msg_id_or_card_number_label">ID/card Number</string>
+    <string name="title_save_as_beneficiary">Save as beneficiary</string>
+    <string name="title_select_network_provider">Select Network Provider</string>
+    <string name="title_error">Error</string>
+    <string name="action_okay">Okay</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="title_select_data_plan">Select Data Plan</string>
+    <string name="title_select_cable_plan">Select Cable Plan</string>
+    <string name="title_select_electricity_plan">Select Electricity Plan</string>
+</resources>

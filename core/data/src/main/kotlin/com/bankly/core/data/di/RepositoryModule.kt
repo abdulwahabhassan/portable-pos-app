@@ -1,7 +1,9 @@
 package com.bankly.core.data.di
 
+import com.bankly.core.data.repository.DefaultBillsRepository
 import com.bankly.core.data.repository.DefaultTransferRepository
 import com.bankly.core.data.repository.DefaultUserRepository
+import com.bankly.core.domain.repository.BillsRepository
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.domain.repository.UserRepository
 import dagger.Binds
@@ -22,4 +24,9 @@ interface RepositoryModule {
     fun bindsTransferRepository(
         repository: DefaultTransferRepository,
     ): TransferRepository
+
+    @Binds
+    fun bindsBillsRepository(
+        repository: DefaultBillsRepository,
+    ): BillsRepository
 }

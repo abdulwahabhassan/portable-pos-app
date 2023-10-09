@@ -51,10 +51,10 @@ fun DashBoardRoute(
         BanklyActionDialog(
             title = stringResource(R.string.title_confirm_action),
             subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_exit_the_app),
-            positiveActionText = stringResource(R.string.action_yes),
-            positiveAction = { onBackPress() },
-            negativeActionText = stringResource(R.string.action_no),
-            negativeAction = { showActionDialog.value = false },
+            negativeActionText = stringResource(R.string.action_yes),
+            negativeAction = { onBackPress() },
+            positiveActionText = stringResource(R.string.action_no),
+            positiveAction = { showActionDialog.value = false },
         )
     }
 
@@ -69,8 +69,7 @@ fun DashBoardRoute(
                     )
                 } else {
                     BanklyTitleBar(
-                        onBackPress = {},
-                        title = "",
+                        title = currentBottomNavDestination?.title ?: "",
                         subTitle = buildAnnotatedString { append("") },
                     )
                 }

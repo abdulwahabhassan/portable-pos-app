@@ -5,7 +5,7 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.entity.Bank
-import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.sealed.State
 
 internal data class RecipientScreenState(
@@ -21,7 +21,7 @@ internal data class RecipientScreenState(
     val amountFeedBack: String = "",
     val senderPhoneNumberFeedBack: String = "",
     val bankNameFeedBack: String = "",
-    val accountValidationState: State<NameEnquiry> = State.Initial,
+    val accountValidationState: State<AccountNameEnquiry> = State.Initial,
     val bankListState: State<List<Bank>> = State.Initial,
 ) {
     val isContinueButtonEnabled: Boolean

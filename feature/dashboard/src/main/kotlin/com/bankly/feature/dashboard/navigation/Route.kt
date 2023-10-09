@@ -3,7 +3,7 @@ package com.bankly.feature.dashboard.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.feature.dashboard.model.QuickAction
+import com.bankly.feature.dashboard.model.Feature
 import com.bankly.feature.dashboard.ui.home.HomeTab
 import com.bankly.feature.dashboard.ui.more.MoreRoute
 import com.bankly.feature.dashboard.ui.pos.PosTab
@@ -19,7 +19,7 @@ internal const val moreRoute = dashBoardRoute.plus("/more_screen")
 
 internal fun NavGraphBuilder.homeRoute(
     currentHomeTab: DashboardTab,
-    onQuickActionCardClick: (QuickAction) -> Unit,
+    onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
 ) {
     composable(route = homeRoute) {
@@ -32,7 +32,7 @@ internal fun NavGraphBuilder.homeRoute(
 
             DashboardTab.Home -> {
                 HomeTab(
-                    onQuickActionCardClick = onQuickActionCardClick,
+                    onFeatureCardClick = onFeatureClick,
                 )
             }
         }
@@ -51,8 +51,12 @@ internal fun NavGraphBuilder.supportRoute() {
     }
 }
 
-internal fun NavGraphBuilder.moreRoute() {
+internal fun NavGraphBuilder.moreRoute(
+    onFeatureClick: (Feature) -> Unit,
+) {
     composable(route = moreRoute) {
-        MoreRoute()
+        MoreRoute(
+            onFeatureCardClick = onFeatureClick
+        )
     }
 }

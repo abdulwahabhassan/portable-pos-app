@@ -15,7 +15,8 @@
         android:roundIcon="@drawable/ic_bankly_app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.BanklySplash"
-        tools:targetApi="33">
+        tools:targetApi="33"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

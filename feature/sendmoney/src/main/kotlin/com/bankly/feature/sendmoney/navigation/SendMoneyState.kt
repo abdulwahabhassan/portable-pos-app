@@ -11,12 +11,12 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 internal fun rememberSendMoneyState(
     navHostController: NavHostController = rememberNavController(),
-): MutableState<PayWithCardState> {
+): MutableState<SendMoneyState> {
     return remember(
         navHostController,
     ) {
         mutableStateOf(
-            PayWithCardState(
+            SendMoneyState(
                 navHostController = navHostController,
             ),
         )
@@ -24,6 +24,6 @@ internal fun rememberSendMoneyState(
 }
 
 @Stable
-internal data class PayWithCardState(
+internal data class SendMoneyState(
     val navHostController: NavHostController,
 )

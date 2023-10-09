@@ -52,5 +52,6 @@ object BanklySuccessColor {
 }
 
 object PreviewColor {
-    const val background: Long = 0xFFFFFFFF
+    const val white: Long = 0xFFFFFFFF
+    const val grey: Long = 0xFFFBFBFF
 }

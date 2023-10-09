@@ -48,7 +48,7 @@ fun BanklyClickableText(
             )
             .padding(vertical = 4.dp, horizontal = 12.dp),
         text = text,
-        style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary),
+        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
     )
 }
 
@@ -58,7 +58,11 @@ private fun BanklyClickableTextPreview1() {
     BanklyTheme {
         BanklyClickableText(
             text = buildAnnotatedString {
-                append("Had coffee yet? ")
+                withStyle(
+                    style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
+                ) {
+                    append("Had coffee yet? ")
+                }
                 withStyle(
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.primary,

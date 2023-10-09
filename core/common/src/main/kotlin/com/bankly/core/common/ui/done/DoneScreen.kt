@@ -26,7 +26,6 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.sealed.TransactionReceipt
 
 @Composable
 fun DoneRoute(
@@ -98,7 +97,7 @@ fun DoneScreen(
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 fun SuccessfulScreenPreview() {
     BanklyTheme {
         DoneScreen(

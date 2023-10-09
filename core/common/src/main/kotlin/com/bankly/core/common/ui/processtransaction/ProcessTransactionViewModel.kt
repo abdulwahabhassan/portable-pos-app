@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.TransactionType
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
-import com.bankly.core.domain.usecase.TransferUseCase
+import com.bankly.core.domain.usecase.BankTransferUseCase
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProcessTransactionViewModel @Inject constructor(
-    private val transferUseCase: TransferUseCase,
+    private val bankTransferUseCase: BankTransferUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<ProcessTransactionScreenEvent, ProcessTransactionScreenState, ProcessTransactionScreenOneShotState>(
     ProcessTransactionScreenState(),
@@ -26,7 +26,7 @@ class ProcessTransactionViewModel @Inject constructor(
             is ProcessTransactionScreenEvent.ProcessTransaction -> {
                 when (event.transactionData.transactionType) {
                     TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER -> {
-                        transferUseCase.performTransferToAccountNumber(
+                        bankTransferUseCase.performTransferToAccountNumber(
                             userPreferencesDataStore.data().token,
                             event.transactionData.toAccountNumberTransferData(),
                         ).onEach { resource ->
@@ -55,7 +55,7 @@ class ProcessTransactionViewModel @Inject constructor(
                     }
 
                     TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER -> {
-                        transferUseCase.performPhoneNumberTransfer(
+                        bankTransferUseCase.performPhoneNumberTransfer(
                             userPreferencesDataStore.data().token,
                             event.transactionData.toPhoneNumberTransferData(),
                         ).onEach { resource ->

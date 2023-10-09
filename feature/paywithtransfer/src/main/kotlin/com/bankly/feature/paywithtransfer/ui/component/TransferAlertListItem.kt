@@ -79,7 +79,7 @@ internal fun TransferAlertListItem(
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.background)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun TransferAlertListItemPreview() {
     BanklyTheme {
         TransferAlertListItem(

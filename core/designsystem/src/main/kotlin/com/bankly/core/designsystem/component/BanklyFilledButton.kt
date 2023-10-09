@@ -41,7 +41,7 @@ fun BanklyFilledButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
             overflow = TextOverflow.Ellipsis,
         )
     }

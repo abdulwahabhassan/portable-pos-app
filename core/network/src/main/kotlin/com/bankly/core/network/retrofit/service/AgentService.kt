@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface AgentService {
     @GET("get/Agent/findBy/{phoneNumber}")
-    suspend fun performNameEnquiry(
+    suspend fun performAccountNameEnquiry(
         @Header("Authorization") token: String,
         @Path("phoneNumber") phoneNumber: String,
     ): NetworkResponse<AgentResult>

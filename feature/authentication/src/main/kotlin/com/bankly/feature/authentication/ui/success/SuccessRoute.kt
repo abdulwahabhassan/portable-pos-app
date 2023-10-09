@@ -79,7 +79,7 @@ fun SuccessfulScreen(
             Text(
                 text = subMessage,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.tertiary),
+                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
             )
         }
         Box(

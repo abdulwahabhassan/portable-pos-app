@@ -51,7 +51,6 @@ internal fun LoginRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreen(
     onLoginSuccess: () -> Unit,
@@ -115,9 +114,13 @@ internal fun LoginScreen(
 
                     BanklyClickableText(
                         text = buildAnnotatedString {
-                            append(stringResource(R.string.msg_forgot_passcode))
                             withStyle(
-                                style = MaterialTheme.typography.bodyLarge.copy(
+                                style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
+                            ) {
+                                append(stringResource(R.string.msg_forgot_passcode))
+                            }
+                            withStyle(
+                                style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.primary,
                                 ).toSpanStyle(),
                             ) { append(stringResource(R.string.action_recover_passcode)) }

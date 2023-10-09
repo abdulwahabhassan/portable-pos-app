@@ -83,6 +83,28 @@ sealed class TransactionReceipt(
         msg = message,
     )
 
+    @Serializable
+    data class BillPayment(
+        val senderAccountName: String,
+        val senderAccountNumber: String,
+        val senderBankName: String,
+        val amount: String,
+        val reference: String,
+        val receiverAccountNumber: String,
+        val message: String,
+        val receiverName: String,
+        val receiverBankName: String,
+        val dateCreated: String,
+        val statusName: String,
+        val sessionId: String,
+    ) : TransactionReceipt(
+        acctName = senderAccountName,
+        acctNumber = senderAccountNumber,
+        bank = senderBankName,
+        amt = amount,
+        ref = reference,
+        msg = message,
+    )
 
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
@@ -124,25 +146,18 @@ sealed class TransactionReceipt(
                 "Sender Name" to this.senderAccountName,
                 "Sender Bank" to this.senderBankName,
             )
-        }
-    }
 
-    companion object {
-        fun mockBankTransfer(): BankTransfer {
-            return BankTransfer(
-                accountName = "Hassan Abdulwahab",
-                accountNumber = "0428295437",
-                bankName = "GTBANK",
-                amount = "100.00",
-                reference = "177282",
-                phoneNumber = "08123939291",
-                sourceWallet = 1,
-                paymentGateway = 18,
-                message = "Transfer Completed Successfully",
-                beneficiaryAccount = "0428094437",
-                sourceWalletName = "Main",
-                dateCreated = "2023-08-15T21:14:40.5225813Z",
-                statusName = "", sessionId = "Successful",
+            is BillPayment ->mapOf(
+                "Transaction Type" to "Bill Payment",
+                "Bill Type" to "Airtine",
+                "Status" to this.statusName,
+                "Description" to this.message,
+                "Session ID" to this.sessionId,
+                "Transaction REF" to this.reference,
+                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
+                "Sender Account" to this.receiverName,
+                "Sender Name" to this.senderAccountName,
+                "Sender Bank" to this.senderBankName,
             )
         }
     }

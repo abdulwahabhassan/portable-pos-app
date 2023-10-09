@@ -101,17 +101,21 @@ internal fun OtpValidationScreen(
                     text = if (screenState.ticks == 0) {
                         buildAnnotatedString {
                             withStyle(
-                                style = MaterialTheme.typography.bodyLarge.copy(
+                                style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.primary,
                                 ).toSpanStyle(),
                             ) { append(stringResource(R.string.action_resend_code)) }
                         }
                     } else {
                         buildAnnotatedString {
-                            append(stringResource(R.string.msg_resend_code_in))
+                            withStyle(
+                                style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
+                            ) {
+                                append(stringResource(R.string.msg_resend_code_in))
+                            }
                             append(" ")
                             withStyle(
-                                style = MaterialTheme.typography.bodyLarge.copy(
+                                style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.primary,
                                 ).toSpanStyle(),
                             ) { append("${screenState.ticks}s") }

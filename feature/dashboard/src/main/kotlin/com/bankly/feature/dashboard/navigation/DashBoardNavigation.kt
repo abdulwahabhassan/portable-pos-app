@@ -11,12 +11,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.feature.dashboard.model.QuickAction
+import com.bankly.feature.dashboard.model.Feature
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
 fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
-    onQuickActionCardClick: (QuickAction) -> Unit,
+    onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
 ) {
     navigation(
@@ -37,11 +37,11 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         currentHomeTab = dashBoardState.currentTab,
                         modifier = Modifier.padding(padding),
                         navHostController = dashBoardState.navHostController,
-                        onQuickActionCardClick = { quickAction: QuickAction ->
-                            if (quickAction == QuickAction.PayWithCard) {
+                        onFeatureClick = { feature: Feature ->
+                            if (feature == Feature.PayWithCard) {
                                 dashBoardState = dashBoardState.copy(currentTab = DashboardTab.POS)
                             } else {
-                                onQuickActionCardClick(quickAction)
+                                onFeatureClick(feature)
                             }
                         },
                         onContinueToPayWithCardClick = onContinueToPayWithCardClick,
@@ -62,7 +62,7 @@ fun DashBoardBottomNavHost(
     currentHomeTab: DashboardTab,
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    onQuickActionCardClick: (QuickAction) -> Unit,
+    onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
 ) {
     NavHost(
@@ -72,11 +72,13 @@ fun DashBoardBottomNavHost(
     ) {
         homeRoute(
             currentHomeTab = currentHomeTab,
-            onQuickActionCardClick = onQuickActionCardClick,
+            onFeatureClick = onFeatureClick,
             onContinueToPayWithCardClick = onContinueToPayWithCardClick,
         )
         transactionsRoute()
         supportRoute()
-        moreRoute()
+        moreRoute(
+            onFeatureClick = onFeatureClick
+        )
     }
 }

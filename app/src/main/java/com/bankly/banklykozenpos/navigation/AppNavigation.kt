@@ -9,8 +9,9 @@ import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
-import com.bankly.feature.dashboard.model.QuickAction
+import com.bankly.feature.dashboard.model.Feature
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
+import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
@@ -36,13 +37,20 @@ fun AppNavHost(
         )
         dashBoardNavGraph(
             onBackPress = onBackPress,
-            onQuickActionCardClick = { quickAction: QuickAction ->
+            onFeatureClick = { feature: Feature ->
                 appState.navigateTo(
-                    when (quickAction) {
-                        QuickAction.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
-                        QuickAction.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
-                        QuickAction.CardTransfer -> TopLevelDestination.CARD_TRANSFER
-                        QuickAction.SendMoney -> TopLevelDestination.SEND_MONEY
+                    when (feature) {
+                        Feature.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
+                        Feature.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
+                        Feature.CardTransfer -> TopLevelDestination.CARD_TRANSFER
+                        Feature.SendMoney -> TopLevelDestination.SEND_MONEY
+                        Feature.PayBills -> TopLevelDestination.PAY_BILLS
+                        Feature.CheckBalance -> TODO()
+                        Feature.PayWithUssd -> TODO()
+                        Feature.Float -> TODO()
+                        Feature.EndOfDay -> TODO()
+                        Feature.NetworkChecker -> TODO()
+                        Feature.Settings -> TODO()
                     },
                 )
             },
@@ -73,13 +81,18 @@ fun AppNavHost(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onForgotPinClick = {
-            },
+            onForgotPinClick = {},
         )
         payWithTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
+        )
+        billPaymentNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            },
+            onForgotPinClick = {}
         )
     }
 }

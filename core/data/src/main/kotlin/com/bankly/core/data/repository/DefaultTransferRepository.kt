@@ -12,7 +12,7 @@ import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.entity.Bank
-import com.bankly.core.entity.NameEnquiry
+import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.FundTransferService
@@ -84,11 +84,11 @@ class DefaultTransferRepository @Inject constructor(
         }
     }
 
-    override suspend fun performNameEnquiry(
+    override suspend fun performBankAccountNameEnquiry(
         token: String,
         accountNumber: String,
         bankId: String,
-    ): Flow<Resource<NameEnquiry>> = flow {
+    ): Flow<Resource<AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -97,7 +97,7 @@ class DefaultTransferRepository @Inject constructor(
                     networkMonitor = networkMonitor,
                     json = json,
                     apiRequest = {
-                        fundTransferService.performNameEnquiry(
+                        fundTransferService.performBankAccountNameEnquiry(
                             token = token,
                             accountNumber = accountNumber,
                             bankId = bankId,
@@ -111,10 +111,10 @@ class DefaultTransferRepository @Inject constructor(
         }
     }
 
-    override suspend fun performNameEnquiry(
+    override suspend fun performBankAccountNameEnquiry(
         token: String,
         phoneNumber: String,
-    ): Flow<Resource<NameEnquiry>> = flow {
+    ): Flow<Resource<AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -123,7 +123,7 @@ class DefaultTransferRepository @Inject constructor(
                     networkMonitor = networkMonitor,
                     json = json,
                     apiRequest = {
-                        agentService.performNameEnquiry(
+                        agentService.performAccountNameEnquiry(
                             token = token,
                             phoneNumber = phoneNumber,
                         )
@@ -136,7 +136,9 @@ class DefaultTransferRepository @Inject constructor(
         }
     }
 
-    override suspend fun getBanks(token: String): Flow<Resource<List<Bank>>> = flow {
+    override suspend fun getBanks(
+        token: String
+    ): Flow<Resource<List<Bank>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(

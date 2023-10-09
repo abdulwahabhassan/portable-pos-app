@@ -45,6 +45,7 @@ internal fun NewBeneficiaryView(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
+            Spacer(modifier = Modifier.padding(top = 16.dp))
             if (channel == SendMoneyChannel.BANKLY_TO_BANKLY) {
                 BanklySelectionDialogMenu(
                     label = stringResource(id = R.string.msg_type_label),

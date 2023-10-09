@@ -21,11 +21,16 @@ suspend fun <T> handleRequest(
         try {
             Result.Success(apiRequest.invoke())
         } catch (e: HttpException) {
-            val response = handleHttpException(e, json)
-            Result.Error(
-                message = response?.validationMessages?.joinToString(", \n")
-                    ?: response?.message ?: "Something went wrong!",
-            )
+            if (e.code() == 401) {
+                Result.Error(message = "Session expired! Please logout and login again to continue")
+            } else {
+                val response = handleHttpException(e, json)
+                Result.Error(
+                    message = response?.validationMessages?.joinToString(", \n")
+                        ?: response?.message ?: "Something went wrong!",
+                )
+            }
+
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "Something went wrong!")
         }
