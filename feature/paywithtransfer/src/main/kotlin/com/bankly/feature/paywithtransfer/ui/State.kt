@@ -8,7 +8,7 @@ internal data class PayWithTransferScreenState(
     val isRecentFundsLoading: Boolean = false,
     val isAgentAccountDetailsLoading: Boolean = false,
     val agentAccountDetails: AgentAccountDetails? = null,
-    val isAccountDetailsExpanded: Boolean = false,
+    val isAccountDetailsExpanded: Boolean = true,
     val recentFunds: List<RecentFund> = emptyList(),
     val showRecentFundDialog: Boolean = false,
     val selectedRecentFund: RecentFund? = null,

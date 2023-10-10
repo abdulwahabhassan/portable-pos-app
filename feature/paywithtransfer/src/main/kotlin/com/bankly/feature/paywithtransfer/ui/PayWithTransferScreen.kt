@@ -80,7 +80,6 @@ private fun PayWithTransferScreen(
                     AccountDetailsView(
                         isLoading = screenState.isAgentAccountDetailsLoading,
                         accountDetails = it,
-                        onBackPress = onBackPress,
                         isExpanded = screenState.isAccountDetailsExpanded,
                         onExpandIconClick = { currentState ->
                             onUiEvent(

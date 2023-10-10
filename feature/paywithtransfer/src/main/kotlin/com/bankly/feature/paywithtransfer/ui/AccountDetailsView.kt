@@ -30,14 +30,11 @@ import com.bankly.feature.paywithtransfer.R
 
 @Composable
 internal fun AccountDetailsView(
-    onBackPress: () -> Unit,
     isExpanded: Boolean,
     onExpandIconClick: (Boolean) -> Unit,
     isLoading: Boolean,
     accountDetails: AgentAccountDetails,
 ) {
-
-
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -140,7 +137,6 @@ internal fun AccountDetailsView(
 private fun AccountDetailsPreview() {
     BanklyTheme {
         AccountDetailsView(
-            onBackPress = {},
             isExpanded = true,
             onExpandIconClick = {},
             isLoading = false,
