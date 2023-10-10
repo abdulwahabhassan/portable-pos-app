@@ -31,6 +31,7 @@ fun BanklyClickableIcon(
     color: Color = Color.Unspecified,
     rippleColor: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = MaterialTheme.shapes.small,
+    enabled: Boolean = true,
 ) {
     Icon(
         painter = painterResource(id = icon),
@@ -40,7 +41,7 @@ fun BanklyClickableIcon(
             .clip(shape)
             .clickable(
                 onClick = onClick,
-                enabled = true,
+                enabled = enabled,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(

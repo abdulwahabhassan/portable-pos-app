@@ -3,10 +3,12 @@ package com.bankly.core.data.util
 import com.bankly.core.entity.Bank
 import com.bankly.core.entity.Message
 import com.bankly.core.entity.AccountNameEnquiry
+import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
 import com.bankly.core.entity.User
@@ -25,7 +27,8 @@ import com.bankly.core.network.model.result.CableTvNameEnquiryResult
 import com.bankly.core.network.model.result.MeterNameEnquiryResult
 import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
-import com.bankly.core.network.model.result.WalletResult
+import com.bankly.core.network.model.result.RecentFundResult
+import com.bankly.core.network.model.result.AgentAccountResult
 import com.bankly.core.sealed.TransactionReceipt
 
 fun AuthenticatedUserResult.asUser() = User(
@@ -47,12 +50,17 @@ fun MessageResult.asMessage() = Message(
     message = message ?: "",
 )
 
-fun WalletResult.asUserWallet() = UserWallet(
+fun AgentAccountResult.asUserWallet() = UserWallet(
     accountBalance = currentBalance,
     bankName = fundingSourceName,
     accountNumber = fundingAccountNumber,
     accountName = name,
 )
+
+fun AgentAccountResult.asAgentAccountDetails() = AgentAccountDetails(
+    fundingAccountNumber = fundingAccountNumber, name = name, fundingSourceName = fundingSourceName
+)
+
 
 fun BankResult.asBank() = Bank(
     name = name,
@@ -77,7 +85,7 @@ fun AgentResult.asNameEnquiry() = AccountNameEnquiry(
 
 fun AccountNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTransfer(
     phoneNumber = phoneNumber ?: "",
-    amount = amount.toString(),
+    amount = amount ?: 0.00,
     reference = reference ?: "",
     accountNumber = accountNumber ?: "",
     sourceWallet = sourceWallet ?: 0,
@@ -94,7 +102,7 @@ fun AccountNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTra
 
 fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTransfer(
     phoneNumber = accountNumber ?: "",
-    amount = amount.toString(),
+    amount = amount ?: 0.00,
     reference = reference ?: "",
     accountNumber = accountNumber ?: "",
     sourceWallet = 0,
@@ -186,4 +194,22 @@ fun BillPaymentResult.asBillPayment() = TransactionReceipt.BillPayment(
     commission = commission ?: 0.00,
     billToken = billToken ?: "",
     isTokenType = isTokenType ?: false
+)
+
+fun RecentFundResult.asRecentFund() = RecentFund(
+    transactionReference = transactionReference ?: "",
+    amount = amount ?: 0.00,
+    accountReference = accountReference ?: "",
+    paymentDescription = paymentDescription ?: "",
+    transactionHash = transactionHash ?: "",
+    senderAccountNumber = senderAccountNumber ?: "",
+    senderAccountName = senderAccountName ?: "",
+    sessionId = sessionId ?: "",
+    phoneNumber = phoneNumber ?: "",
+    userId = userId ?: "",
+    transactionDate = transactionDate ?: "",
+    senderBankName = senderBankName ?: "",
+    receiverBankName = receiverBankName ?: "",
+    receiverAccountNumber = receiverAccountNumber ?: "",
+    receiverAccountName = receiverAccountName ?: ""
 )

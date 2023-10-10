@@ -1,17 +1,22 @@
 package com.bankly.feature.paywithtransfer.ui
 
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.feature.paywithtransfer.model.TransferAlert
+import com.bankly.core.entity.AgentAccountDetails
+import com.bankly.core.entity.RecentFund
 
 internal data class PayWithTransferScreenState(
-    val isLoading: Boolean = false,
-    val accountDetails: String = "",
+    val isRecentFundsLoading: Boolean = false,
+    val isAgentAccountDetailsLoading: Boolean = false,
+    val agentAccountDetails: AgentAccountDetails? = null,
     val isAccountDetailsExpanded: Boolean = false,
-    val transferAlertList: List<TransferAlert> = emptyList(),
-    val showTransferAlertDialog: Boolean = false,
-    val selectedTransferAlert: TransferAlert? = null
-)
-
-internal sealed interface  PayWithTransferScreenOneShotState : OneShotState {
-    data class ShowErrorDialog(val transferAlert: TransferAlert) : PayWithTransferScreenOneShotState
+    val recentFunds: List<RecentFund> = emptyList(),
+    val showRecentFundDialog: Boolean = false,
+    val selectedRecentFund: RecentFund? = null,
+    val showErrorDialog: Boolean = false,
+    val errorDialogMessage: String = ""
+) {
+    val isLoading: Boolean
+        get() = isRecentFundsLoading || isAgentAccountDetailsLoading
 }
+
+internal sealed interface PayWithTransferScreenOneShotState : OneShotState

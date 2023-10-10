@@ -8,9 +8,26 @@ import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
 
 interface TransferRepository {
-    suspend fun performTransferToAccountNumber(token: String, body: BankTransferData): Flow<Resource<TransactionReceipt.BankTransfer>>
-    suspend fun performPhoneNumberTransfer(token: String, body: BankTransferData): Flow<Resource<TransactionReceipt.BankTransfer>>
-    suspend fun performBankAccountNameEnquiry(token: String, accountNumber: String, bankId: String): Flow<Resource<AccountNameEnquiry>>
-    suspend fun performBankAccountNameEnquiry(token: String, phoneNumber: String): Flow<Resource<AccountNameEnquiry>>
+    suspend fun performTransferToAccountNumber(
+        token: String,
+        body: BankTransferData
+    ): Flow<Resource<TransactionReceipt.BankTransfer>>
+
+    suspend fun performPhoneNumberTransfer(
+        token: String,
+        body: BankTransferData
+    ): Flow<Resource<TransactionReceipt.BankTransfer>>
+
+    suspend fun performBankAccountNameEnquiry(
+        token: String,
+        accountNumber: String,
+        bankId: String
+    ): Flow<Resource<AccountNameEnquiry>>
+
+    suspend fun performBankAccountNameEnquiry(
+        token: String,
+        phoneNumber: String
+    ): Flow<Resource<AccountNameEnquiry>>
+
     suspend fun getBanks(token: String): Flow<Resource<List<Bank>>>
 }

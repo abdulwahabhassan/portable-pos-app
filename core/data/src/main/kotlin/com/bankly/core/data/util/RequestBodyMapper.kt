@@ -4,7 +4,10 @@ import com.bankly.core.data.BankTransferData
 import com.bankly.core.data.BillPaymentData
 import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.GetRecentFundingData
 import com.bankly.core.data.ResetPassCodeData
+import com.bankly.core.data.SendReceiptData
+import com.bankly.core.data.SyncRecentFundingData
 import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.data.ValidateOtpData
@@ -12,7 +15,10 @@ import com.bankly.core.network.model.request.BankTransferRequestBody
 import com.bankly.core.network.model.request.BillPaymentRequestBody
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
+import com.bankly.core.network.model.request.GetRecentFundingRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
+import com.bankly.core.network.model.request.SendReceiptRequestBody
+import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
 import com.bankly.core.network.model.request.ValidateElectricityMeterNumberRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
@@ -41,36 +47,36 @@ fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
 )
 
 fun BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
-        is BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
-            accountName = accountName,
-            accountNumber = accountNumber,
-            bankId = bankId,
-            bankName = bankName,
-            narration = narration,
-            phoneNumber = phoneNumber,
-            amountToSend = amountToSend,
-            otp = otp,
-            channel = channel,
-            clientRequestId = clientRequestId,
-            securityQuestionId = securityQuestionId,
-            securityQuestionResponse = securityQuestionResponse,
-            deviceId = deviceId,
-            isWeb = isWeb,
-            senderName = senderName,
-        )
+    is BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
+        accountName = accountName,
+        accountNumber = accountNumber,
+        bankId = bankId,
+        bankName = bankName,
+        narration = narration,
+        phoneNumber = phoneNumber,
+        amountToSend = amountToSend,
+        otp = otp,
+        channel = channel,
+        clientRequestId = clientRequestId,
+        securityQuestionId = securityQuestionId,
+        securityQuestionResponse = securityQuestionResponse,
+        deviceId = deviceId,
+        isWeb = isWeb,
+        senderName = senderName,
+    )
 
-        is BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
-            amount = amount,
-            recipientAccount = recipientAccount,
-            pin = pin,
-            otp = otp,
-            securityQuestionId = securityQuestionId,
-            securityQuestionResponse = securityQuestionResponse,
-            clientRequestId = clientRequestId,
-            deviceId = deviceId,
-            channel = channel,
-        )
-    }
+    is BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
+        amount = amount,
+        recipientAccount = recipientAccount,
+        pin = pin,
+        otp = otp,
+        securityQuestionId = securityQuestionId,
+        securityQuestionResponse = securityQuestionResponse,
+        clientRequestId = clientRequestId,
+        deviceId = deviceId,
+        channel = channel,
+    )
+}
 
 fun BillPaymentData.asRequestBody() = BillPaymentRequestBody(
     billItemId = billItemId,
@@ -99,3 +105,14 @@ fun ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMete
     billItemId = billItemId
 )
 
+fun GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
+    updateOnFetch = updateOnFetch, serialNumber = serialNumber, location = location
+)
+
+fun SendReceiptData.asRequestBody() = SendReceiptRequestBody(
+    sessionId = sessionId, beneficiary = beneficiary, routeType = routeType
+)
+
+fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
+    sessionId = sessionId, serialNumber = serialNumber, location = location
+)

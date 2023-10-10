@@ -1,11 +1,11 @@
 package com.bankly.core.sealed
 
-import com.bankly.core.util.Formatter
+import com.bankly.core.util.Formatter.formatServerDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class TransactionReceipt (
-    val transactionAmount: String,
+    val transactionAmount: Double,
     val transactionMessage: String,
 ){
     @Serializable
@@ -13,7 +13,7 @@ sealed class TransactionReceipt (
         val accountName: String,
         val accountNumber: String,
         val bankName: String,
-        val amount: String,
+        val amount: Double,
         val reference: String,
         val phoneNumber: String,
         val sourceWallet: Long,
@@ -34,7 +34,7 @@ sealed class TransactionReceipt (
         val cardHolderName: String,
         val cardNumber: String,
         val cardType: String,
-        val amount: String,
+        val amount: Double,
         val reference: String,
         val statusName: String,
         val message: String,
@@ -53,7 +53,7 @@ sealed class TransactionReceipt (
         val senderAccountName: String,
         val senderAccountNumber: String,
         val senderBankName: String,
-        val amount: String,
+        val amount: Double,
         val reference: String,
         val receiverAccountNumber: String,
         val message: String,
@@ -91,7 +91,7 @@ sealed class TransactionReceipt (
         val billToken: String,
         val isTokenType: Boolean
     ) : TransactionReceipt(
-        transactionAmount = amount.toString(),
+        transactionAmount = amount,
         transactionMessage = description
     )
 
@@ -104,7 +104,7 @@ sealed class TransactionReceipt (
                 "Description" to this.message,
                 "Session ID" to this.sessionId,
                 "Transaction REF" to this.reference,
-                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
+                "Date/Time" to formatServerDateTime(this.dateCreated),
                 "Sender Phone" to this.phoneNumber,
                 "Receiver Account" to this.beneficiaryAccount,
                 "Receiver Name" to this.accountName,
@@ -117,7 +117,7 @@ sealed class TransactionReceipt (
                 "Description" to this.message,
                 "Terminal ID" to this.terminalId,
                 "Transaction REF" to this.cardType,
-                "Date/Time" to Formatter.formatServerDateTime(this.dateTime),
+                "Date/Time" to formatServerDateTime(this.dateTime),
                 "Response Code" to this.responseCode,
                 "RRN" to this.rrn,
                 "STAN" to this.stan,
@@ -130,7 +130,7 @@ sealed class TransactionReceipt (
                 "Description" to this.message,
                 "Session ID" to this.sessionId,
                 "Transaction REF" to this.reference,
-                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
+                "Date/Time" to formatServerDateTime(this.dateCreated),
                 "Sender Account" to this.receiverName,
                 "Sender Name" to this.senderAccountName,
                 "Sender Bank" to this.senderBankName,
@@ -139,7 +139,7 @@ sealed class TransactionReceipt (
             is BillPayment -> mapOf(
                 "Transaction Type" to "Bill Payment",
                 "Bill Type" to this.transactionType,
-                "Date/Time" to Formatter.formatServerDateTime(this.paidOn),
+                "Date/Time" to formatServerDateTime(this.paidOn),
                 "Provider" to this.billName,
                 "Plan" to this.billItemName,
                 getPaidForTitle(this.transactionType) to this.paidFor,

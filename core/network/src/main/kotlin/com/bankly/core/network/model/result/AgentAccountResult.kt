@@ -3,7 +3,7 @@ package com.bankly.core.network.model.result
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WalletResult(
+data class AgentAccountResult(
     val id: Long,
     val accountNumber: String,
     val code: String,

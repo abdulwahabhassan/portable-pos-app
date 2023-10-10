@@ -6,6 +6,7 @@ import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
+import com.bankly.core.data.util.asAgentAccountDetails
 import com.bankly.core.data.util.asMessage
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.asStatus
@@ -17,6 +18,7 @@ import com.bankly.core.data.util.handleResponse
 import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.data.util.handleTokenResponse
 import com.bankly.core.domain.repository.UserRepository
+import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.Message
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
@@ -144,12 +146,31 @@ class DefaultUserRepository @Inject constructor(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
                     json = json,
-                    apiRequest = { walletService.getWallet(token) },
+                    apiRequest = { walletService.getAgentAccount(token) },
                 ),
             )
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asUserWallet()))
+        }
+    }
+
+    override suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>> = flow {
+        emit(Resource.Loading)
+        when (
+            val responseResult = handleResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = {
+                        walletService.getAgentAccount(token = token)
+                    },
+                ),
+            )
+        ) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asAgentAccountDetails()))
         }
     }
 }

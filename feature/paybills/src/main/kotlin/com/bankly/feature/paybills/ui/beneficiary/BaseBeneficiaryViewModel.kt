@@ -53,10 +53,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 validateCableTvNumberData.cardNumber.isEmpty()
             }
             .onEach { validateCableTvNumberData ->
-                Log.d(
-                    "debug cableTvNameEnquiryIdentifierFlow",
-                    " cableTvNameEnquiryIdentifierFlow: $validateCableTvNumberData"
-                )
                 validateCableTvNumber(validateCableTvNumberData)
 
             }.launchIn(viewModelScope)
@@ -68,10 +64,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 validateElectricityMeterNumberData.meterNumber.isEmpty()
             }
             .onEach { validateElectricityMeterNumberData ->
-                Log.d(
-                    "debug meterNameEnquiryIdentifierFlow",
-                    "meterNameEnquiryIdentifierFlow: $validateElectricityMeterNumberData"
-                )
                 validateMeterNumber(validateElectricityMeterNumberData)
             }.launchIn(viewModelScope)
     }
@@ -258,13 +250,11 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     }
                 }
                 resource.onReady { billProviders: List<BillProvider> ->
-                    Log.d("debug providers", "onReady providers: $billProviders")
                     setUiState {
                         copy(billProviderList = billProviders, isProviderListLoading = false)
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug providers", "onFailure providers: $message")
                     setUiState {
                         copy(
                             isProviderListLoading = false,
@@ -275,7 +265,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 }
             }
             .catch {
-                Log.d("debug providers", "catch providers: ${it.message}")
                 it.printStackTrace()
                 setUiState {
                     copy(
@@ -304,13 +293,11 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         }
                     }
                     resource.onReady { billPlans: List<BillPlan> ->
-                        Log.d("debug plans", "onReady plans: $billPlans")
                         setUiState {
                             copy(billPlanList = billPlans, isPlanListLoading = false)
                         }
                     }
                     resource.onFailure { message ->
-                        Log.d("debug plans", "onFailure plans: $message")
                         setUiState {
                             copy(
                                 isPlanListLoading = false,
@@ -321,7 +308,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     }
                 }
                 .catch {
-                    Log.d("debug plans", "catch plans: ${it.message}")
                     it.printStackTrace()
                     setUiState {
                         copy(

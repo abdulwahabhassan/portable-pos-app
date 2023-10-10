@@ -5,6 +5,7 @@ import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.BillsService
 import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.IdentityService
+import com.bankly.core.network.retrofit.service.PayWithTransferService
 import com.bankly.core.network.retrofit.service.TransferService
 import com.bankly.core.network.retrofit.service.WalletService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -115,5 +116,21 @@ object RetrofitModule {
             )
             .build()
             .create(BillsService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesPayWithTransferService(
+        client: OkHttpClient,
+        json: Json,
+    ): PayWithTransferService {
+        return Retrofit.Builder()
+            .baseUrl(BanklyBaseUrl.PayWithTransfer.value)
+            .client(client)
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+            .create(PayWithTransferService::class.java)
     }
 }

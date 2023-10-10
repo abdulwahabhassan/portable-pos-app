@@ -9,7 +9,6 @@ import com.bankly.core.network.model.result.CableTvNameEnquiryResult
 import com.bankly.core.network.model.result.MeterNameEnquiryResult
 import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
-import com.bankly.core.network.retrofit.model.Any
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

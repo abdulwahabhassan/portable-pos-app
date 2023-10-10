@@ -8,7 +8,7 @@ fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {
         cardHolderName = this.cardHolderName ?: "",
         cardNumber = this.maskedCardNo ?: "",
         cardType = this.appLabel ?: "",
-        amount = this.amount,
+        amount = this.amount.toDouble(),
         reference = this.transactionReference ?: "",
         statusName = if (this.responseCode == "00" && responseMessage?.contains(
                 "transaction approved",

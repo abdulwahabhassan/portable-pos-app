@@ -209,7 +209,7 @@ fun TransactionDetailsScreenPreview() {
                 "Hassan Abdulwahab",
                 "0428295437",
                 "GTBANK",
-                "100.00",
+                100.00,
                 "177282",
                 "08123939291",
                 1,

@@ -7,4 +7,6 @@
     <string name="msg_pop_up_box_hint">A popup box will appear to confirm transfer from customers</string>
     <string name="pay_with_transfer">Pay With Transfer</string>
     <string name="symbol_plus_sign">+</string>
+    <string name="title_error">Error</string>
+    <string name="action_dismiss">Dismiss</string>
 </resources>

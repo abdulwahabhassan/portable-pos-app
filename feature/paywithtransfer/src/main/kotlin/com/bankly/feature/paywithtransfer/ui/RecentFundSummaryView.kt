@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,29 +23,37 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.util.Formatter
+import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
+import com.bankly.core.entity.RecentFund
 import com.bankly.core.sealed.TransactionReceipt
-import com.bankly.feature.paywithtransfer.model.TransferAlert
 
 @Composable
-internal fun TransferAlertView(
-    transferAlert: TransferAlert,
+internal fun RecentFundSummaryView(
+    recentFund: RecentFund,
     onViewTransactionDetailsClick: (TransactionReceipt.PayWithTransfer) -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
+    onCloseIconClick: () -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
+        BanklyClickableIcon(
+            modifier = Modifier.align(Alignment.End).padding(16.dp),
+            icon = BanklyIcons.Close,
+            onClick = onCloseIconClick
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 48.dp),
+                .padding(start = 24.dp, end = 24.dp, bottom = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             Icon(
+                modifier = Modifier.size(70.dp),
                 painter = painterResource(id = BanklyIcons.Successful),
                 contentDescription = null,
                 tint = Color.Unspecified
@@ -65,10 +74,12 @@ internal fun TransferAlertView(
                         MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
                             .toSpanStyle()
                     ) {
-                        append(Formatter.formatAmount(
-                            value = transferAlert.amount,
-                            includeNairaSymbol = true
-                        ))
+                        append(
+                            Formatter.formatAmount(
+                                value = recentFund.amount,
+                                includeNairaSymbol = true
+                            )
+                        )
                     }
                     append("\n")
                     append("from")
@@ -77,7 +88,7 @@ internal fun TransferAlertView(
                         MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
                             .toSpanStyle()
                     ) {
-                        append(transferAlert.sender)
+                        append(recentFund.senderAccountName)
                     }
                 })
             Spacer(modifier = Modifier.height(24.dp))
@@ -85,13 +96,14 @@ internal fun TransferAlertView(
                 modifier = Modifier.fillMaxWidth(),
                 text = "View Transaction Details",
                 onClick = {
-                    onViewTransactionDetailsClick(transferAlert.toTransactionReceipt())
+                    onViewTransactionDetailsClick(recentFund.toTransactionReceipt())
                 })
             Spacer(modifier = Modifier.height(16.dp))
             BanklyOutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Go To Home",
-                onClick = onGoToHomeClick)
+                onClick = onGoToHomeClick
+            )
         }
     }
 
@@ -99,11 +111,29 @@ internal fun TransferAlertView(
 
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
 @Composable
-private fun TransferAlertPreview() {
+private fun RecentFundSummaryPreview() {
     BanklyTheme {
-        TransferAlertView(
-            TransferAlert.mock().first(),
+        RecentFundSummaryView(
+            RecentFund(
+                transactionReference = "389030022838200",
+                amount = 20.00,
+                accountReference = "73783899",
+                paymentDescription = "Transfer from Mate",
+                transactionHash = "02993920302",
+                senderAccountNumber = "637820102",
+                senderAccountName = "Mate Blake",
+                sessionId = "12436810229",
+                phoneNumber = "0812345678",
+                userId = "0020020002",
+                transactionDate = "2020-12-16T08:02:31.437",
+                senderBankName = "Bankly MFB",
+                receiverBankName = "Bankly MFB",
+                receiverAccountNumber = "3000291002",
+                receiverAccountName = "John Doe",
+            ),
             onViewTransactionDetailsClick = {},
-            onGoToHomeClick = {})
+            onGoToHomeClick = {},
+            onCloseIconClick = {}
+            )
     }
 }

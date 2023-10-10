@@ -25,6 +25,7 @@ import com.bankly.core.designsystem.component.BanklyInfoText
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
+import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.feature.paywithtransfer.R
 
 @Composable
@@ -32,8 +33,10 @@ internal fun AccountDetailsView(
     onBackPress: () -> Unit,
     isExpanded: Boolean,
     onExpandIconClick: (Boolean) -> Unit,
+    isLoading: Boolean,
+    accountDetails: AgentAccountDetails,
 ) {
-    
+
 
     Column(
         modifier = Modifier
@@ -66,10 +69,11 @@ internal fun AccountDetailsView(
                 )
             }
             BanklyClickableIcon(
-                icon = if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down,
+                icon = if (isLoading.not()) (if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down) else BanklyIcons.ValidationInProgress,
                 onClick = {
                     onExpandIconClick(isExpanded)
                 },
+                enabled = isLoading.not()
             )
         }
         AnimatedVisibility(visible = isExpanded) {
@@ -86,7 +90,7 @@ internal fun AccountDetailsView(
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                     Text(
-                        text = "5010000017",
+                        text = accountDetails.fundingAccountNumber,
                         style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                 }
@@ -103,7 +107,7 @@ internal fun AccountDetailsView(
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                     Text(
-                        text = "Josh Osazuwa",
+                        text = accountDetails.name,
                         style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                 }
@@ -120,7 +124,7 @@ internal fun AccountDetailsView(
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                     Text(
-                        text = "Bankly MFB",
+                        text = accountDetails.fundingSourceName,
                         style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
                 }
@@ -135,6 +139,16 @@ internal fun AccountDetailsView(
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun AccountDetailsPreview() {
     BanklyTheme {
-        AccountDetailsView(onBackPress = {}, isExpanded = true, onExpandIconClick = {})
+        AccountDetailsView(
+            onBackPress = {},
+            isExpanded = true,
+            onExpandIconClick = {},
+            isLoading = false,
+            accountDetails = AgentAccountDetails(
+                fundingAccountNumber = "5010000017",
+                name = "Josh Osazuwa",
+                fundingSourceName = "Bankly MFB"
+            )
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.bankly.feature.paybills.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -70,16 +71,18 @@ fun BillTypeCard(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
+                .size(140.dp)
+                .padding(16.dp)
+                .fillMaxWidth()
+                ,
         ) {
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Icon(
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(70.dp)
                         .clip(CircleShape)
                         .background(color = MaterialTheme.colorScheme.onTertiaryContainer)
-                        .padding(8.dp),
+                        .padding(12.dp),
                     painter = painterResource(id = billType.icon),
                     contentDescription = null,
                     tint = Color.Unspecified,
@@ -89,7 +92,7 @@ fun BillTypeCard(
                 Text(
                     text = billType.title,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.tertiary,
                 )
             }
         }

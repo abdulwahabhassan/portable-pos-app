@@ -2,8 +2,11 @@ package com.bankly.feature.paywithtransfer.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
@@ -13,15 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bankly.core.common.ui.view.EmptyStateView
+import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
+import com.bankly.core.entity.AgentAccountDetails
+import com.bankly.core.entity.RecentFund
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.paywithtransfer.R
-import com.bankly.feature.paywithtransfer.model.TransferAlert
-import com.bankly.feature.paywithtransfer.ui.component.TransferAlertListItem
+import com.bankly.feature.paywithtransfer.ui.component.RecentFundListItem
 
 @Composable
 internal fun PayWithTransferRoute(
@@ -54,6 +62,7 @@ private fun PayWithTransferScreen(
     Scaffold(
         topBar = {
             BanklyTitleBar(
+                isLoading = screenState.isLoading,
                 onBackPress = onBackPress,
                 title = stringResource(R.string.pay_with_transfer),
             )
@@ -67,23 +76,27 @@ private fun PayWithTransferScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             stickyHeader {
-                AccountDetailsView(
-                    onBackPress = onBackPress,
-                    isExpanded = screenState.isAccountDetailsExpanded,
-                    onExpandIconClick = { currentState ->
-                        onUiEvent(
-                            PayWithTransferScreenEvent.OnAccountDetailsExpandButtonClick(
-                                currentState
+                screenState.agentAccountDetails?.let {
+                    AccountDetailsView(
+                        isLoading = screenState.isAgentAccountDetailsLoading,
+                        accountDetails = it,
+                        onBackPress = onBackPress,
+                        isExpanded = screenState.isAccountDetailsExpanded,
+                        onExpandIconClick = { currentState ->
+                            onUiEvent(
+                                PayWithTransferScreenEvent.OnAccountDetailsExpandButtonClick(
+                                    currentState
+                                )
                             )
-                        )
-                    })
+                        })
+                }
             }
             if (screenState.isAccountDetailsExpanded.not()) {
-                items(TransferAlert.mock()) { item: TransferAlert ->
-                    TransferAlertListItem(
-                        transferAlert = item,
+                items(screenState.recentFunds) { item: RecentFund ->
+                    RecentFundListItem(
+                        recentFund = item,
                         onClick = {
-                            onUiEvent(PayWithTransferScreenEvent.OnCreditAlertSelected(item))
+                            onUiEvent(PayWithTransferScreenEvent.OnRecentFundSelected(item))
                         }
                     )
                 }
@@ -91,31 +104,61 @@ private fun PayWithTransferScreen(
         }
     }
 
-    if (screenState.showTransferAlertDialog && screenState.selectedTransferAlert != null) {
+    if (screenState.showRecentFundDialog && screenState.selectedRecentFund != null) {
         Dialog(
             onDismissRequest = {
-                onUiEvent(PayWithTransferScreenEvent.CloseTransferAlertDialog)
+                onUiEvent(PayWithTransferScreenEvent.CloseRecentFundSummaryDialog)
             },
             content = {
-                TransferAlertView(
-                    screenState.selectedTransferAlert,
+                RecentFundSummaryView(
+                    screenState.selectedRecentFund,
                     onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-                    onGoToHomeClick = onGoToHomeClick
+                    onGoToHomeClick = onGoToHomeClick,
+                    onCloseIconClick = {
+                        onUiEvent(PayWithTransferScreenEvent.CloseRecentFundSummaryDialog)
+                    }
                 )
+            }
+        )
+    }
+
+    if (screenState.showErrorDialog) {
+        BanklyActionDialog(
+            title = stringResource(R.string.title_error),
+            subtitle = screenState.errorDialogMessage,
+            positiveActionText = stringResource(R.string.action_dismiss),
+            positiveAction = {
+                onUiEvent(PayWithTransferScreenEvent.DismissErrorDialog)
             }
         )
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun PayWithTransferScreenPreview() {
     BanklyTheme {
         PayWithTransferScreen(
             onBackPress = { },
             screenState = PayWithTransferScreenState(
-                showTransferAlertDialog = true,
-                selectedTransferAlert = TransferAlert.mock().first()
+                showRecentFundDialog = false,
+                selectedRecentFund = RecentFund(
+                    transactionReference = "389030022838200",
+                    amount = 20.00,
+                    accountReference = "73783899",
+                    paymentDescription = "Transfer from Mate",
+                    transactionHash = "02993920302",
+                    senderAccountNumber = "637820102",
+                    senderAccountName = "Mate Blake",
+                    sessionId = "12436810229",
+                    phoneNumber = "0812345678",
+                    userId = "0020020002",
+                    transactionDate = "2020-12-16T08:02:31.437",
+                    senderBankName = "Bankly MFB",
+                    receiverBankName = "Bankly MFB",
+                    receiverAccountNumber = "3000291002",
+                    receiverAccountName = "John Doe",
+                )
             ),
             onUiEvent = {},
             onViewTransactionDetailsClick = {},

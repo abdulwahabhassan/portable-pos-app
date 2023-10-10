@@ -4,6 +4,7 @@ import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.ForgotPassCodeData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.Message
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
@@ -19,4 +20,5 @@ interface UserRepository {
     suspend fun resetPassCode(body: ResetPassCodeData): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCodeData): Flow<Resource<User>>
     suspend fun getWallet(token: String): Flow<Resource<UserWallet>>
+    suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>>
 }
