@@ -262,10 +262,7 @@ private fun BeneficiaryScreen(
                     BeneficiaryTab.SAVED_BENEFICIARY -> {
                         SavedBeneficiaryView(
                             screenState = savedBeneficiaryScreenState,
-                            savedBeneficiaries = when (channel) {
-                                SendMoneyChannel.BANKLY_TO_OTHER -> SavedBeneficiary.mockOtherBanks()
-                                SendMoneyChannel.BANKLY_TO_BANKLY -> SavedBeneficiary.mockBanklyBank()
-                            },
+                            savedBeneficiaries = emptyList(),
                             channel = channel,
                             selectedAccountNumberType = savedBeneficiaryScreenState.accountNumberType,
                             onBankNameDropDownIconClick = {

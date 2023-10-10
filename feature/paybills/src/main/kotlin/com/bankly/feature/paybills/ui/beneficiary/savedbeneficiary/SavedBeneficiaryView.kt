@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.ui.view.EmptyStateView
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.AmountInputVisualTransformation
 import com.bankly.core.designsystem.component.BanklyClickableText
@@ -70,22 +71,26 @@ internal fun SavedBeneficiaryView(
     onToggleSaveAsBeneficiary: (Boolean) -> Unit
 ) {
     if (screenState.shouldShowSavedBeneficiaryList) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 24.dp),
-        ) {
-            items(savedBeneficiaries) { item: SavedBeneficiary ->
-                SavedBeneficiaryItemView(
-                    savedBeneficiary = item,
-                    onClick = { beneficiary: SavedBeneficiary ->
-                        onBeneficiarySelected(beneficiary)
-                    },
-                )
+        if (savedBeneficiaries.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 24.dp),
+            ) {
+                items(savedBeneficiaries) { item: SavedBeneficiary ->
+                    SavedBeneficiaryItemView(
+                        savedBeneficiary = item,
+                        onClick = { beneficiary: SavedBeneficiary ->
+                            onBeneficiarySelected(beneficiary)
+                        },
+                    )
+                }
             }
+        } else {
+            EmptyStateView()
         }
     } else {
         Column {
@@ -321,7 +326,9 @@ internal fun SavedBeneficiaryView(
                     Row(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 24.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.title_save_as_beneficiary),

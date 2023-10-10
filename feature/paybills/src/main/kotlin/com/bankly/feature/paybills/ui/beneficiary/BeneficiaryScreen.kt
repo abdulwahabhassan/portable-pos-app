@@ -297,12 +297,7 @@ private fun BeneficiaryScreen(
                         BeneficiaryTab.SAVED_BENEFICIARY -> {
                             SavedBeneficiaryView(
                                 screenState = savedBeneficiaryScreenState,
-                                savedBeneficiaries = when (billType) {
-                                    BillType.AIRTIME -> SavedBeneficiary.mockOtherBanks()
-                                    BillType.INTERNET_DATA -> SavedBeneficiary.mockOtherBanks()
-                                    BillType.ELECTRICITY -> SavedBeneficiary.mockOtherBanks()
-                                    BillType.CABLE_TV -> SavedBeneficiary.mockOtherBanks()
-                                },
+                                savedBeneficiaries = emptyList(),
                                 billType = billType,
                                 onProviderDropDownIconClick = {
                                     bottomSheetType = BottomSheetType.PROVIDER
