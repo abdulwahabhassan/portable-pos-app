@@ -38,8 +38,8 @@ import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.entity.Plan
-import com.bankly.core.entity.Provider
+import com.bankly.core.entity.BillPlan
+import com.bankly.core.entity.BillProvider
 import com.bankly.feature.paybills.R
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
@@ -86,6 +86,18 @@ internal fun BeneficiaryRoute(
                     billType = billType,
                     phoneNumber = newBeneficiaryScreenState.phoneNumberTFV.text,
                     amount = newBeneficiaryScreenState.amountTFV.text,
+                    newBeneficiaryScreenState.selectedBillProvider,
+                    newBeneficiaryScreenState.selectedBillPlan,
+                    when (billType) {
+                        BillType.CABLE_TV -> newBeneficiaryScreenState.cableTvNameEnquiry?.cardNumber
+                        BillType.ELECTRICITY -> newBeneficiaryScreenState.meterNameEnquiry?.meterNumber
+                        else -> ""
+                    },
+                    when (billType) {
+                        BillType.CABLE_TV -> newBeneficiaryScreenState.cableTvNameEnquiry?.customerName ?: ""
+                        BillType.ELECTRICITY -> newBeneficiaryScreenState.meterNameEnquiry?.customerName ?: ""
+                        else -> ""
+                    }
                 ),
             )
         },
@@ -95,6 +107,18 @@ internal fun BeneficiaryRoute(
                     billType = billType,
                     phoneNumber = savedBeneficiaryScreenState.phoneNumberTFV.text,
                     amount = savedBeneficiaryScreenState.amountTFV.text,
+                    savedBeneficiaryScreenState.selectedBillProvider,
+                    savedBeneficiaryScreenState.selectedBillPlan,
+                    when (billType) {
+                        BillType.CABLE_TV -> savedBeneficiaryScreenState.cableTvNameEnquiry?.cardNumber
+                        BillType.ELECTRICITY -> savedBeneficiaryScreenState.meterNameEnquiry?.meterNumber
+                        else -> ""
+                    },
+                    when (billType) {
+                        BillType.CABLE_TV -> savedBeneficiaryScreenState.cableTvNameEnquiry?.customerName ?: ""
+                        BillType.ELECTRICITY -> savedBeneficiaryScreenState.meterNameEnquiry?.customerName ?: ""
+                        else -> ""
+                    }
                 ),
             )
         },
@@ -233,27 +257,31 @@ private fun BeneficiaryScreen(
                                 },
                                 onEnterAmount = { textFieldValue ->
                                     onNewBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnInputAmount(textFieldValue),
+                                        BeneficiaryScreenEvent.OnInputAmount(
+                                            textFieldValue,
+                                            minimumAmount = newBeneficiaryScreenState.selectedBillPlan?.minimumAmount
+                                                ?: newBeneficiaryScreenState.selectedBillProvider?.minimumAmount
+                                        ),
                                     )
                                 },
                                 onContinueClick = onNewBeneficiaryContinueButtonClick,
                                 onEnterIDorCardNumber = { textFieldValue ->
-                                    if (newBeneficiaryScreenState.selectedPlan != null) {
+                                    if (newBeneficiaryScreenState.selectedBillPlan != null) {
                                         onNewBeneficiaryUiEvent(
                                             BeneficiaryScreenEvent.OnInputCableTvNumber(
                                                 textFieldValue,
-                                                newBeneficiaryScreenState.selectedPlan.billId
+                                                newBeneficiaryScreenState.selectedBillPlan.billId
                                             ),
                                         )
                                     }
                                 },
                                 onEnterMeterNumber = { textFieldValue ->
-                                    if (newBeneficiaryScreenState.selectedPlan != null) {
+                                    if (newBeneficiaryScreenState.selectedBillPlan != null) {
                                         onNewBeneficiaryUiEvent(
                                             BeneficiaryScreenEvent.OnInputMeterNumber(
                                                 textFieldValue,
-                                                newBeneficiaryScreenState.selectedPlan.billId,
-                                                newBeneficiaryScreenState.selectedPlan.id
+                                                newBeneficiaryScreenState.selectedBillPlan.billId,
+                                                newBeneficiaryScreenState.selectedBillPlan.id
                                             ),
                                         )
                                     }
@@ -299,7 +327,9 @@ private fun BeneficiaryScreen(
                                 onEnterAmount = { textFieldValue ->
                                     onSavedBeneficiaryUiEvent(
                                         BeneficiaryScreenEvent.OnInputAmount(
-                                            amountTFV = textFieldValue
+                                            amountTFV = textFieldValue,
+                                            minimumAmount = savedBeneficiaryScreenState.selectedBillPlan?.minimumAmount
+                                                ?: savedBeneficiaryScreenState.selectedBillProvider?.minimumAmount
                                         ),
                                     )
                                 },
@@ -313,22 +343,22 @@ private fun BeneficiaryScreen(
                                     )
                                 },
                                 onEnterIDorCardNumber = { textFieldValue ->
-                                    if (savedBeneficiaryScreenState.selectedPlan != null) {
+                                    if (savedBeneficiaryScreenState.selectedBillPlan != null) {
                                         onSavedBeneficiaryUiEvent(
                                             BeneficiaryScreenEvent.OnInputCableTvNumber(
                                                 textFieldValue,
-                                                savedBeneficiaryScreenState.selectedPlan.billId
+                                                savedBeneficiaryScreenState.selectedBillPlan.billId
                                             ),
                                         )
                                     }
                                 },
                                 onEnterMeterNumber = { textFieldValue ->
-                                    if (savedBeneficiaryScreenState.selectedPlan != null) {
+                                    if (savedBeneficiaryScreenState.selectedBillPlan != null) {
                                         onSavedBeneficiaryUiEvent(
                                             BeneficiaryScreenEvent.OnInputMeterNumber(
                                                 textFieldValue,
-                                                savedBeneficiaryScreenState.selectedPlan.billId,
-                                                savedBeneficiaryScreenState.selectedPlan.id
+                                                savedBeneficiaryScreenState.selectedBillPlan.billId,
+                                                savedBeneficiaryScreenState.selectedBillPlan.id
                                             ),
                                         )
                                     }
@@ -365,14 +395,14 @@ private fun BeneficiaryScreen(
                     null -> false
                 },
                 listItems = when (bottomSheetType) {
-                    BottomSheetType.PROVIDER -> newBeneficiaryScreenState.providerList
-                    BottomSheetType.PLAN -> newBeneficiaryScreenState.planList
+                    BottomSheetType.PROVIDER -> newBeneficiaryScreenState.billProviderList
+                    BottomSheetType.PLAN -> newBeneficiaryScreenState.billPlanList
                     null -> emptyList()
                 },
                 itemToString = { item ->
                     when (bottomSheetType) {
-                        BottomSheetType.PROVIDER -> (item as Provider).name
-                        BottomSheetType.PLAN -> (item as Plan).name
+                        BottomSheetType.PROVIDER -> (item as BillProvider).name
+                        BottomSheetType.PLAN -> (item as BillPlan).name
                         null -> ""
                     }
                 },
@@ -384,12 +414,12 @@ private fun BeneficiaryScreen(
                                     when (type) {
                                         BottomSheetType.PROVIDER -> BeneficiaryScreenEvent.OnSelectProvider(
                                             billType = billType,
-                                            provider = item as Provider,
+                                            billProvider = item as BillProvider,
                                         )
 
                                         BottomSheetType.PLAN -> BeneficiaryScreenEvent.OnSelectPlan(
                                             billType = billType,
-                                            plan = item as Plan,
+                                            billPlan = item as BillPlan,
                                         )
                                     }
                                 )
@@ -402,12 +432,12 @@ private fun BeneficiaryScreen(
                                     when (type) {
                                         BottomSheetType.PROVIDER -> BeneficiaryScreenEvent.OnSelectProvider(
                                             billType = billType,
-                                            provider = item as Provider,
+                                            billProvider = item as BillProvider,
                                         )
 
                                         BottomSheetType.PLAN -> BeneficiaryScreenEvent.OnSelectPlan(
                                             billType = billType,
-                                            plan = item as Plan,
+                                            billPlan = item as BillPlan,
                                         )
                                     }
                                 )
@@ -442,10 +472,10 @@ private fun BeneficiaryScreen(
                 drawItem = { item, selected, itemEnabled, onClick ->
                     SelectableListItem(
                         text = when (bottomSheetType) {
-                            BottomSheetType.PROVIDER -> (item as Provider).name
+                            BottomSheetType.PROVIDER -> (item as BillProvider).name
                             BottomSheetType.PLAN -> when (billType) {
-                                BillType.CABLE_TV, BillType.INTERNET_DATA -> (item as Plan).description
-                                BillType.ELECTRICITY -> (item as Plan).name
+                                BillType.CABLE_TV, BillType.INTERNET_DATA -> (item as BillPlan).description
+                                BillType.ELECTRICITY -> (item as BillPlan).name
                                 BillType.AIRTIME -> ""
                             }
 
@@ -459,7 +489,7 @@ private fun BeneficiaryScreen(
                                 BottomSheetType.PROVIDER -> {
                                     AsyncImage(
                                         model = when (bottomSheetType) {
-                                            BottomSheetType.PROVIDER -> (item as Provider).billImageUrl
+                                            BottomSheetType.PROVIDER -> (item as BillProvider).billImageUrl
                                             BottomSheetType.PLAN -> ""
                                             null -> ""
                                         },

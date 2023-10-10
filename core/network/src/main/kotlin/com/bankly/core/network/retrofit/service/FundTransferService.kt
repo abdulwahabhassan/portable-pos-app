@@ -1,10 +1,10 @@
 package com.bankly.core.network.retrofit.service
 
-import com.bankly.core.network.model.request.AccountNumberTransferRequestBody
+import com.bankly.core.network.model.request.BankTransferRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
-import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.model.result.AccountNameEnquiryResult
 import com.bankly.core.network.model.result.AccountNumberTransactionResult
+import com.bankly.core.network.model.result.BankResult
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -15,7 +15,7 @@ interface FundTransferService {
     @POST("post/FundTransfer/Transfer")
     suspend fun processTransferToAccountNumber(
         @Header("Authorization") token: String,
-        @Body body: AccountNumberTransferRequestBody,
+        @Body body: BankTransferRequestBody,
     ): NetworkResponse<AccountNumberTransactionResult>
 
     @POST("get/FundTransfer/NameEnquiry/{accountNumber}/{bankId}")

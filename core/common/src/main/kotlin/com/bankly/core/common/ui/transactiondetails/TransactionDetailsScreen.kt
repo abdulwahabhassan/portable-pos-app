@@ -105,7 +105,7 @@ fun TransactionDetailsScreen(
                             ),
                         )
                         Text(
-                            text = Formatter.formatAmount(transactionReceipt.amt, true),
+                            text = Formatter.formatAmount(transactionReceipt.transactionAmount, true),
                             style = MaterialTheme.typography.titleLarge,
                         )
                         Spacer(modifier = Modifier.height(12.dp))

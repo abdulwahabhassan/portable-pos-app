@@ -5,8 +5,8 @@ import com.bankly.core.entity.Message
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
-import com.bankly.core.entity.Plan
-import com.bankly.core.entity.Provider
+import com.bankly.core.entity.BillPlan
+import com.bankly.core.entity.BillProvider
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
 import com.bankly.core.entity.User
@@ -20,6 +20,7 @@ import com.bankly.core.network.model.result.MessageResult
 import com.bankly.core.network.model.result.AccountNameEnquiryResult
 import com.bankly.core.network.model.result.StatusResult
 import com.bankly.core.network.model.result.AccountNumberTransactionResult
+import com.bankly.core.network.model.result.BillPaymentResult
 import com.bankly.core.network.model.result.CableTvNameEnquiryResult
 import com.bankly.core.network.model.result.MeterNameEnquiryResult
 import com.bankly.core.network.model.result.PlanResult
@@ -108,7 +109,7 @@ fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTrans
     sessionId = "",
 )
 
-fun ProviderResult.asProvider() = Provider(
+fun ProviderResult.asProvider() = BillProvider(
     id = id ?: 0,
     categoryId = categoryId ?: 0,
     code = code ?: "",
@@ -133,7 +134,7 @@ fun ProviderResult.asProvider() = Provider(
     minimumAmount = minimumAmount ?: 0.00
 )
 
-fun PlanResult.asPlan() = Plan(
+fun PlanResult.asPlan() = BillPlan(
     id ?: 0,
     billId ?: 0,
     code ?: "",
@@ -161,4 +162,28 @@ fun MeterNameEnquiryResult.asMeterNameEnquiry() = MeterNameEnquiry(
     meterType = meterType,
     packageName = packageName,
     debtRepayment = debtRepayment
+)
+
+fun BillPaymentResult.asBillPayment() = TransactionReceipt.BillPayment(
+    id = id,
+    reference = reference ?: "",
+    narration = narration ?: "",
+    description = description ?: "",
+    amount = amount ?: 0.00,
+    paymentType = paymentType ?: "",
+    paidFor = paidFor ?: "",
+    paidForName = paidForName ?: "",
+    paidByAccountId = paidByAccountId ?: 0L,
+    paidByAccountNo = paidByAccountNo ?: "",
+    paidByAccountName = paidByAccountName ?: "",
+    paidOn = paidOn ?: "",
+    polled = polled ?: false,
+    responseStatus = responseStatus ?: 0L,
+    transactionType = transactionType ?: "",
+    billName = billName ?: "",
+    billItemName = billItemName ?: "",
+    receiver = receiver ?: "",
+    commission = commission ?: 0.00,
+    billToken = billToken ?: "",
+    isTokenType = isTokenType ?: false
 )

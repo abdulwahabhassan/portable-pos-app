@@ -3,7 +3,6 @@ package com.bankly.feature.paybills.ui.beneficiary
 import android.util.Log
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.model.TransactionType
 import com.bankly.core.common.util.AmountFormatter
@@ -13,12 +12,12 @@ import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.domain.usecase.NameEnquiryUseCase
 import com.bankly.core.domain.usecase.GetBillPlansUseCase
 import com.bankly.core.domain.usecase.GetBillProvidersUseCase
+import com.bankly.core.domain.usecase.NameEnquiryUseCase
+import com.bankly.core.entity.BillPlan
+import com.bankly.core.entity.BillProvider
 import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.Plan
-import com.bankly.core.entity.Provider
 import com.bankly.core.enums.BillsPlanType
 import com.bankly.core.enums.BillsProviderType
 import com.bankly.core.sealed.onFailure
@@ -105,6 +104,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     false
                 } else {
                     Validator.isAmountValid(
+                        minimumAmount = event.minimumAmount ?: 0.00,
                         amount = polishedAmount.replace(",", "").toDouble(),
                     )
                 }
@@ -127,12 +127,12 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             is BeneficiaryScreenEvent.OnSelectProvider -> {
                 setUiState {
                     copy(
-                        selectedProvider = event.provider,
-                        selectedPlan = null,
-                        planList = emptyList()
+                        selectedBillProvider = event.billProvider,
+                        selectedBillPlan = null,
+                        billPlanList = emptyList(),
                     )
                 }
-                getPlans(event.billType, event.provider.id)
+                getPlans(event.billType, event.billProvider.id)
             }
 
             is BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary -> {
@@ -150,7 +150,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     copy(
                         phoneNumberTFV = phoneNumberTFV.copy(text = event.savedBeneficiary.uniqueId),
                         shouldShowSavedBeneficiaryList = false,
-                        selectedProvider = null,
+                        selectedBillProvider = null,
                     )
                 }
             }
@@ -162,19 +162,23 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             is BeneficiaryScreenEvent.OnContinueClick -> {
                 setOneShotState(
                     BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen(
-                        transactionData = TransactionData(
-                            transactionType = TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
-                            phoneOrAccountNumber = event.phoneNumber,
-                            accountName = "",
+                        transactionData = TransactionData.BillPayment(
+                            billsProviderType =  when (event.billType) {
+                                BillType.AIRTIME -> BillsProviderType.AIRTIME
+                                BillType.INTERNET_DATA -> BillsProviderType.INTERNET_DATA
+                                BillType.CABLE_TV -> BillsProviderType.CABLE_TV
+                                BillType.ELECTRICITY -> BillsProviderType.ELECTRICITY
+                            },
+                            phoneNumber = event.phoneNumber,
                             amount = AmountFormatter().polish(event.amount).replace(",", "")
                                 .toDouble(),
-                            vat = 0.00,
-                            fee = 0.00,
-                            bankName = "",
-                            bankId = "",
-                            "",
-                            accountNumberType = AccountNumberType.ACCOUNT_NUMBER,
-                            pin = "",
+                            transactionPin = "",
+                            billId = event.billProvider?.id?.toString() ?: "",
+                            billItemId = event.billPlan?.id?.toString() ?: "",
+                            billProvider = event.billProvider?.name ?: "",
+                            billPlan = event.billPlan?.name ?: "",
+                            cableTvNumberOrMeterNumber = event.cableTvNumberOrMeterNumber ?: "",
+                            cableTvOwnerNameOrMeterOwnerName = event.cableTvOwnerNameOrMeterOwnerName
                         ),
                     ),
                 )
@@ -215,10 +219,10 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             }
 
             is BeneficiaryScreenEvent.OnSelectPlan -> {
-                val polishedAmount = AmountFormatter().polish(event.plan.amount.toString())
+                val polishedAmount = AmountFormatter().polish(event.billPlan.amount.toString())
                 setUiState {
                     copy(
-                        selectedPlan = event.plan,
+                        selectedBillPlan = event.billPlan,
                         amountTFV = TextFieldValue(polishedAmount)
                     )
                 }
@@ -253,10 +257,10 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(isProviderListLoading = true)
                     }
                 }
-                resource.onReady { providers: List<Provider> ->
-                    Log.d("debug providers", "onReady providers: $providers")
+                resource.onReady { billProviders: List<BillProvider> ->
+                    Log.d("debug providers", "onReady providers: $billProviders")
                     setUiState {
-                        copy(providerList = providers, isProviderListLoading = false)
+                        copy(billProviderList = billProviders, isProviderListLoading = false)
                     }
                 }
                 resource.onFailure { message ->
@@ -299,10 +303,10 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             copy(isPlanListLoading = true)
                         }
                     }
-                    resource.onReady { plans: List<Plan> ->
-                        Log.d("debug plans", "onReady plans: $plans")
+                    resource.onReady { billPlans: List<BillPlan> ->
+                        Log.d("debug plans", "onReady plans: $billPlans")
                         setUiState {
-                            copy(planList = plans, isPlanListLoading = false)
+                            copy(billPlanList = billPlans, isPlanListLoading = false)
                         }
                     }
                     resource.onFailure { message ->

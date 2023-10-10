@@ -1,6 +1,6 @@
 package com.bankly.core.entity
 
-data class Provider (
+data class BillProvider (
     val id: Long,
     val categoryId: Long,
     val code: String,

@@ -102,7 +102,7 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
             val trans: TransactionReceipt = Json.decodeFromString(transaction)
             TransactionSuccessRoute(
                 transactionReceipt = trans,
-                message = trans.msg,
+                message = trans.transactionMessage,
                 onViewTransactionDetailsClick = onViewTransactionDetailsClick,
                 onGoToHome = onGoHomeClick,
             )

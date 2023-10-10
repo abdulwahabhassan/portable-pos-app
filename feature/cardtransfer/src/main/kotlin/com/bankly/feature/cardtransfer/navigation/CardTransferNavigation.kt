@@ -65,8 +65,7 @@ private fun CardTransferNavHost(
         enterCardPinRoute(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
-                    TransactionData.mockTransactionData()
-                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL),
+                    TransactionData.mockCardTransferTransactionData(),
                 )
             },
             onBackPress = {

@@ -1,7 +1,6 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.data.AccountNumberTransferData
-import com.bankly.core.data.PhoneNumberTransferData
+import com.bankly.core.data.BankTransferData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asBank
@@ -11,8 +10,8 @@ import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleResponse
 import com.bankly.core.domain.repository.TransferRepository
-import com.bankly.core.entity.Bank
 import com.bankly.core.entity.AccountNameEnquiry
+import com.bankly.core.entity.Bank
 import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.FundTransferService
@@ -36,7 +35,7 @@ class DefaultTransferRepository @Inject constructor(
 ) : TransferRepository {
     override suspend fun performTransferToAccountNumber(
         token: String,
-        body: AccountNumberTransferData,
+        body: BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (
@@ -61,7 +60,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performPhoneNumberTransfer(
         token: String,
-        body: PhoneNumberTransferData,
+        body: BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (

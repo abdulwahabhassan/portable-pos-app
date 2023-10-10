@@ -4,6 +4,7 @@ import com.bankly.core.network.model.request.BillPaymentRequestBody
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
 import com.bankly.core.network.model.request.ValidateElectricityMeterNumberRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
+import com.bankly.core.network.model.result.BillPaymentResult
 import com.bankly.core.network.model.result.CableTvNameEnquiryResult
 import com.bankly.core.network.model.result.MeterNameEnquiryResult
 import com.bankly.core.network.model.result.PlanResult
@@ -70,5 +71,5 @@ interface BillsService {
     suspend fun processBillPayment(
         @Header("Authorization") token: String,
         @Body body: BillPaymentRequestBody,
-    ): NetworkResponse<Any>
+    ): NetworkResponse<BillPaymentResult>
 }

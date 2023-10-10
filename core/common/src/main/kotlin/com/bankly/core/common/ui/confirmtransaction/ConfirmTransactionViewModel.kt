@@ -6,18 +6,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ConfirmTransactionViewModel @Inject constructor() : BaseViewModel<ConfirmTransactionScreenEvent, ConfirmTransactionScreenState, ConfirmTransactionScreenOneShotState>(
-    ConfirmTransactionScreenState(),
-) {
+class ConfirmTransactionViewModel @Inject constructor() :
+    BaseViewModel<ConfirmTransactionScreenEvent, ConfirmTransactionScreenState, ConfirmTransactionScreenOneShotState>(
+        ConfirmTransactionScreenState(),
+    ) {
     override suspend fun handleUiEvents(event: ConfirmTransactionScreenEvent) {
         when (event) {
             is ConfirmTransactionScreenEvent.OnDoneClick -> {
+                val data = event.transactionData
+                data.pin = uiState.value.pin.joinToString("")
+
                 setOneShotState(
-                    ConfirmTransactionScreenOneShotState.GoToTransactionProcessingScreen(
-                        event.transactionData.copy(
-                            pin = uiState.value.pin.joinToString(""),
-                        ),
-                    ),
+                    ConfirmTransactionScreenOneShotState.GoToTransactionProcessingScreen(data),
                 )
             }
 

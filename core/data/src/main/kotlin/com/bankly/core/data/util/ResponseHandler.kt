@@ -12,7 +12,8 @@ fun <T> handleResponse(
             Result.Success(data = requestResult.data.result!!)
         } else {
             Result.Error(
-                message = requestResult.data.message ?: "Something went wrong! We're fixing it!",
+                message =  requestResult.data.validationMessages?.joinToString(", \n")
+                    ?: requestResult.data.message ?: "Request could not be completed",
             )
         }
     }
@@ -30,7 +31,7 @@ fun handleTokenResponse(
             Result.Success(data = requestResult.data)
         } else {
             Result.Error(
-                message = "Something went wrong! We're fixing it!",
+                message = "Request could not be completed",
             )
         }
     }

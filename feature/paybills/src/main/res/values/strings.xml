@@ -27,7 +27,7 @@
     <string name="msg_enter_meter_number">Enter meter number</string>
     <string name="msg_meter_number_label">Meter Number</string>
     <string name="msg_enter_id_or_card_number">Enter ID/card number</string>
-    <string name="msg_id_or_card_number_label">ID/card Number</string>
+    <string name="msg_id_or_card_number_label">IUC/Decoder Number</string>
     <string name="title_save_as_beneficiary">Save as beneficiary</string>
     <string name="title_select_network_provider">Select Network Provider</string>
     <string name="title_error">Error</string>
@@ -36,4 +36,5 @@
     <string name="title_select_data_plan">Select Data Plan</string>
     <string name="title_select_cable_plan">Select Cable Plan</string>
     <string name="title_select_electricity_plan">Select Electricity Plan</string>
+    <string name="msg_enter_iuc_or_decoder_number">Enter IUC/Decoder number</string>
 </resources>

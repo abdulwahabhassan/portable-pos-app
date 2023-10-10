@@ -1,6 +1,6 @@
 package com.bankly.core.network.retrofit.service
 
-import com.bankly.core.network.model.request.PhoneNumberTransferRequestBody
+import com.bankly.core.network.model.request.BankTransferRequestBody
 import com.bankly.core.network.model.response.NetworkResponse
 import com.bankly.core.network.model.result.PhoneNumberTransactionResult
 import retrofit2.http.Body
@@ -11,6 +11,6 @@ interface TransferService {
     @POST("post/transfer/intra")
     suspend fun processTransferToPhoneNumber(
         @Header("Authorization") token: String,
-        @Body body: PhoneNumberTransferRequestBody,
+        @Body body: BankTransferRequestBody,
     ): NetworkResponse<PhoneNumberTransactionResult>
 }

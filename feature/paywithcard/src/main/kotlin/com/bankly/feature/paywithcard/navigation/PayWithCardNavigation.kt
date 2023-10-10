@@ -99,8 +99,7 @@ private fun PayWithCardNavHost(
         enterCardPinRoute(
             onContinueClick = {
                 navHostController.navigateToProcessTransactionRoute(
-                    TransactionData.mockTransactionData()
-                        .copy(transactionType = TransactionType.CARD_WITHDRAWAL),
+                    TransactionData.mockCardWithdrawalTransactionData(),
                 )
             },
             onBackPress = {

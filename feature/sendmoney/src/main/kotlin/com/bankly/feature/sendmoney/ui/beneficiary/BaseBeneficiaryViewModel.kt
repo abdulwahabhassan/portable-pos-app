@@ -158,22 +158,16 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             is BeneficiaryScreenEvent.OnContinueClick -> {
                 setOneShotState(
                     BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen(
-                        transactionData = TransactionData(
-                            transactionType = when (event.accountNumberType) {
-                                AccountNumberType.ACCOUNT_NUMBER -> TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER
-                                AccountNumberType.PHONE_NUMBER -> TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER
-                            },
-                            phoneOrAccountNumber = event.accountOrPhoneNumber,
+                        transactionData = TransactionData.BankTransfer(
                             accountName = event.accountName,
                             amount = AmountFormatter().polish(event.amount).replace(",", "")
                                 .toDouble(),
-                            vat = 0.00,
-                            fee = 0.00,
                             bankName = event.bankName,
                             bankId = event.selectedBankId.toString(),
                             narration = event.narration.trim(),
                             accountNumberType = event.accountNumberType,
-                            pin = "",
+                            transactionPin = "",
+                            accountNumber = event.accountOrPhoneNumber,
                         ),
                     ),
                 )

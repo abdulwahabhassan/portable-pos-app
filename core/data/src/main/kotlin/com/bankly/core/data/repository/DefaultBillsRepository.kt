@@ -5,6 +5,7 @@ import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
+import com.bankly.core.data.util.asBillPayment
 import com.bankly.core.data.util.asCableTvNameEnquiry
 import com.bankly.core.data.util.asMeterNameEnquiry
 import com.bankly.core.data.util.asPlan
@@ -15,13 +16,14 @@ import com.bankly.core.data.util.handleResponse
 import com.bankly.core.domain.repository.BillsRepository
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
-import com.bankly.core.entity.Plan
-import com.bankly.core.entity.Provider
+import com.bankly.core.entity.BillPlan
+import com.bankly.core.entity.BillProvider
 import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.retrofit.service.BillsService
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.Result
+import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -37,7 +39,7 @@ class DefaultBillsRepository @Inject constructor(
     override suspend fun performBillPayment(
         token: String,
         body: BillPaymentData
-    ): Flow<Resource<Any>> = flow {
+    ): Flow<Resource<TransactionReceipt.BillPayment>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -55,7 +57,7 @@ class DefaultBillsRepository @Inject constructor(
             )
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asBillPayment()))
         }
     }
 
@@ -111,7 +113,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun getAirtimeProviders(
         token: String
-    ): Flow<Resource<List<Provider>>> = flow {
+    ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -130,7 +132,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun getInternetDataProviders(
         token: String
-    ): Flow<Resource<List<Provider>>> = flow {
+    ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -149,7 +151,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun getCableTvProviders(
         token: String
-    ): Flow<Resource<List<Provider>>> = flow {
+    ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleResponse(
@@ -168,7 +170,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun getElectricityProviders(
         token: String
-    ): Flow<Resource<List<Provider>>> =
+    ): Flow<Resource<List<BillProvider>>> =
         flow {
             emit(Resource.Loading)
             when (
@@ -186,7 +188,7 @@ class DefaultBillsRepository @Inject constructor(
             }
         }
 
-    override suspend fun getInternetDataPlans(token: String, billId: Long): Flow<Resource<List<Plan>>> =
+    override suspend fun getInternetDataPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
     flow {
         emit(Resource.Loading)
         when (
@@ -204,7 +206,7 @@ class DefaultBillsRepository @Inject constructor(
         }
     }
 
-    override suspend fun getCableTvPlans(token: String, billId: Long): Flow<Resource<List<Plan>>> =
+    override suspend fun getCableTvPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
     flow {
         emit(Resource.Loading)
         when (
@@ -222,7 +224,7 @@ class DefaultBillsRepository @Inject constructor(
         }
     }
 
-    override suspend fun getElectricityPlans(token: String, billId: Long): Flow<Resource<List<Plan>>> =
+    override suspend fun getElectricityPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
     flow {
         emit(Resource.Loading)
         when (

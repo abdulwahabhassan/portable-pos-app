@@ -1,10 +1,12 @@
 package com.bankly.core.common.ui.processtransaction
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.model.TransactionType
+import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.BankTransferUseCase
+import com.bankly.core.domain.usecase.PayBillUseCase
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProcessTransactionViewModel @Inject constructor(
     private val bankTransferUseCase: BankTransferUseCase,
+    private val payBillUseCase: PayBillUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<ProcessTransactionScreenEvent, ProcessTransactionScreenState, ProcessTransactionScreenOneShotState>(
     ProcessTransactionScreenState(),
@@ -24,11 +27,11 @@ class ProcessTransactionViewModel @Inject constructor(
     override suspend fun handleUiEvents(event: ProcessTransactionScreenEvent) {
         when (event) {
             is ProcessTransactionScreenEvent.ProcessTransaction -> {
-                when (event.transactionData.transactionType) {
-                    TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER -> {
-                        bankTransferUseCase.performTransferToAccountNumber(
+                when (event.transactionData) {
+                    is TransactionData.BankTransfer -> {
+                        bankTransferUseCase.invoke(
                             userPreferencesDataStore.data().token,
-                            event.transactionData.toAccountNumberTransferData(),
+                            event.transactionData.toBankTransferData(),
                         ).onEach { resource ->
                             resource.onReady { transactionReceipt: TransactionReceipt ->
                                 setOneShotState(
@@ -54,15 +57,16 @@ class ProcessTransactionViewModel @Inject constructor(
                         }.launchIn(viewModelScope)
                     }
 
-                    TransactionType.BANK_TRANSFER_WITH_PHONE_NUMBER -> {
-                        bankTransferUseCase.performPhoneNumberTransfer(
+                    is TransactionData.BillPayment -> {
+                        payBillUseCase.invoke(
                             userPreferencesDataStore.data().token,
-                            event.transactionData.toPhoneNumberTransferData(),
+                            event.transactionData.toBillPaymentData()
                         ).onEach { resource ->
-                            resource.onReady { transactionReceipt: TransactionReceipt ->
+                            resource.onReady { billPayment: TransactionReceipt.BillPayment ->
+                                Log.d("debug bill payment response", "$billPayment")
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
-                                        transactionReceipt = transactionReceipt,
+                                        transactionReceipt = billPayment,
                                     ),
                                 )
                             }
@@ -81,22 +85,6 @@ class ProcessTransactionViewModel @Inject constructor(
                                 ),
                             )
                         }.launchIn(viewModelScope)
-                    }
-
-                    TransactionType.CARD_WITHDRAWAL -> {
-                        setOneShotState(
-                            ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                message = "This feature is still a work in progress!",
-                            ),
-                        )
-                    }
-
-                    TransactionType.CARD_TRANSFER -> {
-                        setOneShotState(
-                            ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
-                                message = "This feature is still a work in progress!",
-                            ),
-                        )
                     }
                 }
             }

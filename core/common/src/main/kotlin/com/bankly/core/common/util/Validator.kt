@@ -13,10 +13,8 @@ object Validator {
         return accountNumber.length == 10
     }
 
-    fun isAmountValid(amount: Double): Boolean {
-        return amount > 0 && amount < 1_000_000
+    fun isAmountValid(amount: Double, minimumAmount: Double = 0.00): Boolean {
+        return amount in minimumAmount..1_000_000.00
     }
 
-    fun isNarrationValid() {
-    }
 }

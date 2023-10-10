@@ -124,8 +124,7 @@ internal class RecipientViewModel @Inject constructor(
             is RecipientScreenEvent.OnContinueClick -> {
                 setOneShotState(
                     RecipientScreenOneShotState.GoToSelectAccountTypeScreen(
-                        TransactionData.mockTransactionData()
-                            .copy(transactionType = TransactionType.CARD_TRANSFER),
+                        TransactionData.mockCardTransferTransactionData(),
                     ),
                 )
             }

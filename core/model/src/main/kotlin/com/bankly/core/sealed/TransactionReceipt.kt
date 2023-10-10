@@ -4,14 +4,10 @@ import com.bankly.core.util.Formatter
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class TransactionReceipt(
-    val acctName: String,
-    val acctNumber: String,
-    val bank: String,
-    val amt: String,
-    val ref: String,
-    val msg: String,
-) {
+sealed class TransactionReceipt (
+    val transactionAmount: String,
+    val transactionMessage: String,
+){
     @Serializable
     data class BankTransfer(
         val accountName: String,
@@ -29,12 +25,8 @@ sealed class TransactionReceipt(
         val statusName: String,
         val sessionId: String,
     ) : TransactionReceipt(
-        acctName = accountName,
-        acctNumber = accountNumber,
-        bank = bankName,
-        amt = amount,
-        ref = reference,
-        msg = message,
+        transactionAmount = amount,
+        transactionMessage = message
     )
 
     @Serializable
@@ -52,12 +44,8 @@ sealed class TransactionReceipt(
         val terminalId: String,
         val responseCode: String,
     ) : TransactionReceipt(
-        acctName = "",
-        acctNumber = "",
-        bank = "",
-        amt = amount,
-        ref = reference,
-        msg = message,
+        transactionAmount = amount,
+        transactionMessage = message
     )
 
     @Serializable
@@ -75,40 +63,41 @@ sealed class TransactionReceipt(
         val statusName: String,
         val sessionId: String,
     ) : TransactionReceipt(
-        acctName = senderAccountName,
-        acctNumber = senderAccountNumber,
-        bank = senderBankName,
-        amt = amount,
-        ref = reference,
-        msg = message,
+        transactionAmount = amount,
+        transactionMessage = message
     )
 
     @Serializable
     data class BillPayment(
-        val senderAccountName: String,
-        val senderAccountNumber: String,
-        val senderBankName: String,
-        val amount: String,
+        val id: Long,
         val reference: String,
-        val receiverAccountNumber: String,
-        val message: String,
-        val receiverName: String,
-        val receiverBankName: String,
-        val dateCreated: String,
-        val statusName: String,
-        val sessionId: String,
+        val narration: String,
+        val description: String,
+        val amount: Double,
+        val paymentType: String,
+        val paidFor: String,
+        val paidForName: String,
+        val paidByAccountId: Long,
+        val paidByAccountNo: String,
+        val paidByAccountName: String,
+        val paidOn: String,
+        val polled: Boolean,
+        val responseStatus: Long,
+        val transactionType: String,
+        val billName: String,
+        val billItemName: String,
+        val receiver: String,
+        val commission: Double,
+        val billToken: String,
+        val isTokenType: Boolean
     ) : TransactionReceipt(
-        acctName = senderAccountName,
-        acctNumber = senderAccountNumber,
-        bank = senderBankName,
-        amt = amount,
-        ref = reference,
-        msg = message,
+        transactionAmount = amount.toString(),
+        transactionMessage = description
     )
 
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
-            is BankTransfer ->  mapOf(
+            is BankTransfer -> mapOf(
                 "Transaction Type" to "Bank Transfer",
                 "Type" to "Debit",
                 "Status" to this.statusName,
@@ -147,18 +136,25 @@ sealed class TransactionReceipt(
                 "Sender Bank" to this.senderBankName,
             )
 
-            is BillPayment ->mapOf(
+            is BillPayment -> mapOf(
                 "Transaction Type" to "Bill Payment",
-                "Bill Type" to "Airtine",
-                "Status" to this.statusName,
-                "Description" to this.message,
-                "Session ID" to this.sessionId,
-                "Transaction REF" to this.reference,
-                "Date/Time" to Formatter.formatServerDateTime(this.dateCreated),
-                "Sender Account" to this.receiverName,
-                "Sender Name" to this.senderAccountName,
-                "Sender Bank" to this.senderBankName,
+                "Bill Type" to this.transactionType,
+                "Date/Time" to Formatter.formatServerDateTime(this.paidOn),
+                "Provider" to this.billName,
+                "Plan" to this.billItemName,
+                getPaidForTitle(this.transactionType) to this.paidFor,
+                "Reference" to this.reference,
+                "Narration" to this.narration,
+                "Token" to this.billToken
             )
         }
+    }
+
+    private fun getPaidForTitle(transactionType: String): String {
+        return if (transactionType.contains("Airtime", true) ||
+            transactionType.contains("Data", true)) "Phone Number"
+        else if (transactionType.contains("Electricity", true)) "Meter Number"
+        else if (transactionType.contains("Cable", true)) "IUC/Decoder Number"
+        else "UID"
     }
 }

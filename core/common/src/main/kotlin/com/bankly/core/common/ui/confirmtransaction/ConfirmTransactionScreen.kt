@@ -120,10 +120,22 @@ private fun ConfirmTransactionScreen(
         ) {
             item {
                 Column(modifier = Modifier.padding(horizontal = 32.dp)) {
-                    transactionData.toDetailsMap().filter { it.value.isNotEmpty() }
-                        .forEach { (label, value) ->
-                            BanklyDetailRow(label = label, value = value)
+                    when (transactionData) {
+                        is TransactionData.BankTransfer -> {
+                            transactionData.toTransactionSummaryMap()
+                                .filter { it.value.isNotEmpty() }
+                                .forEach { (label, value) ->
+                                    BanklyDetailRow(label = label, value = value)
+                                }
                         }
+                        is TransactionData.BillPayment -> {
+                            transactionData.toTransactionSummaryMap()
+                                .filter { it.value.isNotEmpty() }
+                                .forEach { (label, value) ->
+                                    BanklyDetailRow(label = label, value = value)
+                                }
+                        }
+                    }
                 }
             }
 
@@ -228,8 +240,7 @@ private fun ConfirmTransactionScreen(
             )
         }
 
-        is State.Success -> {
-        }
+        is State.Success -> {}
     }
 }
 
@@ -239,18 +250,15 @@ private fun ConfirmTransactionScreenPreview() {
     BanklyTheme {
         ConfirmTransactionScreen(
             screenState = ConfirmTransactionScreenState(),
-            transactionData = TransactionData(
-                TransactionType.BANK_TRANSFER_WITH_ACCOUNT_NUMBER,
-                "080999200291",
-                "Hassan Abdulwahab",
-                23000.00,
-                0.00,
-                0.00,
-                "",
-                "",
-                "",
-                AccountNumberType.ACCOUNT_NUMBER,
-                "",
+            transactionData = TransactionData.BankTransfer(
+                accountNumber = "080999200291",
+                accountName = "Hassan Abdulwahab",
+                amount = 23000.00,
+                bankName = "",
+                bankId = "",
+                narration = "",
+                accountNumberType = AccountNumberType.ACCOUNT_NUMBER,
+                transactionPin = "",
             ),
             onBackPress = {},
             onUiEvent = {},

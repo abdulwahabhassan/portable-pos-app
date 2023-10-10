@@ -149,7 +149,7 @@ internal fun NewBeneficiaryView(
                         onTextFieldValueChange = { textFieldValue ->
                             onEnterIDorCardNumber(textFieldValue)
                         },
-                        placeholderText = stringResource(R.string.msg_enter_id_or_card_number),
+                        placeholderText = stringResource(R.string.msg_enter_iuc_or_decoder_number),
                         labelText = stringResource(R.string.msg_id_or_card_number_label),
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number,

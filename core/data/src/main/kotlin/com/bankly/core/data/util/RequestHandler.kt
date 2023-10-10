@@ -27,12 +27,12 @@ suspend fun <T> handleRequest(
                 val response = handleHttpException(e, json)
                 Result.Error(
                     message = response?.validationMessages?.joinToString(", \n")
-                        ?: response?.message ?: "Something went wrong!",
+                        ?: response?.message ?: "Request could not be completed",
                 )
             }
 
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage ?: "Something went wrong!")
+            Result.Error(message = e.localizedMessage ?: "Request could not be completed")
         }
     }
 }
@@ -53,10 +53,10 @@ suspend fun handleTokenRequest(
             val response = handleTokenHttpException(e, json)
             Result.Error(
                 message = response?.errorDescription ?: response?.error ?: response?.message
-                    ?: "Something went wrong, we're fixing it",
+                    ?: "Request could not be completed",
             )
         } catch (e: Exception) {
-            Result.Error(message = e.localizedMessage ?: "Something went wrong!")
+            Result.Error(message = e.localizedMessage ?: "Request could not be completed")
         }
     }
 }

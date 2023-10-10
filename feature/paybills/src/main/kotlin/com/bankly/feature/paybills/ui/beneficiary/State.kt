@@ -4,10 +4,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.entity.Plan
+import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
-import com.bankly.core.entity.Provider
+import com.bankly.core.entity.BillProvider
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
 import com.bankly.feature.paybills.model.SavedBeneficiary
@@ -16,10 +16,10 @@ internal data class BeneficiaryScreenState(
     val billType: BillType? = null,
     val isTypeError: Boolean = false,
     val typeFeedBack: String = "",
-    val selectedProvider: Provider? = null,
+    val selectedBillProvider: BillProvider? = null,
     val isProviderError: Boolean = false,
     val providerFeedBack: String = "",
-    val selectedPlan: Plan? = null,
+    val selectedBillPlan: BillPlan? = null,
     val isPlanError: Boolean = false,
     val planFeedBack: String = "",
     val phoneNumberTFV: TextFieldValue = TextFieldValue(text = ""),
@@ -37,8 +37,8 @@ internal data class BeneficiaryScreenState(
     val saveAsBeneficiary: Boolean = false,
     val meterNameEnquiry: MeterNameEnquiry? = null,
     val cableTvNameEnquiry: CableTvNameEnquiry? = null,
-    val providerList: List<Provider> = emptyList(),
-    val planList: List<Plan> = emptyList(),
+    val billProviderList: List<BillProvider> = emptyList(),
+    val billPlanList: List<BillPlan> = emptyList(),
     val selectedTab: BeneficiaryTab = BeneficiaryTab.NEW_BENEFICIARY,
     val shouldShowSavedBeneficiaryList: Boolean = true,
     val savedBeneficiaries: List<SavedBeneficiary> = SavedBeneficiary.mockOtherBanks(),
@@ -46,42 +46,42 @@ internal data class BeneficiaryScreenState(
     val errorDialogMessage: String = "",
     val isProviderListLoading: Boolean = false,
     val isPlanListLoading: Boolean = false,
-    val isEnquiryLoading: Boolean = false,
     val validationStatusIcon: Int? = null,
+    val isPaymentLoading: Boolean = false
 ) {
-    private val isLoading: Boolean
-        get() = isProviderListLoading || isPlanListLoading || isEnquiryLoading
+    private val isAnyLoading: Boolean
+        get() = isProviderListLoading || isPlanListLoading || isPaymentLoading || isPaymentLoading
 
     val isContinueButtonEnabled: Boolean
         get() = when (billType) {
             BillType.AIRTIME -> {
-                selectedProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
+                selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
                         phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isLoading.not()
+                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
             }
 
             BillType.INTERNET_DATA -> {
-                selectedProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
+                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
                         phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isLoading.not()
+                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
             }
 
             BillType.CABLE_TV -> {
-                selectedProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
+                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
                         phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isLoading.not() &&
+                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
                         cableTvNumberTFV.text.isNotEmpty() && isCableTvNumberError.not() &&
                         cableTvNameEnquiry != null
 
             }
 
             BillType.ELECTRICITY -> {
-                selectedProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
+                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
                         phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isLoading.not() &&
+                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
                         meterNumberTFV.text.isNotEmpty() && isMeterNumberError.not() &&
                         meterNameEnquiry != null
             }
@@ -90,8 +90,8 @@ internal data class BeneficiaryScreenState(
         }
 
     val providerTFV: TextFieldValue
-        get() = if (selectedProvider != null) {
-            TextFieldValue(text = selectedProvider.name)
+        get() = if (selectedBillProvider != null) {
+            TextFieldValue(text = selectedBillProvider.name)
         } else {
             TextFieldValue(
                 text = "",
@@ -99,8 +99,8 @@ internal data class BeneficiaryScreenState(
         }
 
     val planTFV: TextFieldValue
-        get() = if (selectedPlan != null) {
-            TextFieldValue(text = selectedPlan.description)
+        get() = if (selectedBillPlan != null) {
+            TextFieldValue(text = selectedBillPlan.description)
         } else {
             TextFieldValue(
                 text = "",
@@ -108,31 +108,31 @@ internal data class BeneficiaryScreenState(
         }
 
     val isProviderFieldEnable: Boolean
-        get() = isLoading.not()
+        get() = isAnyLoading.not()
 
     val isPhoneNumberFieldEnabled: Boolean
-        get() = isLoading.not()
+        get() = isAnyLoading.not()
 
     val isCableTvNumberFieldEnabled: Boolean
-        get() = isLoading.not() && selectedPlan != null && validationStatusIcon != BanklyIcons.ValidationInProgress
+        get() = isAnyLoading.not() && selectedBillPlan != null && validationStatusIcon != BanklyIcons.ValidationInProgress
 
     val isMeterNumberFieldEnabled: Boolean
-        get() = isLoading.not() && selectedPlan != null && validationStatusIcon != BanklyIcons.ValidationInProgress
+        get() = isAnyLoading.not() && selectedBillPlan != null && validationStatusIcon != BanklyIcons.ValidationInProgress
 
     val isPlanFieldEnabled: Boolean
-        get() = isLoading.not() && providerTFV.text.isNotEmpty()
+        get() = isAnyLoading.not() && providerTFV.text.isNotEmpty()
 
     val isSaveAsBeneficiarySwitchEnabled: Boolean
-        get() = isLoading.not()
+        get() = isAnyLoading.not()
 
     val isAmountFieldEnabled: Boolean
-        get() = isLoading.not() && when (billType) {
+        get() = isAnyLoading.not() && when (billType) {
             BillType.AIRTIME, BillType.ELECTRICITY, null -> true
             BillType.INTERNET_DATA, BillType.CABLE_TV -> false
         }
 
     val showLoadingIndicator: Boolean
-        get() = isLoading
+        get() = isAnyLoading
 }
 
 internal sealed interface BeneficiaryScreenOneShotState : OneShotState {
