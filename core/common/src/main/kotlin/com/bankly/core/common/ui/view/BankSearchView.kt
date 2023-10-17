@@ -1,12 +1,19 @@
 package com.bankly.core.common.ui.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,8 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.R
+import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklyExpandableList
 import com.bankly.core.designsystem.component.BanklySearchBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 
@@ -30,6 +39,7 @@ fun BankSearchView(
     isBankListLoading: Boolean,
     bankList: List<Bank>,
     onSelectBank: (Bank) -> Unit,
+    onCloseIconClick: () -> Unit,
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val banks by remember(bankList, searchQuery) {
@@ -56,6 +66,24 @@ fun BankSearchView(
         ) {
             var isCommercialBankListExpanded by rememberSaveable { mutableStateOf(true) }
             var isMFBBankListExpanded by rememberSaveable { mutableStateOf(true) }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(start = 16.dp, end = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = stringResource(R.string.title_select_bank), style = MaterialTheme.typography.titleMedium)
+                BanklyClickableIcon(
+                    icon = BanklyIcons.Close,
+                    onClick = onCloseIconClick,
+                    shape = CircleShape
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             BanklySearchBar(
                 modifier = Modifier,
                 query = searchQuery,
@@ -100,6 +128,7 @@ internal fun BankSearchViewPreview() {
             isBankListLoading = false,
             bankList = emptyList(),
             onSelectBank = {},
+            onCloseIconClick = {}
         )
     }
 }

@@ -90,13 +90,11 @@ internal class PayWithTransferViewModel @Inject constructor(
                     }
                 }
                 resource.onReady { recentFunds ->
-                    Log.d("debug recent funds", "onReady recent funds: $recentFunds")
                     setUiState {
                         copy(recentFunds = recentFunds, isRecentFundsLoading = false)
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug recent funds", "onFailure recent funds: $message")
                     setUiState {
                         copy(
                             isRecentFundsLoading = false,
@@ -107,7 +105,6 @@ internal class PayWithTransferViewModel @Inject constructor(
                 }
             }
             .catch {
-                Log.d("debug recent funds", "catch recent funds: ${it.message}")
                 it.printStackTrace()
                 setUiState {
                     copy(

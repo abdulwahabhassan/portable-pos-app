@@ -48,6 +48,7 @@ kapt {
 
 dependencies {
     implementation(libs.google.android.material)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:data"))
@@ -62,4 +63,5 @@ dependencies {
     implementation(project(":feature:sendmoney"))
     implementation(project(":feature:paywithtransfer"))
     implementation(project(":feature:paybills"))
+    implementation(project(":feature:transactiondetails"))
 }

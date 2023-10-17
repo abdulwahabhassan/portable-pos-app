@@ -23,6 +23,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -36,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.icon.BanklyIcons
@@ -71,9 +74,11 @@ fun <T> SearchableSelectionListView(
     searchPredicate: ((T) -> Boolean)? = null,
     title: String,
     showCloseIcon: Boolean = true,
-    onCloseIconClick: () -> Unit
+    onCloseIconClick: () -> Unit,
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {},
 ) {
-    var searchQuery by remember { mutableStateOf("") }
+
     val items = if (searchPredicate != null)
         remember(listItems, searchQuery) {
             mutableStateOf(listItems.filter(searchPredicate))
@@ -98,10 +103,11 @@ fun <T> SearchableSelectionListView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp)
+                .padding(bottom = 16.dp)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(start = 24.dp, end = 24.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(start = 16.dp, end = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             if (showCloseIcon) {
@@ -127,15 +133,16 @@ fun <T> SearchableSelectionListView(
             ) {
                 stickyHeader {
                     if (searchPredicate != null) {
-                        BanklySearchBar(
-                            modifier = Modifier,
-                            query = searchQuery,
-                            onQueryChange = { newQuery ->
-                                searchQuery = newQuery
-                            },
-                            searchPlaceholder = "Search by keyword",
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+                       Surface(
+                       color = MaterialTheme.colorScheme.surfaceVariant
+                       ) {
+                           BanklySearchBar(
+                               modifier = Modifier,
+                               query = searchQuery,
+                               onQueryChange = onSearchQueryChange,
+                               searchPlaceholder = stringResource(R.string.msg_search_by_keyword),
+                           )
+                       }
                     }
                 }
 
@@ -163,7 +170,7 @@ fun SelectableListItem(
     selected: Boolean = false,
     enabled: Boolean = true,
     onClick: () -> Unit,
-    startIcon: @Composable () -> Unit = {},
+    startIcon: @Composable (() -> Unit)? = null,
 ) {
     val contentColor = when {
         !enabled -> MaterialTheme.colorScheme.inversePrimary
@@ -175,7 +182,7 @@ fun SelectableListItem(
             modifier = Modifier
                 .clickable(enabled) { onClick() }
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = 20.dp, vertical = 16.dp),
 
             ) {
             Row(
@@ -183,8 +190,10 @@ fun SelectableListItem(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                startIcon()
-                Spacer(modifier = Modifier.width(16.dp))
+                if (startIcon != null) {
+                    startIcon()
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
                 Text(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium,

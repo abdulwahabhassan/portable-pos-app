@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,23 +34,36 @@ fun BanklySearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     searchPlaceholder: String,
+    trailingIcon: (@Composable () -> Unit)? = null
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Row(
+    Row(
+        modifier = modifier
+            .padding(horizontal = 16.dp, vertical = 2.dp)
+            .fillMaxWidth()
+            .height(56.dp)
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = MaterialTheme.shapes.medium,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
             modifier = modifier
-                .padding(horizontal = 24.dp, vertical = 2.dp)
-                .fillMaxWidth()
-                .height(56.dp)
+                .fillMaxHeight()
+                .padding(start = 16.dp)
                 .background(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = MaterialTheme.shapes.medium,
+                    color = Color.Transparent,
+                    shape = RoundedCornerShape(
+                        topStart = 8.dp,
+                        bottomStart = 8.dp,
+                    ),
                 ),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
+
+            ) {
+            Icon(
                 modifier = modifier
-                    .fillMaxHeight()
-                    .padding(start = 16.dp)
+                    .size(20.dp)
+                    .align(Alignment.Center)
                     .background(
                         color = Color.Transparent,
                         shape = RoundedCornerShape(
@@ -57,57 +71,50 @@ fun BanklySearchBar(
                             bottomStart = 8.dp,
                         ),
                     ),
-
-            ) {
-                Icon(
-                    modifier = modifier
-                        .align(Alignment.Center)
-                        .size(20.dp)
-                        .background(
-                            color = Color.Transparent,
-                            shape = RoundedCornerShape(
-                                topStart = 8.dp,
-                                bottomStart = 8.dp,
-                            ),
-                        ),
-                    painter = painterResource(id = BanklyIcons.Search),
-                    contentDescription = "Search icon",
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-            TextField(
-                modifier = modifier,
-                value = query,
-                onValueChange = onQueryChange,
-                singleLine = true,
-                placeholder = {
-                    Text(
-                        text = searchPlaceholder,
-                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    )
-                },
-                shape = RoundedCornerShape(8.dp),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                ),
-                textStyle = MaterialTheme.typography.bodyMedium,
+                painter = painterResource(id = BanklyIcons.Search),
+                contentDescription = "Search icon",
+                tint = MaterialTheme.colorScheme.primary,
             )
         }
+        TextField(
+            modifier = modifier.weight(1f),
+            value = query,
+            onValueChange = onQueryChange,
+            singleLine = true,
+            placeholder = {
+                Text(
+                    text = searchPlaceholder,
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                )
+            },
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+            ),
+            textStyle = MaterialTheme.typography.bodyMedium,
+        )
+        trailingIcon?.invoke()
     }
 }
 
 @Composable
-@Preview(showBackground = true)
-fun SearchBarPreview() {
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
+private fun SearchBarPreview() {
     BanklyTheme {
         BanklySearchBar(
             modifier = Modifier,
             query = "",
             onQueryChange = {},
             searchPlaceholder = "Type a keyword ...",
+            trailingIcon = {
+                BanklyClickableIcon(
+                    modifier = Modifier.padding(end = 16.dp),
+                    icon = BanklyIcons.Filter,
+                    onClick = { /*TODO*/ })
+            }
         )
     }
 }

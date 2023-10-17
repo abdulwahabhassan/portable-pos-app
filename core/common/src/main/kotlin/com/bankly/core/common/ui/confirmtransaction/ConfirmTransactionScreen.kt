@@ -27,7 +27,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.common.R
 import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.TransactionType
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDetailRow
@@ -105,7 +104,7 @@ private fun ConfirmTransactionScreen(
                 onBackPress = onBackPress,
                 title = stringResource(R.string.title_confirm_transaction),
                 isLoading = screenState.isLoading,
-                onCloseClick = {
+                onTrailingIconClick = {
                     onUiEvent(ConfirmTransactionScreenEvent.OnCloseClick)
                 },
             )

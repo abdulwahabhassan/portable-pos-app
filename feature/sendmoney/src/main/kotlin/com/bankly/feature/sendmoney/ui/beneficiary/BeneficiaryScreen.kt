@@ -154,7 +154,7 @@ private fun BeneficiaryScreen(
             BanklyTitleBar(
                 onBackPress = onBackPress,
                 title = channel.screenTitle,
-                onCloseClick = onCloseClick,
+                onTrailingIconClick = onCloseClick,
                 isLoading = newBeneficiaryScreenState.shouldShowLoadingIndicator || savedBeneficiaryScreenState.shouldShowLoadingIndicator,
             )
         },
@@ -191,6 +191,11 @@ private fun BeneficiaryScreen(
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
                 },
+                onCloseIconClick = {
+                    coroutineScope.launch {
+                        bottomSheetScaffoldState.bottomSheetState.hide()
+                    }
+                }
             )
         },
     ) { paddingValues ->

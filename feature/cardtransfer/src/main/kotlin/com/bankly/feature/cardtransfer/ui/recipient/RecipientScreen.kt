@@ -102,6 +102,11 @@ private fun RecipientScreen(
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
                 },
+                onCloseIconClick = {
+                    coroutineScope.launch {
+                        bottomSheetScaffoldState.bottomSheetState.hide()
+                    }
+                }
             )
         },
     ) { padding ->

@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.ui.more
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,13 +15,17 @@ import com.bankly.feature.dashboard.ui.component.FeatureCard
 
 @Composable
 fun MoreRoute(
-    onFeatureCardClick: (Feature) -> Unit
+    onFeatureCardClick: (Feature) -> Unit,
+    onBackPress: () -> Unit,
 ) {
-    MoreScreen(onFeatureCardClick = onFeatureCardClick)
+    MoreScreen(onFeatureCardClick = onFeatureCardClick, onBackPress = onBackPress)
 }
 
 @Composable
-fun MoreScreen(onFeatureCardClick: (Feature) -> Unit) {
+fun MoreScreen(onFeatureCardClick: (Feature) -> Unit, onBackPress: () -> Unit) {
+    BackHandler {
+        onBackPress()
+    }
     LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(horizontal = 8.dp)) {
         items(Feature.values().filter { it.isQuickAction.not() }) { feature: Feature ->
             FeatureCard(
@@ -38,6 +43,7 @@ fun MoreScreen(onFeatureCardClick: (Feature) -> Unit) {
 private fun MoreScreenPreview() {
     BanklyTheme {
         MoreScreen(
+            onBackPress = {},
             onFeatureCardClick = {}
         )
     }

@@ -102,7 +102,7 @@ fun SelectAccountTypeScreen(
                     triggerCancelDialog()
                 },
                 title = if (isLoading) "" else stringResource(R.string.title_select_account_type),
-                onCloseClick = {
+                onTrailingIconClick = {
                     triggerCancelDialog()
                 },
             )

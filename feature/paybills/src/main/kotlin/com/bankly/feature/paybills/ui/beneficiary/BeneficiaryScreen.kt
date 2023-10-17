@@ -94,8 +94,12 @@ internal fun BeneficiaryRoute(
                         else -> ""
                     },
                     when (billType) {
-                        BillType.CABLE_TV -> newBeneficiaryScreenState.cableTvNameEnquiry?.customerName ?: ""
-                        BillType.ELECTRICITY -> newBeneficiaryScreenState.meterNameEnquiry?.customerName ?: ""
+                        BillType.CABLE_TV -> newBeneficiaryScreenState.cableTvNameEnquiry?.customerName
+                            ?: ""
+
+                        BillType.ELECTRICITY -> newBeneficiaryScreenState.meterNameEnquiry?.customerName
+                            ?: ""
+
                         else -> ""
                     }
                 ),
@@ -115,8 +119,12 @@ internal fun BeneficiaryRoute(
                         else -> ""
                     },
                     when (billType) {
-                        BillType.CABLE_TV -> savedBeneficiaryScreenState.cableTvNameEnquiry?.customerName ?: ""
-                        BillType.ELECTRICITY -> savedBeneficiaryScreenState.meterNameEnquiry?.customerName ?: ""
+                        BillType.CABLE_TV -> savedBeneficiaryScreenState.cableTvNameEnquiry?.customerName
+                            ?: ""
+
+                        BillType.ELECTRICITY -> savedBeneficiaryScreenState.meterNameEnquiry?.customerName
+                            ?: ""
+
                         else -> ""
                     }
                 ),
@@ -203,7 +211,7 @@ private fun BeneficiaryScreen(
             BanklyTitleBar(
                 onBackPress = onBackPress,
                 title = savedBeneficiaryScreenState.billType?.title ?: "",
-                onCloseClick = onCloseClick,
+                onTrailingIconClick = onCloseClick,
                 isLoading = newBeneficiaryScreenState.showLoadingIndicator || savedBeneficiaryScreenState.showLoadingIndicator,
             )
         },
@@ -383,6 +391,9 @@ private fun BeneficiaryScreen(
             dragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
             windowInsets = WindowInsets(top = 24.dp),
         ) {
+
+            var searchQuery by remember { mutableStateOf("") }
+
             SearchableSelectionListView(
                 isListLoading = when (bottomSheetType) {
                     BottomSheetType.PROVIDER -> newBeneficiaryScreenState.isProviderListLoading
@@ -479,9 +490,9 @@ private fun BeneficiaryScreen(
                         selected = selected,
                         enabled = itemEnabled,
                         onClick = onClick,
-                        startIcon = {
-                            when (bottomSheetType) {
-                                BottomSheetType.PROVIDER -> {
+                        startIcon = when (bottomSheetType) {
+                            BottomSheetType.PROVIDER -> {
+                                {
                                     AsyncImage(
                                         model = when (bottomSheetType) {
                                             BottomSheetType.PROVIDER -> (item as BillProvider).billImageUrl
@@ -493,11 +504,18 @@ private fun BeneficiaryScreen(
                                         contentScale = ContentScale.Fit
                                     )
                                 }
-
-                                BottomSheetType.PLAN, null -> {}
                             }
+
+                            BottomSheetType.PLAN, null -> null
                         },
                     )
+                },
+                searchPredicate = if (bottomSheetType == BottomSheetType.PLAN && (billType == BillType.CABLE_TV || billType == BillType.INTERNET_DATA)) {
+                    { item -> (item as BillPlan).description.contains(searchQuery, true) }
+                } else null,
+                searchQuery = searchQuery,
+                onSearchQueryChange = { newQuery: String ->
+                    searchQuery = newQuery
                 }
             )
         }

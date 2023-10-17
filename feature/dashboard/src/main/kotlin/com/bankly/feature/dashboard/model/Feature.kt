@@ -2,11 +2,6 @@ package com.bankly.feature.dashboard.model
 
 import com.bankly.core.designsystem.icon.BanklyIcons
 
-enum class DashboardTab {
-    Home,
-    POS,
-}
-
 enum class Feature(val title: String, val icon: Int, val isQuickAction: Boolean = false) {
     PayWithCard("Pay with Card", BanklyIcons.PayWithCard, true),
     PayWithTransfer("Pay with Transfer", BanklyIcons.PayWithTransfer, true),
@@ -20,4 +15,3 @@ enum class Feature(val title: String, val icon: Int, val isQuickAction: Boolean 
     NetworkChecker("Network Checker", BanklyIcons.NetworkChecker),
     Settings("Settings", BanklyIcons.Settings),
 }
-

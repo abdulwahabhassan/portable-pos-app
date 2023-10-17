@@ -46,7 +46,7 @@ fun InsertCardScreen(
             BanklyTitleBar(
                 onBackPress = onBackPress,
                 title = stringResource(R.string.title_insert_card),
-                onCloseClick = onCloseClick,
+                onTrailingIconClick = onCloseClick,
             )
         },
     ) { padding ->

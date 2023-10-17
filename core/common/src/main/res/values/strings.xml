@@ -31,4 +31,6 @@
     <string name="action_okay">Okay</string>
     <string name="msg_it_s_quite_lonely_here">It\'s quite lonely here</string>
     <string name="title_empty">Empty</string>
+    <string name="title_select_bank">Select Bank</string>
+    <string name="msg_search_by_keyword">Search by keyword</string>
 </resources>

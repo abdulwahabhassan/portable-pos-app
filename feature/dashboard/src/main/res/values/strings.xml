@@ -15,4 +15,9 @@
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
     <string name="title_more">More</string>
+    <string name="symbol_plus_sign">+</string>
+    <string name="transactions">Transactions</string>
+    <string name="title_error">Error</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_export">Export</string>
 </resources>

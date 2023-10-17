@@ -49,7 +49,6 @@ suspend fun handleTokenRequest(
         try {
             Result.Success(apiRequest.invoke())
         } catch (e: HttpException) {
-            Log.d("", "msg: ${e.message} resp: ${e.response()} error-body: ${e.response()?.errorBody()}")
             val response = handleTokenHttpException(e, json)
             Result.Error(
                 message = response?.errorDescription ?: response?.error ?: response?.message

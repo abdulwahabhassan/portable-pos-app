@@ -16,6 +16,8 @@ import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
+import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
+
 
 @Composable
 fun AppNavHost(
@@ -55,16 +57,16 @@ fun AppNavHost(
                 )
             },
             onContinueToPayWithCardClick = { amount: Double ->
-                val encodedAmount = Uri.encode(amount.toString())
-                val navOption = navOptions {
+                val navOptions = navOptions {
                     launchSingleTop = true
                     restoreState = true
                 }
-                appState.navHostController.navigate(
-                    route = "$payWithCardNavGraphRoute/$encodedAmount",
-                    navOptions = navOption,
-                )
+                appState.navHostController.navigateToPayWithCardNavGraph(amount, navOptions)
             },
+            onGoToTransactionDetailsScreen = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
+            onSupportOptionClick = {}
         )
         payWithCardNavGraph(
             onBackPress = {
@@ -94,5 +96,13 @@ fun AppNavHost(
             },
             onForgotPinClick = {}
         )
+        transactionDetailsNavGraph(
+            appNavController = appState.navHostController,
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
     }
 }
+
+

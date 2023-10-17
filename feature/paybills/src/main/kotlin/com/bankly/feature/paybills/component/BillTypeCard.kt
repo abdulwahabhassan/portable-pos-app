@@ -44,7 +44,6 @@ fun BillTypeCard(
             .padding(8.dp)
             .shadow(elevation = 1.dp, shape = MaterialTheme.shapes.medium)
             .clip(MaterialTheme.shapes.medium)
-
             .clickable(
                 onClick = onClick,
                 enabled = isEnable,
@@ -71,15 +70,17 @@ fun BillTypeCard(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(140.dp)
-                .padding(16.dp)
                 .fillMaxWidth()
-                ,
+                .size(140.dp)
+                .padding(16.dp),
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Icon(
                     modifier = Modifier
-                        .size(70.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(color = MaterialTheme.colorScheme.onTertiaryContainer)
                         .padding(12.dp),
@@ -88,7 +89,6 @@ fun BillTypeCard(
                     tint = Color.Unspecified,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-
                 Text(
                     text = billType.title,
                     style = MaterialTheme.typography.bodyMedium,

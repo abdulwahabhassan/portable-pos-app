@@ -16,6 +16,7 @@ import com.bankly.feature.dashboard.model.DashboardTab
 fun rememberDashBoardState(
     currentTab: DashboardTab = DashboardTab.Home,
     navHostController: NavHostController = rememberNavController(),
+    showLoadingIndicator: Boolean = false
 ): MutableState<DashBoardState> {
     return remember(
         currentTab,
@@ -25,6 +26,7 @@ fun rememberDashBoardState(
             DashBoardState(
                 currentTab = currentTab,
                 navHostController = navHostController,
+                showLoadingIndicator = showLoadingIndicator
             ),
         )
     }
@@ -34,11 +36,14 @@ fun rememberDashBoardState(
 data class DashBoardState(
     val currentTab: DashboardTab,
     val navHostController: NavHostController,
+    val showLoadingIndicator: Boolean,
 ) {
     val shouldShowBottomNavBar: Boolean
         @Composable get() = currentTab == DashboardTab.Home
+
     val shouldShowTopAppBar: Boolean
         @Composable get() = true
+
     val currentBottomNavDestination: BottomNavDestination
         @Composable get() {
             return when (navHostController.currentBackStackEntryAsState().value?.destination?.route) {

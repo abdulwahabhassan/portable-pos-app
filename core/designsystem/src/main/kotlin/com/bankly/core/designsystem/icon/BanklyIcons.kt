@@ -50,6 +50,7 @@ object BanklyIcons {
     val ValidationFailed = R.drawable.ic_validation_failed
     val Info = R.drawable.ic_info
     val Transfer_Inward = R.drawable.ic_box_arrow_down_left
+    val Transfer_Outward = R.drawable.ic_box_arrow_up_right
     val Mobile_Phone = R.drawable.ic_mobile_phone
     val Mobile_Phone_Connectivity = R.drawable.ic_mobile_phone_with_signal
     val Tv_With_Remote_Control = R.drawable.ic_tv_with_remote_control
@@ -57,4 +58,9 @@ object BanklyIcons {
     val Mtn = R.drawable.ic_mtn_logo
     val Close = R.drawable.ic_close
     val SadFace = R.drawable.ic_sad_face
+    val Filter = R.drawable.ic_filter
+    val Box_Sad_Face = R.drawable.ic_box_sad_face
+    val Document = R.drawable.ic_document
+    val Chat = R.drawable.ic_chat
+    val Filled_Arrow_Forward = R.drawable.ic_filled_arrow_forward
 }

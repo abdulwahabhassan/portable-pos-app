@@ -109,7 +109,7 @@ fun EnterCardPinScreen(
                 onBackPress = {
                     triggerCancelDialog()
                 },
-                onCloseClick = {
+                onTrailingIconClick = {
                     triggerCancelDialog()
                 },
             )

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -25,6 +26,7 @@ import java.util.Locale
 
 @Composable
 fun <T : Enum<T>> BanklyTabBar(
+    modifier: Modifier = Modifier,
     tabs: List<T>,
     onTabClick: (T) -> Unit,
     selectedTab: T,
@@ -34,7 +36,7 @@ fun <T : Enum<T>> BanklyTabBar(
     rippleColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(1f)
             .background(
                 color = MaterialTheme.colorScheme.primaryContainer,
@@ -83,6 +85,11 @@ fun <T : Enum<T>> BanklyTabBar(
                         } else {
                             unselectedTabTextColor
                         },
+                        fontWeight = if (selectedTab == category) {
+                            FontWeight.Medium
+                        } else {
+                            FontWeight.Normal
+                        }
                     ),
                 )
             }

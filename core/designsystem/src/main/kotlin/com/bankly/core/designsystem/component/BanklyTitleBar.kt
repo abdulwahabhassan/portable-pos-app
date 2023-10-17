@@ -26,6 +26,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
@@ -50,8 +51,16 @@ fun BanklyTitleBar(
     currentPage: Int = 0,
     totalPage: Int = 0,
     isLoading: Boolean = false,
-    onCloseClick: (() -> Unit)? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
+    trailingIcon: @Composable (() -> Unit) -> Unit = { onIconClick ->
+        BanklyClickableIcon(
+            modifier = Modifier.size(36.dp),
+            icon = BanklyIcons.Cancel,
+            onClick = onIconClick,
+            rippleColor = MaterialTheme.colorScheme.error,
+        )
+    },
 ) {
     val shouldShowPageNumber by remember(currentPage, totalPage) {
         mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
@@ -102,14 +111,9 @@ fun BanklyTitleBar(
                         .weight(1f)
                         .width(90.dp),
                 )
-            } else if (onCloseClick != null) {
+            } else if (onTrailingIconClick != null) {
                 Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
-                    BanklyClickableIcon(
-                        modifier = Modifier.size(36.dp),
-                        icon = BanklyIcons.Cancel,
-                        onClick = onCloseClick,
-                        rippleColor = MaterialTheme.colorScheme.error,
-                    )
+                    trailingIcon(onTrailingIconClick)
                 }
             } else {
                 Box(modifier = Modifier.weight(1f))
@@ -168,7 +172,7 @@ private fun BanklyTitleBarPreview1() {
             currentPage = 1,
             totalPage = 2,
 
-        )
+            )
     }
 }
 
@@ -229,7 +233,33 @@ private fun BanklyTitleBarPreview6() {
             onBackPress = { },
             title = "Select Account Type",
             isLoading = true,
-            onCloseClick = {},
+            onTrailingIconClick = {},
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
+private fun BanklyTitleBarPreview7() {
+    BanklyTheme {
+        BanklyTitleBar(
+            onBackPress = { },
+            title = "Select Account Type",
+            isLoading = true,
+            onTrailingIconClick = {},
+            trailingIcon = { onClick: () -> Unit ->
+                Text(text = buildAnnotatedString {
+                    withStyle(
+                        MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
+                            .toSpanStyle()
+                    ) {
+                        append("Export")
+                    }
+                })
+            }
+        )
+    }
+}
+
+
+

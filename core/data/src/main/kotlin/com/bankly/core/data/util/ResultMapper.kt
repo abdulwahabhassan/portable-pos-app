@@ -11,6 +11,7 @@ import com.bankly.core.entity.BillProvider
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
+import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.User
 import com.bankly.core.entity.UserWallet
 import com.bankly.core.network.model.response.TokenNetworkResponse
@@ -29,6 +30,7 @@ import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.model.result.AgentAccountResult
+import com.bankly.core.network.model.result.TransactionResult
 import com.bankly.core.sealed.TransactionReceipt
 
 fun AuthenticatedUserResult.asUser() = User(
@@ -212,4 +214,52 @@ fun RecentFundResult.asRecentFund() = RecentFund(
     receiverBankName = receiverBankName ?: "",
     receiverAccountNumber = receiverAccountNumber ?: "",
     receiverAccountName = receiverAccountName ?: ""
+)
+
+fun TransactionResult.asTransaction() = Transaction(
+    creditAccountNo = creditAccountNo ?: "",
+    debitAccountNo = debitAccountNo ?: "",
+    transactionBy = transactionBy ?: "",
+    channelName = channelName ?: "",
+    statusName = statusName ?: "",
+    userType = userType ?: 0,
+    userId = userId ?: 0,
+    initiator = initiator ?: "",
+    archived = archived ?: false,
+    product = product ?: "",
+    hasProduct = hasProduct ?: false,
+    senderName = senderName ?: "",
+    receiverName = receiverName ?: "",
+    balanceBeforeTransaction = balanceBeforeTransaction ?: 0.00,
+    leg = leg ?: 0,
+    id = id ?: 0,
+    reference = reference ?: "",
+    transactionType = transactionType ?: 0,
+    transactionTypeName = transactionTypeName ?: "",
+    description = description?.trim() ?: "",
+    narration = narration ?: "",
+    amount = amount ?: 0.00,
+    creditAccountNumber = creditAccountNumber ?: "",
+    deditAccountNumber = deditAccountNumber ?: "",
+    parentReference = parentReference ?: "",
+    transactionDate = transactionDate ?: "",
+    credit = credit ?: 0.00,
+    debit = debit ?: 0.00,
+    balanceAfterTransaction = balanceAfterTransaction ?: 0.00,
+    sender = sender ?: "",
+    receiver = receiver ?: "",
+    channel = channel ?: 0,
+    status = status ?: 0,
+    charges = charges ?: 0.00,
+    aggregatorCommission = aggregatorCommission ?: 0.00,
+    hasCharges = hasCharges ?: false,
+    agentCommission = agentCommission ?: 0.00,
+    debitAccountNumber = debitAccountNumber ?: "",
+    initiatedBy = initiatedBy ?: "",
+    stateId = stateId ?: 0,
+    lgaId = lgaId ?: 0,
+    regionId = regionId ?: "",
+    aggregatorId = aggregatorId ?: 0,
+    isCredit = isCredit ?: false,
+    isDebit = isDebit ?: false
 )

@@ -10,14 +10,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.Feature
+import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
 fun NavGraphBuilder.dashBoardNavGraph(
     onBackPress: () -> Unit,
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
+    onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
+    onSupportOptionClick: (SupportOption) -> Unit
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -25,7 +29,9 @@ fun NavGraphBuilder.dashBoardNavGraph(
     ) {
         composable(dashBoardRoute) {
             var dashBoardState by rememberDashBoardState()
+
             DashBoardRoute(
+                showLoadingIndicator = dashBoardState.showLoadingIndicator,
                 showTopAppBar = dashBoardState.shouldShowTopAppBar,
                 currentBottomNavDestination = dashBoardState.currentBottomNavDestination,
                 onNavigateToBottomNavDestination = { destination ->
@@ -33,7 +39,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
                 },
                 showBottomNavBar = dashBoardState.shouldShowBottomNavBar,
                 content = { padding ->
-                    DashBoardBottomNavHost(
+                    DashBoardNavHost(
                         currentHomeTab = dashBoardState.currentTab,
                         modifier = Modifier.padding(padding),
                         navHostController = dashBoardState.navHostController,
@@ -45,6 +51,11 @@ fun NavGraphBuilder.dashBoardNavGraph(
                             }
                         },
                         onContinueToPayWithCardClick = onContinueToPayWithCardClick,
+                        updateLoadingStatus = { isLoading: Boolean ->
+                            dashBoardState = dashBoardState.copy(showLoadingIndicator = isLoading)
+                        },
+                        onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
+                        onSupportOptionClick = onSupportOptionClick
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -58,12 +69,15 @@ fun NavGraphBuilder.dashBoardNavGraph(
 }
 
 @Composable
-fun DashBoardBottomNavHost(
+fun DashBoardNavHost(
     currentHomeTab: DashboardTab,
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
+    updateLoadingStatus: (Boolean) -> Unit,
+    onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
+    onSupportOptionClick: (SupportOption) -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -75,10 +89,26 @@ fun DashBoardBottomNavHost(
             onFeatureClick = onFeatureClick,
             onContinueToPayWithCardClick = onContinueToPayWithCardClick,
         )
-        transactionsRoute()
-        supportRoute()
+        transactionsRoute(
+            onBackPress = {
+                navHostController.navigateToHomeRoute()
+            },
+            onGoToTransactionDetailsScreen = { transactionReceipt: TransactionReceipt ->
+                onGoToTransactionDetailsScreen(transactionReceipt)
+            },
+            updateLoadingStatus = updateLoadingStatus
+        )
+        supportRoute(
+            onBackPress = {
+                navHostController.navigateToHomeRoute()
+            },
+            onSupportOptionClick = onSupportOptionClick
+        )
         moreRoute(
-            onFeatureClick = onFeatureClick
+            onFeatureClick = onFeatureClick,
+            onBackPress = {
+                navHostController.navigateToHomeRoute()
+            }
         )
     }
 }

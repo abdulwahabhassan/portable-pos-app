@@ -1,14 +1,21 @@
 package com.bankly.feature.dashboard.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
+import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.Feature
+import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.home.HomeTab
 import com.bankly.feature.dashboard.ui.more.MoreRoute
 import com.bankly.feature.dashboard.ui.pos.PosTab
 import com.bankly.feature.dashboard.ui.support.SupportRoute
 import com.bankly.feature.dashboard.ui.transactions.TransactionsRoute
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 const val dashBoardNavGraphRoute = "dashboard_graph"
 internal const val dashBoardRoute = dashBoardNavGraphRoute.plus("/dashboard_route")
@@ -39,24 +46,41 @@ internal fun NavGraphBuilder.homeRoute(
     }
 }
 
-internal fun NavGraphBuilder.transactionsRoute() {
+internal fun NavGraphBuilder.transactionsRoute(
+    onBackPress: () -> Unit,
+    onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
+    updateLoadingStatus: (Boolean) -> Unit
+) {
     composable(route = transactionsRoute) {
-        TransactionsRoute()
+        TransactionsRoute(
+            onBackPress = onBackPress,
+            onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
+            updateLoadingStatus = updateLoadingStatus
+        )
     }
 }
 
-internal fun NavGraphBuilder.supportRoute() {
+internal fun NavGraphBuilder.supportRoute(
+    onBackPress: () -> Unit,
+    onSupportOptionClick: (SupportOption) -> Unit
+) {
     composable(route = supportRoute) {
-        SupportRoute()
+        SupportRoute(
+            onBackPress = onBackPress,
+            onSupportOptionClick = onSupportOptionClick
+        )
     }
 }
 
 internal fun NavGraphBuilder.moreRoute(
     onFeatureClick: (Feature) -> Unit,
+    onBackPress: () -> Unit
 ) {
     composable(route = moreRoute) {
         MoreRoute(
-            onFeatureCardClick = onFeatureClick
+            onFeatureCardClick = onFeatureClick,
+            onBackPress = onBackPress
         )
     }
 }
+

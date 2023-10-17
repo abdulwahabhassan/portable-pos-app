@@ -1,5 +1,6 @@
 package com.bankly.core.common.ui.transactiondetails
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +48,8 @@ fun TransactionDetailsRoute(
     onShareClick: () -> Unit,
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
+    onGoToHomeClick: (() -> Unit)? = null,
+    onBackPress: (() -> Unit)? = null
 ) {
     TransactionDetailsScreen(
         transactionReceipt = transactionReceipt,
@@ -55,6 +57,7 @@ fun TransactionDetailsRoute(
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
         onGoToHomeClick = onGoToHomeClick,
+        onBackPress = onBackPress
     )
 }
 
@@ -64,12 +67,20 @@ fun TransactionDetailsScreen(
     onShareClick: () -> Unit,
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
+    onGoToHomeClick: (() -> Unit)? = null,
+    onBackPress: (() -> Unit)? = null
 ) {
+    if (onBackPress != null) {
+       BackHandler {
+           onBackPress()
+       }
+    }
+
     Scaffold(
         topBar = {
             BanklyTitleBar(
                 title = stringResource(R.string.title_transaction_receipt),
+                onBackPress = onBackPress
             )
         },
     ) { padding ->
@@ -189,11 +200,13 @@ fun TransactionDetailsScreen(
                     backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                BanklyFilledButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.action_go_to_home),
-                    onClick = onGoToHomeClick,
-                )
+                if (onGoToHomeClick != null) {
+                    BanklyFilledButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.action_go_to_home),
+                        onClick = onGoToHomeClick,
+                    )
+                }
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
@@ -224,6 +237,7 @@ fun TransactionDetailsScreenPreview() {
             onSmsClick = {},
             onLogComplaintClick = {},
             onGoToHomeClick = {},
+            onBackPress = {}
         )
     }
 }

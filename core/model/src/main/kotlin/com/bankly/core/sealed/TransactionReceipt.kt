@@ -95,6 +95,46 @@ sealed class TransactionReceipt (
         transactionMessage = description
     )
 
+    @Serializable
+    data class TransactionHistory(
+    val statusName: String,
+    val userType: Long,
+    val senderName: String,
+    val receiverName: String,
+    val balanceBeforeTransaction: Double,
+    val id: Long,
+    val reference: String,
+    val transactionType: Long,
+    val transactionTypeName: String,
+    val description: String,
+    val narration: String,
+    val amount: Double,
+    val creditAccountNumber: String,
+    val parentReference: String,
+    val transactionDate: String,
+    val credit: Double,
+    val debit: Double,
+    val balanceAfterTransaction: Double,
+    val sender: String,
+    val receiver: String,
+    val status: Long,
+    val charges: Double,
+    val aggregatorCommission: Double,
+    val hasCharges: Boolean,
+    val agentCommission: Double,
+    val debitAccountNumber: String,
+    val stateId: Long,
+    val lgaId: Long,
+    val regionId: String,
+    val aggregatorId: Long,
+    val isCredit: Boolean,
+    val isDebit: Boolean
+    ) : TransactionReceipt(
+        transactionAmount = amount,
+        transactionMessage = description
+    )
+
+
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
             is BankTransfer -> mapOf(
@@ -146,6 +186,23 @@ sealed class TransactionReceipt (
                 "Reference" to this.reference,
                 "Narration" to this.narration,
                 "Token" to this.billToken
+            )
+
+            is TransactionHistory -> mapOf(
+                "Transaction Type" to this.transactionTypeName,
+                "Type" to when (true) {
+                    this.isCredit -> "Credit"
+                    this.isDebit -> "Debit"
+                    else -> ""
+                },
+                "Date/Time" to formatServerDateTime(this.transactionDate),
+                "Status" to this.statusName,
+                "Sender Name" to this.senderName,
+                "Sender Account" to this.sender,
+                "Receiver Name" to this.receiverName,
+                "Receiver Account" to this.receiver,
+                "Reference" to this.reference,
+                "Narration" to this.narration,
             )
         }
     }

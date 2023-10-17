@@ -26,12 +26,10 @@ class HomeScreenViewModel @Inject constructor(
         when (event) {
             is HomeScreenEvent.ToggleWalletBalanceVisibility -> toggleWalletBalanceVisibility(event.shouldShowWalletBalance)
             HomeScreenEvent.OnDismissErrorDialog -> dismissErrorDialog()
+            HomeScreenEvent.FetchWalletBalance -> { getWallet()  }
         }
     }
 
-    init {
-        viewModelScope.launch { getWallet() }
-    }
 
     private suspend fun getWallet() {
         getWalletUseCase(token = userPreferencesDataStore.data().token)
