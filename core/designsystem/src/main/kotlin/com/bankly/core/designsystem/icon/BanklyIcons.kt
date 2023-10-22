@@ -63,4 +63,6 @@ object BanklyIcons {
     val Document = R.drawable.ic_document
     val Chat = R.drawable.ic_chat
     val Filled_Arrow_Forward = R.drawable.ic_filled_arrow_forward
+    val Remove =R.drawable.ic_remove
+
 }

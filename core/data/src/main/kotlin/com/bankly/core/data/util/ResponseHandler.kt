@@ -1,12 +1,12 @@
 package com.bankly.core.data.util
 
-import com.bankly.core.network.model.response.NetworkResponse
-import com.bankly.core.network.model.response.TokenNetworkResponse
-import com.bankly.core.network.model.response.TransactionResponse
+import com.bankly.core.network.model.response.ApiResponse
+import com.bankly.core.network.model.response.TokenApiResponse
+import com.bankly.core.network.model.response.TransactionApiResponse
 import com.bankly.core.sealed.Result
 
-fun <T> handleResponse(
-    requestResult: Result<NetworkResponse<T>>,
+fun <T> handleApiResponse(
+    requestResult: Result<ApiResponse<T>>,
 ): Result<T> = when (requestResult) {
     is Result.Success -> {
         if (requestResult.data.successful == true && requestResult.data.hasResult == true) {
@@ -24,9 +24,9 @@ fun <T> handleResponse(
     }
 }
 
-fun handleTokenResponse(
-    requestResult: Result<TokenNetworkResponse>,
-): Result<TokenNetworkResponse> = when (requestResult) {
+fun handleTokenApiResponse(
+    requestResult: Result<TokenApiResponse>,
+): Result<TokenApiResponse> = when (requestResult) {
     is Result.Success -> {
         if (requestResult.data.accessToken?.isNotEmpty() == true) {
             Result.Success(data = requestResult.data)
@@ -42,8 +42,8 @@ fun handleTokenResponse(
     }
 }
 
-fun <T> handleTransactionResponse(
-    requestResult: Result<TransactionResponse<T>>,
+fun <T> handleTransactionApiResponse(
+    requestResult: Result<TransactionApiResponse<T>>,
 ): Result<List<T>> = when (requestResult) {
     is Result.Success -> {
         if (requestResult.data.items != null) {

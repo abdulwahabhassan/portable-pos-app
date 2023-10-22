@@ -4,12 +4,8 @@ import com.bankly.core.common.util.Formatter
 import com.bankly.core.common.util.clientReqId
 import com.bankly.core.data.BankTransferData
 import com.bankly.core.data.BillPaymentData
-import com.bankly.core.entity.BillProvider
 import com.bankly.core.enums.BillsProviderType
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 @Serializable
 sealed class TransactionData(

@@ -30,7 +30,6 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-
     private suspend fun getWallet() {
         getWalletUseCase(token = userPreferencesDataStore.data().token)
             .onEach { resource ->

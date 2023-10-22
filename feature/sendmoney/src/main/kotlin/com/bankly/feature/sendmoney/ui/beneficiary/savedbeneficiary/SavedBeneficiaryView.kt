@@ -47,6 +47,7 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.sendmoney.R
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryScreenState
@@ -92,6 +93,7 @@ internal fun SavedBeneficiaryView(
         Column {
             Row(
                 modifier = Modifier
+                    .padding(end = 12.dp)
                     .align(Alignment.End),
             ) {
                 BanklyClickableText(
@@ -208,11 +210,11 @@ internal fun SavedBeneficiaryView(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.grey)
 private fun SavedBeneficiaryPreview() {
     BanklyTheme {
         SavedBeneficiaryView(
-            screenState = BeneficiaryScreenState(),
+            screenState = BeneficiaryScreenState(shouldShowSavedBeneficiaryList = false),
             savedBeneficiaries = SavedBeneficiary.mockOtherBanks(),
             selectedAccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
             onBankNameDropDownIconClick = {},
@@ -303,7 +305,7 @@ private fun SavedBeneficiaryItemView(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.grey)
 private fun SavedBeneficiaryItemPreview() {
     BanklyTheme {
         SavedBeneficiaryItemView(

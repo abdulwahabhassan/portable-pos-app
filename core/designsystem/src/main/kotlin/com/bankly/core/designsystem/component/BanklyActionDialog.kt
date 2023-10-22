@@ -40,6 +40,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
  * action buttons are shown and their respective actions [positiveAction] or [negativeAction]
  * are called when either button is clicked
  */
+@Deprecated("Deprecated in favour of BanklyCenterDialog")
 @Composable
 fun BanklyActionDialog(
     title: String,
@@ -140,7 +141,6 @@ fun BanklyActionDialog(
 @Preview(showBackground = true)
 fun ActionDialogPreview1() {
     BanklyTheme {
-        val context = LocalContext.current
         BanklyActionDialog(
             title = stringResource(R.string.title_cancel_transaction),
             subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_cancel),
@@ -157,7 +157,6 @@ fun ActionDialogPreview1() {
 @Preview(showBackground = true)
 fun ActionDialogPreview2() {
     BanklyTheme {
-        val context = LocalContext.current
         BanklyActionDialog(
             title = stringResource(R.string.msg_check_your_internet_connection),
             positiveActionText = "Okay",

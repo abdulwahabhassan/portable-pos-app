@@ -119,6 +119,7 @@ internal fun LoginScreen(
                             ) {
                                 append(stringResource(R.string.msg_forgot_passcode))
                             }
+                            append(" ")
                             withStyle(
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.primary,

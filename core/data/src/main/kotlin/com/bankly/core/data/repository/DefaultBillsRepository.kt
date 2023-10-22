@@ -12,7 +12,7 @@ import com.bankly.core.data.util.asPlan
 import com.bankly.core.data.util.asProvider
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
-import com.bankly.core.data.util.handleResponse
+import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.domain.repository.BillsRepository
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
@@ -42,7 +42,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<TransactionReceipt.BillPayment>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -67,7 +67,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<MeterNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -92,7 +92,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<CableTvNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -116,7 +116,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -135,7 +135,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -154,7 +154,7 @@ class DefaultBillsRepository @Inject constructor(
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -174,7 +174,7 @@ class DefaultBillsRepository @Inject constructor(
         flow {
             emit(Resource.Loading)
             when (
-                val responseResult = handleResponse(
+                val responseResult = handleApiResponse(
                     requestResult = handleRequest(
                         dispatcher = ioDispatcher,
                         networkMonitor = networkMonitor,
@@ -192,7 +192,7 @@ class DefaultBillsRepository @Inject constructor(
     flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -210,7 +210,7 @@ class DefaultBillsRepository @Inject constructor(
     flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -228,7 +228,7 @@ class DefaultBillsRepository @Inject constructor(
     flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,

@@ -5,13 +5,11 @@ import com.bankly.core.data.SendReceiptData
 import com.bankly.core.data.SyncRecentFundingData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
-import com.bankly.core.data.util.asAgentAccountDetails
 import com.bankly.core.data.util.asRecentFund
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
-import com.bankly.core.data.util.handleResponse
+import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.domain.repository.PayWithTransferRepository
-import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.retrofit.service.PayWithTransferService
@@ -37,7 +35,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -62,7 +60,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
     ): Flow<Resource<List<RecentFund>>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -87,7 +85,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,

@@ -1,10 +1,7 @@
 package com.bankly.feature.dashboard.navigation
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.Feature
@@ -14,8 +11,6 @@ import com.bankly.feature.dashboard.ui.more.MoreRoute
 import com.bankly.feature.dashboard.ui.pos.PosTab
 import com.bankly.feature.dashboard.ui.support.SupportRoute
 import com.bankly.feature.dashboard.ui.transactions.TransactionsRoute
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 const val dashBoardNavGraphRoute = "dashboard_graph"
 internal const val dashBoardRoute = dashBoardNavGraphRoute.plus("/dashboard_route")

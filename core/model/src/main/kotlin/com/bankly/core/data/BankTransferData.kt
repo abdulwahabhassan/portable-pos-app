@@ -1,8 +1,5 @@
 package com.bankly.core.data
 
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-
 sealed class BankTransferData {
     data class AccountNumber(
         val accountName: String,

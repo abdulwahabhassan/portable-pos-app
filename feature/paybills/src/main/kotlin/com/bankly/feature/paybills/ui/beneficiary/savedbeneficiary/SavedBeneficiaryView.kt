@@ -96,6 +96,7 @@ internal fun SavedBeneficiaryView(
         Column {
             Row(
                 modifier = Modifier
+                    .padding(end = 12.dp)
                     .align(Alignment.End),
             ) {
                 BanklyClickableText(
@@ -359,11 +360,11 @@ internal fun SavedBeneficiaryView(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.grey)
 private fun SavedBeneficiaryPreview() {
     BanklyTheme {
         SavedBeneficiaryView(
-            screenState = BeneficiaryScreenState(),
+            screenState = BeneficiaryScreenState(shouldShowSavedBeneficiaryList = false),
             savedBeneficiaries = SavedBeneficiary.mockOtherBanks(),
             onProviderDropDownIconClick = {},
             onPlanDropDownIconClick = {},

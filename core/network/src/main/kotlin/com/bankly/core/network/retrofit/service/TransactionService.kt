@@ -1,8 +1,8 @@
 package com.bankly.core.network.retrofit.service
 
-import com.bankly.core.network.model.response.TransactionResponse
+import com.bankly.core.network.model.response.TransactionApiResponse
+import com.bankly.core.network.model.result.TransactionFilterTypeResult
 import com.bankly.core.network.model.result.TransactionResult
-import kotlinx.serialization.Serializable
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -14,12 +14,10 @@ interface TransactionService {
         @Path("min") minimum: Long,
         @Path("max") maximum: Long,
         @Path("filter") filter: String
-    ): TransactionResponse<TransactionResult>
-}
+    ): TransactionApiResponse<TransactionResult>
 
-@Serializable
-data class TransactionsFilter(
-    val dateCreatedFrom: String,
-    val dateCreatedTo: String,
-    val transactionType: String,
-)
+    @GET(value = "get/transaction/agenttransactionTypes")
+    suspend fun getTransactionFilterTypes(
+        @Header("Authorization") token: String,
+    ): List<TransactionFilterTypeResult>
+}

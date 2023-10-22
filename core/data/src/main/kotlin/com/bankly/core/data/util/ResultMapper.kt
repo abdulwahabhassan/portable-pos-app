@@ -12,9 +12,10 @@ import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.Token
 import com.bankly.core.entity.Transaction
+import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.entity.User
 import com.bankly.core.entity.UserWallet
-import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.response.TokenApiResponse
 import com.bankly.core.network.model.result.AgentResult
 import com.bankly.core.network.model.result.AuthenticatedUserResult
 import com.bankly.core.network.model.result.BankResult
@@ -30,15 +31,19 @@ import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.model.result.AgentAccountResult
+import com.bankly.core.network.model.result.TransactionFilterTypeResult
 import com.bankly.core.network.model.result.TransactionResult
+import com.bankly.core.network.retrofit.model.Any
 import com.bankly.core.sealed.TransactionReceipt
+
+fun Any.toAny() = Any()
 
 fun AuthenticatedUserResult.asUser() = User(
     userId = userId ?: "",
     message = message ?: "",
 )
 
-fun TokenNetworkResponse.asToken() = Token(
+fun TokenApiResponse.asToken() = Token(
     token = accessToken ?: "",
     expiresIn = expiresIn ?: 0L,
     tokenType = tokenType ?: "",
@@ -262,4 +267,8 @@ fun TransactionResult.asTransaction() = Transaction(
     aggregatorId = aggregatorId ?: 0,
     isCredit = isCredit ?: false,
     isDebit = isDebit ?: false
+)
+
+fun TransactionFilterTypeResult.asTransactionFilterType() = TransactionFilterType(
+    name = name, id = id, isSelected = false
 )

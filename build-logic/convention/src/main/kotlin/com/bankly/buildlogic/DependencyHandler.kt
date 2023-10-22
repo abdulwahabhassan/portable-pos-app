@@ -7,7 +7,6 @@ fun DependencyHandler.groupedCompose(libs: VersionCatalog) {
     val bom = libs.findLibrary("androidx-compose-bom").get()
     add("implementation", platform(bom))
     add("androidTestImplementation", platform(bom))
-    add("implementation", libs.findLibrary("androidx.core.ktx").get())
     add("implementation", libs.findLibrary("androidx.activity.compose").get())
     add("api", libs.findLibrary("androidx.compose.foundation").get())
     add("api", libs.findLibrary("androidx.compose.foundation.layout").get())

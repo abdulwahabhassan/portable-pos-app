@@ -19,9 +19,12 @@ import com.bankly.core.network.model.request.GetRecentFundingRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.SendReceiptRequestBody
 import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
+import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
 import com.bankly.core.network.model.request.ValidateElectricityMeterNumberRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 fun ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
     serialNumber = serialNumber,
@@ -116,3 +119,5 @@ fun SendReceiptData.asRequestBody() = SendReceiptRequestBody(
 fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
     sessionId = sessionId, serialNumber = serialNumber, location = location
 )
+
+fun TransactionFilterData.asRequestParam() = Json.encodeToString(this)

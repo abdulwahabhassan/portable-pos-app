@@ -4,41 +4,59 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.common.ui.view.EmptyStateView
-import com.bankly.core.designsystem.component.BanklyActionDialog
+import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyClickableIcon
+import com.bankly.core.designsystem.component.BanklyClickableText
+import com.bankly.core.designsystem.component.BanklyDatePicker
 import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
+import com.bankly.core.entity.CashFlow
 import com.bankly.core.entity.Transaction
+import com.bankly.core.entity.TransactionFilter
+import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.R
+import com.bankly.feature.dashboard.model.DateRange
 import com.bankly.feature.dashboard.model.TransactionCategoryTab
+import com.bankly.feature.dashboard.ui.component.FilterChip
 import com.bankly.feature.dashboard.ui.component.TransactionListItem
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.datetime.LocalDate
 
 @Composable
 internal fun TransactionsRoute(
@@ -48,6 +66,7 @@ internal fun TransactionsRoute(
     updateLoadingStatus: (Boolean) -> Unit
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
+
     TransactionsScreen(
         screenState = screenState,
         onBackPress = onBackPress,
@@ -56,22 +75,22 @@ internal fun TransactionsRoute(
         },
     )
 
+    LaunchedEffect(key1 = screenState.isLoading) {
+        updateLoadingStatus(screenState.isLoading)
+    }
+
     LaunchedEffect(key1 = Unit) {
         viewModel.oneShotState.collectLatest { oneShotState ->
             when (oneShotState) {
                 is TransactionsScreenOneShotState.GoToTransactionDetailsScreen -> {
                     onGoToTransactionDetailsScreen(oneShotState.transaction)
                 }
-
-                is TransactionsScreenOneShotState.UpdateLoadingIndicator -> {
-                    updateLoadingStatus(oneShotState.isLoading)
-                }
             }
         }
     }
-    LaunchedEffect(key1 = Unit, block = {
-        viewModel.sendEvent(TransactionsScreenEvent.FetchTransactions)
-    })
+    LaunchedEffect(key1 = Unit) {
+        viewModel.sendEvent(TransactionsScreenEvent.LoadUiData)
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -85,6 +104,7 @@ private fun TransactionsScreen(
         onBackPress()
     }
 
+    val context = LocalContext.current
     val filteredList by remember(
         screenState.transactions,
         screenState.searchQuery,
@@ -102,68 +122,215 @@ private fun TransactionsScreen(
         mutableStateOf(resultList)
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        stickyHeader {
-            Column(
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
-            ) {
-                BanklySearchBar(
-                    modifier = Modifier,
-                    query = screenState.searchQuery,
-                    onQueryChange = { query: String ->
-                        onUiEvent(TransactionsScreenEvent.OnInputSearchQuery(query))
-                    },
-                    searchPlaceholder = "Search reference, amount",
-                    trailingIcon = {
-                        BanklyClickableIcon(
-                            modifier = Modifier.padding(end = 16.dp),
-                            icon = BanklyIcons.Filter,
-                            onClick = { /*TODO*/ })
-                    }
+    var shouldShowTransactionFilter by remember { mutableStateOf(false) }
+
+    if (shouldShowTransactionFilter) {
+        FilterView(
+            onBackPress = {
+                shouldShowTransactionFilter = false
+                onUiEvent(TransactionsScreenEvent.LoadUiData)
+            },
+            isTransactionReferenceError = screenState.isTransactionReferenceError,
+            transactionReferenceFeedback = screenState.transactionReferenceFeedBack,
+            transactionReferenceTFV = screenState.transactionReferenceTFV,
+            onEnterTransactionReference = { textFieldValue: TextFieldValue ->
+                onUiEvent(TransactionsScreenEvent.OnInputTransactionReference(textFieldValue))
+            },
+            isUserInputEnabled = screenState.isUserInputEnabled,
+            isAccountNameFeedbackError = screenState.isAccountNameFeedbackError,
+            accountNameFeedback = screenState.accountNameFeedback,
+            accountNameTFV = screenState.accountNameTFV,
+            onEnterAccountName = { textFieldValue: TextFieldValue ->
+                onUiEvent(TransactionsScreenEvent.OnInputAccountName(textFieldValue))
+            },
+            onCashFlowFilterChipClick = { cashFlow: CashFlow ->
+                onUiEvent(
+                    TransactionsScreenEvent.OnCashFlowFilterChipClick(
+                        cashFlow,
+                        cashFlows = screenState.cashFlows
+                    )
                 )
-                Spacer(modifier = Modifier.padding(top = 8.dp))
-                BanklyTabBar(
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
-                    tabs = TransactionCategoryTab.values().toList(),
-                    onTabClick = { categoryTab ->
-                        onUiEvent(TransactionsScreenEvent.OnCategoryTabSelected(categoryTab))
+            },
+            shouldShowAllTransactionFilterType = screenState.showAllTransactionFilterType,
+            onShowLessTypesClick = {
+                onUiEvent(TransactionsScreenEvent.OnShowLessFilterTypesClick)
+            },
+            onShowMoreTypesClick = {
+                onUiEvent(TransactionsScreenEvent.OnShowMoreFilterTypesClick)
+            },
+            startDateFilter = screenState.startDateFilter,
+            endDateFilter = screenState.endDateFilter,
+            onStartDateFilterClick = {
+                onUiEvent(TransactionsScreenEvent.DateFilterClick(DateRange.START_DATE))
+            },
+            onEndDateFilterClick = {
+                onUiEvent(TransactionsScreenEvent.DateFilterClick(DateRange.END_DATE))
+            },
+            startDateFilterFeedBack = screenState.startDateFeedBack,
+            endDateFilterFeedBack = screenState.endDateFeedBack,
+            isStartDateFilterError = screenState.isStartDateFilterError,
+            isEndDateFilterError = screenState.isEndDateFilterError,
+            cashFlows = screenState.cashFlows,
+            transactionFilterTypes = screenState.allTransactionFilterTypes,
+            onTransactionFilterTypeSelected = { transactionFilterType ->
+                onUiEvent(
+                    TransactionsScreenEvent.OnTransactionFilterTypeSelected(
+                        transactionFilterType,
+                        screenState.allTransactionFilterTypes
+                    )
+                )
+            },
+            onApplyClick = { filter: TransactionFilter ->
+                onUiEvent(TransactionsScreenEvent.OnApplyFilterClick(transactionFilter = filter))
+                shouldShowTransactionFilter = false
+            }
+        )
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            stickyHeader {
+                Column(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                ) {
+                    BanklySearchBar(
+                        modifier = Modifier,
+                        query = screenState.searchQuery,
+                        onQueryChange = { query: String ->
+                            onUiEvent(TransactionsScreenEvent.OnInputSearchQuery(query))
+                        },
+                        searchPlaceholder = "Search reference, amount",
+                        trailingIcon = {
+                            BanklyClickableIcon(
+                                modifier = Modifier.padding(end = 16.dp),
+                                icon = BanklyIcons.Filter,
+                                onClick = {
+                                    shouldShowTransactionFilter = true
+                                }
+                            )
+                        },
+                    )
+                    Spacer(modifier = Modifier.padding(top = 8.dp))
+                    BanklyTabBar(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                        tabs = TransactionCategoryTab.values().toList(),
+                        onTabClick = { categoryTab ->
+                            onUiEvent(TransactionsScreenEvent.OnCategoryTabSelected(categoryTab))
+                        },
+                        selectedTab = screenState.selectedCategoryTab,
+                        selectedTabColor = MaterialTheme.colorScheme.onPrimary,
+                        selectedTabTextColor = when (screenState.selectedCategoryTab) {
+                            TransactionCategoryTab.ALL -> MaterialTheme.colorScheme.primary
+                            TransactionCategoryTab.CREDIT -> BanklySuccessColor.successColor
+                            TransactionCategoryTab.DEBIT -> MaterialTheme.colorScheme.error
+                        },
+                        unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                }
+            }
+
+            if (screenState.selectedTransactionFilterTypes.isNotEmpty()) {
+                item {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, bottom = 8.dp)
+                    ) {
+                        LazyRow(
+                            modifier = Modifier
+                                .padding(end = 16.dp, start = 16.dp)
+                                .align(Alignment.CenterStart)
+                                .fillMaxWidth(0.755f),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            items(
+                                screenState.selectedTransactionFilterTypes,
+                                key = TransactionFilterType::id
+                            ) { item: TransactionFilterType ->
+                                FilterChip(
+                                    title = item.name,
+                                    isSelected = item.isSelected,
+                                    onClick = {
+                                        onUiEvent(
+                                            TransactionsScreenEvent.RemoveTransactionTypeFilterItem(
+                                                item
+                                            )
+                                        )
+                                    },
+                                    trailingIcon = {
+                                        Icon(
+                                            painter = painterResource(id = BanklyIcons.Remove),
+                                            contentDescription = null,
+                                            tint = Color.Unspecified
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+                                .padding(end = 16.dp)
+                        ) {
+                            BanklyClickableText(
+                                text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
+                                onClick = {
+                                    onUiEvent(TransactionsScreenEvent.OnClearAllFilters)
+                                },
+                                backgroundShape = RoundedCornerShape(4.dp),
+                                textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
+                            )
+                        }
+                    }
+                }
+            }
+
+            items(filteredList) { item ->
+                TransactionListItem(
+                    transaction = item,
+                    onClick = {
+                        onUiEvent(TransactionsScreenEvent.OnTransactionSelected(item))
                     },
-                    selectedTab = screenState.selectedCategoryTab,
-                    selectedTabColor = MaterialTheme.colorScheme.onPrimary,
-                    selectedTabTextColor = when (screenState.selectedCategoryTab) {
-                        TransactionCategoryTab.ALL -> MaterialTheme.colorScheme.primary
-                        TransactionCategoryTab.CREDIT -> BanklySuccessColor.successColor
-                        TransactionCategoryTab.DEBIT -> MaterialTheme.colorScheme.error
-                    },
-                    unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
-        }
-        items(filteredList) { item ->
-            TransactionListItem(
-                transaction = item,
-                onClick = {
-                    onUiEvent(TransactionsScreenEvent.OnTransactionSelected(item))
-                },
-            )
         }
     }
 
-    if (screenState.showErrorDialog) {
-        BanklyActionDialog(
-            title = stringResource(R.string.title_error),
-            subtitle = screenState.errorDialogMessage,
-            positiveActionText = stringResource(R.string.action_dismiss),
-            positiveAction = {
-                onUiEvent(TransactionsScreenEvent.DismissErrorDialog)
+    if (screenState.showDatePicker && screenState.whichDateRange != null) {
+        BanklyDatePicker(
+            context = context,
+            onDateSelected = { date: LocalDate ->
+                onUiEvent(
+                    TransactionsScreenEvent.OnDateSelected(
+                        date,
+                        screenState.whichDateRange
+                    )
+                )
+            },
+            onDismissDatePicker = {
+                onUiEvent(TransactionsScreenEvent.OnDismissDatePicker)
             }
         )
     }
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.title_error),
+        subtitle = screenState.errorDialogMessage,
+        positiveActionText = stringResource(R.string.action_dismiss),
+        positiveAction = {
+            onUiEvent(TransactionsScreenEvent.DismissErrorDialog)
+        },
+        showDialog = screenState.showErrorDialog,
+        onDismissDialog = {
+            onUiEvent(TransactionsScreenEvent.DismissErrorDialog)
+        }
+    )
 }
 
 @Composable
@@ -221,7 +388,7 @@ private fun TransactionsScreenPreview() {
                         isCredit = false,
                         isDebit = true,
                     )
-                )
+                ),
             ),
             onUiEvent = {},
         )

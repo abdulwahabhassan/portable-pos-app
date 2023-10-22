@@ -14,9 +14,9 @@ import com.bankly.core.data.util.asToken
 import com.bankly.core.data.util.asUser
 import com.bankly.core.data.util.asUserWallet
 import com.bankly.core.data.util.handleRequest
-import com.bankly.core.data.util.handleResponse
+import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleTokenRequest
-import com.bankly.core.data.util.handleTokenResponse
+import com.bankly.core.data.util.handleTokenApiResponse
 import com.bankly.core.domain.repository.UserRepository
 import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.Message
@@ -48,7 +48,7 @@ class DefaultUserRepository @Inject constructor(
     ): Flow<Resource<Token>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleTokenResponse(
+            val responseResult = handleTokenApiResponse(
                 requestResult = handleTokenRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -67,7 +67,7 @@ class DefaultUserRepository @Inject constructor(
     ): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -84,7 +84,7 @@ class DefaultUserRepository @Inject constructor(
     override suspend fun validateOtp(body: ValidateOtpData): Flow<Resource<Status>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -103,7 +103,7 @@ class DefaultUserRepository @Inject constructor(
     ): Flow<Resource<Message>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -122,7 +122,7 @@ class DefaultUserRepository @Inject constructor(
     ): Flow<Resource<User>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -141,7 +141,7 @@ class DefaultUserRepository @Inject constructor(
     ): Flow<Resource<UserWallet>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -158,7 +158,7 @@ class DefaultUserRepository @Inject constructor(
     override suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,

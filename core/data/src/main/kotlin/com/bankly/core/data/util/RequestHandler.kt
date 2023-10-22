@@ -1,7 +1,6 @@
 package com.bankly.core.data.util
 
-import android.util.Log
-import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.response.TokenApiResponse
 import com.bankly.core.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -41,8 +40,8 @@ suspend fun handleTokenRequest(
     dispatcher: CoroutineDispatcher,
     networkMonitor: NetworkMonitor,
     json: Json,
-    apiRequest: suspend () -> TokenNetworkResponse,
-): Result<TokenNetworkResponse> = withContext(dispatcher) {
+    apiRequest: suspend () -> TokenApiResponse,
+): Result<TokenApiResponse> = withContext(dispatcher) {
     if (networkMonitor.isOnline.first()::not.invoke()) {
         Result.Error("Check your internet connection!")
     } else {

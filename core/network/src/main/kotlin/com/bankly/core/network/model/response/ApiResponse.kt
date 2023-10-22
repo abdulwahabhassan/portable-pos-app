@@ -2,11 +2,8 @@ package com.bankly.core.network.model.response
 
 import kotlinx.serialization.Serializable
 
-/**
- * Wrapper for data provided from the [BanklyBaseUrl]
- */
 @Serializable
-data class NetworkResponse<T>(
+data class ApiResponse<T>(
     val hasResult: Boolean? = null,
     val result: T? = null,
     val successful: Boolean? = null,

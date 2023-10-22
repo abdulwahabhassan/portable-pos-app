@@ -17,7 +17,6 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.TransactionType
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.paywithcard.util.toTransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools

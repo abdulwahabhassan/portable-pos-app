@@ -1,6 +1,6 @@
 package com.bankly.core.network.retrofit.service
 
-import com.bankly.core.network.model.response.NetworkResponse
+import com.bankly.core.network.model.response.ApiResponse
 import com.bankly.core.network.model.result.AgentResult
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,5 +11,5 @@ interface AgentService {
     suspend fun performAccountNameEnquiry(
         @Header("Authorization") token: String,
         @Path("phoneNumber") phoneNumber: String,
-    ): NetworkResponse<AgentResult>
+    ): ApiResponse<AgentResult>
 }

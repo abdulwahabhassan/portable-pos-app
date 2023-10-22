@@ -1,5 +1,6 @@
 package com.bankly.core.domain.usecase
 
+import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.domain.repository.TransactionRepository
 import com.bankly.core.entity.Transaction
 import com.bankly.core.sealed.Resource
@@ -13,7 +14,7 @@ class GetTransactionsUseCase @Inject constructor(
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: String,
+        filter: TransactionFilterData,
     ): Flow<Resource<List<Transaction>>> =
         transactionRepository.getTransactions(token, minimum, maximum, filter)
 }

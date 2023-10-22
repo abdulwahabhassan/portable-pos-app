@@ -8,7 +8,7 @@ import com.bankly.core.data.util.asBankTransfer
 import com.bankly.core.data.util.asNameEnquiry
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
-import com.bankly.core.data.util.handleResponse
+import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.Bank
@@ -39,7 +39,7 @@ class DefaultTransferRepository @Inject constructor(
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -64,7 +64,7 @@ class DefaultTransferRepository @Inject constructor(
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -90,7 +90,7 @@ class DefaultTransferRepository @Inject constructor(
     ): Flow<Resource<AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -116,7 +116,7 @@ class DefaultTransferRepository @Inject constructor(
     ): Flow<Resource<AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
@@ -140,7 +140,7 @@ class DefaultTransferRepository @Inject constructor(
     ): Flow<Resource<List<Bank>>> = flow {
         emit(Resource.Loading)
         when (
-            val responseResult = handleResponse(
+            val responseResult = handleApiResponse(
                 requestResult = handleRequest(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,

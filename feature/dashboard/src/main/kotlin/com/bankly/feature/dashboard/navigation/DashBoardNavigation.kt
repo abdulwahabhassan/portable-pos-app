@@ -77,7 +77,7 @@ fun DashBoardNavHost(
     onContinueToPayWithCardClick: (Double) -> Unit,
     updateLoadingStatus: (Boolean) -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
-    onSupportOptionClick: (SupportOption) -> Unit
+    onSupportOptionClick: (SupportOption) -> Unit,
 ) {
     NavHost(
         modifier = modifier,

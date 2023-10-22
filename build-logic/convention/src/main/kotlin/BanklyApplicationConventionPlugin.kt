@@ -23,7 +23,6 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
             configureToolChain()
             extensions.configure<ApplicationExtension> {
                 defaultConfig.targetSdk = 33
-                compileSdk = 33
                 defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 defaultConfig.vectorDrawables.useSupportLibrary = true
 
@@ -49,11 +48,8 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             dependencies {
-                add("implementation", libs.findLibrary("androidx.appcompat").get())
-                add("implementation", libs.findLibrary("androidx.core.ktx").get())
-                add("implementation", libs.findLibrary("androidx.core.splashscreen").get())
-                add("implementation", libs.findLibrary("accompanist.systemuicontroller").get())
                 add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
+                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
                 add("implementation", libs.findLibrary("hilt.android").get())
                 add("kapt", libs.findLibrary("hilt.compiler").get())
                 add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.TransactionType
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel

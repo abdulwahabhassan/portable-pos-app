@@ -7,8 +7,8 @@ import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
-import com.bankly.core.network.model.response.NetworkResponse
-import com.bankly.core.network.model.response.TokenNetworkResponse
+import com.bankly.core.network.model.response.ApiResponse
+import com.bankly.core.network.model.response.TokenApiResponse
 import com.bankly.core.network.model.result.AuthenticatedUserResult
 import com.bankly.core.network.model.result.MessageResult
 import com.bankly.core.network.model.result.StatusResult
@@ -22,12 +22,12 @@ interface IdentityService {
     @POST(value = "post/api/Account/password/v2/forgotpasswordcode")
     suspend fun forgotPassCode(
         @Body body: ForgotPassCodeRequestBody,
-    ): NetworkResponse<StatusResult>
+    ): ApiResponse<StatusResult>
 
     @PUT(value = "post/api/Account/validateotp")
     suspend fun validateOtp(
         @Body body: ValidateOtpRequestBody,
-    ): NetworkResponse<StatusResult>
+    ): ApiResponse<StatusResult>
 
     @FormUrlEncoded
     @POST(value = "post/connect/token")
@@ -38,15 +38,15 @@ interface IdentityService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("auth_mode") authMode: String? = null,
-    ): TokenNetworkResponse
+    ): TokenApiResponse
 
     @PUT(value = "put/TerminalPasscode/Change")
     suspend fun changePassCode(
         @Body body: ChangePassCodeRequestBody,
-    ): NetworkResponse<AuthenticatedUserResult>
+    ): ApiResponse<AuthenticatedUserResult>
 
     @PUT(value = "post/api/Account/resetpasswordbycode")
     suspend fun resetPassCode(
         @Body body: ResetPassCodeRequestBody,
-    ): NetworkResponse<MessageResult>
+    ): ApiResponse<MessageResult>
 }

@@ -33,4 +33,6 @@ class UserPreferencesDataStore @Inject constructor(
 
     suspend fun data(): UserPreferences =
         withContext(dispatcher) { context.userPrefDataStore.data.first() }
+
+    suspend fun flow() = withContext(dispatcher) { context.userPrefDataStore.data }
 }

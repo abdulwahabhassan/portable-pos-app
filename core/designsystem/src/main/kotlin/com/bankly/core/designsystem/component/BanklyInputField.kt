@@ -32,9 +32,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,10 +53,9 @@ fun BanklyInputField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: Int? = null,
     onTrailingIconClick: () -> Unit = {},
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(
-        color = MaterialTheme.colorScheme.tertiary,
-    ),
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    horizontalPadding: Dp = 24.dp
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -113,14 +114,14 @@ fun BanklyInputField(
             Text(
                 text = labelText,
                 style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = horizontalPadding),
             )
         }
         if (isPasswordField) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 8.dp)
+                    .padding(horizontal = horizontalPadding, vertical = 8.dp)
                     .border(
                         width = 1.dp,
                         color = if (isFocused) {
@@ -145,12 +146,11 @@ fun BanklyInputField(
                 readOnly = readOnly,
                 isError = isError,
                 singleLine = true,
+                maxLines = 1,
                 placeholder = {
                     Text(
                         text = placeholderText,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        ),
+                        style = textStyle,
                     )
                 },
                 keyboardOptions = keyboardOptions,
@@ -203,7 +203,7 @@ fun BanklyInputField(
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 8.dp)
+                    .padding(horizontal = horizontalPadding, vertical = 8.dp)
                     .border(
                         width = 1.dp,
                         color = if (isFocused) {
@@ -226,7 +226,7 @@ fun BanklyInputField(
                 placeholder = {
                     Text(
                         text = placeholderText,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = textStyle,
                     )
                 },
                 visualTransformation = visualTransformation,
@@ -235,6 +235,7 @@ fun BanklyInputField(
                 readOnly = readOnly,
                 isError = isError,
                 singleLine = true,
+                maxLines = 1,
                 keyboardOptions = keyboardOptions,
                 textStyle = textStyle,
                 shape = MaterialTheme.shapes.medium,
@@ -280,13 +281,13 @@ fun BanklyInputField(
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = 24.dp),
+            modifier = Modifier.padding(horizontal = horizontalPadding),
         )
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyInputFieldPreview1() {
     BanklyTheme {
         BanklyInputField(
@@ -299,7 +300,7 @@ private fun BanklyInputFieldPreview1() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyInputFieldPreview2() {
     BanklyTheme {
         BanklyInputField(
@@ -315,7 +316,7 @@ private fun BanklyInputFieldPreview2() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyInputFieldPreview3() {
     BanklyTheme {
         BanklyInputField(
@@ -328,7 +329,7 @@ private fun BanklyInputFieldPreview3() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyInputFieldPreview4() {
     BanklyTheme {
         BanklyInputField(
@@ -342,7 +343,7 @@ private fun BanklyInputFieldPreview4() {
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun BanklyInputFieldPreview5() {
     BanklyTheme {
         BanklyInputField(

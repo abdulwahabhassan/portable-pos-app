@@ -3,18 +3,17 @@ package com.bankly.feature.paybills.ui.beneficiary
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -202,10 +201,15 @@ private fun BeneficiaryScreen(
     onNewBeneficiaryContinueButtonClick: () -> Unit,
     onSavedBeneficiaryContinueButtonClick: () -> Unit,
 ) {
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        SheetState(
+            skipPartiallyExpanded = false,
+            initialValue = SheetValue.Hidden,
+        ),
+    )
     var bottomSheetType: BottomSheetType? by remember { mutableStateOf(null) }
 
-    Scaffold(
+    BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BanklyTitleBar(
@@ -215,183 +219,12 @@ private fun BeneficiaryScreen(
                 isLoading = newBeneficiaryScreenState.showLoadingIndicator || savedBeneficiaryScreenState.showLoadingIndicator,
             )
         },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column {
-                    Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 2.dp)) {
-                        BanklyTabBar(
-                            tabs = BeneficiaryTab.values().toList(),
-                            onTabClick = { tab ->
-                                onNewBeneficiaryUiEvent(BeneficiaryScreenEvent.OnTabSelected(tab))
-                            },
-                            selectedTab = newBeneficiaryScreenState.selectedTab,
-                            selectedTabColor = MaterialTheme.colorScheme.surfaceVariant,
-                            selectedTabTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            rippleColor = MaterialTheme.colorScheme.surfaceVariant,
-                        )
-                    }
-                    when (newBeneficiaryScreenState.selectedTab) {
-                        BeneficiaryTab.NEW_BENEFICIARY -> {
-                            NewBeneficiaryView(
-                                screenState = newBeneficiaryScreenState,
-                                billType = billType,
-                                onProviderDropDownIconClick = {
-                                    bottomSheetType = BottomSheetType.PROVIDER
-                                    coroutineScope.launch {
-                                        bottomSheetState.show()
-                                    }
-                                },
-                                onPlanDropDownIconClick = {
-                                    bottomSheetType = BottomSheetType.PLAN
-                                    coroutineScope.launch {
-                                        bottomSheetState.show()
-                                    }
-                                },
-                                onEnterPhoneNumber = { textFieldValue ->
-                                    onNewBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnInputPhoneNumber(
-                                            phoneNumberTFV = textFieldValue,
-                                            billType = billType,
-                                        ),
-                                    )
-                                },
-                                onEnterAmount = { textFieldValue ->
-                                    onNewBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnInputAmount(
-                                            textFieldValue,
-                                            minimumAmount = newBeneficiaryScreenState.selectedBillPlan?.minimumAmount
-                                                ?: newBeneficiaryScreenState.selectedBillProvider?.minimumAmount
-                                        ),
-                                    )
-                                },
-                                onContinueClick = onNewBeneficiaryContinueButtonClick,
-                                onEnterIDorCardNumber = { textFieldValue ->
-                                    if (newBeneficiaryScreenState.selectedBillPlan != null) {
-                                        onNewBeneficiaryUiEvent(
-                                            BeneficiaryScreenEvent.OnInputCableTvNumber(
-                                                textFieldValue,
-                                                newBeneficiaryScreenState.selectedBillPlan.billId
-                                            ),
-                                        )
-                                    }
-                                },
-                                onEnterMeterNumber = { textFieldValue ->
-                                    if (newBeneficiaryScreenState.selectedBillPlan != null) {
-                                        onNewBeneficiaryUiEvent(
-                                            BeneficiaryScreenEvent.OnInputMeterNumber(
-                                                textFieldValue,
-                                                newBeneficiaryScreenState.selectedBillPlan.billId,
-                                                newBeneficiaryScreenState.selectedBillPlan.id
-                                            ),
-                                        )
-                                    }
-                                },
-                                onToggleSaveAsBeneficiary = { state: Boolean ->
-                                    onNewBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
-                                    )
-                                }
-                            )
-                        }
-
-                        BeneficiaryTab.SAVED_BENEFICIARY -> {
-                            SavedBeneficiaryView(
-                                screenState = savedBeneficiaryScreenState,
-                                savedBeneficiaries = emptyList(),
-                                billType = billType,
-                                onProviderDropDownIconClick = {
-                                    bottomSheetType = BottomSheetType.PROVIDER
-                                    coroutineScope.launch {
-                                        bottomSheetState.show()
-                                    }
-                                },
-                                onPlanDropDownIconClick = {
-                                    bottomSheetType = BottomSheetType.PLAN
-                                    coroutineScope.launch {
-                                        bottomSheetState.show()
-                                    }
-                                },
-                                onEnterPhoneNumber = { textFieldValue ->
-                                    onSavedBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnInputPhoneNumber(
-                                            phoneNumberTFV = textFieldValue,
-                                            billType = billType,
-                                        ),
-                                    )
-                                },
-                                onEnterAmount = { textFieldValue ->
-                                    onSavedBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnInputAmount(
-                                            amountTFV = textFieldValue,
-                                            minimumAmount = savedBeneficiaryScreenState.selectedBillPlan?.minimumAmount
-                                                ?: savedBeneficiaryScreenState.selectedBillProvider?.minimumAmount
-                                        ),
-                                    )
-                                },
-                                onContinueClick = onSavedBeneficiaryContinueButtonClick,
-                                onChangeSelectedSavedBeneficiary = {
-                                    onSavedBeneficiaryUiEvent(BeneficiaryScreenEvent.OnChangeSelectedSavedBeneficiary)
-                                },
-                                onBeneficiarySelected = { beneficiary: SavedBeneficiary ->
-                                    onSavedBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnBeneficiarySelected(beneficiary),
-                                    )
-                                },
-                                onEnterIDorCardNumber = { textFieldValue ->
-                                    if (savedBeneficiaryScreenState.selectedBillPlan != null) {
-                                        onSavedBeneficiaryUiEvent(
-                                            BeneficiaryScreenEvent.OnInputCableTvNumber(
-                                                textFieldValue,
-                                                savedBeneficiaryScreenState.selectedBillPlan.billId
-                                            ),
-                                        )
-                                    }
-                                },
-                                onEnterMeterNumber = { textFieldValue ->
-                                    if (savedBeneficiaryScreenState.selectedBillPlan != null) {
-                                        onSavedBeneficiaryUiEvent(
-                                            BeneficiaryScreenEvent.OnInputMeterNumber(
-                                                textFieldValue,
-                                                savedBeneficiaryScreenState.selectedBillPlan.billId,
-                                                savedBeneficiaryScreenState.selectedBillPlan.id
-                                            ),
-                                        )
-                                    }
-                                },
-                                onToggleSaveAsBeneficiary = { state: Boolean ->
-                                    onSavedBeneficiaryUiEvent(
-                                        BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    )
-    if (when (bottomSheetState.currentValue) {
-            SheetValue.PartiallyExpanded, SheetValue.Expanded -> true
-            SheetValue.Hidden -> false
-        }
-    ) {
-        ModalBottomSheet(
-            sheetState = bottomSheetState,
-            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            onDismissRequest = { coroutineScope.launch { bottomSheetState.hide() } },
-            dragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
-            windowInsets = WindowInsets(top = 24.dp),
-        ) {
-
+        sheetPeekHeight = 0.dp,
+        scaffoldState = bottomSheetScaffoldState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetDragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
+        sheetContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+        sheetContent = {
             var searchQuery by remember { mutableStateOf("") }
 
             SearchableSelectionListView(
@@ -451,7 +284,8 @@ private fun BeneficiaryScreen(
                         }
                     }
                     coroutineScope.launch {
-                        bottomSheetState.hide()
+                        searchQuery = ""
+                        bottomSheetScaffoldState.bottomSheetState.hide()
                     }
                 },
                 title = when (bottomSheetType) {
@@ -472,7 +306,8 @@ private fun BeneficiaryScreen(
                 },
                 onCloseIconClick = {
                     coroutineScope.launch {
-                        bottomSheetState.hide()
+                        searchQuery = ""
+                        bottomSheetScaffoldState.bottomSheetState.hide()
                     }
                 },
                 drawItem = { item, selected, itemEnabled, onClick ->
@@ -518,8 +353,189 @@ private fun BeneficiaryScreen(
                     searchQuery = newQuery
                 }
             )
+        },
+    ) {paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Column {
+                Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 2.dp)) {
+                    BanklyTabBar(
+                        tabs = BeneficiaryTab.values().toList(),
+                        onTabClick = { tab ->
+                            onNewBeneficiaryUiEvent(BeneficiaryScreenEvent.OnTabSelected(tab))
+                        },
+                        selectedTab = newBeneficiaryScreenState.selectedTab,
+                        selectedTabColor = MaterialTheme.colorScheme.surfaceVariant,
+                        selectedTabTextColor = MaterialTheme.colorScheme.primary,
+                        unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        rippleColor = MaterialTheme.colorScheme.surfaceVariant,
+                    )
+                }
+                when (newBeneficiaryScreenState.selectedTab) {
+                    BeneficiaryTab.NEW_BENEFICIARY -> {
+                        NewBeneficiaryView(
+                            screenState = newBeneficiaryScreenState,
+                            billType = billType,
+                            onProviderDropDownIconClick = {
+                                bottomSheetType = BottomSheetType.PROVIDER
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            },
+                            onPlanDropDownIconClick = {
+                                bottomSheetType = BottomSheetType.PLAN
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            },
+                            onEnterPhoneNumber = { textFieldValue ->
+                                onNewBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnInputPhoneNumber(
+                                        phoneNumberTFV = textFieldValue,
+                                        billType = billType,
+                                    ),
+                                )
+                            },
+                            onEnterAmount = { textFieldValue ->
+                                onNewBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnInputAmount(
+                                        textFieldValue,
+                                        minimumAmount = newBeneficiaryScreenState.selectedBillPlan?.minimumAmount
+                                            ?: newBeneficiaryScreenState.selectedBillProvider?.minimumAmount
+                                    ),
+                                )
+                            },
+                            onContinueClick = onNewBeneficiaryContinueButtonClick,
+                            onEnterIDorCardNumber = { textFieldValue ->
+                                if (newBeneficiaryScreenState.selectedBillPlan != null) {
+                                    onNewBeneficiaryUiEvent(
+                                        BeneficiaryScreenEvent.OnInputCableTvNumber(
+                                            textFieldValue,
+                                            newBeneficiaryScreenState.selectedBillPlan.billId
+                                        ),
+                                    )
+                                }
+                            },
+                            onEnterMeterNumber = { textFieldValue ->
+                                if (newBeneficiaryScreenState.selectedBillPlan != null) {
+                                    onNewBeneficiaryUiEvent(
+                                        BeneficiaryScreenEvent.OnInputMeterNumber(
+                                            textFieldValue,
+                                            newBeneficiaryScreenState.selectedBillPlan.billId,
+                                            newBeneficiaryScreenState.selectedBillPlan.id
+                                        ),
+                                    )
+                                }
+                            },
+                            onToggleSaveAsBeneficiary = { state: Boolean ->
+                                onNewBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
+                                )
+                            }
+                        )
+                    }
+
+                    BeneficiaryTab.SAVED_BENEFICIARY -> {
+                        SavedBeneficiaryView(
+                            screenState = savedBeneficiaryScreenState,
+                            savedBeneficiaries = emptyList(),
+                            billType = billType,
+                            onProviderDropDownIconClick = {
+                                bottomSheetType = BottomSheetType.PROVIDER
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            },
+                            onPlanDropDownIconClick = {
+                                bottomSheetType = BottomSheetType.PLAN
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            },
+                            onEnterPhoneNumber = { textFieldValue ->
+                                onSavedBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnInputPhoneNumber(
+                                        phoneNumberTFV = textFieldValue,
+                                        billType = billType,
+                                    ),
+                                )
+                            },
+                            onEnterAmount = { textFieldValue ->
+                                onSavedBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnInputAmount(
+                                        amountTFV = textFieldValue,
+                                        minimumAmount = savedBeneficiaryScreenState.selectedBillPlan?.minimumAmount
+                                            ?: savedBeneficiaryScreenState.selectedBillProvider?.minimumAmount
+                                    ),
+                                )
+                            },
+                            onContinueClick = onSavedBeneficiaryContinueButtonClick,
+                            onChangeSelectedSavedBeneficiary = {
+                                onSavedBeneficiaryUiEvent(BeneficiaryScreenEvent.OnChangeSelectedSavedBeneficiary)
+                            },
+                            onBeneficiarySelected = { beneficiary: SavedBeneficiary ->
+                                onSavedBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnBeneficiarySelected(beneficiary),
+                                )
+                            },
+                            onEnterIDorCardNumber = { textFieldValue ->
+                                if (savedBeneficiaryScreenState.selectedBillPlan != null) {
+                                    onSavedBeneficiaryUiEvent(
+                                        BeneficiaryScreenEvent.OnInputCableTvNumber(
+                                            textFieldValue,
+                                            savedBeneficiaryScreenState.selectedBillPlan.billId
+                                        ),
+                                    )
+                                }
+                            },
+                            onEnterMeterNumber = { textFieldValue ->
+                                if (savedBeneficiaryScreenState.selectedBillPlan != null) {
+                                    onSavedBeneficiaryUiEvent(
+                                        BeneficiaryScreenEvent.OnInputMeterNumber(
+                                            textFieldValue,
+                                            savedBeneficiaryScreenState.selectedBillPlan.billId,
+                                            savedBeneficiaryScreenState.selectedBillPlan.id
+                                        ),
+                                    )
+                                }
+                            },
+                            onToggleSaveAsBeneficiary = { state: Boolean ->
+                                onSavedBeneficiaryUiEvent(
+                                    BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
+                                )
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
+
+//
+//    if (when (bottomSheetState.currentValue) {
+//            SheetValue.PartiallyExpanded, SheetValue.Expanded -> true
+//            SheetValue.Hidden -> false
+//        }
+//    ) {
+//
+//
+////        BottomSheetScaffold(
+////            sheetState = bottomSheetState,
+////            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+////            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+////            onDismissRequest = { coroutineScope.launch { bottomSheetState.hide() } },
+////            dragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
+////            windowInsets = WindowInsets(top = 24.dp),
+////        ) {
+////
+////
+////        }
+//    }
 }
 
 @Composable

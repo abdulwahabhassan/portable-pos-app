@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.model.TransactionType
 import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.cardTransferNavGraph(
