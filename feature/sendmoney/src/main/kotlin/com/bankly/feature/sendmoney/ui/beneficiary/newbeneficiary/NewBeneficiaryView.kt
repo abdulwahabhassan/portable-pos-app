@@ -67,7 +67,7 @@ internal fun NewBeneficiaryView(
                 BanklyInputField(
                     textFieldValue = screenState.bankNameTFV,
                     onTextFieldValueChange = { },
-                    trailingIcon = BanklyIcons.Chevron_Down,
+                    trailingIcon = BanklyIcons.ChevronDown,
                     readOnly = true,
                     onTrailingIconClick = onBankNameDropDownIconClick,
                     placeholderText = stringResource(R.string.msg_select_bank),

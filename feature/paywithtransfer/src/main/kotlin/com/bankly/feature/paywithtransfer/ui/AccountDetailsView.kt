@@ -66,7 +66,7 @@ internal fun AccountDetailsView(
                 )
             }
             BanklyClickableIcon(
-                icon = if (isLoading.not()) (if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down) else BanklyIcons.ValidationInProgress,
+                icon = if (isLoading.not()) (if (isExpanded) BanklyIcons.ChevronUp else BanklyIcons.ChevronDown) else BanklyIcons.ValidationInProgress,
                 onClick = {
                     onExpandIconClick(isExpanded)
                 },

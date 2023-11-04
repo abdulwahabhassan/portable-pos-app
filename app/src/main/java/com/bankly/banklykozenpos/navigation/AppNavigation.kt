@@ -9,8 +9,11 @@ import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
+import com.bankly.feature.contactus.navigation.contactUsNavGraph
 import com.bankly.feature.dashboard.model.Feature
+import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
+import com.bankly.feature.eod.navigation.eodNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
@@ -50,7 +53,7 @@ fun AppNavHost(
                         Feature.CheckBalance -> TODO()
                         Feature.PayWithUssd -> TODO()
                         Feature.Float -> TODO()
-                        Feature.EndOfDay -> TODO()
+                        Feature.EndOfDay -> TopLevelDestination.EOD
                         Feature.NetworkChecker -> TODO()
                         Feature.Settings -> TODO()
                     },
@@ -66,7 +69,15 @@ fun AppNavHost(
             onGoToTransactionDetailsScreen = { transactionReceipt ->
                 appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
             },
-            onSupportOptionClick = {}
+            onSupportOptionClick = { supportOption ->
+                when (supportOption) {
+                    SupportOption.FAQ -> {}
+                    SupportOption.CONTACT_US -> {
+                        appState.navHostController.navigateToContactUsNavGraph()
+                    }
+                    SupportOption.LOG_COMPLAINT -> {}
+                }
+            }
         )
         payWithCardNavGraph(
             onBackPress = {
@@ -98,6 +109,16 @@ fun AppNavHost(
         )
         transactionDetailsNavGraph(
             appNavController = appState.navHostController,
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
+        eodNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
+        contactUsNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             }

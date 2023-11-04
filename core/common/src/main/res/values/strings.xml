@@ -33,4 +33,18 @@
     <string name="title_empty">Empty</string>
     <string name="title_select_bank">Select Bank</string>
     <string name="msg_search_by_keyword">Search by keyword</string>
+    <string name="title_filter">Filter</string>
+    <string name="msg_enter_reference_number">Enter transaction reference</string>
+    <string name="label_transaction_reference">Transaction Reference</string>
+    <string name="msg_enter_accout_name">Enter account name</string>
+    <string name="label_account_name">Account Name</string>
+    <string name="title_type">Type</string>
+    <string name="action_show_more">Show more</string>
+    <string name="title_cashflow">Cashflow</string>
+    <string name="action_show_less">Show less</string>
+    <string name="action_apply">Apply</string>
+    <string name="msg_date_place_holder">YYYY-MM-DD</string>
+    <string name="title_date_range">Date range</string>
+    <string name="action_clear_all">Clear all</string>
+    <string name="symbol_plus_sign">+</string>
 </resources>

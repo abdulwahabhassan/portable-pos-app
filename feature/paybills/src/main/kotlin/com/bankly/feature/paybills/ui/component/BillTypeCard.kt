@@ -1,4 +1,4 @@
-package com.bankly.feature.paybills.component
+package com.bankly.feature.paybills.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

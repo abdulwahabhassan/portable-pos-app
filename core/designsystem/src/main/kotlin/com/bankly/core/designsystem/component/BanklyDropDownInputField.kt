@@ -43,7 +43,7 @@ fun BanklyDropDownInputField(
             labelText = labelText,
             isError = isError,
             feedbackText = feedbackText,
-            trailingIcon = if (isDropDownExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down,
+            trailingIcon = if (isDropDownExpanded) BanklyIcons.ChevronUp else BanklyIcons.ChevronDown,
             onTrailingIconClick = {
                 isDropDownExpanded = true
             },

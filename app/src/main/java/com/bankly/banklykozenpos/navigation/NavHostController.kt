@@ -6,7 +6,9 @@ import androidx.navigation.NavOptions
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
+import com.bankly.feature.contactus.navigation.contactUsNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
+import com.bankly.feature.eod.navigation.eodNavGraphRoute
 import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraphRoute
@@ -68,6 +70,12 @@ internal fun NavHostController.navigateToPayBillsNavGraph(
     this.navigate(billPaymentNavGraphRoute, navOptions)
 }
 
+internal fun NavHostController.navigateToEodNavGraph(
+    navOptions: NavOptions? = null,
+) {
+    this.navigate(eodNavGraphRoute, navOptions)
+}
+
 internal fun NavHostController.navigateToTransactionDetailsNavGraph(
     transactionReceipt: TransactionReceipt,
     navOptions: NavOptions? = null,
@@ -75,4 +83,8 @@ internal fun NavHostController.navigateToTransactionDetailsNavGraph(
     val transactionReceiptString = Json.encodeToString(transactionReceipt)
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     this.navigate("$transactionDetailsNavGraphRoute/$encodedTransactionReceipt", navOptions)
+}
+
+internal fun NavHostController.navigateToContactUsNavGraph(navOptions: NavOptions? = null,) {
+    this.navigate(contactUsNavGraphRoute, navOptions)
 }

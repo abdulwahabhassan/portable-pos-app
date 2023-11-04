@@ -13,6 +13,7 @@ import com.bankly.banklykozenpos.navigation.TopLevelDestination.*
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToCardTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToEodNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayBillsNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithTransferNavGraph
@@ -74,6 +75,7 @@ data class BanklyAppState(
             CARD_TRANSFER -> navHostController.navigateToCardTransferNavGraph(navOption)
             SEND_MONEY -> navHostController.navigateToSendMoneyNavGraph(navOption)
             PAY_BILLS -> navHostController.navigateToPayBillsNavGraph(navOption)
+            EOD -> navHostController.navigateToEodNavGraph(navOption)
         }
     }
 }

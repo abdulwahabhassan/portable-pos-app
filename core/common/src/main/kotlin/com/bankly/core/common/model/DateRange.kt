@@ -1,4 +1,4 @@
-package com.bankly.feature.dashboard.model
+package com.bankly.core.common.model
 
 enum class DateRange {
     START_DATE,

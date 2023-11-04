@@ -54,7 +54,7 @@ internal fun RecentFundListItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(id = BanklyIcons.Transfer_Inward),
+                painter = painterResource(id = BanklyIcons.TransferInward),
                 contentDescription = null,
                 tint = Color.Unspecified
             )

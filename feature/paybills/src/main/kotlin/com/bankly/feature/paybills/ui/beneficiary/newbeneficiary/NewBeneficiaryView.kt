@@ -54,7 +54,7 @@ internal fun NewBeneficiaryView(
             BanklyInputField(
                 textFieldValue = screenState.providerTFV,
                 onTextFieldValueChange = { },
-                trailingIcon = BanklyIcons.Chevron_Down,
+                trailingIcon = BanklyIcons.ChevronDown,
                 readOnly = true,
                 onTrailingIconClick = onProviderDropDownIconClick,
                 placeholderText = stringResource(R.string.msg_select_provider),
@@ -77,7 +77,7 @@ internal fun NewBeneficiaryView(
                     BanklyInputField(
                         textFieldValue = screenState.planTFV,
                         onTextFieldValueChange = { },
-                        trailingIcon = BanklyIcons.Chevron_Down,
+                        trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
                         onTrailingIconClick = {
                             onPlanDropDownIconClick(billType)
@@ -112,7 +112,7 @@ internal fun NewBeneficiaryView(
                     BanklyInputField(
                         textFieldValue = screenState.planTFV,
                         onTextFieldValueChange = { },
-                        trailingIcon = BanklyIcons.Chevron_Down,
+                        trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
                         onTrailingIconClick = {
                             onPlanDropDownIconClick(billType)
@@ -166,7 +166,7 @@ internal fun NewBeneficiaryView(
                     BanklyInputField(
                         textFieldValue = screenState.planTFV,
                         onTextFieldValueChange = { },
-                        trailingIcon = BanklyIcons.Chevron_Down,
+                        trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
                         onTrailingIconClick = {
                             onPlanDropDownIconClick(billType)

@@ -8,4 +8,5 @@ enum class TopLevelDestination {
     CARD_TRANSFER,
     SEND_MONEY,
     PAY_BILLS,
+    EOD
 }

@@ -2,6 +2,7 @@ package com.bankly.feature.dashboard.ui.transactions
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
+import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.data.datastore.UserPreferences
@@ -14,7 +15,6 @@ import com.bankly.core.entity.TransactionFilter
 import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.onFailure
-import com.bankly.feature.dashboard.model.DateRange
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -43,10 +43,6 @@ internal class TransactionsViewModel @Inject constructor(
 
             TransactionsScreenEvent.DismissErrorDialog -> {
                 setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
-            }
-
-            is TransactionsScreenEvent.OnTransactionSelected -> {
-                setOneShotState(TransactionsScreenOneShotState.GoToTransactionDetailsScreen(event.transaction.toTransactionReceipt()))
             }
 
             TransactionsScreenEvent.LoadUiData -> {
@@ -169,11 +165,12 @@ internal class TransactionsViewModel @Inject constructor(
                 userPreferencesDataStore.update {
                     copy(transactionFilter = TransactionFilter())
                 }
+                loadUiData()
             }
         }
     }
 
-    private suspend fun loadUiData(filter: TransactionFilterData?) {
+    private suspend fun loadUiData(filter: TransactionFilterData? = null) {
         combine(
             flow = getTransactionsUseCase.invoke(
                 token = userPreferencesDataStore.data().token,

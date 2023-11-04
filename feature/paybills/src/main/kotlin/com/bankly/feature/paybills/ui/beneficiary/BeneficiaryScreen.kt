@@ -319,7 +319,6 @@ private fun BeneficiaryScreen(
                                 BillType.ELECTRICITY -> (item as BillPlan).name
                                 BillType.AIRTIME -> ""
                             }
-
                             null -> ""
                         },
                         selected = selected,
@@ -516,26 +515,6 @@ private fun BeneficiaryScreen(
         }
     }
 
-//
-//    if (when (bottomSheetState.currentValue) {
-//            SheetValue.PartiallyExpanded, SheetValue.Expanded -> true
-//            SheetValue.Hidden -> false
-//        }
-//    ) {
-//
-//
-////        BottomSheetScaffold(
-////            sheetState = bottomSheetState,
-////            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-////            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-////            onDismissRequest = { coroutineScope.launch { bottomSheetState.hide() } },
-////            dragHandle = { BottomSheetDefaults.DragHandle(width = 80.dp) },
-////            windowInsets = WindowInsets(top = 24.dp),
-////        ) {
-////
-////
-////        }
-//    }
 }
 
 @Composable

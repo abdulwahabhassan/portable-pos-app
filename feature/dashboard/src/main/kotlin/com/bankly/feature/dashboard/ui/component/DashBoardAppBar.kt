@@ -41,7 +41,7 @@ fun DashBoardAppBar(
         }
         BanklyClickableIcon(
             modifier = Modifier,
-            icon = BanklyIcons.Notification_Bell_01,
+            icon = BanklyIcons.NotificationBell_01,
             onClick = {},
         )
     }

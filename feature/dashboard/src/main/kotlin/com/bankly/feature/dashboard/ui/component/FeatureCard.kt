@@ -66,7 +66,7 @@ fun FeatureCard(
         Box(
             contentAlignment = Alignment.TopStart,
             modifier = Modifier
-                .padding(12.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
         ) {
             Column {

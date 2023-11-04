@@ -86,7 +86,7 @@ private fun BanklyClickableIconPreview1() {
     BanklyTheme {
         BanklyClickableIcon(
             modifier = Modifier.size(32.dp).padding(4.dp),
-            icon = BanklyIcons.Notification_Bell_01,
+            icon = BanklyIcons.NotificationBell_01,
             onClick = {},
             color = MaterialTheme.colorScheme.primary,
         )

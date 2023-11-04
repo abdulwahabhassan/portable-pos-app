@@ -125,7 +125,7 @@ private fun RecipientScreen(
                     BanklyInputField(
                         textFieldValue = screenState.bankNameTFV,
                         onTextFieldValueChange = { },
-                        trailingIcon = BanklyIcons.Chevron_Down,
+                        trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
                         onTrailingIconClick = {
                             coroutineScope.launch {

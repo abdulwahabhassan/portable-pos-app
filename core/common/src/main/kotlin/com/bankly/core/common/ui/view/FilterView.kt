@@ -1,4 +1,4 @@
-package com.bankly.feature.dashboard.ui.transactions
+package com.bankly.core.common.ui.view
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +36,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.R
+import com.bankly.core.designsystem.component.BanklyClickableIcon
+import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDateInputField
 import com.bankly.core.designsystem.component.BanklyFilledButton
@@ -44,14 +48,12 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.entity.CashFlow
 import com.bankly.core.entity.TransactionFilterType
-import com.bankly.feature.dashboard.R
 import com.bankly.core.entity.TransactionFilter
-import com.bankly.feature.dashboard.ui.component.FilterChip
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun FilterView(
+fun FilterView(
     transactionReferenceTFV: TextFieldValue,
     accountNameTFV: TextFieldValue,
     onEnterAccountName: (TextFieldValue) -> Unit,
@@ -61,7 +63,6 @@ internal fun FilterView(
     onEnterTransactionReference: (TextFieldValue) -> Unit,
     isTransactionReferenceError: Boolean,
     transactionReferenceFeedback: String,
-    onBackPress: () -> Unit,
     onCashFlowFilterChipClick: (CashFlow) -> Unit,
     onTransactionFilterTypeSelected: (TransactionFilterType) -> Unit,
     onShowMoreTypesClick: () -> Unit,
@@ -77,36 +78,29 @@ internal fun FilterView(
     endDateFilterFeedBack: String,
     cashFlows: List<CashFlow>,
     transactionFilterTypes: List<TransactionFilterType>,
-    onApplyClick: (TransactionFilter) -> Unit
+    onApplyClick: (TransactionFilter) -> Unit,
+    onCloseClick: () -> Unit
 ) {
-    BackHandler {
-        onBackPress()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(start = 24.dp, end = 24.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(id = R.string.title_filter),
+            style = MaterialTheme.typography.titleMedium
+        )
+        BanklyClickableIcon(icon = BanklyIcons.Close, onClick = onCloseClick, shape = CircleShape)
     }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
         flingBehavior = ScrollableDefaults.flingBehavior(),
     ) {
-        stickyHeader {
-            Surface(
-                color = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(start = 24.dp, end = 24.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.title_filter),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            }
-        }
         item {
             BanklyInputField(
                 textFieldValue = transactionReferenceTFV,
@@ -151,7 +145,7 @@ internal fun FilterView(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(cashFlows, key = CashFlow::title) { filter: CashFlow ->
-                    FilterChip(
+                    BanklyFilterChip(
                         title = filter.title,
                         isSelected = filter.isSelected,
                         onClick = { onCashFlowFilterChipClick(filter) })
@@ -181,7 +175,7 @@ internal fun FilterView(
                         transactionFilterTypes,
                     key = TransactionFilterType::id
                 ) { type: TransactionFilterType ->
-                    FilterChip(
+                    BanklyFilterChip(
                         title = type.name,
                         isSelected = type.isSelected,
                         onClick = { onTransactionFilterTypeSelected(type) })
@@ -210,7 +204,7 @@ internal fun FilterView(
                             painter = painterResource(
                                 id =
                                 if (shouldShowAllTransactionFilterType)
-                                    BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down
+                                    BanklyIcons.ChevronUp else BanklyIcons.ChevronDown
                             ),
                             contentDescription = null,
                             tint = Color.Unspecified,
@@ -306,7 +300,6 @@ private fun FilterPreview() {
             onEnterTransactionReference = {},
             isTransactionReferenceError = false,
             transactionReferenceFeedback = "",
-            onBackPress = {},
             onCashFlowFilterChipClick = {},
             onShowMoreTypesClick = {},
             onShowLessTypesClick = {},
@@ -322,7 +315,8 @@ private fun FilterPreview() {
             cashFlows = listOf(CashFlow.Debit(false), CashFlow.Credit(false)),
             transactionFilterTypes = emptyList(),
             onTransactionFilterTypeSelected = {},
-            onApplyClick = {}
+            onApplyClick = {},
+            onCloseClick = {}
         )
     }
 }

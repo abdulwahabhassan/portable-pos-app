@@ -61,4 +61,6 @@ dependencies {
     implementation(project(":feature:paywithtransfer"))
     implementation(project(":feature:paybills"))
     implementation(project(":feature:transactiondetails"))
+    implementation(project(":feature:eod"))
+    implementation(project(":feature:contactus"))
 }

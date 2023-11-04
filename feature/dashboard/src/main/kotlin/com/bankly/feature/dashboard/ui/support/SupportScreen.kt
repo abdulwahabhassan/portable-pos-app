@@ -4,8 +4,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.component.SupportListItem
 
@@ -40,6 +42,7 @@ private fun SupportScreen(
 }
 
 @Composable
+@Preview(showBackground = true, backgroundColor = PreviewColor.grey)
 private fun SupportScreenPreview() {
     BanklyTheme {
         SupportScreen(

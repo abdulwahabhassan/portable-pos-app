@@ -1,4 +1,4 @@
-package com.bankly.feature.dashboard.ui.component
+package com.bankly.core.designsystem.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -6,12 +6,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
-fun FilterChip(
+fun BanklyFilterChip(
     title: String,
     onClick: (Boolean) -> Unit,
     isSelected: Boolean,
@@ -37,8 +36,8 @@ fun FilterChip(
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
-private fun FilterChipPreview() {
+private fun BanklyFilterChipPreview() {
     BanklyTheme {
-        FilterChip(title = "Credit", onClick = {}, isSelected = true)
+        BanklyFilterChip(title = "Credit", onClick = {}, isSelected = true)
     }
 }

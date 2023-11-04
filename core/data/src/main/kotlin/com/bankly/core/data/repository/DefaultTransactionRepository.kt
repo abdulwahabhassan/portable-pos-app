@@ -17,6 +17,7 @@ import com.bankly.core.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
@@ -44,6 +45,30 @@ class DefaultTransactionRepository  @Inject constructor(
                             token = token,
                             minimum = minimum,
                             maximum = maximum,
+                            filter = filter.asRequestParam()
+                        )
+                    },
+                ),
+            )
+        ) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.map { it.asTransaction() }))
+        }
+    }
+
+    override suspend fun getEodTransactions(token: String, filter: TransactionFilterData): Flow<Resource<List<Transaction>>> = flow {
+        emit(Resource.Loading)
+        when (
+            val responseResult = handleTransactionApiResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = {
+                        transactionService.getTransactions(
+                            token = token,
+                            minimum = 1,
+                            maximum = 100,
                             filter = filter.asRequestParam()
                         )
                     },

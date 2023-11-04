@@ -73,7 +73,7 @@ fun <T>BanklyExpandableList(
                                 color = MaterialTheme.colorScheme.primary,
                             ),
                         ),
-                    painter = painterResource(if (isExpanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down),
+                    painter = painterResource(if (isExpanded) BanklyIcons.ChevronUp else BanklyIcons.ChevronDown),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                 )

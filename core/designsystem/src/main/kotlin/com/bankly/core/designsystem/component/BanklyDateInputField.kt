@@ -28,7 +28,7 @@ fun BanklyDateInputField(
     BanklyInputField(
         textFieldValue = if (date != null) TextFieldValue(date.toString()) else TextFieldValue(),
         onTextFieldValueChange = onQueryChange,
-        trailingIcon = BanklyIcons.Chevron_Down,
+        trailingIcon = BanklyIcons.ChevronDown,
         isEnabled = isEnabled,
         readOnly = true,
         labelText = title,

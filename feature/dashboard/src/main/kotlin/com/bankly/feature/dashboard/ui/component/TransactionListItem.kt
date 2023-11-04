@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.common.R
 import com.bankly.core.common.util.Formatter
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklySuccessColor
@@ -30,7 +31,6 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.entity.Transaction
 import com.bankly.core.util.Formatter.formatServerDateTime
-import com.bankly.feature.dashboard.R
 
 @Composable
 internal fun TransactionListItem(
@@ -55,8 +55,8 @@ internal fun TransactionListItem(
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (transaction.isCredit) BanklyIcons.Transfer_Inward
-                    else BanklyIcons.Transfer_Outward
+                    id = if (transaction.isCredit) BanklyIcons.TransferInward
+                    else BanklyIcons.TransferOutward
                 ),
                 contentDescription = null,
                 tint = Color.Unspecified

@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.feature.paybills.component.BillTypeCard
+import com.bankly.feature.paybills.ui.component.BillTypeCard
 import com.bankly.feature.paybills.model.BillType
 
 @Composable

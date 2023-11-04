@@ -49,7 +49,7 @@ internal fun SupportListItem(
                     color = MaterialTheme.colorScheme.primary,
                 ),
             )
-            .padding(horizontal = 24.dp, vertical = 16.dp),
+            .padding(horizontal = 16.dp, vertical = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -71,7 +71,7 @@ internal fun SupportListItem(
         }
         Spacer(modifier = Modifier.padding(horizontal = 8.dp))
         Icon(
-            painter = painterResource(id = BanklyIcons.Filled_Arrow_Forward),
+            painter = painterResource(id = BanklyIcons.FilledArrowForward),
             contentDescription = null,
             tint = Color.Unspecified
         )

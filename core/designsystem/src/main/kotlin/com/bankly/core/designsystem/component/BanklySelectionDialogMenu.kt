@@ -66,7 +66,7 @@ fun <T> BanklySelectionDialogMenu(
             isError = isError,
             feedbackText = feedBack,
             readOnly = true,
-            trailingIcon = if (expanded) BanklyIcons.Chevron_Up else BanklyIcons.Chevron_Down,
+            trailingIcon = if (expanded) BanklyIcons.ChevronUp else BanklyIcons.ChevronDown,
             labelText = label,
             placeholderText = placeholder,
         )

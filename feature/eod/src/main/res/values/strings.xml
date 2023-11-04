@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_clear_all">Clear all</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="title_error">Error</string>
+    <string name="title_end_of_day">End of Day</string>
+    <string name="title_eod_transactions">EOD Transactions</string>
+    <string name="title_export_eod_as">Export EOD as</string>
+    <string name="action_export_eod">Export EOD</string>
+    <string name="sync_od">Sync EOD</string>
+    <string name="msg_processed">Processed</string>
+    <string name="msg_settled">Settled</string>
+    <string name="action_tap_to_sync_eod">Tap to sync EOD</string>
+</resources>

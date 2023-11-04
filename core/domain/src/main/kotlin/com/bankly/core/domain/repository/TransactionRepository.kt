@@ -14,6 +14,11 @@ interface TransactionRepository {
         filter: TransactionFilterData,
     ): Flow<Resource<List<Transaction>>>
 
+    suspend fun getEodTransactions(
+        token: String,
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>>
+
     suspend fun getTransactionsFilterTypes(
         token: String,
     ): Flow<Resource<List<TransactionFilterType>>>

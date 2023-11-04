@@ -25,10 +25,10 @@ fun BanklyTheme(
         tertiaryContainer = grey02.copy(alpha = 0.5f), // Disabled InputTextField, Disabled Button
         onTertiaryContainer = blue01,
 
-        error = red, // Error text
+        error = red02, // Error text
         onError = white,
         errorContainer = pink02, // Error InputTextField
-        onErrorContainer = red,
+        onErrorContainer = red02,
 
         background = grey00,
         surface = grey00,
