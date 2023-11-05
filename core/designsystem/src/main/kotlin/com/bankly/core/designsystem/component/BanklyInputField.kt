@@ -55,7 +55,9 @@ fun BanklyInputField(
     onTrailingIconClick: () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    horizontalPadding: Dp = 24.dp
+    horizontalPadding: Dp = 24.dp,
+    minLines: Int = 1,
+    maxlines: Int = 1
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -145,8 +147,8 @@ fun BanklyInputField(
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
-                singleLine = true,
-                maxLines = 1,
+                minLines = minLines,
+                maxLines = maxlines,
                 placeholder = {
                     Text(
                         text = placeholderText,
@@ -234,8 +236,8 @@ fun BanklyInputField(
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
-                singleLine = true,
-                maxLines = 1,
+                minLines = minLines,
+                maxLines = maxlines,
                 keyboardOptions = keyboardOptions,
                 textStyle = textStyle,
                 shape = MaterialTheme.shapes.medium,

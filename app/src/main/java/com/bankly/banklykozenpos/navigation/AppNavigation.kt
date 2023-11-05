@@ -1,6 +1,5 @@
 package com.bankly.banklykozenpos.navigation
 
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -14,9 +13,9 @@ import com.bankly.feature.dashboard.model.Feature
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.eod.navigation.eodNavGraph
+import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
-import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
@@ -75,7 +74,9 @@ fun AppNavHost(
                     SupportOption.CONTACT_US -> {
                         appState.navHostController.navigateToContactUsNavGraph()
                     }
-                    SupportOption.LOG_COMPLAINT -> {}
+                    SupportOption.LOG_COMPLAINT -> {
+                        appState.navHostController.navigateToLogComplaintNavGraph()
+                    }
                 }
             }
         )
@@ -119,6 +120,12 @@ fun AppNavHost(
             }
         )
         contactUsNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
+
+        logComplaintNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             }

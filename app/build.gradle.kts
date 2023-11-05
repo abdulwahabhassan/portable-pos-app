@@ -63,4 +63,5 @@ dependencies {
     implementation(project(":feature:transactiondetails"))
     implementation(project(":feature:eod"))
     implementation(project(":feature:contactus"))
+    implementation(project(":feature:logcomplaint"))
 }

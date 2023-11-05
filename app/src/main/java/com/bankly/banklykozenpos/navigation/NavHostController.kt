@@ -9,6 +9,7 @@ import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
 import com.bankly.feature.contactus.navigation.contactUsNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.eod.navigation.eodNavGraphRoute
+import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraphRoute
 import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraphRoute
@@ -87,4 +88,8 @@ internal fun NavHostController.navigateToTransactionDetailsNavGraph(
 
 internal fun NavHostController.navigateToContactUsNavGraph(navOptions: NavOptions? = null,) {
     this.navigate(contactUsNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToLogComplaintNavGraph(navOptions: NavOptions? = null,) {
+    this.navigate(logComplaintNavGraphRoute, navOptions)
 }

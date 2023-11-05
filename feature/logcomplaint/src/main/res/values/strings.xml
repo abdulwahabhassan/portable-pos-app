@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_upload_file_here">Upload file here</string>
+    <string name="enter_reference_number">Enter reference number</string>
+    <string name="msg_select_complaint_type">Select complaint type</string>
+    <string name="enter_complaint_type">Complaint Type</string>
+    <string name="title_reference_number">Reference Number</string>
+    <string name="title_complaint_message">Complaint Message</string>
+    <string name="msg_describe_your_complaint">Describe your complaint</string>
+    <string name="action_send">Send</string>
+    <string name="msg_document_must_be_injpg_pdf_ms_word_or_excel_formats">Document must be inJPG, PDF, MS Word or Excel Formats</string>
+    <string name="title_upload_file">Upload File</string>
+    <string name="title_new_complaint">New Complaint</string>
+    <string name="msg_complaint_logged_successfully">Your recent message has been logged successfully, and you will receive feedback from our support team shortly.</string>
+    <string name="msg_complaint_logged">Complaint Logged</string>
+</resources>
