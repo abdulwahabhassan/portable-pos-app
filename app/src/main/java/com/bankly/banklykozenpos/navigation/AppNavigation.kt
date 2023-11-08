@@ -16,7 +16,7 @@ import com.bankly.feature.eod.navigation.eodNavGraph
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
-import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
+import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
 
@@ -35,7 +35,7 @@ fun AppNavHost(
     ) {
         authenticationNavGraph(
             onLoginSuccess = {
-                appState.navigateTo(TopLevelDestination.DASHBOARD)
+                appState.navigateTo(AppTopLevelDestination.DASHBOARD)
             },
             onBackPress = onBackPress,
         )
@@ -44,17 +44,17 @@ fun AppNavHost(
             onFeatureClick = { feature: Feature ->
                 appState.navigateTo(
                     when (feature) {
-                        Feature.PayWithCard -> TopLevelDestination.PAY_WITH_CARD
-                        Feature.PayWithTransfer -> TopLevelDestination.PAY_WITH_TRANSFER
-                        Feature.CardTransfer -> TopLevelDestination.CARD_TRANSFER
-                        Feature.SendMoney -> TopLevelDestination.SEND_MONEY
-                        Feature.PayBills -> TopLevelDestination.PAY_BILLS
-                        Feature.CheckBalance -> TODO()
-                        Feature.PayWithUssd -> TODO()
-                        Feature.Float -> TODO()
-                        Feature.EndOfDay -> TopLevelDestination.EOD
-                        Feature.NetworkChecker -> TODO()
-                        Feature.Settings -> TODO()
+                        Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
+                        Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
+                        Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
+                        Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
+                        Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
+                        Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
+                        Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
+                        Feature.Float -> AppTopLevelDestination.FLOAT
+                        Feature.EndOfDay -> AppTopLevelDestination.EOD
+                        Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
+                        Feature.Settings -> AppTopLevelDestination.SETTINGS
                     },
                 )
             },
@@ -97,7 +97,7 @@ fun AppNavHost(
             },
             onForgotPinClick = {},
         )
-        payWithTransferNavGraph(
+        networkCheckerNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },

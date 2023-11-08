@@ -1,11 +1,14 @@
 package com.bankly.core.data.di
 
+import android.content.Context
 import com.bankly.core.data.repository.DefaultBillsRepository
+import com.bankly.core.data.repository.DefaultNetworkCheckerRepository
 import com.bankly.core.data.repository.DefaultPayWithTransferRepository
 import com.bankly.core.data.repository.DefaultTransactionRepository
 import com.bankly.core.data.repository.DefaultTransferRepository
 import com.bankly.core.data.repository.DefaultUserRepository
 import com.bankly.core.domain.repository.BillsRepository
+import com.bankly.core.domain.repository.NetworkCheckerRepository
 import com.bankly.core.domain.repository.PayWithTransferRepository
 import com.bankly.core.domain.repository.TransactionRepository
 import com.bankly.core.domain.repository.TransferRepository
@@ -13,6 +16,7 @@ import com.bankly.core.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -43,4 +47,9 @@ interface RepositoryModule {
     fun bindsTransactionsRepository(
         repository: DefaultTransactionRepository,
     ): TransactionRepository
+
+    @Binds
+    fun bindsNetworkCheckerRepository(
+       repository: DefaultNetworkCheckerRepository
+    ): NetworkCheckerRepository
 }

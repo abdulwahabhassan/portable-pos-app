@@ -5,6 +5,7 @@ import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.BillsService
 import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.IdentityService
+import com.bankly.core.network.retrofit.service.NetworkCheckerService
 import com.bankly.core.network.retrofit.service.PayWithTransferService
 import com.bankly.core.network.retrofit.service.TransactionService
 import com.bankly.core.network.retrofit.service.TransferService
@@ -149,5 +150,20 @@ object RetrofitModule {
             )
             .build()
             .create(TransactionService::class.java)
+    }
+
+    @Provides
+    fun providesNetworkCheckerService(
+        client: OkHttpClient,
+        json: Json,
+    ): NetworkCheckerService {
+        return Retrofit.Builder()
+            .baseUrl(BanklyBaseUrl.NetworkChecker.value)
+            .client(client)
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+            .create(NetworkCheckerService::class.java)
     }
 }

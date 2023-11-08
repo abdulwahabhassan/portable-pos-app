@@ -1,6 +1,5 @@
 package com.bankly.feature.paywithtransfer.navigation
 
-import android.util.Log
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -16,6 +15,8 @@ import kotlinx.serialization.json.Json
 const val payWithTransferNavGraphRoute = "pay_with_transfer_graph"
 internal const val payWithTransferRoute =
     payWithTransferNavGraphRoute.plus("/pay_with_transfer_route")
+internal const val payWithTransferHomeRoute =
+    payWithTransferRoute.plus("/pay_with_transfer_home_screen")
 internal const val transactionDetailsRoute =
     payWithTransferRoute.plus("/transaction_details_screen")
 internal const val sendReceiptRoute = payWithTransferRoute.plus("/send_receipt_screen")
@@ -26,7 +27,7 @@ internal fun NavGraphBuilder.payWithTransferRoute(
     onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
     onGoToHomeClick: () -> Unit
 ) {
-    composable(route = payWithTransferRoute) {
+    composable(route = payWithTransferHomeRoute) {
         PayWithTransferRoute(
             onBackPress = onBackPress,
             onViewTransactionDetailsClick = onViewTransactionDetailsClick,
@@ -71,7 +72,8 @@ internal fun NavGraphBuilder.sendReceiptRoute(
         ),
     ) {
         it.arguments?.getString(transactionReceiptArg)?.let { encodedTransactionReceipt: String ->
-            val decodedTransactionReceipt: TransactionReceipt = Json.decodeFromString(encodedTransactionReceipt)
+            val decodedTransactionReceipt: TransactionReceipt =
+                Json.decodeFromString(encodedTransactionReceipt)
             SendReceiptRoute(
                 transactionReceipt = decodedTransactionReceipt,
                 onGoToSuccessScreen = onGoToSuccessScreen,

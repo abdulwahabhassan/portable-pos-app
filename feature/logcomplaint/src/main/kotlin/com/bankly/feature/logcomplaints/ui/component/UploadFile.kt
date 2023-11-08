@@ -34,7 +34,7 @@ import com.bankly.feature.logcomplaint.R
 
 @Preview(showBackground = true)
 @Composable
-fun UploadPreview() {
+fun UploadFilePreview() {
     BanklyTheme {
         UploadFile(
             docName = "Failed POS receipt.jpg",

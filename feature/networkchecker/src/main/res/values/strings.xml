@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_check">Network Check</string>
+    <string name="title_error">Error</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="title_service_downtime_banks">Service downtime Banks</string>
+    <string name="title_operational_banks">Operational Banks</string>
+    <string name="bank_network_perecentage">%1$s%</string>
+</resources>

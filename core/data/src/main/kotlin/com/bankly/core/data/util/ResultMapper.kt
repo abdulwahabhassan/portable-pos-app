@@ -4,6 +4,7 @@ import com.bankly.core.entity.Bank
 import com.bankly.core.entity.Message
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.AgentAccountDetails
+import com.bankly.core.entity.BankNetwork
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
@@ -31,6 +32,7 @@ import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.model.result.AgentAccountResult
+import com.bankly.core.network.model.result.BankNetworkResult
 import com.bankly.core.network.model.result.TransactionFilterTypeResult
 import com.bankly.core.network.model.result.TransactionResult
 import com.bankly.core.network.retrofit.model.Any
@@ -271,4 +273,11 @@ fun TransactionResult.asTransaction() = Transaction(
 
 fun TransactionFilterTypeResult.asTransactionFilterType() = TransactionFilterType(
     name = name, id = id, isSelected = false
+)
+
+fun BankNetworkResult.asBankNetwork() = BankNetwork(
+    bankName = bankName ?: "",
+    bankIcon = "",
+    networkPercentage = countPercentage ?: 0.00,
+    totalCount = totalCount ?: 0
 )

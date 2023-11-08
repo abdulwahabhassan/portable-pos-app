@@ -58,6 +58,11 @@ object BanklyErrorColor {
     val errorBackgroundColor: Color = red01
 }
 
+object BanklyWarningColor {
+    val warningColor: Color = yellow06
+    val warningBackgroundColor: Color = yellow01
+}
+
 object PreviewColor {
     const val white: Long = 0xFFFFFFFF
     const val grey: Long = 0xFFFBFBFF

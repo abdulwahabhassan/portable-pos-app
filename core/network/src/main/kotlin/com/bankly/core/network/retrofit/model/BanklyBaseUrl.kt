@@ -8,6 +8,8 @@ import com.bankly.core.network.BuildConfig.BANKLY_FUND_TRANSFER_PROD_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_FUND_TRANSFER_TEST_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_IDENTITY_PROD_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_IDENTITY_TEST_BASE_URL
+import com.bankly.core.network.BuildConfig.BANKLY_NETWORK_CHECKER_PROD_BASE_URL
+import com.bankly.core.network.BuildConfig.BANKLY_NETWORK_CHECKER_TEST_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_NOTIFICATION_PROD_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_NOTIFICATION_TEST_BASE_URL
 import com.bankly.core.network.BuildConfig.BANKLY_PAY_WITH_TRANSFER_PROD_BASE_URL
@@ -36,5 +38,6 @@ enum class BanklyBaseUrl(val value: String) {
     Agent(if (BUILD_TYPE == DEBUG) BANKLY_AGENT_TEST_BASE_URL else BANKLY_AGENT_PROD_BASE_URL),
     Bills(if (BUILD_TYPE == DEBUG) BANKLY_BILLS_TEST_BASE_URL else BANKLY_BILLS_PROD_BASE_URL),
     PayWithTransfer(if (BUILD_TYPE == DEBUG) BANKLY_PAY_WITH_TRANSFER_TEST_BASE_URL else BANKLY_PAY_WITH_TRANSFER_PROD_BASE_URL),
-    Transaction(if (BUILD_TYPE == DEBUG) BANKLY_TRANSACTION_TEST_BASE_URL else BANKLY_TRANSACTION_PROD_BASE_URL)
+    Transaction(if (BUILD_TYPE == DEBUG) BANKLY_TRANSACTION_TEST_BASE_URL else BANKLY_TRANSACTION_PROD_BASE_URL),
+    NetworkChecker(if (BUILD_TYPE == DEBUG) BANKLY_NETWORK_CHECKER_TEST_BASE_URL else BANKLY_NETWORK_CHECKER_PROD_BASE_URL)
 }

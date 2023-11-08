@@ -15,9 +15,9 @@ fun NavGraphBuilder.payWithTransferNavGraph(
 ) {
     navigation(
         route = payWithTransferNavGraphRoute,
-        startDestination = payWithTransferRoute,
+        startDestination = payWithTransferHomeRoute,
     ) {
-        composable(payWithTransferRoute) {
+        composable(payWithTransferHomeRoute) {
             val payWithTransferState by rememberPayWithTransferState()
             PayWithTransferNavHost(
                 navHostController = payWithTransferState.navHostController,
@@ -35,7 +35,7 @@ private fun PayWithTransferNavHost(
     NavHost(
         modifier = Modifier,
         navController = navHostController,
-        startDestination = payWithTransferRoute,
+        startDestination = payWithTransferHomeRoute,
     ) {
         payWithTransferRoute(
             onBackPress = onBackPress,

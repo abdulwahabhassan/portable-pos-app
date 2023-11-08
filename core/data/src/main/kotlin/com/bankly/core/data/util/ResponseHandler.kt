@@ -59,3 +59,21 @@ fun <T> handleTransactionApiResponse(
         Result.Error(requestResult.message)
     }
 }
+
+fun <T> handleNetworkCheckerApiResponse(
+    requestResult: Result<List<T>>,
+): Result<List<T>> = when (requestResult) {
+    is Result.Success -> {
+        if (requestResult.data.isNotEmpty()) {
+            Result.Success(data = requestResult.data)
+        } else {
+            Result.Error(
+                message = "No bank network available at the moment",
+            )
+        }
+    }
+
+    is Result.Error -> {
+        Result.Error(requestResult.message)
+    }
+}

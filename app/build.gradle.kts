@@ -64,4 +64,5 @@ dependencies {
     implementation(project(":feature:eod"))
     implementation(project(":feature:contactus"))
     implementation(project(":feature:logcomplaint"))
+    implementation(project(":feature:networkchecker"))
 }

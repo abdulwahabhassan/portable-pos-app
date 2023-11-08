@@ -1,6 +1,6 @@
 package com.bankly.banklykozenpos.navigation
 
-enum class TopLevelDestination {
+enum class AppTopLevelDestination {
     AUTHENTICATION,
     DASHBOARD,
     PAY_WITH_CARD,
@@ -8,5 +8,10 @@ enum class TopLevelDestination {
     CARD_TRANSFER,
     SEND_MONEY,
     PAY_BILLS,
-    EOD
+    EOD,
+    NETWORK_CHECKER,
+    SETTINGS,
+    FLOAT,
+    PAY_WITH_USSD,
+    CHECK_BALANCE
 }

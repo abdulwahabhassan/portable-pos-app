@@ -8,12 +8,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.bankly.banklykozenpos.navigation.TopLevelDestination
-import com.bankly.banklykozenpos.navigation.TopLevelDestination.*
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.*
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToCardTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToEodNavGraph
+import com.bankly.banklykozenpos.navigation.navigateToNetworkCheckerNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayBillsNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithTransferNavGraph
@@ -57,7 +58,7 @@ data class BanklyAppState(
             initialValue = false,
         )
 
-    fun navigateTo(destination: TopLevelDestination) {
+    fun navigateTo(destination: AppTopLevelDestination) {
         val navOption = navOptions {
             if (destination == DASHBOARD) {
                 popUpTo(navHostController.graph.findStartDestination().id) {
@@ -76,6 +77,11 @@ data class BanklyAppState(
             SEND_MONEY -> navHostController.navigateToSendMoneyNavGraph(navOption)
             PAY_BILLS -> navHostController.navigateToPayBillsNavGraph(navOption)
             EOD -> navHostController.navigateToEodNavGraph(navOption)
+            NETWORK_CHECKER -> navHostController.navigateToNetworkCheckerNavGraph(navOption)
+            SETTINGS -> {}
+            FLOAT -> {}
+            PAY_WITH_USSD -> {}
+            CHECK_BALANCE -> {}
         }
     }
 }
