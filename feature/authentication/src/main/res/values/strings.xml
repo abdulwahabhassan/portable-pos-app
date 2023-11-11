@@ -37,4 +37,10 @@
     <string name="title_recover_passcode_error">Recover passcode error</string>
     <string name="title_reset_passcode_error">Reset passcode error</string>
     <string name="title_resend_otp_error">Resent OTP error</string>
+    <string name="msg_enter_your_password_to_enable">Enter your password to enable feature</string>
+    <string name="title_enter_password">Enter Password</string>
+    <string name="msg_password_label">Password</string>
+    <string name="msg_enter_password">Enter password</string>
+    <string name="title_error">Error</string>
+    <string name="action_dismiss">Dismiss</string>
 </resources>

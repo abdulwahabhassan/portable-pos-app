@@ -29,7 +29,7 @@
     <string name="action_forgot_pin">Forgot PIN</string>
     <string name="title_confirm_transaction_error">Confirm transaction error</string>
     <string name="action_okay">Okay</string>
-    <string name="msg_it_s_quite_lonely_here">It\'s quite lonely here</string>
+    <string name="msg_it_s_quite_lonely_here">It\'s quite lonely here at the moment</string>
     <string name="title_empty">Empty</string>
     <string name="title_select_bank">Select Bank</string>
     <string name="msg_search_by_keyword">Search by keyword</string>

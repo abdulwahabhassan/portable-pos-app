@@ -102,7 +102,7 @@ private fun NetworkCheckerListScreen(
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
-private fun PayWithTransferScreenPreview() {
+private fun NetworkCheckerListScreenPreview() {
     BanklyTheme {
         NetworkCheckerListScreen(
             onBackPress = {},

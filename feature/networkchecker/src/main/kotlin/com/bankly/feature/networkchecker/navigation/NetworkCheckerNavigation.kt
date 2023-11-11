@@ -17,9 +17,9 @@ fun NavGraphBuilder.networkCheckerNavGraph(
         startDestination = networkCheckerRoute,
     ) {
         composable(networkCheckerRoute) {
-            val payWithTransferState by rememberNetworkCheckerState()
+            val networkCheckerState by rememberNetworkCheckerState()
             NetworkCheckerNavHost(
-                navHostController = payWithTransferState.navHostController,
+                navHostController = networkCheckerState.navHostController,
                 onBackPress = onBackPress,
             )
         }

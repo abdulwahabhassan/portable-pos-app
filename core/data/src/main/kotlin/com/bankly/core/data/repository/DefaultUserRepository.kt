@@ -13,6 +13,7 @@ import com.bankly.core.data.util.asStatus
 import com.bankly.core.data.util.asToken
 import com.bankly.core.data.util.asUser
 import com.bankly.core.data.util.asUserWallet
+import com.bankly.core.data.util.getUsernameFromAccessToken
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleTokenRequest
@@ -53,7 +54,12 @@ class DefaultUserRepository @Inject constructor(
                     dispatcher = ioDispatcher,
                     networkMonitor = networkMonitor,
                     json = json,
-                    apiRequest = { identityService.getToken(username = userName, password = password) },
+                    apiRequest = {
+                        identityService.getToken(
+                            username = userName,
+                            password = password
+                        )
+                    },
                 ),
             )
         ) {
@@ -155,22 +161,46 @@ class DefaultUserRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>> = flow {
-        emit(Resource.Loading)
-        when (
-            val responseResult = handleApiResponse(
-                requestResult = handleRequest(
-                    dispatcher = ioDispatcher,
-                    networkMonitor = networkMonitor,
-                    json = json,
-                    apiRequest = {
-                        walletService.getAgentAccount(token = token)
-                    },
-                ),
-            )
-        ) {
-            is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data.asAgentAccountDetails()))
+    override suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>> =
+        flow {
+            emit(Resource.Loading)
+            when (
+                val responseResult = handleApiResponse(
+                    requestResult = handleRequest(
+                        dispatcher = ioDispatcher,
+                        networkMonitor = networkMonitor,
+                        json = json,
+                        apiRequest = {
+                            walletService.getAgentAccount(token = token)
+                        },
+                    ),
+                )
+            ) {
+                is Result.Error -> emit(Resource.Failed(responseResult.message))
+                is Result.Success -> emit(Resource.Ready(responseResult.data.asAgentAccountDetails()))
+            }
         }
-    }
+
+    override suspend fun validatePassCode(password: String, token: String): Flow<Resource<Token>> =
+        flow {
+            emit(Resource.Loading)
+            val userName = getUsernameFromAccessToken(token)
+            if (userName == null) {
+                emit(Resource.Failed("Username could not be found. Please try again"))
+            } else {
+                when (
+                    val responseResult = handleTokenApiResponse(
+                        requestResult = handleTokenRequest(
+                            dispatcher = ioDispatcher,
+                            networkMonitor = networkMonitor,
+                            json = json,
+                            apiRequest = { identityService.getToken(username = userName, password = password) },
+                        ),
+                    )
+                ) {
+                    is Result.Error -> emit(Resource.Failed(responseResult.message))
+                    is Result.Success -> emit(Resource.Ready(responseResult.data.asToken()))
+                }
+            }
+        }
 }

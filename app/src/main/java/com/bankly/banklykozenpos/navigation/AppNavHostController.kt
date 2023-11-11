@@ -10,9 +10,10 @@ import com.bankly.feature.contactus.navigation.contactUsNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.eod.navigation.eodNavGraphRoute
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraphRoute
+import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraphRoute
 import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
-import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraphRoute
+import com.bankly.feature.settings.navigation.settingsNavGraphRoute
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraphRoute
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraphRoute
 import kotlinx.serialization.encodeToString
@@ -22,6 +23,13 @@ internal fun NavHostController.navigateToAuthenticationNavGraph(
     navOptions: NavOptions? = null,
 ) {
     this.navigate(authenticationNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToAuthenticationNavGraph(
+    isValidatePassCode: Boolean? = false
+) {
+    val encodedIsValidatePassCode = Uri.encode(isValidatePassCode.toString())
+    this.navigate("$authenticationNavGraphRoute/$encodedIsValidatePassCode")
 }
 
 internal fun NavHostController.navigateToDashBoardNavGraph(
@@ -50,7 +58,7 @@ internal fun NavHostController.navigateToPayWithCardNavGraph(
 internal fun NavHostController.navigateToPayWithTransferNavGraph(
     navOptions: NavOptions? = null,
 ) {
-    this.navigate(networkCheckerNavGraphRoute, navOptions)
+    this.navigate(settingsNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.navigateToCardTransferNavGraph(
@@ -96,5 +104,9 @@ internal fun NavHostController.navigateToLogComplaintNavGraph(navOptions: NavOpt
 
 internal fun NavHostController.navigateToNetworkCheckerNavGraph(navOptions: NavOptions? = null,) {
     this.navigate(networkCheckerNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToSettingsNavGraph(navOptions: NavOptions? = null,) {
+    this.navigate(settingsNavGraphRoute, navOptions)
 }
 

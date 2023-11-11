@@ -9,7 +9,7 @@ internal data class NetworkCheckerScreenState(
     val bankNetworks:  List<BankNetwork> = emptyList(),
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
-    val selectedTab: NetworkCheckerTab = NetworkCheckerTab.TRANSFERS
+    val selectedTab: NetworkCheckerTab = NetworkCheckerTab.TRANSFERS,
 ) {
     val isLoading: Boolean
         get() = isBankListLoading

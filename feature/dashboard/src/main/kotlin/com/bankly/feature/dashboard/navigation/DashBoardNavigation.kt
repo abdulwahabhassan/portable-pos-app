@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.feature.dashboard.model.Feature
+import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
@@ -44,7 +44,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         modifier = Modifier.padding(padding),
                         navHostController = dashBoardState.navHostController,
                         onFeatureClick = { feature: Feature ->
-                            if (feature == Feature.PayWithCard) {
+                            if (feature is Feature.PayWithCard) {
                                 dashBoardState = dashBoardState.copy(currentTab = DashboardTab.POS)
                             } else {
                                 onFeatureClick(feature)

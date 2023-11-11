@@ -65,4 +65,5 @@ dependencies {
     implementation(project(":feature:contactus"))
     implementation(project(":feature:logcomplaint"))
     implementation(project(":feature:networkchecker"))
+    implementation(project(":feature:settings"))
 }

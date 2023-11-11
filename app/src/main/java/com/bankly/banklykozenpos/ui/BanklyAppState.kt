@@ -9,7 +9,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.navigation.AppTopLevelDestination
-import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.*
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.AUTHENTICATION
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.CARD_TRANSFER
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.CHECK_BALANCE
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.DASHBOARD
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.EOD
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.FLOAT
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.NETWORK_CHECKER
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.PAY_BILLS
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.PAY_WITH_CARD
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.PAY_WITH_TRANSFER
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.PAY_WITH_USSD
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.SEND_MONEY
+import com.bankly.banklykozenpos.navigation.AppTopLevelDestination.SETTINGS
 import com.bankly.banklykozenpos.navigation.navigateToAuthenticationNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToCardTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToDashBoardNavGraph
@@ -78,7 +90,9 @@ data class BanklyAppState(
             PAY_BILLS -> navHostController.navigateToPayBillsNavGraph(navOption)
             EOD -> navHostController.navigateToEodNavGraph(navOption)
             NETWORK_CHECKER -> navHostController.navigateToNetworkCheckerNavGraph(navOption)
-            SETTINGS -> {}
+            SETTINGS -> {
+                navHostController.navigateToAuthenticationNavGraph(isValidatePassCode = true)
+            }
             FLOAT -> {}
             PAY_WITH_USSD -> {}
             CHECK_BALANCE -> {}

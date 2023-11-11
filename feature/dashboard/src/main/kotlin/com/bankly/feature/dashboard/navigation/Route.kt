@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.feature.dashboard.model.Feature
+import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.home.HomeTab
 import com.bankly.feature.dashboard.ui.more.MoreRoute

@@ -20,13 +20,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.dashboard.R
-import com.bankly.feature.dashboard.model.Feature
+import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 
 @Composable
-fun HomeTab(
+internal fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onFeatureCardClick: (Feature) -> Unit,
 ) {
@@ -42,7 +43,7 @@ fun HomeTab(
 }
 
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     screenState: HomeScreenState,
     onUiEvent: (HomeScreenEvent) -> Unit,
     onFeatureCardClick: (Feature) -> Unit,
@@ -84,7 +85,6 @@ fun HomeScreen(
             }
         }
     }
-
     if (screenState.shouldShowErrorDialog) {
         BanklyActionDialog(
             title = stringResource(R.string.error),
@@ -98,7 +98,7 @@ fun HomeScreen(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white)
 private fun HomeScreenPreview() {
     BanklyTheme {
         HomeScreen(

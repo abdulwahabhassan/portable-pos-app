@@ -15,4 +15,5 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
     implementation(libs.gson)
+    implementation(libs.play.services.basement)
 }

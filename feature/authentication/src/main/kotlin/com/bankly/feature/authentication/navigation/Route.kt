@@ -12,6 +12,8 @@ import com.bankly.feature.authentication.ui.recoverpasscode.RecoverPassCodeRoute
 import com.bankly.feature.authentication.ui.setnewpasscode.SetNewPassCodeRoute
 import com.bankly.feature.authentication.ui.success.SuccessRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
+import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeRoute
+import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeScreen
 
 const val authenticationNavGraphRoute = "authentication_nav_graph"
 internal const val authenticationRoute = authenticationNavGraphRoute.plus("/auth_route")
@@ -23,6 +25,7 @@ internal const val recoverPassCodeRoute = authenticationRoute.plus("/input_phone
 internal const val setNewPassCodeRoute = authenticationRoute.plus("/set_new_pass_code_screen")
 internal const val setPinRoute = authenticationRoute.plus("/set_pin_screen")
 internal const val successfulRoute = authenticationRoute.plus("/successful_screen")
+const val validatePassCodeRoute = authenticationRoute.plus("/validate_passcode_screen")
 
 internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,
@@ -136,5 +139,19 @@ internal fun NavGraphBuilder.confirmPinRoute() {
         route = confirmPinRoute,
     ) {
         ConfirmPinScreen()
+    }
+}
+
+internal fun NavGraphBuilder.validatePassCodeRoute(
+    onGoToSettingsRoute: () -> Unit,
+    onBackPress: () -> Unit,
+) {
+    composable(
+        route = validatePassCodeRoute,
+    ) {
+        ValidatePassCodeRoute(
+            onBackPress = onBackPress,
+            onGoToSettingsScreen = onGoToSettingsRoute
+        )
     }
 }

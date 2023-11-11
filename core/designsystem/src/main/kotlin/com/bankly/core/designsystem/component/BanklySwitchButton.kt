@@ -28,16 +28,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.bankly.core.designsystem.theme.BanklyTheme
 
 
 @Composable
 fun BanklySwitchButton(
     checked: Boolean,
     isEnabled: Boolean,
-    onCheckedChange: ((Boolean) -> Unit),
+    onCheckedChange: (currentToggleState: Boolean) -> Unit,
     switchPadding: Dp = 2.dp,
-    width: Dp = 50.dp,
-    height: Dp = 30.dp,
+    width: Dp = 40.dp,
+    height: Dp = 24.dp,
 ) {
     val switchSize by remember {
         mutableStateOf(height - switchPadding * 2)
@@ -100,9 +101,11 @@ fun BanklySwitchButton(
 @Composable
 @Preview(showBackground = true)
 fun BanklySwitchButtonPreview() {
-    BanklySwitchButton(
-        checked = true,
-        onCheckedChange = {},
-        isEnabled = true
-    )
+    BanklyTheme {
+        BanklySwitchButton(
+            checked = true,
+            onCheckedChange = {},
+            isEnabled = true
+        )
+    }
 }

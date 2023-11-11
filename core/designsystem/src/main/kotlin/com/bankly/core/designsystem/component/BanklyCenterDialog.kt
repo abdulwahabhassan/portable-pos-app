@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bankly.core.designsystem.R
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
@@ -41,11 +43,16 @@ fun BanklyCenterDialog(
     negativeAction: () -> Unit = {},
     showDialog: Boolean,
     onDismissDialog: () -> Unit,
+    showCloseIcon: Boolean = false,
+    extraContent: @Composable (() -> Unit)? = null,
 ) {
     if (showDialog) {
         Dialog(
             onDismissRequest = onDismissDialog,
-            properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            ),
         ) {
             Box(
                 modifier = Modifier
@@ -60,14 +67,31 @@ fun BanklyCenterDialog(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
-                        icon?.let {
-                            Icon(
-                                modifier = Modifier.size(40.dp),
-                                painter = painterResource(id = icon),
-                                contentDescription = "Error alert icon",
-                                tint = Color.Unspecified,
-                            )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (showCloseIcon) {
+                                BanklyClickableIcon(
+                                    Modifier.align(Alignment.TopEnd),
+                                    icon = BanklyIcons.Close,
+                                    onClick = onDismissDialog,
+                                    shape = CircleShape
+                                )
+                            }
+                            icon?.let {
+                               Column {
+                                   Spacer(modifier = Modifier.height(16.dp))
+                                   Icon(
+                                       modifier = Modifier.size(40.dp),
+                                       painter = painterResource(id = icon),
+                                       contentDescription = "Error alert icon",
+                                       tint = Color.Unspecified,
+                                   )
+                               }
+                            }
                         }
+
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = title,
@@ -117,6 +141,9 @@ fun BanklyCenterDialog(
                                     textColor = MaterialTheme.colorScheme.error,
                                 )
                             }
+                        }
+                        if(extraContent != null) {
+                            extraContent()
                         }
                     }
                 }

@@ -9,15 +9,17 @@ import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
 import com.bankly.feature.contactus.navigation.contactUsNavGraph
-import com.bankly.feature.dashboard.model.Feature
+import com.bankly.core.entity.Feature
+import com.bankly.feature.authentication.navigation.isValidatePassCodeArg
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.eod.navigation.eodNavGraph
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
+import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
-import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
+import com.bankly.feature.settings.navigation.settingsNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
 
 
@@ -25,7 +27,7 @@ import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGra
 fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
-    startDestination: String = authenticationNavGraphRoute,
+    startDestination: String = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
     onBackPress: () -> Unit,
 ) {
     NavHost(
@@ -34,36 +36,50 @@ fun AppNavHost(
         startDestination = startDestination,
     ) {
         authenticationNavGraph(
+            appNavController = appState.navHostController,
             onLoginSuccess = {
                 appState.navigateTo(AppTopLevelDestination.DASHBOARD)
             },
             onBackPress = onBackPress,
+            onGoToSettingsRoute = {
+                appState.navHostController.navigateToSettingsNavGraph(
+                    navOptions = navOptions {
+                        popUpTo("$authenticationNavGraphRoute/{$isValidatePassCodeArg}") {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
+            onPopBackStack = {
+                appState.navHostController.popBackStack()
+            }
         )
         dashBoardNavGraph(
             onBackPress = onBackPress,
             onFeatureClick = { feature: Feature ->
                 appState.navigateTo(
                     when (feature) {
-                        Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
-                        Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
-                        Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
-                        Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
-                        Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
-                        Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
-                        Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
-                        Feature.Float -> AppTopLevelDestination.FLOAT
-                        Feature.EndOfDay -> AppTopLevelDestination.EOD
-                        Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
-                        Feature.Settings -> AppTopLevelDestination.SETTINGS
+                        is Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
+                        is Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
+                        is Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
+                        is Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
+                        is Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
+                        is Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
+                        is Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
+                        is Feature.Float -> AppTopLevelDestination.FLOAT
+                        is Feature.EndOfDay -> AppTopLevelDestination.EOD
+                        is Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
+                        is Feature.Settings -> AppTopLevelDestination.SETTINGS
                     },
                 )
             },
             onContinueToPayWithCardClick = { amount: Double ->
-                val navOptions = navOptions {
-                    launchSingleTop = true
-                    restoreState = true
-                }
-                appState.navHostController.navigateToPayWithCardNavGraph(amount, navOptions)
+                appState.navHostController.navigateToPayWithCardNavGraph(
+                    amount = amount,
+                    navOptions = navOptions {
+                        launchSingleTop = true
+                        restoreState = true
+                    })
             },
             onGoToTransactionDetailsScreen = { transactionReceipt ->
                 appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
@@ -74,6 +90,7 @@ fun AppNavHost(
                     SupportOption.CONTACT_US -> {
                         appState.navHostController.navigateToContactUsNavGraph()
                     }
+
                     SupportOption.LOG_COMPLAINT -> {
                         appState.navHostController.navigateToLogComplaintNavGraph()
                     }
@@ -126,6 +143,11 @@ fun AppNavHost(
         )
 
         logComplaintNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            }
+        )
+        settingsNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             }

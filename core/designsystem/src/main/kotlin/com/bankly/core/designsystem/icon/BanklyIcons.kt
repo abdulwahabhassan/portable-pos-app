@@ -72,4 +72,6 @@ object BanklyIcons {
     val ContactUsPhone = R.drawable.ic_contact_us_phone
     val ContactUsWhatsapp = R.drawable.ic_contact_us_whatsapp
     val Upload = R.drawable.ic_upload
+    val Logout = R.drawable.ic_logout
+    val AccessDenied = R.drawable.ic_access_denied
 }

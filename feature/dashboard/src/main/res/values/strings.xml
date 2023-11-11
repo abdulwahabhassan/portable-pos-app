@@ -4,6 +4,7 @@
     <string name="symbol_naira">₦</string>
     <string name="msg_enter_amount">Enter Amount</string>
     <string name="msg_are_you_sure_you_want_to_exit_the_app">Are you sure you want to exit the app?</string>
+    <string name="msg_are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
     <string name="title_confirm_action">Confirm action</string>
     <string name="title_validation_error">Validation error</string>
     <string name="desc_visibility_icon">Visibility icon</string>
@@ -21,4 +22,10 @@
     <string name="action_dismiss">Dismiss</string>
     <string name="action_export">Export</string>
     <string name="action_clear_all">Clear all</string>
+    <string name="action_log_out">Log out</string>
+    <string name="action_go_to_settings">Go to settings</string>
+    <string name="action_yes_logout">Yes, Logout</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="title_access_denied">Access Denied</string>
+    <string name="msg_enable_feature_in_settings">Enable feature in settings</string>
 </resources>
