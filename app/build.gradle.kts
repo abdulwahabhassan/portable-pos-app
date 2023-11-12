@@ -66,4 +66,5 @@ dependencies {
     implementation(project(":feature:logcomplaint"))
     implementation(project(":feature:networkchecker"))
     implementation(project(":feature:settings"))
+    implementation(project(":feature:checkcardbalance"))
 }

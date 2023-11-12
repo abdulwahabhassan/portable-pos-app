@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.networkchecker.R
@@ -89,6 +90,7 @@ private fun NetworkCheckerListScreen(
     BanklyCenterDialog(
         title = stringResource(R.string.title_error),
         subtitle = screenState.errorDialogMessage,
+        icon = BanklyIcons.ErrorAlert,
         positiveActionText = stringResource(R.string.action_dismiss),
         showDialog = screenState.showErrorDialog,
         positiveAction = {

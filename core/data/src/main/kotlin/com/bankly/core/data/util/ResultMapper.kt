@@ -9,8 +9,10 @@ import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.EodInfo
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
+import com.bankly.core.entity.SyncEod
 import com.bankly.core.entity.Token
 import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilterType
@@ -33,6 +35,8 @@ import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.model.result.AgentAccountResult
 import com.bankly.core.network.model.result.BankNetworkResult
+import com.bankly.core.network.model.result.EodInfoResult
+import com.bankly.core.network.model.result.SyncEodResult
 import com.bankly.core.network.model.result.TransactionFilterTypeResult
 import com.bankly.core.network.model.result.TransactionResult
 import com.bankly.core.network.retrofit.model.Any
@@ -280,4 +284,24 @@ fun BankNetworkResult.asBankNetwork() = BankNetwork(
     bankIcon = "",
     networkPercentage = countPercentage ?: 0.00,
     totalCount = totalCount ?: 0
+)
+
+fun EodInfoResult.asEodInfo() = EodInfo(
+    settled = settled ?: 0.00,
+    availableBalance = availableBalance ?: 0.00,
+    responseMessage = responseMessage ?: "",
+    notificationId = notificationId ?: 0,
+    responseCode = responseCode ?: "",
+    terminalId = terminalId ?: "",
+    balance = balance ?: 0.00,
+    amountAdded = amountAdded ?: 0.00
+)
+
+fun SyncEodResult.asSyncEod() = SyncEod(
+    responseMessage = responseMessage ?: "",
+    notificationId = notificationId ?: 0,
+    responseCode = responseCode ?: "",
+    terminalId = terminalId ?: "",
+    balance = balance ?: 0.00,
+    amountAdded = amountAdded ?: 0.00
 )

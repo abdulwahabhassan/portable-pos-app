@@ -26,7 +26,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.component.BanklyActionDialog
+import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.model.DashboardTab
@@ -43,7 +45,7 @@ fun DashBoardRoute(
     content: @Composable (PaddingValues) -> Unit,
     currentTab: DashboardTab,
     onTabChange: (DashboardTab) -> Unit,
-    onBackPress: () -> Unit,
+    onExitApp: () -> Unit,
     showLoadingIndicator: Boolean,
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -57,16 +59,17 @@ fun DashBoardRoute(
         }
     }
 
-    if (showActionDialog.value) {
-        BanklyActionDialog(
-            title = stringResource(R.string.title_confirm_action),
-            subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_exit_the_app),
-            negativeActionText = stringResource(R.string.action_yes),
-            negativeAction = { onBackPress() },
-            positiveActionText = stringResource(R.string.action_no),
-            positiveAction = { showActionDialog.value = false },
-        )
-    }
+    BanklyCenterDialog(
+        title = stringResource(R.string.title_confirm_action),
+        subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_exit_the_app),
+        showDialog = showActionDialog.value,
+        icon = BanklyIcons.ErrorAlert,
+        negativeActionText = stringResource(R.string.action_yes),
+        negativeAction = onExitApp,
+        positiveActionText = stringResource(R.string.action_no),
+        positiveAction = { showActionDialog.value = false },
+        onDismissDialog = { showActionDialog.value = false }
+    )
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -79,6 +82,7 @@ fun DashBoardRoute(
                             onTabChange = onTabChange,
                         )
                     }
+
                     BottomNavDestination.TRANSACTIONS -> {
                         BanklyTitleBar(
                             isLoading = showLoadingIndicator,
@@ -110,7 +114,8 @@ fun DashBoardRoute(
                             }
                         )
                     }
-                    BottomNavDestination.SUPPORT, BottomNavDestination.MORE-> {
+
+                    BottomNavDestination.SUPPORT, BottomNavDestination.MORE -> {
                         BanklyTitleBar(
                             title = currentBottomNavDestination.title ?: "",
                         )
@@ -149,7 +154,7 @@ fun DashBoardRoutePreview() {
             content = {},
             currentTab = DashboardTab.Home,
             onTabChange = {},
-            onBackPress = {},
+            onExitApp = {},
             showLoadingIndicator = false,
         )
     }

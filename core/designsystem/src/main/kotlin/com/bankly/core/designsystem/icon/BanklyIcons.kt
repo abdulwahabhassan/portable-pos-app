@@ -74,4 +74,5 @@ object BanklyIcons {
     val Upload = R.drawable.ic_upload
     val Logout = R.drawable.ic_logout
     val AccessDenied = R.drawable.ic_access_denied
+    val ErrorAlert = R.drawable.ic_error_alert
 }

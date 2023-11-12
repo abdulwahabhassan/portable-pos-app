@@ -350,6 +350,7 @@ private fun TransactionsScreen(
     BanklyCenterDialog(
         title = stringResource(R.string.title_error),
         subtitle = screenState.errorDialogMessage,
+        icon = BanklyIcons.ErrorAlert,
         positiveActionText = stringResource(R.string.action_dismiss),
         positiveAction = {
             onUiEvent(TransactionsScreenEvent.DismissErrorDialog)

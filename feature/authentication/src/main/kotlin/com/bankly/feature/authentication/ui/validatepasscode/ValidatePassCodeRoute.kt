@@ -25,6 +25,7 @@ import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
 import kotlinx.coroutines.flow.collectLatest
@@ -125,6 +126,7 @@ internal fun ValidatePassCodeScreen(
     BanklyCenterDialog(
         title = stringResource(R.string.title_error),
         subtitle = screenState.errorDialogMessage,
+        icon = BanklyIcons.ErrorAlert,
         positiveActionText = stringResource(R.string.action_dismiss),
         positiveAction = {
             onUiEvent(ValidatePassCodeScreenEvent.OnDismissErrorDialog)

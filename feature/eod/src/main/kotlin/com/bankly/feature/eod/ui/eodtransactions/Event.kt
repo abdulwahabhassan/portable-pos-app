@@ -1,16 +1,16 @@
-package com.bankly.feature.eod.ui
+package com.bankly.feature.eod.ui.eodtransactions
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.model.TransactionCategoryTab
 import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilter
 import com.bankly.core.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 internal sealed interface EodTransactionsScreenEvent {
-    data class OnCategoryTabSelected(val category: TransactionCategoryTab) : EodTransactionsScreenEvent
+    data class OnCategoryTabSelected(val category: TransactionCategoryTab) :
+        EodTransactionsScreenEvent
 
     data class OnInputSearchQuery(
         val query: String,
@@ -41,5 +41,6 @@ internal sealed interface EodTransactionsScreenEvent {
         EodTransactionsScreenEvent
 
     class OnApplyFilterClick(val transactionFilter: TransactionFilter) : EodTransactionsScreenEvent
-    class RemoveTransactionTypeFilterItem(val item: TransactionFilterType) : EodTransactionsScreenEvent
+    class RemoveTransactionTypeFilterItem(val item: TransactionFilterType) :
+        EodTransactionsScreenEvent
 }

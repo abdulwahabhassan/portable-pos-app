@@ -1,4 +1,4 @@
-package com.bankly.feature.eod.ui
+package com.bankly.feature.eod.ui.eodtransactions
 
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange

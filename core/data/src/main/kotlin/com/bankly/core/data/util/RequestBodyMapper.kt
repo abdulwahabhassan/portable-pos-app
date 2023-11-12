@@ -3,6 +3,7 @@ package com.bankly.core.data.util
 import com.bankly.core.data.BankTransferData
 import com.bankly.core.data.BillPaymentData
 import com.bankly.core.data.ChangePassCodeData
+import com.bankly.core.data.EodTransactionListData
 import com.bankly.core.data.ForgotPassCodeData
 import com.bankly.core.data.GetRecentFundingData
 import com.bankly.core.data.ResetPassCodeData
@@ -20,6 +21,8 @@ import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.SendReceiptRequestBody
 import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
 import com.bankly.core.data.TransactionFilterData
+import com.bankly.core.network.model.request.SyncEodRequestBody
+import com.bankly.core.network.model.request.SyncEodTransactionData
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
 import com.bankly.core.network.model.request.ValidateElectricityMeterNumberRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
@@ -121,3 +124,21 @@ fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
 )
 
 fun TransactionFilterData.asRequestParam() = Json.encodeToString(this)
+
+fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
+    transactions = this.map {
+        SyncEodTransactionData(
+            it.serialNumber,
+            it.transactionReference,
+            it.paymentDate,
+            it.responseCode,
+            it.stan,
+            it.responseMessage,
+            it.amount,
+            it.maskedPan,
+            it.terminalId,
+            it.rrn,
+            it.transType
+        )
+    }
+)

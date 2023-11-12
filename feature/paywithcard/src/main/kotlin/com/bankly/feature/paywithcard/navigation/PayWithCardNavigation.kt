@@ -86,34 +86,35 @@ private fun PayWithCardNavHost(
             },
             onBackPress = onBackPress,
         )
-        insertCardRoute(
-            onCardInserted = {
-                navHostController.navigateToEnterPinRoute()
-            },
-            onBackPress = {
-                navHostController.popBackStack()
-            },
-            onCloseClick = onBackPress,
-        )
-        enterCardPinRoute(
-            onContinueClick = {
-                navHostController.navigateToProcessTransactionRoute(
-                    TransactionData.mockCardWithdrawalTransactionData(),
-                )
-            },
-            onBackPress = {
-                navHostController.popBackStack()
-            },
-            onCloseClick = onBackPress,
-        )
-        processTransactionRoute(
-            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
-            },
-            onFailedTransaction = { message: String ->
-                navHostController.navigateToTransactionFailedRoute(message = message)
-            },
-        )
+
+//        insertCardRoute(
+//            onCardInserted = {
+//                navHostController.navigateToEnterPinRoute()
+//            },
+//            onBackPress = {
+//                navHostController.popBackStack()
+//            },
+//            onCloseClick = onBackPress,
+//        )
+//        enterCardPinRoute(
+//            onContinueClick = {
+//                navHostController.navigateToProcessTransactionRoute(
+//                    TransactionData.mockCardWithdrawalTransactionData(),
+//                )
+//            },
+//            onBackPress = {
+//                navHostController.popBackStack()
+//            },
+//            onCloseClick = onBackPress,
+//        )
+//        processTransactionRoute(
+//            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
+//                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
+//            },
+//            onFailedTransaction = { message: String ->
+//                navHostController.navigateToTransactionFailedRoute(message = message)
+//            },
+//        )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)

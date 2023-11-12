@@ -14,6 +14,7 @@ fun BanklyApp(
 ) {
     AppNavHost(
         appState,
-        onBackPress = onCloseApp,
+        onExitApp = onCloseApp,
+        onLogOutClick = onCloseApp
     )
 }

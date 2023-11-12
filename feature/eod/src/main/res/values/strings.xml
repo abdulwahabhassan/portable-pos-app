@@ -11,4 +11,8 @@
     <string name="msg_processed">Processed</string>
     <string name="msg_settled">Settled</string>
     <string name="action_tap_to_sync_eod">Tap to sync EOD</string>
+    <string name="msg_syncing_eod_please_wait">Syncing EOD, please wait</string>
+    <string name="msg_sync_eod_to_get_updated_transaction_report">Sync EOD to get updated transaction report</string>
+    <string name="msg_loading">Loading ...</string>
+    <string name="title_eod_sync_successful">EOD Sync Successful</string>
 </resources>

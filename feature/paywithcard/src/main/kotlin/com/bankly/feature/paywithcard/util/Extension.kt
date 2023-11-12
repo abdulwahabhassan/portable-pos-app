@@ -3,7 +3,7 @@ package com.bankly.feature.paywithcard.util
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.model.TransactionData
 
-fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {
+internal fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {
     return TransactionReceipt.CardPayment(
         cardHolderName = this.cardHolderName ?: "",
         cardNumber = this.maskedCardNo ?: "",

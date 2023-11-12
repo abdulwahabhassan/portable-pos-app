@@ -69,12 +69,14 @@ internal fun NavGraphBuilder.supportRoute(
 
 internal fun NavGraphBuilder.moreRoute(
     onFeatureClick: (Feature) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     composable(route = moreRoute) {
         MoreRoute(
             onFeatureCardClick = onFeatureClick,
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
+            onLogOutClick = onLogOutClick
         )
     }
 }

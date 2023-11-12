@@ -29,29 +29,6 @@ class DefaultNetworkCheckerRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : NetworkCheckerRepository {
 
-    //    override suspend fun getBankNetworks() = withContext(dispatcher) {
-//        val networkResult = networkRequestUtil.coroutineHandler(dispatcher) {
-//            val bankLogos = Utils.loadJsonFromAsset<List<BankLogo>>(
-//                appContext,
-//                "bank-logos.json"
-//            )
-//            ApiResponse(
-//                hasResult = true,
-//                networkCheckerRemoteDataSource.getBankNetworks("Bearer ${Emv.accessToken}").map { bankNetwork ->
-//                    bankNetwork.copy(
-//                        logo = bankLogos?.find { bankLogo ->
-//                            bankNetwork.bankCode?.let { bankCode ->
-//                                bankLogo.institutionCode == bankCode
-//                            } ?: false
-//                        }?.logo
-//                    )
-//                },
-//                successful = true
-//            )
-//        }
-//        Utils.handleApiNet workResult(networkResult)
-//    }
-
     override suspend fun getBankNetworks(token: String): Flow<Resource<List<BankNetwork>>> = flow {
         emit(Resource.Loading)
         when (val responseResult = handleNetworkCheckerApiResponse(

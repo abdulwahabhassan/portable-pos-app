@@ -44,6 +44,7 @@ internal fun MoreRoute(
     viewModel: MoreScreenViewModel = hiltViewModel(),
     onFeatureCardClick: (Feature) -> Unit,
     onBackPress: () -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -52,7 +53,8 @@ internal fun MoreRoute(
         onBackPress = onBackPress,
         onUIEvent = { event: MoreScreenEvent ->
             viewModel.sendEvent(event)
-        }
+        },
+        onLogOutClick = onLogOutClick
     )
 
     LaunchedEffect(
@@ -98,6 +100,7 @@ internal fun MoreRoute(
 internal fun MoreScreen(
     screenState: MoreScreenState,
     onBackPress: () -> Unit,
+    onLogOutClick: () -> Unit,
     onUIEvent: (MoreScreenEvent) -> Unit
 ) {
     val context = LocalContext.current
@@ -171,14 +174,12 @@ internal fun MoreScreen(
         title = context.getString(R.string.action_log_out),
         showDialog = screenState.showLogoutWarningDialog,
         subtitle = context.getString(R.string.msg_are_you_sure_you_want_to_logout),
+        icon = BanklyIcons.ErrorAlert,
         onDismissDialog = {
             onUIEvent(MoreScreenEvent.OnDismissLogOutWarningDialog)
         },
-        positiveAction = {
-
-        },
         positiveActionText = stringResource(R.string.action_cancel),
-        negativeAction = {},
+        negativeAction = onLogOutClick,
         negativeActionText = stringResource(R.string.action_yes_logout),
     )
 }
@@ -190,7 +191,8 @@ private fun MoreScreenPreview() {
         MoreScreen(
             screenState = MoreScreenState(showLogoutWarningDialog = false),
             onBackPress = {},
-            onUIEvent = {}
+            onUIEvent = {},
+            onLogOutClick = {}
         )
     }
 }

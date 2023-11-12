@@ -1,7 +1,6 @@
-package com.bankly.feature.eod.ui
+package com.bankly.feature.eod.ui.eodtransactions
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
@@ -65,7 +64,6 @@ import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.eod.R
 import com.bankly.feature.eod.ui.component.EodTransactionListItem
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
@@ -357,6 +355,7 @@ private fun EodTransactionsScreen(
     BanklyCenterDialog(
         title = stringResource(R.string.title_error),
         subtitle = screenState.errorDialogMessage,
+        icon = BanklyIcons.ErrorAlert,
         positiveActionText = stringResource(R.string.action_dismiss),
         positiveAction = {
             onUiEvent(EodTransactionsScreenEvent.DismissErrorDialog)

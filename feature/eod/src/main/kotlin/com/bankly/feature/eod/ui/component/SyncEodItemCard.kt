@@ -23,7 +23,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 
 @Composable
 internal fun SyncEodItemCard(
-    amount: String,
+    amount: Double,
     title: String,
     backgroundColor: Color,
     icon: Int,
@@ -69,7 +69,7 @@ internal fun SyncEodItemCard(
 private fun SyncEodItemCardPreview() {
     BanklyTheme {
         SyncEodItemCard(
-            amount = "0.00",
+            amount = 0.00,
             title = "Processed",
             backgroundColor = MaterialTheme.colorScheme.primary,
             icon = BanklyIcons.SyncProcessed

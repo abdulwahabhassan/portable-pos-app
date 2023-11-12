@@ -85,7 +85,9 @@ private fun EodNavHost(
             },
         )
         syncEodRoute(
-            onBackPress = {},
+            onBackPress = {
+                navHostController.popBackStack()
+            },
         )
     }
 }

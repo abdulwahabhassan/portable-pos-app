@@ -36,7 +36,7 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun BanklyCenterDialog(
     title: String,
     subtitle: String? = null,
-    icon: Int? = R.drawable.ic_error_alert,
+    icon: Int? = null,
     positiveActionText: String? = null,
     positiveAction: () -> Unit = {},
     negativeActionText: String? = null,
@@ -178,6 +178,7 @@ fun BanklyCenterDialogPreview2() {
         BanklyCenterDialog(
             title = stringResource(R.string.msg_check_your_internet_connection),
             positiveActionText = "Okay",
+            icon = BanklyIcons.ErrorAlert,
             positiveAction = {
             },
             showDialog = false,

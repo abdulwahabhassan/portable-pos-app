@@ -11,6 +11,7 @@ import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
 import com.bankly.feature.contactus.navigation.contactUsNavGraph
 import com.bankly.core.entity.Feature
 import com.bankly.feature.authentication.navigation.isValidatePassCodeArg
+import com.bankly.feature.checkcardbalance.navigation.checkCardBalanceNavGraph
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.eod.navigation.eodNavGraph
@@ -28,7 +29,8 @@ fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
-    onBackPress: () -> Unit,
+    onExitApp: () -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -40,7 +42,7 @@ fun AppNavHost(
             onLoginSuccess = {
                 appState.navigateTo(AppTopLevelDestination.DASHBOARD)
             },
-            onBackPress = onBackPress,
+            onBackPress = onExitApp,
             onGoToSettingsRoute = {
                 appState.navHostController.navigateToSettingsNavGraph(
                     navOptions = navOptions {
@@ -55,7 +57,7 @@ fun AppNavHost(
             }
         )
         dashBoardNavGraph(
-            onBackPress = onBackPress,
+            onExitApp = onExitApp,
             onFeatureClick = { feature: Feature ->
                 appState.navigateTo(
                     when (feature) {
@@ -95,7 +97,8 @@ fun AppNavHost(
                         appState.navHostController.navigateToLogComplaintNavGraph()
                     }
                 }
-            }
+            },
+            onLogOutClick = onLogOutClick
         )
         payWithCardNavGraph(
             onBackPress = {
@@ -151,6 +154,11 @@ fun AppNavHost(
             onBackPress = {
                 appState.navHostController.popBackStack()
             }
+        )
+        checkCardBalanceNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            },
         )
     }
 }

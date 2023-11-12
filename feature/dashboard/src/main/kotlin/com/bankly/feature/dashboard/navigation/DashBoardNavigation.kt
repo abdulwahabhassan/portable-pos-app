@@ -17,11 +17,12 @@ import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
 fun NavGraphBuilder.dashBoardNavGraph(
-    onBackPress: () -> Unit,
+    onExitApp: () -> Unit,
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
-    onSupportOptionClick: (SupportOption) -> Unit
+    onSupportOptionClick: (SupportOption) -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -55,14 +56,15 @@ fun NavGraphBuilder.dashBoardNavGraph(
                             dashBoardState = dashBoardState.copy(showLoadingIndicator = isLoading)
                         },
                         onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
-                        onSupportOptionClick = onSupportOptionClick
+                        onSupportOptionClick = onSupportOptionClick,
+                        onLogOutClick = onLogOutClick
                     )
                 },
                 currentTab = dashBoardState.currentTab,
                 onTabChange = { tab: DashboardTab ->
                     dashBoardState = dashBoardState.copy(currentTab = tab)
                 },
-                onBackPress = onBackPress,
+                onExitApp = onExitApp,
             )
         }
     }
@@ -78,6 +80,7 @@ fun DashBoardNavHost(
     updateLoadingStatus: (Boolean) -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
+    onLogOutClick: () -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -108,7 +111,8 @@ fun DashBoardNavHost(
             onFeatureClick = onFeatureClick,
             onBackPress = {
                 navHostController.navigateToHomeRoute()
-            }
+            },
+            onLogOutClick = onLogOutClick
         )
     }
 }

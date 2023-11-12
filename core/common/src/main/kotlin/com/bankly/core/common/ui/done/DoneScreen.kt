@@ -104,7 +104,7 @@ fun DoneScreen(
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
-fun SuccessfulScreenPreview() {
+fun DoneScreenPreview() {
     BanklyTheme {
         DoneScreen(
             title = stringResource(R.string.msg_transaction_successful),

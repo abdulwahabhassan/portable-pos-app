@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
+import com.bankly.feature.checkcardbalance.navigation.checkCardBalanceNavGraphRoute
 import com.bankly.feature.contactus.navigation.contactUsNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.eod.navigation.eodNavGraphRoute
@@ -108,5 +109,9 @@ internal fun NavHostController.navigateToNetworkCheckerNavGraph(navOptions: NavO
 
 internal fun NavHostController.navigateToSettingsNavGraph(navOptions: NavOptions? = null,) {
     this.navigate(settingsNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToCheckCardBalancedNavGraph(navOptions: NavOptions? = null) {
+    this.navigate(checkCardBalanceNavGraphRoute, navOptions)
 }
 

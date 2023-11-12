@@ -1,4 +1,4 @@
-package com.bankly.feature.eod.ui
+package com.bankly.feature.eod.ui.eodtransactions
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

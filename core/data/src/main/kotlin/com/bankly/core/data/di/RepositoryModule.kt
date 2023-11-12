@@ -2,12 +2,14 @@ package com.bankly.core.data.di
 
 import android.content.Context
 import com.bankly.core.data.repository.DefaultBillsRepository
+import com.bankly.core.data.repository.DefaultEndOfDayRepository
 import com.bankly.core.data.repository.DefaultNetworkCheckerRepository
 import com.bankly.core.data.repository.DefaultPayWithTransferRepository
 import com.bankly.core.data.repository.DefaultTransactionRepository
 import com.bankly.core.data.repository.DefaultTransferRepository
 import com.bankly.core.data.repository.DefaultUserRepository
 import com.bankly.core.domain.repository.BillsRepository
+import com.bankly.core.domain.repository.EndOfDayRepository
 import com.bankly.core.domain.repository.NetworkCheckerRepository
 import com.bankly.core.domain.repository.PayWithTransferRepository
 import com.bankly.core.domain.repository.TransactionRepository
@@ -52,4 +54,9 @@ interface RepositoryModule {
     fun bindsNetworkCheckerRepository(
        repository: DefaultNetworkCheckerRepository
     ): NetworkCheckerRepository
+
+    @Binds
+    fun bindsEndOfDayRepository(
+        repository: DefaultEndOfDayRepository
+    ): EndOfDayRepository
 }
