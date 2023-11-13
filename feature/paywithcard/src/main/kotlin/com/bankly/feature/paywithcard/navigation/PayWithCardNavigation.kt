@@ -1,7 +1,6 @@
 package com.bankly.feature.paywithcard.navigation
 
 import ProcessPayment
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -16,10 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
-import com.bankly.core.common.model.TransactionData
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.paywithcard.util.toTransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
+
+private const val SUCCESSFUL_STATUS_NAME = "Successful"
 
 fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
@@ -41,7 +41,6 @@ fun NavGraphBuilder.payWithCardNavGraph(
             val amount = parentEntry.arguments?.getString(
                 amountArg,
             )?.toDouble() ?: 0.00
-            Log.d("debug amount", "$amount")
             Tools.TransactionAmount = amount
             val payWithCardState by rememberPayWithCardState()
             PayWithCardNavHost(
@@ -75,9 +74,7 @@ private fun PayWithCardNavHost(
                 Tools.SetAccountType(acctType)
                 ProcessPayment(context) { transactionResponse, _ ->
                     val receipt = transactionResponse.toTransactionReceipt()
-                    Log.d("debug transaction data", "$transactionResponse")
-                    Log.d("debug transaction receipt", "$receipt")
-                    if (receipt.statusName.equals("Successful", true)) {
+                    if (receipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
                         navHostController.navigateToTransactionSuccessRoute(receipt)
                     } else {
                         navHostController.navigateToTransactionFailedRoute(receipt.message)
@@ -86,35 +83,6 @@ private fun PayWithCardNavHost(
             },
             onBackPress = onBackPress,
         )
-
-//        insertCardRoute(
-//            onCardInserted = {
-//                navHostController.navigateToEnterPinRoute()
-//            },
-//            onBackPress = {
-//                navHostController.popBackStack()
-//            },
-//            onCloseClick = onBackPress,
-//        )
-//        enterCardPinRoute(
-//            onContinueClick = {
-//                navHostController.navigateToProcessTransactionRoute(
-//                    TransactionData.mockCardWithdrawalTransactionData(),
-//                )
-//            },
-//            onBackPress = {
-//                navHostController.popBackStack()
-//            },
-//            onCloseClick = onBackPress,
-//        )
-//        processTransactionRoute(
-//            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
-//                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
-//            },
-//            onFailedTransaction = { message: String ->
-//                navHostController.navigateToTransactionFailedRoute(message = message)
-//            },
-//        )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)

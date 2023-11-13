@@ -6,6 +6,7 @@ import androidx.navigation.NavOptions
 internal fun NavHostController.navigateToHomeRoute(
     navOptions: NavOptions? = null,
 ) {
+
     this.navigate(homeRoute, navOptions)
 }
 

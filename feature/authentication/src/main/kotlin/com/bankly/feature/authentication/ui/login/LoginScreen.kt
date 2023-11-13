@@ -60,6 +60,7 @@ internal fun LoginScreen(
     onUiEvent: (LoginScreenEvent) -> Unit,
 ) {
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             BanklyTitleBar(
                 onBackPress = onBackPress,
@@ -78,7 +79,6 @@ internal fun LoginScreen(
         ) {
             item {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     BanklyInputField(
@@ -139,7 +139,6 @@ internal fun LoginScreen(
                         .fillMaxWidth(),
                     text = stringResource(R.string.title_log_in),
                     onClick = {
-                        Log.d("login debug", "login button clicked!")
                         onUiEvent(
                             LoginScreenEvent.OnLoginClick(
                                 screenState.phoneNumberTFV.text,

@@ -21,15 +21,6 @@ internal const val selectAccountTypeRoute =
     checkCardBalanceRoute.plus("/select_account_type_screen")
 internal const val cardBalanceRoute = checkCardBalanceRoute.plus("/card_balance_screen")
 
-//internal const val insertCardRoute = payWithCardRoute.plus("/insert_card_screen")
-//internal const val enterPinRoute = payWithCardRoute.plus("/enter_pin_screen")
-//internal const val processTransactionRoute = payWithCardRoute.plus("/process_transaction_screen")
-internal const val transactionSuccessRoute =
-    checkCardBalanceRoute.plus("/transaction_success_screen")
-internal const val transactionFailedRoute = checkCardBalanceRoute.plus("/transaction_failed_screen")
-internal const val transactionDetailsRoute =
-    checkCardBalanceRoute.plus("/transaction_details_screen")
-
 internal fun NavGraphBuilder.selectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
@@ -42,134 +33,34 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
     }
 }
 
-//internal fun NavGraphBuilder.insertCardRoute(
-//    onCardInserted: () -> Unit,
-//    onBackPress: () -> Unit,
-//    onCloseClick: () -> Unit,
-//) {
-//    composable(route = insertCardRoute) {
-//        InsertCardRoute(
-//            onCardInserted = onCardInserted,
-//            onBackPress = onBackPress,
-//            onCloseClick = onCloseClick,
-//        )
-//    }
-//}
-//
-//internal fun NavGraphBuilder.enterCardPinRoute(
-//    onContinueClick: (String) -> Unit,
-//    onBackPress: () -> Unit,
-//    onCloseClick: () -> Unit,
-//) {
-//    composable(route = enterPinRoute) {
-//        EnterCardPinRoute(
-//            onContinueClick = onContinueClick,
-//            onBackPress = onBackPress,
-//            onCloseClick = onCloseClick,
-//        )
-//    }
-//}
-//
-//internal fun NavGraphBuilder.processTransactionRoute(
-//    onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-//    onFailedTransaction: (String) -> Unit,
-//) {
-//    composable(
-//        route = "$processTransactionRoute/{$transactionDataArg}",
-//        arguments = listOf(
-//            navArgument(transactionDataArg) { type = NavType.StringType },
-//        ),
-//    ) {
-//        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
-//            val data: TransactionData = Json.decodeFromString(transactionData)
-//            ProcessTransactionRoute(
-//                transactionData = data,
-//                onTransactionSuccess = onSuccessfulTransaction,
-//                onFailedTransaction = onFailedTransaction,
-//            )
-//        }
-//    }
-//}
-//
-internal fun NavGraphBuilder.transactionSuccessRoute(
-    onGoHomeClick: () -> Unit,
-    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
-) {
-    composable(
-        route = "$transactionSuccessRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
-            TransactionSuccessRoute(
-                transactionReceipt = trans,
-                message = trans.transactionMessage,
-                onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-                onGoToHome = onGoHomeClick,
-            )
-        }
-    }
-}
-
-internal fun NavGraphBuilder.transactionFailedRoute(
-    onGoHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$transactionFailedRoute/{$messageArg}",
-        arguments = listOf(
-            navArgument(messageArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(messageArg)?.let { message: String ->
-            TransactionFailedRoute(
-                onGoToHome = onGoHomeClick,
-                message = message,
-            )
-        }
-    }
-}
-
-internal fun NavGraphBuilder.transactionDetailsRoute(
-    onShareClick: () -> Unit,
-    onSmsClick: (TransactionReceipt) -> Unit,
-    onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$transactionDetailsRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
-            TransactionDetailsRoute(
-                transactionReceipt = trans,
-                onShareClick = onShareClick,
-                onSmsClick = onSmsClick,
-                onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick,
-            )
-        }
-    }
-}
-
 internal fun NavGraphBuilder.cardBalanceRoute(
     onGoToDashboardClick: () -> Unit
 ) {
     composable(
-        route = "$cardBalanceRoute/{$cardBalanceAmountArg}",
+        route = "$cardBalanceRoute/{$cardBalanceAmountArg}/{$cardBalanceResponseCodeArg}/{$cardBalanceResponseMessageArg}",
         arguments = listOf(
             navArgument(cardBalanceAmountArg) { type = NavType.StringType },
+            navArgument(cardBalanceResponseCodeArg) { type = NavType.StringType },
+            navArgument(cardBalanceResponseMessageArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(cardBalanceAmountArg)?.let { transaction: String ->
-            val amount: String = Json.decodeFromString(transaction)
-            CardBalanceRoute(
-                amount = amount,
-                onGoToDashboardClick = onGoToDashboardClick)
+        it.arguments?.getString(cardBalanceAmountArg)?.let { cardBalanceAmount: String ->
+            it.arguments?.getString(cardBalanceResponseCodeArg)
+                ?.let { cardBalanceResponseCode: String ->
+                    it.arguments?.getString(cardBalanceResponseMessageArg)
+                        ?.let { cardBalanceResponseMessage: String ->
+                            val amount: String = Json.decodeFromString(cardBalanceAmount)
+                            val responseCode: String =
+                                Json.decodeFromString(cardBalanceResponseCode)
+                            val responseMessage: String = Json.decodeFromString(cardBalanceResponseMessage)
+                            CardBalanceRoute(
+                                amount = amount,
+                                responseCode = responseCode,
+                                responseMessage = responseMessage,
+                                onGoToDashboardClick = onGoToDashboardClick
+                            )
+                        }
+                }
         }
     }
 }

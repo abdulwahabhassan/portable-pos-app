@@ -1,7 +1,9 @@
 package com.bankly.banklykozenpos.navigation
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.ui.BanklyAppState
@@ -31,6 +33,7 @@ fun AppNavHost(
     startDestination: String = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
     onExitApp: () -> Unit,
     onLogOutClick: () -> Unit,
+    activity: Activity
 ) {
     NavHost(
         modifier = modifier,
@@ -98,7 +101,8 @@ fun AppNavHost(
                     }
                 }
             },
-            onLogOutClick = onLogOutClick
+            onLogOutClick = onLogOutClick,
+            activity = activity
         )
         payWithCardNavGraph(
             onBackPress = {

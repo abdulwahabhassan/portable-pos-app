@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.navigation
 
+import android.app.Activity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -7,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -23,6 +25,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
+    activity: Activity
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -57,7 +60,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         },
                         onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
                         onSupportOptionClick = onSupportOptionClick,
-                        onLogOutClick = onLogOutClick
+                        onLogOutClick = onLogOutClick,
+                        activity = activity
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -81,6 +85,7 @@ fun DashBoardNavHost(
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
+    activity: Activity
 ) {
     NavHost(
         modifier = modifier,
@@ -91,10 +96,11 @@ fun DashBoardNavHost(
             currentHomeTab = currentHomeTab,
             onFeatureClick = onFeatureClick,
             onContinueToPayWithCardClick = onContinueToPayWithCardClick,
+            activity = activity
         )
         transactionsRoute(
             onBackPress = {
-                navHostController.navigateToHomeRoute()
+                navHostController.popBackStack()
             },
             onGoToTransactionDetailsScreen = { transactionReceipt: TransactionReceipt ->
                 onGoToTransactionDetailsScreen(transactionReceipt)
@@ -103,14 +109,14 @@ fun DashBoardNavHost(
         )
         supportRoute(
             onBackPress = {
-                navHostController.navigateToHomeRoute()
+                navHostController.popBackStack()
             },
             onSupportOptionClick = onSupportOptionClick
         )
         moreRoute(
             onFeatureClick = onFeatureClick,
             onBackPress = {
-                navHostController.navigateToHomeRoute()
+                navHostController.popBackStack()
             },
             onLogOutClick = onLogOutClick
         )

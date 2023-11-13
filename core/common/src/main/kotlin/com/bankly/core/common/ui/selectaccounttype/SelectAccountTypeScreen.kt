@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,6 +60,7 @@ fun SelectAccountTypeScreen(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
 ) {
+    val context = LocalContext.current
     var selectedAccountType: AccountType? by remember { mutableStateOf(null) }
     var isLoading: Boolean by remember { mutableStateOf(false) }
     var showActionDialog by rememberSaveable { mutableStateOf(false) }
@@ -69,11 +71,11 @@ fun SelectAccountTypeScreen(
         BanklyActionDialog(
             title = actionTitle,
             subtitle = actionMessage,
-            positiveActionText = "No",
+            positiveActionText = context.getString(R.string.action_no),
             positiveAction = {
                 showActionDialog = false
             },
-            negativeActionText = "Yes",
+            negativeActionText = context.getString(R.string.action_yes),
             negativeAction = {
                 showActionDialog = false
                 onBackPress()
@@ -83,8 +85,8 @@ fun SelectAccountTypeScreen(
 
     fun triggerCancelDialog() {
         if (isLoading) {
-            actionTitle = "Cancel Transaction?"
-            actionMessage = "Are you sure you want to cancel?"
+            actionTitle = context.getString(R.string.title_cancel_transaction)
+            actionMessage = context.getString(R.string.msg_are_you_sure_you_want_to_cancel)
             showActionDialog = true
         } else {
             onBackPress()
@@ -132,7 +134,7 @@ fun SelectAccountTypeScreen(
                     Text(
                         modifier = Modifier
                             .padding(24.dp),
-                        text = "Insert card and do not remove until transaction is complete ..",
+                        text = stringResource(R.string.msg_insert_card_and_do_not_remove_until_transaction_is_complete),
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                     )

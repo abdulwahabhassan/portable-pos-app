@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.ui.home
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,11 +26,13 @@ import com.bankly.feature.dashboard.R
 import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
+import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
 
 @Composable
 internal fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onFeatureCardClick: (Feature) -> Unit,
+    activity: Activity
 ) {
     val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
     HomeScreen(
@@ -39,6 +42,7 @@ internal fun HomeTab(
     )
     LaunchedEffect(key1 = Unit, block = {
         viewModel.sendEvent(HomeScreenEvent.FetchWalletBalance)
+        ConfigParameters.downloadTmsParams(activity)
     })
 }
 

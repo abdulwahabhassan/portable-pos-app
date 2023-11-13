@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    api(files("../../app/libs/KozonPaymentLibraryModule-release.aar"))
+    implementation(files("../../app/libs/KozonPaymentLibraryModule-release.aar"))
 }

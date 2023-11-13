@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.navigation
 
+import android.app.Activity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bankly.core.sealed.TransactionReceipt
@@ -23,6 +24,7 @@ internal fun NavGraphBuilder.homeRoute(
     currentHomeTab: DashboardTab,
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
+    activity: Activity
 ) {
     composable(route = homeRoute) {
         when (currentHomeTab) {
@@ -35,6 +37,7 @@ internal fun NavGraphBuilder.homeRoute(
             DashboardTab.Home -> {
                 HomeTab(
                     onFeatureCardClick = onFeatureClick,
+                    activity = activity
                 )
             }
         }

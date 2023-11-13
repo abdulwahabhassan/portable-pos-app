@@ -1,33 +1,28 @@
 package com.bankly.feature.checkcardbalance.navigation
 
 import ProcessPayment
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
-import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
+
+private const val DEFAULT_AMOUNT = 20.0
 
 fun NavGraphBuilder.checkCardBalanceNavGraph(
     onBackPress: () -> Unit,
 ) {
-    Tools.transactionType = com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.BALANCE_INQUIRY
+
 
     navigation(
-        route = "$checkCardBalanceNavGraphRoute/{$amountArg}",
+        route = checkCardBalanceNavGraphRoute,
         startDestination = checkCardBalanceRoute,
-        arguments = listOf(
-            navArgument(amountArg) { type = NavType.StringType },
-        ),
     ) {
         composable(checkCardBalanceRoute) {
             val checkCardBalanceState by rememberCheckCardBalanceState()
@@ -59,67 +54,26 @@ private fun CheckCardBalanceNavHost(
                     AccountType.CREDIT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CREDIT
                     AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
-                Tools.TransactionAmount = 20.00
+
+                Tools.transactionType =
+                    com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.BALANCE_INQUIRY
+                Tools.TransactionAmount = DEFAULT_AMOUNT
                 Tools.SetAccountType(acctType)
                 ProcessPayment(context) { transactionResponse, _ ->
-//                    val receipt = transactionResponse.toTransactionReceipt()
-                    Log.d("debug transaction data", "$transactionResponse")
-//                    Log.d("debug transaction receipt", "$receipt")
-//                    if (receipt.statusName.equals("Successful", true)) {
-//                        navHostController.navigateToTransactionSuccessRoute(receipt)
-//                    } else {
-//                        navHostController.navigateToTransactionFailedRoute(receipt.message)
-//                    }
+                    val balance = transactionResponse.accountMainBalance?.ifEmpty {
+                        transactionResponse.accountLegerBalance ?: ""
+                    } ?: transactionResponse.accountLegerBalance ?: ""
+                    navHostController.navigateToCardBalanceRoute(
+                        cardBalanceAmount = balance,
+                        responseCode = transactionResponse.responseCode ?: "",
+                        responseMessage = transactionResponse.responseMessage ?: ""
+                    )
                 }
             },
             onBackPress = onBackPress,
         )
-
-//        insertCardRoute(
-//            onCardInserted = {
-//                navHostController.navigateToEnterPinRoute()
-//            },
-//            onBackPress = {
-//                navHostController.popBackStack()
-//            },
-//            onCloseClick = onBackPress,
-//        )
-//        enterCardPinRoute(
-//            onContinueClick = {
-//                navHostController.navigateToProcessTransactionRoute(
-//                    TransactionData.mockCardWithdrawalTransactionData(),
-//                )
-//            },
-//            onBackPress = {
-//                navHostController.popBackStack()
-//            },
-//            onCloseClick = onBackPress,
-//        )
-//        processTransactionRoute(
-//            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
-//                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
-//            },
-//            onFailedTransaction = { message: String ->
-//                navHostController.navigateToTransactionFailedRoute(message = message)
-//            },
-//        )
         cardBalanceRoute(
             onGoToDashboardClick = onBackPress
-        )
-        transactionSuccessRoute(
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
-            onGoHomeClick = onBackPress,
-        )
-        transactionFailedRoute(
-            onGoHomeClick = onBackPress,
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
         )
     }
 }

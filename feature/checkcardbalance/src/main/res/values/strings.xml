@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_go_to_dashboard">Go to Dashboard</string>
+    <string name="title_account_balance">Account Balance</string>
+    <string name="msg_balance_retrieved_successfully">Balance Retrieved Successfully</string>
+    <string name="msg_balance_retrieval_failed">Balance Retrieval Failed</string>
+    <string name="msg_card_balance_with_naira_symbol">₦%1$s</string>
 </resources>

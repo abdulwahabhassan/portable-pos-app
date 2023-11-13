@@ -24,13 +24,9 @@ class MainActivity : ComponentActivity() {
                     onCloseApp = {
                         finish()
                     },
+                    activity = this
                 )
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ConfigParameters.downloadTmsParams(this)
     }
 }

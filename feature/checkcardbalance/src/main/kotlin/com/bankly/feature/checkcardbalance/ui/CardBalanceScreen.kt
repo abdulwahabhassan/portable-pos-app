@@ -1,5 +1,6 @@
 package com.bankly.feature.checkcardbalance.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,33 +21,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.util.Formatter
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
+import com.bankly.feature.checkcardbalance.R
+
+private const val SUCCESSFUL_RESPONSE_CODE = "00"
 
 @Composable
 fun CardBalanceRoute(
     amount: String,
+    responseCode: String,
+    responseMessage: String,
     onGoToDashboardClick: () -> Unit,
 ) {
     CardBalanceScreen(
-        onDoneClick = onGoToDashboardClick,
-        amount = amount
+        onGoToDashboardClick = onGoToDashboardClick,
+        amount = amount,
+        responseCode = responseCode,
+        responseMessage = responseMessage,
     )
 }
 
 @Composable
 fun CardBalanceScreen(
-    onDoneClick: () -> Unit,
+    onGoToDashboardClick: () -> Unit,
     amount: String,
+    responseCode: String,
+    responseMessage: String
 ) {
+
+    BackHandler {
+        onGoToDashboardClick()
+    }
+    
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -68,13 +83,13 @@ fun CardBalanceScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 Icon(
                     modifier = Modifier.size(100.dp),
-                    painter = painterResource(id = BanklyIcons.Successful),
-                    contentDescription = "Successful Icon",
+                    painter = painterResource(id = if (responseCode == SUCCESSFUL_RESPONSE_CODE) BanklyIcons.Successful else BanklyIcons.Failed),
+                    contentDescription = null,
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
-                    text = "Balance Retrieved Successfully",
+                    text = stringResource(if (responseCode == SUCCESSFUL_RESPONSE_CODE) R.string.msg_balance_retrieved_successfully else R.string.msg_balance_retrieval_failed),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.tertiary,
@@ -82,36 +97,46 @@ fun CardBalanceScreen(
                     ),
                 )
             }
-            Spacer(modifier = Modifier.height(32.dp))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primaryContainer,
-                        shape = MaterialTheme.shapes.medium
+
+            if (responseCode == SUCCESSFUL_RESPONSE_CODE) {
+                Spacer(modifier = Modifier.height(32.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .clip(MaterialTheme.shapes.medium)
+                        .padding(horizontal = 24.dp, vertical = 24.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = stringResource(R.string.title_account_balance),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center
                     )
-                    .clip(MaterialTheme.shapes.medium)
-                    .padding(horizontal = 24.dp, vertical = 24.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.msg_card_balance_with_naira_symbol, amount),
+                        style = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.primary),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Account Balance",
+                    text = responseMessage,
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = Formatter.formatAmount(
-                        value = amount,
-                        includeNairaSymbol = true,
-                        addSpaceBetweenSymbolAndAmount = true
-                    ),
-                    style = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.primary),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -120,8 +145,8 @@ fun CardBalanceScreen(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 24.dp)
                     .fillMaxWidth(),
-                text = "Go to Dashboard",
-                onClick = onDoneClick,
+                text = stringResource(id = R.string.action_go_to_dashboard),
+                onClick = onGoToDashboardClick,
                 isEnabled = true,
             )
         }
@@ -133,8 +158,10 @@ fun CardBalanceScreen(
 fun CardBalanceScreenPreview() {
     BanklyTheme {
         CardBalanceScreen(
-            onDoneClick = {},
-            amount = "200.00"
+            onGoToDashboardClick = {},
+            amount = "200.00",
+            responseCode = "00",
+            responseMessage = "Successful"
         )
     }
 }

@@ -47,4 +47,7 @@
     <string name="title_date_range">Date range</string>
     <string name="action_clear_all">Clear all</string>
     <string name="symbol_plus_sign">+</string>
+    <string name="msg_insert_card_and_do_not_remove_until_transaction_is_complete">Insert card and do not remove until transaction is complete ..</string>
+    <string name="msg_are_you_sure_you_want_to_cancel">Are you sure you want to cancel?</string>
+    <string name="action_yes">Yes</string>
 </resources>
