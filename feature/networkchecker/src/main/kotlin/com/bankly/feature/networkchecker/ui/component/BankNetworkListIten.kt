@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,59 +40,63 @@ internal fun BankNetworkListItem(
         else -> if (bankNetwork.totalCount > 0L && bankNetwork.networkPercentage == 0.00)
             BanklyErrorColor.errorColor else BanklySuccessColor.successColor
     }
-    Row(
+
+    Card(
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-            .shadow(
-                elevation = 0.3.dp,
-                shape = RoundedCornerShape(16.dp),
-                clip = true,
-            )
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = RoundedCornerShape(16.dp),
-            )
             .fillMaxWidth()
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+            .padding(horizontal = 12.dp, vertical = 6.dp),
+        shape = MaterialTheme.shapes.medium,
+        elevation = CardDefaults.cardElevation(0.5.dp)
     ) {
         Row(
-            modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape),
-                model = bankNetwork.bankIcon,
-                contentDescription = null,
-                alignment = Alignment.Center,
-            )
-            Text(
-                text = bankNetwork.bankName,
-                style = MaterialTheme.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        Box(
             modifier = Modifier
-                .size(width = 64.dp, height = 40.dp)
-                .background(color = statusColor, shape = MaterialTheme.shapes.small)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
+                .clip(MaterialTheme.shapes.medium)
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = MaterialTheme.shapes.medium,
+                )
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = bankNetwork.networkPercentage.roundToInt().toString().plus("%"),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape),
+                    model = bankNetwork.bankIcon,
+                    contentDescription = null,
+                    alignment = Alignment.Center,
+                )
+                Text(
+                    text = bankNetwork.bankName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .size(width = 64.dp, height = 40.dp)
+                    .background(color = statusColor, shape = MaterialTheme.shapes.small)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = bankNetwork.networkPercentage.roundToInt().toString().plus("%"),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
 
+        }
     }
+
 }
 
 @Composable

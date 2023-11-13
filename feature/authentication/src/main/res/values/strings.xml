@@ -3,7 +3,7 @@
     <string name="msg_enter_passcode">Enter passcode</string>
     <string name="msg_phone_number_sample">e.g 08167039661</string>
     <string name="msg_passcode_label">Passcode</string>
-    <string name="msg_forgot_passcode">"Forgot passcode?"</string>
+    <string name="msg_forgot_passcode">Don’t remember your passcode?</string>
     <string name="action_recover_passcode">Recover passcode</string>
     <string name="title_log_in">Log In</string>
     <string name="msg_login_screen_subtitle">Fill in your sign in details to access your account</string>
@@ -43,4 +43,8 @@
     <string name="msg_enter_password">Enter password</string>
     <string name="title_error">Error</string>
     <string name="action_dismiss">Dismiss</string>
+    <string name="msg_please_contact_support_to_assign_the_terminal_to_your_account">Please contact support to assign the terminal to your account.</string>
+    <string name="title_unassigned_pos_terminal">Unassigned POS Terminal</string>
+    <string name="action_contact_support">Contact Support</string>
+    <string name="action_go_back">Go Back</string>
 </resources>

@@ -1,22 +1,22 @@
 package com.bankly.feature.authentication.navigation
 
 import android.net.Uri
-import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 
-internal fun NavController.navigateToRecoverPassCodeRoute() {
+internal fun NavHostController.navigateToRecoverPassCodeRoute() {
     this.navigate(recoverPassCodeRoute)
 }
 
-internal fun NavController.navigateToOtpValidationRoute(phoneNumber: String) {
+internal fun NavHostController.navigateToOtpValidationRoute(phoneNumber: String) {
     val encodedPhoneNumber = Uri.encode(phoneNumber)
     this.navigate(
         route = "$otpValidationRoute/$encodedPhoneNumber",
     )
 }
 
-internal fun NavController.navigateToSetNewPassCodeRoute(phoneNumber: String, otp: String) {
+internal fun NavHostController.navigateToSetNewPassCodeRoute(phoneNumber: String, otp: String) {
     val encodedPhoneNumber = Uri.encode(phoneNumber)
     val encodedOtp = Uri.encode(otp)
     this.navigate(
@@ -25,34 +25,34 @@ internal fun NavController.navigateToSetNewPassCodeRoute(phoneNumber: String, ot
     )
 }
 
-internal fun NavController.navigateToSuccessfulRoute(message: String) {
+internal fun NavHostController.navigateToSuccessfulRoute(message: String) {
     val encodedSuccessMessage = Uri.encode(message)
     this.navigate(
         route = "$successfulRoute/$encodedSuccessMessage",
         navOptions = popUpToStartDestinationNavOption(this),
     )
 }
-
-internal fun NavController.navigateToLoginRoute(topicId: String) {
-    this.navigate(loginRoute)
+internal fun NavHostController.navigateToUnassignedTerminalRoute() {
+    this.navigate(unassignedTerminalRoute)
 }
 
-internal fun NavController.navigateToConfirmPinRoute(topicId: String) {
+
+internal fun NavHostController.navigateToConfirmPinRoute(topicId: String) {
     this.navigate(confirmPinRoute)
 }
 
-internal fun NavController.navigateToSetPinRoute(topicId: String) {
+internal fun NavHostController.navigateToSetPinRoute(topicId: String) {
     this.navigate(setPinRoute)
 }
 
-internal fun NavController.navigateToCreateNewPassCodeRoute(topicId: String) {
+internal fun NavHostController.navigateToCreateNewPassCodeRoute(topicId: String) {
     this.navigate(createNewPassCodeRoute)
 }
 
 /**
  * Nav option to Pop up to authentication navigation graph start destination (login route)
  */
-internal fun popUpToStartDestinationNavOption(navController: NavController): NavOptions {
+internal fun popUpToStartDestinationNavOption(navController: NavHostController): NavOptions {
     return NavOptions.Builder().setPopUpTo(navController.graph.findStartDestination().id, false)
         .build()
 }

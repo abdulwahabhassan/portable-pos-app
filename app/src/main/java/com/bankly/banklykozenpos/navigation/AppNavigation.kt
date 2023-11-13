@@ -21,6 +21,7 @@ import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
 import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
+import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 import com.bankly.feature.settings.navigation.settingsNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
@@ -57,6 +58,9 @@ fun AppNavHost(
             },
             onPopBackStack = {
                 appState.navHostController.popBackStack()
+            },
+            onContactSupportPress = {
+                appState.navHostController.navigateToContactUsNavGraph()
             }
         )
         dashBoardNavGraph(
@@ -111,6 +115,11 @@ fun AppNavHost(
             appNavController = appState.navHostController,
         )
         cardTransferNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            },
+        )
+        payWithTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },

@@ -11,6 +11,7 @@ import com.bankly.feature.authentication.ui.pin.SetPinScreen
 import com.bankly.feature.authentication.ui.recoverpasscode.RecoverPassCodeRoute
 import com.bankly.feature.authentication.ui.setnewpasscode.SetNewPassCodeRoute
 import com.bankly.feature.authentication.ui.success.SuccessRoute
+import com.bankly.feature.authentication.ui.unassignedterminal.UnassignedTerminalRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
 import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeRoute
 import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeScreen
@@ -26,17 +27,22 @@ internal const val setNewPassCodeRoute = authenticationRoute.plus("/set_new_pass
 internal const val setPinRoute = authenticationRoute.plus("/set_pin_screen")
 internal const val successfulRoute = authenticationRoute.plus("/successful_screen")
 const val validatePassCodeRoute = authenticationRoute.plus("/validate_passcode_screen")
+internal const val unassignedTerminalRoute = authenticationRoute.plus("/unassigned_terminal_screen")
 
 internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
     onRecoverPassCodeClick: () -> Unit,
+    onSetUpAccessPin: () -> Unit,
+    onTerminalUnAssigned: () -> Unit
 ) {
     composable(route = loginRoute) {
         LoginRoute(
             onLoginSuccess = onLoginSuccess,
             onBackPress = onBackPress,
             onRecoverPassCodeClick = onRecoverPassCodeClick,
+            onSetUpAccessPin = onSetUpAccessPin,
+            onTerminalUnAssigned = onTerminalUnAssigned
         )
     }
 }
@@ -152,6 +158,20 @@ internal fun NavGraphBuilder.validatePassCodeRoute(
         ValidatePassCodeRoute(
             onBackPress = onBackPress,
             onGoToSettingsScreen = onGoToSettingsRoute
+        )
+    }
+}
+
+internal fun NavGraphBuilder.unassignedTerminalRoute(
+    onGoToBackPress: () -> Unit,
+    onContactSupportPress: () -> Unit
+) {
+    composable(
+        route = unassignedTerminalRoute,
+    ) {
+        UnassignedTerminalRoute(
+            onGoToBackPress = onGoToBackPress,
+            onContactSupportPress = onContactSupportPress,
         )
     }
 }

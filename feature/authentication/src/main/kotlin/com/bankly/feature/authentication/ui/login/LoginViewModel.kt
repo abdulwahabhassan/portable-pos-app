@@ -2,7 +2,6 @@ package com.bankly.feature.authentication.ui.login
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.bankly.core.common.util.Validator.isPhoneNumberValid
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetTokenUseCase
@@ -16,6 +15,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+private const val THREE = "3"
+private const val FOUR = "4"
+private const val INVALID_PASSCODE = "invalid passcode"
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginTokenUseCase: GetTokenUseCase,
@@ -25,47 +28,29 @@ class LoginViewModel @Inject constructor(
     override suspend fun handleUiEvents(event: LoginScreenEvent) {
         when (event) {
             is LoginScreenEvent.OnLoginClick -> {
-                performLogin(
-                    phoneNumber = event.phoneNumber,
-                    passCode = event.passCode,
-                )
-            }
-
-            is LoginScreenEvent.OnEnterPhoneNumber -> {
-                setUiState {
-                    copy(
-                        phoneNumberTFV = event.phoneNumberTFV,
-                        isPhoneNumberError = !isPhoneNumberValid(event.phoneNumberTFV.text),
-                        phoneNumberFeedBack = if (isPhoneNumberValid(event.phoneNumberTFV.text)) "" else "Please enter a valid phone number",
-                    )
-                }
+                performLogin(passCode = event.passCode)
             }
 
             is LoginScreenEvent.OnEnterPassCode -> {
-                setUiState {
-                    val isEmpty = event.passCodeTFV.text.trim().isEmpty()
-                    copy(
-                        passCodeTFV = event.passCodeTFV,
-                        isPassCodeError = isEmpty,
-                        passCodeFeedBack = if (isEmpty) "Please enter your passcode" else "",
-                    )
-                }
+                setUiState { copy(passCode = event.passCode, isPassCodeError = false) }
             }
 
-            LoginScreenEvent.OnExit -> {
-                setUiState { copy(loginState = State.Initial) }
+            LoginScreenEvent.OnDismissErrorDialog -> {
+                setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
             }
         }
     }
 
-    private suspend fun performLogin(phoneNumber: String, passCode: String) {
-        loginTokenUseCase(phoneNumber, passCode)
+    private suspend fun performLogin(passCode: String) {
+        loginTokenUseCase(
+            userName = userPreferencesDataStore.data().terminalSerialNumber,
+            password = passCode
+        )
             .onEach { resource ->
                 resource.onLoading {
-                    setUiState { copy(loginState = State.Loading) }
+                    setUiState { copy(isLoading = true) }
                 }
                 resource.onReady { tokenObj ->
-                    Log.d("debug", "token: ${tokenObj.token}")
                     userPreferencesDataStore.update {
                         copy(
                             token = buildString {
@@ -75,23 +60,44 @@ class LoginViewModel @Inject constructor(
                             },
                         )
                     }
-                    setUiState { copy(loginState = State.Success(data = tokenObj)) }
+                    setUiState { copy(isLoading = false) }
+                    setOneShotState(LoginScreenOneShotState.OnLoginSuccess)
                 }
                 resource.onFailure { failureMessage ->
-                    setUiState {
-                        copy(
-                            loginState = State.Error(message = failureMessage),
-                        )
+                    when (failureMessage) {
+                        THREE -> {
+                            setUiState { copy(isLoading = false) }
+                            setOneShotState(LoginScreenOneShotState.OnSetUpAccessPin)
+                        }
+
+                        FOUR -> {
+                            setUiState { copy(isLoading = false) }
+                            setOneShotState(LoginScreenOneShotState.OnTerminalUnAssigned)
+                        }
+
+                        else -> {
+                            setUiState {
+                                copy(
+                                    isLoading = false,
+                                    showErrorDialog = true,
+                                    errorDialogMessage = failureMessage,
+                                    isPassCodeError = failureMessage.contains(
+                                        other = INVALID_PASSCODE,
+                                        ignoreCase = true
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }.catch {
                 it.printStackTrace()
                 setUiState {
                     copy(
-                        loginState = State.Error(
-                            message = it.localizedMessage ?: it.message
-                            ?: "An unexpected event occurred!",
-                        ),
+                        isLoading = false,
+                        showErrorDialog = true,
+                        errorDialogMessage = it.localizedMessage ?: it.message
+                        ?: ""
                     )
                 }
             }.launchIn(viewModelScope)

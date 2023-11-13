@@ -6,13 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TokenApiResponse(
     @SerialName("access_token")
-    val accessToken: String? = null,
+    val accessToken: String?,
     @SerialName("expires_in")
-    val expiresIn: Long? = null,
+    val expiresIn: Long?,
     @SerialName("token_type")
-    val tokenType: String? = null,
+    val tokenType: String?,
     @SerialName("scope")
-    val scope: String? = null,
-    @SerialName("refresh_token")
-    val refreshToken: String? = null,
+    val scope: String?,
 )

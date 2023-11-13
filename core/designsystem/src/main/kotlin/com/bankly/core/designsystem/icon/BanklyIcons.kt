@@ -75,4 +75,6 @@ object BanklyIcons {
     val Logout = R.drawable.ic_logout
     val AccessDenied = R.drawable.ic_access_denied
     val ErrorAlert = R.drawable.ic_error_alert
+    val PassCodeDigitIndicator = R.drawable.ic_passcode_digit_indicator
+    val WarningAlert = R.drawable.ic_warning_alert
 }

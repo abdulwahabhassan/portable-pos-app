@@ -1,24 +1,23 @@
 package com.bankly.feature.authentication.ui.login
 
-import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.entity.Token
-import com.bankly.core.sealed.State
 
 data class LoginScreenState(
-    val phoneNumberTFV: TextFieldValue = TextFieldValue(text = "08167039661"),
-    val passCodeTFV: TextFieldValue = TextFieldValue(text = "Gdz36Val"),
-    val isPhoneNumberError: Boolean = false,
+    val passCode: List<String> = List(6) { "" },
     val isPassCodeError: Boolean = false,
-    val phoneNumberFeedBack: String = "",
-    val passCodeFeedBack: String = "",
-    val loginState: State<Token> = State.Initial,
+    val showErrorDialog: Boolean = false,
+    val errorDialogMessage: String = "",
+    val isLoading: Boolean = false,
 ) {
     val isLoginButtonEnabled: Boolean
-        get() = phoneNumberTFV.text.isNotEmpty() && passCodeTFV.text.isNotEmpty() &&
-            isPhoneNumberError.not() && isPassCodeError.not() && loginState !is State.Loading
+        get() = passCode.isNotEmpty() && passCode.all { digit: String -> digit.isNotEmpty() } &&
+                isPassCodeError.not() && isLoading.not()
     val isUserInputEnabled: Boolean
-        get() = loginState !is State.Loading
+        get() = isLoading.not()
 }
 
-sealed interface LoginScreenOneShotState : OneShotState
+sealed interface LoginScreenOneShotState : OneShotState {
+    object OnLoginSuccess : LoginScreenOneShotState
+    object OnSetUpAccessPin : LoginScreenOneShotState
+    object OnTerminalUnAssigned : LoginScreenOneShotState
+}

@@ -72,7 +72,7 @@ internal fun LoggedComplaintScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Box(modifier = Modifier.height(40.dp))
+                Box(modifier = Modifier.height(56.dp))
             }
             item {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {

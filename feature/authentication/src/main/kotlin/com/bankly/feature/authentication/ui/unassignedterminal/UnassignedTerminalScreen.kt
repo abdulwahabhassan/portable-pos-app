@@ -1,6 +1,5 @@
-package com.bankly.core.common.ui.done
+package com.bankly.feature.authentication.ui.unassignedterminal
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,32 +23,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyFilledButton
+import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
-fun DoneRoute(
-    title: String,
-    message: String,
-    onDoneClick: () -> Unit,
+internal fun UnassignedTerminalRoute(
+    onGoToBackPress: () -> Unit,
+    onContactSupportPress: () -> Unit
 ) {
-    DoneScreen(
-        title = title,
-        message = message,
-        onDoneClick = onDoneClick,
+    UnassignedTerminalScreen(
+        onGoToBackPress = onGoToBackPress,
+        onContactSupportPress = onContactSupportPress
     )
 }
 
 @Composable
-fun DoneScreen(
-    title: String,
-    message: String,
-    onDoneClick: () -> Unit,
+internal fun UnassignedTerminalScreen(
+    onGoToBackPress: () -> Unit,
+    onContactSupportPress: () -> Unit
 ) {
-
     LazyColumn(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize(),
@@ -67,13 +62,13 @@ fun DoneScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                     Icon(
                         modifier = Modifier.size(100.dp),
-                        painter = painterResource(id = BanklyIcons.Successful),
-                        contentDescription = "Successful Icon",
+                        painter = painterResource(id = BanklyIcons.WarningAlert),
+                        contentDescription = null,
                         tint = Color.Unspecified
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
-                        text = title,
+                        text = stringResource(com.bankly.feature.authentication.R.string.title_unassigned_pos_terminal),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.tertiary,
@@ -82,7 +77,7 @@ fun DoneScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = message,
+                        text = stringResource(com.bankly.feature.authentication.R.string.msg_please_contact_support_to_assign_the_terminal_to_your_account),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     )
@@ -98,24 +93,31 @@ fun DoneScreen(
                         modifier = Modifier
                             .padding(horizontal = 32.dp)
                             .fillMaxWidth(),
-                        text = stringResource(R.string.action_done),
-                        onClick = onDoneClick,
+                        text = stringResource(com.bankly.feature.authentication.R.string.action_contact_support),
+                        onClick = onContactSupportPress,
+                        isEnabled = true,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    BanklyOutlinedButton(
+                        modifier = Modifier
+                            .padding(horizontal = 32.dp)
+                            .fillMaxWidth(),
+                        text = stringResource(com.bankly.feature.authentication.R.string.action_go_back),
+                        onClick = onGoToBackPress,
                         isEnabled = true,
                     )
                 }
             }
-        }
-    )
+        })
 }
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
-fun DoneScreenPreview() {
+private fun UnassignedTerminalScreenPreview() {
     BanklyTheme {
-        DoneScreen(
-            title = stringResource(R.string.msg_transaction_successful),
-            message = "",
-            onDoneClick = {},
+        UnassignedTerminalScreen(
+            onGoToBackPress = {},
+            onContactSupportPress = {}
         )
     }
 }

@@ -58,9 +58,6 @@ private fun ContactUsScreen(
             items(ContactUsOption.values()) { option: ContactUsOption ->
                 ContactUsListItem(
                     option = option,
-                    onClick = {
-
-                    }
                 )
             }
         }

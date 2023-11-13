@@ -1,5 +1,6 @@
 package com.bankly.core.network.retrofit.service
 
+import com.bankly.core.network.BuildConfig.AUTH_MODE
 import com.bankly.core.network.BuildConfig.CLIENT_ID
 import com.bankly.core.network.BuildConfig.CLIENT_SECRET
 import com.bankly.core.network.BuildConfig.GRANT_TYPE
@@ -37,7 +38,7 @@ interface IdentityService {
         @Field("grant_type") grantType: String = GRANT_TYPE,
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("auth_mode") authMode: String? = null,
+        @Field("auth_mode") authMode: String = AUTH_MODE,
     ): TokenApiResponse
 
     @PUT(value = "put/TerminalPasscode/Change")

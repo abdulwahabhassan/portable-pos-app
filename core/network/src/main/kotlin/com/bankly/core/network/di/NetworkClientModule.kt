@@ -1,6 +1,7 @@
 package com.bankly.core.network.di
 
 import com.bankly.core.network.BuildConfig
+import com.bankly.core.network.BuildConfig.SANDBOX_X_API_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +29,10 @@ object NetworkClientModule {
                     chain.request()
                         .newBuilder()
                         .addHeader("Content-Type", "application/json")
-                        .addHeader("x-api-key", BuildConfig.PROD_X_API_KEY)
+                        .addHeader(
+                            "x-api-key",
+                            if (BuildConfig.DEBUG) SANDBOX_X_API_KEY else BuildConfig.PROD_X_API_KEY
+                        )
                         .addHeader("Accept", "*/*")
                         .build(),
                 )
