@@ -1,5 +1,6 @@
 package com.bankly.core.common.ui.transactionfailed
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,7 +65,10 @@ fun TransactionFailedScreen(
             Text(
                 text = stringResource(R.string.msg_transaction_failed),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary, fontWeight = FontWeight.Medium),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontWeight = FontWeight.Medium
+                ),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(

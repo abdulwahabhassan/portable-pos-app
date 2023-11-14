@@ -6,6 +6,7 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.BankTransferUseCase
+import com.bankly.core.domain.usecase.CardTransferUseCase
 import com.bankly.core.domain.usecase.PayBillUseCase
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class ProcessTransactionViewModel @Inject constructor(
     private val bankTransferUseCase: BankTransferUseCase,
     private val payBillUseCase: PayBillUseCase,
+    private val cardTransferUseCase: CardTransferUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<ProcessTransactionScreenEvent, ProcessTransactionScreenState, ProcessTransactionScreenOneShotState>(
     ProcessTransactionScreenState(),
@@ -63,10 +65,38 @@ class ProcessTransactionViewModel @Inject constructor(
                             event.transactionData.toBillPaymentData()
                         ).onEach { resource ->
                             resource.onReady { billPayment: TransactionReceipt.BillPayment ->
-                                Log.d("debug bill payment response", "$billPayment")
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
                                         transactionReceipt = billPayment,
+                                    ),
+                                )
+                            }
+                            resource.onFailure { message: String ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                        message = message,
+                                    ),
+                                )
+                            }
+                        }.catch {
+                            it.printStackTrace()
+                            setOneShotState(
+                                ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen(
+                                    message = it.message ?: "An unexpected error occurred",
+                                ),
+                            )
+                        }.launchIn(viewModelScope)
+                    }
+
+                    is TransactionData.CardTransfer -> {
+                        cardTransferUseCase.invoke(
+                            userPreferencesDataStore.data().token,
+                            event.transactionData.toCardTransferData(),
+                        ).onEach { resource ->
+                            resource.onReady { transactionReceipt: TransactionReceipt ->
+                                setOneShotState(
+                                    ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
+                                        transactionReceipt = transactionReceipt,
                                     ),
                                 )
                             }

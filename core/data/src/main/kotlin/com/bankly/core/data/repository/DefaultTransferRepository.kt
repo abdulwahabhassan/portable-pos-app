@@ -1,10 +1,14 @@
 package com.bankly.core.data.repository
 
 import com.bankly.core.data.BankTransferData
+import com.bankly.core.data.CardTransferAccountInquiryData
+import com.bankly.core.data.CardTransferData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
+import com.bankly.core.data.util.asAccountInquiry
 import com.bankly.core.data.util.asBank
 import com.bankly.core.data.util.asBankTransfer
+import com.bankly.core.data.util.asCardTransfer
 import com.bankly.core.data.util.asNameEnquiry
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleRequest
@@ -12,6 +16,7 @@ import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.Bank
+import com.bankly.core.entity.CardTransferAccountInquiry
 import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.FundTransferService
@@ -151,6 +156,56 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { bankResult: BankResult -> bankResult.asBank() }))
+        }
+    }
+
+    override suspend fun performCardTransferAccountInquiry(
+        token: String,
+        body: CardTransferAccountInquiryData
+    ): Flow<Resource<CardTransferAccountInquiry>> = flow {
+        emit(Resource.Loading)
+        when (
+            val responseResult = handleApiResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = {
+                        fundTransferService.performCardTransferAccountEnquiry(
+                            token = token,
+                            body = body.asRequestBody(),
+                        )
+                    },
+                ),
+            )
+        ) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asAccountInquiry()))
+        }
+    }
+
+    override suspend fun performCardTransfer(
+        token: String,
+        body: CardTransferData
+    ): Flow<Resource<TransactionReceipt.CardTransfer>> = flow {
+        emit(Resource.Loading)
+        when (
+            val responseResult = handleApiResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = {
+                        fundTransferService.performCardTransfer(
+                            token = token,
+                            body = body.asRequestBody(),
+                        )
+                    },
+                ),
+            )
+        ) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asCardTransfer()))
         }
     }
 }

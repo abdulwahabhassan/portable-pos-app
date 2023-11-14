@@ -30,6 +30,21 @@ sealed class TransactionReceipt (
     )
 
     @Serializable
+    data class CardTransfer(
+        val accountNumber: String,
+        val bankName: String,
+        val amount: Double,
+        val reference: String,
+        val message: String,
+        val dateCreated: String,
+        val statusName: String,
+        val sessionId: String,
+    ) : TransactionReceipt(
+        transactionAmount = amount,
+        transactionMessage = message
+    )
+
+    @Serializable
     data class CardPayment(
         val cardHolderName: String,
         val cardNumber: String,
@@ -148,6 +163,18 @@ sealed class TransactionReceipt (
                 "Sender Phone" to this.phoneNumber,
                 "Receiver Account" to this.beneficiaryAccount,
                 "Receiver Name" to this.accountName,
+                "Receiver Bank" to this.bankName,
+            )
+
+            is CardTransfer -> mapOf(
+                "Transaction Type" to "Card Transfer",
+                "Type" to "Debit",
+                "Status" to this.statusName,
+                "Description" to this.message,
+                "Session ID" to this.sessionId,
+                "Transaction REF" to this.reference,
+                "Date/Time" to formatServerDateTime(this.dateCreated),
+                "Receiver Account" to this.accountNumber,
                 "Receiver Bank" to this.bankName,
             )
 

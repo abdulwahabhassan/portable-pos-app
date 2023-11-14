@@ -18,10 +18,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bankly.core.common.R
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -90,7 +92,7 @@ fun ProcessTransactionScreen() {
                 Text(
                     modifier = Modifier
                         .padding(24.dp),
-                    text = "Just a second, we are processing your transaction",
+                    text = stringResource(R.string.msg_just_a_second_we_are_processing_your_transaction),
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
                 )

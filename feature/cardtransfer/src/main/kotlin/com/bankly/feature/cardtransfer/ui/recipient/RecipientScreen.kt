@@ -31,6 +31,7 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.ui.view.BankSearchView
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.AmountInputVisualTransformation
+import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
@@ -75,7 +76,12 @@ private fun RecipientScreen(
     onUiEvent: (RecipientScreenEvent) -> Unit,
 ) {
     val bottomSheetScaffoldState =
-        rememberBottomSheetScaffoldState(SheetState(skipPartiallyExpanded = false, initialValue = SheetValue.Hidden))
+        rememberBottomSheetScaffoldState(
+            SheetState(
+                skipPartiallyExpanded = false,
+                initialValue = SheetValue.Hidden
+            )
+        )
     val coroutineScope = rememberCoroutineScope()
 
     BottomSheetScaffold(
@@ -97,7 +103,12 @@ private fun RecipientScreen(
                 isBankListLoading = screenState.isBankListLoading,
                 bankList = screenState.banks,
                 onSelectBank = { bank: Bank ->
-                    onUiEvent(RecipientScreenEvent.OnSelectBank(bank, screenState.accountNumberTFV.text))
+                    onUiEvent(
+                        RecipientScreenEvent.OnSelectBank(
+                            bank,
+                            screenState.accountNumberTFV.text
+                        )
+                    )
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
@@ -215,7 +226,7 @@ private fun RecipientScreen(
                                 accountName = screenState.accountNumberTFV.text,
                                 selectedBankId = screenState.selectedBank?.id,
 
-                            ),
+                                ),
                         )
                     },
                     isEnabled = screenState.isContinueButtonEnabled,
@@ -223,6 +234,20 @@ private fun RecipientScreen(
             }
         }
     }
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.title_error),
+        subtitle = screenState.errorDialogMessage,
+        icon = BanklyIcons.ErrorAlert,
+        positiveActionText = stringResource(R.string.action_dismiss),
+        positiveAction = {
+            onUiEvent(RecipientScreenEvent.OnDismissErrorDialog)
+        },
+        showDialog = screenState.showErrorDialog,
+        onDismissDialog = {
+            onUiEvent(RecipientScreenEvent.OnDismissErrorDialog)
+        }
+    )
 }
 
 @Composable

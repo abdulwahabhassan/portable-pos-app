@@ -6,8 +6,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.ui.entercardpin.EnterCardPinRoute
-import com.bankly.core.common.ui.insertcard.InsertCardRoute
 import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
@@ -20,10 +18,9 @@ import kotlinx.serialization.json.Json
 
 const val cardTransferNavGraphRoute = "card_transfer_nav_graph"
 internal const val cardTransferRoute = cardTransferNavGraphRoute.plus("/card_transfer_route")
-internal const val enterRecipientDetailsRoute = cardTransferRoute.plus("/enter_recipient_details_screen")
+internal const val enterRecipientDetailsRoute =
+    cardTransferRoute.plus("/enter_recipient_details_screen")
 internal const val selectAccountTypeRoute = cardTransferRoute.plus("/select_account_type_screen")
-internal const val insertCardRoute = cardTransferRoute.plus("/insert_card_screen")
-internal const val enterPinRoute = cardTransferRoute.plus("/enter_pin_screen")
 internal const val processTransactionRoute = cardTransferRoute.plus("/process_transaction_screen")
 internal const val transactionSuccessRoute = cardTransferRoute.plus("/transaction_success_screen")
 internal const val transactionFailedRoute = cardTransferRoute.plus("/transaction_failed_screen")
@@ -42,42 +39,26 @@ internal fun NavGraphBuilder.enterRecipientDetailsRoute(
 }
 
 internal fun NavGraphBuilder.selectAccountTypeRoute(
-    onAccountSelected: (AccountType) -> Unit,
+    onAccountSelected: (AccountType, TransactionData) -> Unit,
     onBackPress: () -> Unit,
+    onCancelPress: () -> Unit
 ) {
-    composable(route = selectAccountTypeRoute) {
-        SelectAccountTypeRoute(
-            onAccountSelected = onAccountSelected,
-            onBackPress = onBackPress,
-        )
-    }
-}
-
-internal fun NavGraphBuilder.insertCardRoute(
-    onCardInserted: () -> Unit,
-    onBackPress: () -> Unit,
-    onCloseClick: () -> Unit,
-) {
-    composable(route = insertCardRoute) {
-        InsertCardRoute(
-            onCardInserted = onCardInserted,
-            onBackPress = onBackPress,
-            onCloseClick = onCloseClick,
-        )
-    }
-}
-
-internal fun NavGraphBuilder.enterCardPinRoute(
-    onContinueClick: (String) -> Unit,
-    onBackPress: () -> Unit,
-    onCloseClick: () -> Unit,
-) {
-    composable(route = enterPinRoute) {
-        EnterCardPinRoute(
-            onContinueClick = onContinueClick,
-            onBackPress = onBackPress,
-            onCloseClick = onCloseClick,
-        )
+    composable(
+        route = "$selectAccountTypeRoute/{$transactionDataArg}",
+        arguments = listOf(
+            navArgument(transactionDataArg) { type = NavType.StringType },
+        ),
+    ) {
+        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
+            val data: TransactionData = Json.decodeFromString(transactionData)
+            SelectAccountTypeRoute(
+                onAccountSelected = { accountType: AccountType ->
+                    onAccountSelected(accountType, data)
+                },
+                onBackPress = onBackPress,
+                onCancelPress = onCancelPress
+            )
+        }
     }
 }
 

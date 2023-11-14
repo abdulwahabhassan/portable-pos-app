@@ -119,22 +119,11 @@ private fun ConfirmTransactionScreen(
         ) {
             item {
                 Column(modifier = Modifier.padding(horizontal = 32.dp)) {
-                    when (transactionData) {
-                        is TransactionData.BankTransfer -> {
-                            transactionData.toTransactionSummaryMap()
-                                .filter { it.value.isNotEmpty() }
-                                .forEach { (label, value) ->
-                                    BanklyDetailRow(label = label, value = value)
-                                }
+                    transactionData.toTransactionSummaryMap()
+                        .filter { it.value.isNotEmpty() }
+                        .forEach { (label, value) ->
+                            BanklyDetailRow(label = label, value = value)
                         }
-                        is TransactionData.BillPayment -> {
-                            transactionData.toTransactionSummaryMap()
-                                .filter { it.value.isNotEmpty() }
-                                .forEach { (label, value) ->
-                                    BanklyDetailRow(label = label, value = value)
-                                }
-                        }
-                    }
                 }
             }
 

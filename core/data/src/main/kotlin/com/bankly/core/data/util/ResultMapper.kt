@@ -9,6 +9,7 @@ import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.CardTransferAccountInquiry
 import com.bankly.core.entity.EodInfo
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
@@ -35,6 +36,8 @@ import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.model.result.AgentAccountResult
 import com.bankly.core.network.model.result.BankNetworkResult
+import com.bankly.core.network.model.result.CardTransferAccountInquiryResult
+import com.bankly.core.network.model.result.CardTransferTransactionResult
 import com.bankly.core.network.model.result.EodInfoResult
 import com.bankly.core.network.model.result.SyncEodResult
 import com.bankly.core.network.model.result.TransactionFilterTypeResult
@@ -89,6 +92,17 @@ fun AccountNameEnquiryResult.asNameEnquiry() = AccountNameEnquiry(
     bankName = bankName ?: "",
 )
 
+fun CardTransferAccountInquiryResult.asAccountInquiry() = CardTransferAccountInquiry(
+    accountName = accountName ?: "",
+    inquiryReference = inquiryReference ?: "",
+    balance = balance ?: 0.00,
+    reference = reference ?: "",
+    accountNumber = accountNumber ?: "",
+    bankCode = bankCode ?: "",
+    bankId = bankId ?: 0,
+    bankName = bankName ?: ""
+)
+
 fun AgentResult.asNameEnquiry() = AccountNameEnquiry(
     accountName = name ?: "",
     accountNumber = accountNumber ?: "",
@@ -128,6 +142,17 @@ fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTrans
     dateCreated = transferredOn ?: "",
     statusName = "",
     sessionId = "",
+)
+
+fun CardTransferTransactionResult.asCardTransfer() = TransactionReceipt.CardTransfer(
+    accountNumber = accountNumber ?: "",
+    bankName = bankName ?: "",
+    amount = amount ?: 0.00,
+    reference = reference ?: "",
+    message = message ?: "",
+    dateCreated = dateCreated ?: "",
+    statusName = statusName ?: "",
+    sessionId = sessionId ?: ""
 )
 
 fun ProviderResult.asProvider() = BillProvider(

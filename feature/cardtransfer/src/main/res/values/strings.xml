@@ -12,4 +12,6 @@
     <string name="action_continue">Continue</string>
     <string name="msg_bank_name">Bank Name</string>
     <string name="msg_select_bank">Select bank</string>
+    <string name="title_error">Error</string>
+    <string name="action_dismiss">Dismiss</string>
 </resources>

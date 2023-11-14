@@ -2,6 +2,8 @@ package com.bankly.core.data.util
 
 import com.bankly.core.data.BankTransferData
 import com.bankly.core.data.BillPaymentData
+import com.bankly.core.data.CardTransferAccountInquiryData
+import com.bankly.core.data.CardTransferData
 import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.EodTransactionListData
 import com.bankly.core.data.ForgotPassCodeData
@@ -21,6 +23,8 @@ import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.SendReceiptRequestBody
 import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
 import com.bankly.core.data.TransactionFilterData
+import com.bankly.core.network.model.request.CardTransferAccountInquiryRequestBody
+import com.bankly.core.network.model.request.CardTransferRequestBody
 import com.bankly.core.network.model.request.SyncEodRequestBody
 import com.bankly.core.network.model.request.SyncEodTransactionData
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
@@ -141,4 +145,28 @@ fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
             it.transType
         )
     }
+)
+
+fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
+    bankId = bankId,
+    accountNumber = accountNumber,
+    amount = amount,
+    serialNumber = serialNumber,
+    terminalId = terminalId,
+    channel = channel,
+    geoLocation = geoLocation,
+    deviceType = deviceType
+)
+
+fun CardTransferData.asRequestBody() = CardTransferRequestBody(
+    accountName = accountName,
+    inquiryReference = inquiryReference,
+    accountNumber = accountNumber,
+    amount = amount,
+    narration = narration,
+    channel = channel,
+    sendersPhoneNumber = sendersPhoneNumber,
+    clientRequestId = clientRequestId,
+    responseCode = responseCode,
+    responseMessage = responseMessage
 )

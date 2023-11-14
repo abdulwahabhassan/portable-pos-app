@@ -27,11 +27,13 @@ internal const val transactionDetailsRoute = payWithCardRoute.plus("/transaction
 internal fun NavGraphBuilder.selectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
+    onCancelPress: () -> Unit,
 ) {
     composable(route = selectAccountTypeRoute) {
         SelectAccountTypeRoute(
             onAccountSelected = onAccountSelected,
             onBackPress = onBackPress,
+            onCancelPress = onCancelPress
         )
     }
 }

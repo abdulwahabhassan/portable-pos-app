@@ -24,11 +24,13 @@ internal const val cardBalanceRoute = checkCardBalanceRoute.plus("/card_balance_
 internal fun NavGraphBuilder.selectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
+    onCancelPress: () -> Unit
 ) {
     composable(route = selectAccountTypeRoute) {
         SelectAccountTypeRoute(
             onAccountSelected = onAccountSelected,
             onBackPress = onBackPress,
+            onCancelPress = onCancelPress
         )
     }
 }

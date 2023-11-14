@@ -25,8 +25,6 @@ fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
     appNavController: NavHostController,
 ) {
-    Tools.transactionType = com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
-
     navigation(
         route = "$payWithCardNavGraphRoute/{$amountArg}",
         startDestination = payWithCardRoute,
@@ -72,6 +70,8 @@ private fun PayWithCardNavHost(
                     AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
                 Tools.SetAccountType(acctType)
+                Tools.transactionType =
+                    com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
                 ProcessPayment(context) { transactionResponse, _ ->
                     val receipt = transactionResponse.toTransactionReceipt()
                     if (receipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
@@ -81,7 +81,10 @@ private fun PayWithCardNavHost(
                     }
                 }
             },
-            onBackPress = onBackPress,
+            onBackPress = {
+                navHostController.popBackStack()
+            },
+            onCancelPress = onBackPress
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

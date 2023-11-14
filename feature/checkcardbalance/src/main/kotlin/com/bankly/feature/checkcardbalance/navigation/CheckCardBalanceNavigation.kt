@@ -70,7 +70,10 @@ private fun CheckCardBalanceNavHost(
                     )
                 }
             },
-            onBackPress = onBackPress,
+            onBackPress = {
+                navHostController.popBackStack()
+            },
+            onCancelPress = onBackPress
         )
         cardBalanceRoute(
             onGoToDashboardClick = onBackPress

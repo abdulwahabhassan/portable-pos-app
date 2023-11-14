@@ -6,15 +6,19 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
+import com.bankly.core.data.CardTransferAccountInquiryData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
 import com.bankly.core.entity.Bank
 import com.bankly.core.entity.AccountNameEnquiry
+import com.bankly.core.entity.CardTransferAccountInquiry
 import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -53,7 +57,7 @@ internal class RecipientViewModel @Inject constructor(
                         },
                     )
                 }
-                validateAccountNumber(
+                performNameEnquiry(
                     accountNumber = event.accountNumberTFV.text,
                     bankId = event.selectedBankId,
                 )
@@ -85,17 +89,13 @@ internal class RecipientViewModel @Inject constructor(
                 }
             }
 
-            RecipientScreenEvent.OnExit -> {
-                setUiState { copy(accountValidationState = State.Initial) }
-            }
-
             is RecipientScreenEvent.OnSelectBank -> {
                 setUiState {
                     copy(
                         selectedBank = event.bank,
                     )
                 }
-                validateAccountNumber(
+                performNameEnquiry(
                     accountNumber = event.accountNumber,
                     bankId = event.bank.id,
                 )
@@ -105,10 +105,11 @@ internal class RecipientViewModel @Inject constructor(
                 setUiState {
                     val isEmpty = event.senderPhoneNumberTFV.text.trim().isEmpty()
                     val isValid =
-                        Validator.isPhoneNumberValid(event.senderPhoneNumberTFV.text.trim())
+                        if (isEmpty) true else Validator.isPhoneNumberValid(event.senderPhoneNumberTFV.text.trim())
+
                     copy(
                         senderPhoneNumberTFV = event.senderPhoneNumberTFV,
-                        isSenderPhoneNumberError = isEmpty || isValid.not(),
+                        isSenderPhoneNumberError = isValid.not(),
                         senderPhoneNumberFeedBack = if (isEmpty) {
                             "Please enter phone number"
                         } else if (isValid.not()) {
@@ -121,13 +122,92 @@ internal class RecipientViewModel @Inject constructor(
             }
 
             is RecipientScreenEvent.OnContinueClick -> {
-                setOneShotState(
-                    RecipientScreenOneShotState.GoToSelectAccountTypeScreen(
-                        TransactionData.mockCardTransferTransactionData(),
+                val amount = AmountFormatter().polish(event.amount).replace(",", "")
+                    .toDouble()
+                performAccountInquiry(
+                    CardTransferAccountInquiryData(
+                        event.selectedBankId ?: 0L,
+                        event.accountNumber,
+                        AmountFormatter().polish(event.amount).replace(",", "")
+                            .toDouble(),
+                        Tools.serialNumber,
+                        Tools.terminalId,
+                        "4",
+                        Tools.deviceLocation ?: Tools.merchantLocation ?: "",
+                        "POS"
                     ),
+                    senderPhoneNumber = event.senderPhoneNumber,
+                    amount
                 )
+
+            }
+
+            RecipientScreenEvent.OnDismissErrorDialog -> {
+                setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
             }
         }
+    }
+
+    private suspend fun performAccountInquiry(
+        cardTransferAccountInquiryData: CardTransferAccountInquiryData,
+        senderPhoneNumber: String,
+        amount: Double
+    ) {
+        nameEnquiryUseCase.performCardTransferAccountInquiry(
+            token = userPreferencesDataStore.data().token,
+            body = cardTransferAccountInquiryData,
+        ).onEach { resource ->
+            resource.onLoading {
+                setUiState {
+                    copy(isAccountValidationLoading = true)
+                }
+            }
+            resource.onReady { accountInquiry: CardTransferAccountInquiry ->
+                Log.d("debug account inquiry", "account inquiry: $accountInquiry")
+                if (accountInquiry.balance > cardTransferAccountInquiryData.amount) {
+                    setUiState {
+                        copy(isAccountValidationLoading = false)
+                    }
+                    setOneShotState(
+                        RecipientScreenOneShotState.GoToSelectAccountTypeScreen(
+                            transactionData = TransactionData.CardTransfer(
+                                accountName = accountInquiry.accountName,
+                                inquiryReference = accountInquiry.inquiryReference,
+                                accountNumber = accountInquiry.accountNumber,
+                                amount = amount,
+                                sendersPhoneNumber = senderPhoneNumber,
+                            ),
+                        ),
+                    )
+
+                } else {
+                    setUiState {
+                        copy(
+                            isAccountValidationLoading = false,
+                            showErrorDialog = true,
+                            errorDialogMessage = "You do not have sufficient balance in your wallet to perform this transaction"
+                        )
+                    }
+                }
+            }
+            resource.onFailure { message ->
+                Log.d("debug account inquiry", "account inquiry error message: $message")
+                setUiState {
+                    copy(
+                        showErrorDialog = true,
+                        errorDialogMessage = message
+                    )
+                }
+            }
+        }.catch {
+            it.printStackTrace()
+            setUiState {
+                copy(
+                    showErrorDialog = true,
+                    errorDialogMessage = it.message ?: "An unexpected error occurred"
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun getBanks() {
@@ -135,30 +215,38 @@ internal class RecipientViewModel @Inject constructor(
             .onEach { resource ->
                 resource.onLoading {
                     setUiState {
-                        copy(bankListState = State.Loading)
+                        copy(isBankListLoading = true)
                     }
                 }
                 resource.onReady { banks: List<Bank> ->
                     setUiState {
-                        copy(bankListState = State.Success(banks))
+                        copy(isBankListLoading = false, banks = banks)
                     }
                 }
                 resource.onFailure { message ->
                     setUiState {
-                        copy(bankListState = State.Error(message))
+                        copy(
+                            isBankListLoading = false,
+                            showErrorDialog = true,
+                            errorDialogMessage = message
+                        )
                     }
                 }
             }
             .catch {
                 it.printStackTrace()
                 setUiState {
-                    copy(bankListState = State.Error(it.message ?: "An unexpected error occurred"))
+                    copy(
+                        isBankListLoading = false,
+                        showErrorDialog = true,
+                        errorDialogMessage = it.message ?: ""
+                    )
                 }
             }
             .launchIn(viewModelScope)
     }
 
-    private suspend fun validateAccountNumber(
+    private suspend fun performNameEnquiry(
         accountNumber: String,
         bankId: Long?,
     ) {
@@ -173,23 +261,27 @@ internal class RecipientViewModel @Inject constructor(
             ).onEach { resource ->
                 resource.onLoading {
                     setUiState {
-                        copy(accountValidationState = State.Loading)
+                        copy(
+                            isNameInquiryLoading = true,
+                            validationIcon = BanklyIcons.ValidationInProgress
+                        )
                     }
                 }
                 resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
                     setUiState {
                         copy(
-                            accountValidationState = State.Success(accountNameEnquiry),
+                            isNameInquiryLoading = false,
                             accountNumberFeedBack = accountNameEnquiry.accountName,
                             isAccountNumberError = false,
+                            validationIcon = BanklyIcons.ValidationPassed
                         )
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug getBanks", "(onFailure) message: $message")
                     setUiState {
                         copy(
-                            accountValidationState = State.Error(message),
+                            isNameInquiryLoading = false,
+                            validationIcon = BanklyIcons.ValidationFailed,
                             accountNumberFeedBack = message,
                             isAccountNumberError = true,
                         )
@@ -199,11 +291,14 @@ internal class RecipientViewModel @Inject constructor(
                 it.printStackTrace()
                 setUiState {
                     copy(
-                        accountValidationState = State.Error(
-                            it.message ?: "An unexpected error occurred",
-                        ),
+                        isNameInquiryLoading = false,
+                        validationIcon = BanklyIcons.ValidationFailed,
+                        showErrorDialog = true,
+                        errorDialogMessage = it.message ?: "An unexpected error occurred",
+                        isAccountNumberError = true,
                     )
                 }
+
             }.launchIn(viewModelScope)
         }
     }

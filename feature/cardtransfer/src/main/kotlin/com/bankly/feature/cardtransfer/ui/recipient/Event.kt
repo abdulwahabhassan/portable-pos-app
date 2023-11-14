@@ -20,6 +20,5 @@ internal sealed interface RecipientScreenEvent {
     class OnSelectBank(val bank: Bank, val accountNumber: String) : RecipientScreenEvent
     class OnSenderPhoneNumber(val senderPhoneNumberTFV: TextFieldValue) :
         RecipientScreenEvent
-
-    object OnExit : RecipientScreenEvent
+    object OnDismissErrorDialog : RecipientScreenEvent
 }

@@ -1,8 +1,11 @@
 package com.bankly.core.domain.repository
 
 import com.bankly.core.data.BankTransferData
+import com.bankly.core.data.CardTransferAccountInquiryData
+import com.bankly.core.data.CardTransferData
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.Bank
+import com.bankly.core.entity.CardTransferAccountInquiry
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
@@ -30,4 +33,15 @@ interface TransferRepository {
     ): Flow<Resource<AccountNameEnquiry>>
 
     suspend fun getBanks(token: String): Flow<Resource<List<Bank>>>
+
+
+    suspend fun performCardTransferAccountInquiry(
+        token: String,
+        body: CardTransferAccountInquiryData
+    ): Flow<Resource<CardTransferAccountInquiry>>
+
+    suspend fun performCardTransfer(
+        token: String,
+        body: CardTransferData
+    ): Flow<Resource<TransactionReceipt.CardTransfer>>
 }

@@ -1,8 +1,11 @@
 package com.bankly.feature.cardtransfer.navigation
 
+import ProcessPayment
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +14,10 @@ import androidx.navigation.navigation
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.feature.cardtransfer.util.toTransactionReceipt
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
+
+private const val SUCCESSFUL_STATUS_NAME = "Successful"
 
 fun NavGraphBuilder.cardTransferNavGraph(
     onBackPress: () -> Unit,
@@ -34,6 +41,7 @@ private fun CardTransferNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
 ) {
+    val context = LocalContext.current
     NavHost(
         modifier = Modifier,
         navController = navHostController,
@@ -41,36 +49,42 @@ private fun CardTransferNavHost(
     ) {
         enterRecipientDetailsRoute(
             onBackPress = onBackPress,
-            onContinueClick = {
-                navHostController.navigateToSelectAccountTypeRoute()
+            onContinueClick = { transactionData: TransactionData ->
+                navHostController.navigateToSelectAccountTypeRoute(transactionData = transactionData)
             },
         )
         selectAccountTypeRoute(
-            onAccountSelected = { accountType: AccountType ->
-                navHostController.navigateToInsertCardRoute()
-            },
-            onBackPress = onBackPress,
-        )
-        insertCardRoute(
-            onCardInserted = {
-                navHostController.navigateToEnterPinRoute()
+            onAccountSelected = { accountType: AccountType, transactionData: TransactionData ->
+                val acctType = when (accountType) {
+                    AccountType.SAVINGS -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.SAVINGS
+                    AccountType.DEFAULT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.DEFAULT
+                    AccountType.CREDIT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CREDIT
+                    AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
+                }
+                val transaction = transactionData as TransactionData.CardTransfer
+                Log.d("debug transaction data", "trans data: $transaction")
+                Tools.SetAccountType(acctType)
+                Tools.TransactionAmount = transaction.transactionAmount
+                Tools.transactionType =
+                    com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
+                ProcessPayment(context) { transactionResponse, _ ->
+                    val receipt = transactionResponse.toTransactionReceipt()
+                    if (receipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
+                        navHostController.navigateToProcessTransactionRoute(
+                            transaction.copy(
+                                responseMessage = transactionResponse.responseMessage ?: "",
+                                responseCode = transactionResponse.responseCode ?: ""
+                            )
+                        )
+                    } else {
+                        navHostController.navigateToTransactionFailedRoute(receipt.message)
+                    }
+                }
             },
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCloseClick = onBackPress,
-        )
-
-        enterCardPinRoute(
-            onContinueClick = {
-                navHostController.navigateToProcessTransactionRoute(
-                    TransactionData.mockCardTransferTransactionData(),
-                )
-            },
-            onBackPress = {
-                navHostController.popBackStack()
-            },
-            onCloseClick = onBackPress,
+            onCancelPress = onBackPress
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->

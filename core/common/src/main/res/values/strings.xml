@@ -50,4 +50,5 @@
     <string name="msg_insert_card_and_do_not_remove_until_transaction_is_complete">Insert card and do not remove until transaction is complete ..</string>
     <string name="msg_are_you_sure_you_want_to_cancel">Are you sure you want to cancel?</string>
     <string name="action_yes">Yes</string>
+    <string name="msg_just_a_second_we_are_processing_your_transaction">Just a second, we are processing your transaction</string>
 </resources>

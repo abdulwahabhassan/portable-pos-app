@@ -21,17 +21,21 @@ internal data class RecipientScreenState(
     val amountFeedBack: String = "",
     val senderPhoneNumberFeedBack: String = "",
     val bankNameFeedBack: String = "",
-    val accountValidationState: State<AccountNameEnquiry> = State.Initial,
-    val bankListState: State<List<Bank>> = State.Initial,
+    private val isNameInquiryLoading: Boolean = false,
+    private val isAccountValidationLoading: Boolean = false,
+    val isBankListLoading: Boolean = false,
+    val showErrorDialog: Boolean = false,
+    val errorDialogMessage: String = "",
+    val validationIcon: Int? = null,
+    val banks: List<Bank> = emptyList()
 ) {
     val isContinueButtonEnabled: Boolean
         get() = accountNumberTFV.text.isNotEmpty() && isAccountNumberError.not() &&
             amountTFV.text.isNotEmpty() && isAmountError.not() && bankNameTFV.text.isNotEmpty() &&
             isBankNameError.not() && isSenderPhoneNumberError.not() &&
-            accountValidationState !is State.Loading && accountValidationState !is State.Error &&
-            bankListState !is State.Loading
+                isNameInquiryLoading.not() && isAccountValidationLoading.not() && isBankListLoading.not()
     val isUserInputEnabled: Boolean
-        get() = accountValidationState !is State.Loading && bankListState !is State.Loading
+        get() = isNameInquiryLoading.not() && isAccountValidationLoading.not() && isBankListLoading.not()
     val bankNameTFV: TextFieldValue
         get() = if (selectedBank != null) {
             TextFieldValue(text = selectedBank.name)
@@ -40,22 +44,8 @@ internal data class RecipientScreenState(
                 text = "",
             )
         }
-    val validationIcon: Int?
-        get() = when (accountValidationState) {
-            State.Initial -> null
-            State.Loading -> BanklyIcons.ValidationInProgress
-            is State.Error -> BanklyIcons.ValidationFailed
-            is State.Success -> BanklyIcons.ValidationPassed
-        }
-    val banks: List<Bank>
-        get() = when (bankListState) {
-            is State.Success -> bankListState.data
-            else -> emptyList()
-        }
-    val isBankListLoading: Boolean
-        get() = bankListState is State.Loading
     val shouldShowLoadingIndicator: Boolean
-        get() = bankListState is State.Loading || accountValidationState is State.Loading
+        get() = isNameInquiryLoading || isAccountValidationLoading || isBankListLoading
 }
 
 internal sealed interface RecipientScreenOneShotState : OneShotState {

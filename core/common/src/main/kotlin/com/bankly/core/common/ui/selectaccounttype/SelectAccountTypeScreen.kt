@@ -37,10 +37,12 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun SelectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
+    onCancelPress: () -> Unit
 ) {
     SelectAccountTypeScreen(
         onAccountSelected = onAccountSelected,
         onBackPress = onBackPress,
+        onCancelPress = onCancelPress
     )
 }
 
@@ -51,6 +53,7 @@ fun SelectAccountTypeScreenPreview() {
         SelectAccountTypeScreen(
             onAccountSelected = {},
             onBackPress = {},
+            onCancelPress = {}
         )
     }
 }
@@ -59,6 +62,7 @@ fun SelectAccountTypeScreenPreview() {
 fun SelectAccountTypeScreen(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
+    onCancelPress: () -> Unit,
 ) {
     val context = LocalContext.current
     var selectedAccountType: AccountType? by remember { mutableStateOf(null) }
@@ -78,7 +82,7 @@ fun SelectAccountTypeScreen(
             negativeActionText = context.getString(R.string.action_yes),
             negativeAction = {
                 showActionDialog = false
-                onBackPress()
+                onCancelPress()
             },
         )
     }
@@ -89,7 +93,7 @@ fun SelectAccountTypeScreen(
             actionMessage = context.getString(R.string.msg_are_you_sure_you_want_to_cancel)
             showActionDialog = true
         } else {
-            onBackPress()
+            onCancelPress()
         }
     }
 
@@ -101,7 +105,7 @@ fun SelectAccountTypeScreen(
         topBar = {
             BanklyTitleBar(
                 onBackPress = {
-                    triggerCancelDialog()
+                    onBackPress()
                 },
                 title = if (isLoading) "" else stringResource(R.string.title_select_account_type),
                 onTrailingIconClick = {

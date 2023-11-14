@@ -9,6 +9,7 @@ import com.bankly.core.entity.UserWallet
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -21,6 +22,15 @@ internal class HomeScreenViewModel @Inject constructor(
     private val getWalletUseCase: GetWalletUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<HomeScreenEvent, HomeScreenState, HomeScreenOneShotState>(HomeScreenState()) {
+
+    init {
+        viewModelScope.launch {
+            Tools.serialNumber = userPreferencesDataStore.data().terminalSerialNumber
+            Tools.terminalId = userPreferencesDataStore.data().terminalId
+            Tools.routeConfigURL = "https://tms-prod-alb.bankly.ng/api/v1/terminal/configure"
+            Tools.transUrl = "https://tms-prod-alb.bankly.ng/api/v1/transaction/transaction-request"
+        }
+    }
 
     override suspend fun handleUiEvents(event: HomeScreenEvent) {
         when (event) {

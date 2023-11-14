@@ -27,6 +27,7 @@ import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 
 @Composable
 internal fun HomeTab(
