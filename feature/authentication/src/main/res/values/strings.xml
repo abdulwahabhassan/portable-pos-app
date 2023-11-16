@@ -3,10 +3,10 @@
     <string name="msg_enter_passcode">Enter passcode</string>
     <string name="msg_phone_number_sample">e.g 08167039661</string>
     <string name="msg_passcode_label">Passcode</string>
-    <string name="msg_forgot_passcode">Don’t remember your passcode?</string>
+    <string name="msg_forgot_access_pin">Don’t remember your access PIN?</string>
     <string name="action_recover_passcode">Recover passcode</string>
     <string name="title_log_in">Log In</string>
-    <string name="msg_login_screen_subtitle">Fill in your sign in details to access your account</string>
+    <string name="msg_login_screen_subtitle">Enter your access PIN to access your account</string>
     <string name="msg_log_in">Log In</string>
     <string name="title_recover_passcode">Recover Passcode</string>
     <string name="msg_enter_phone_number_to_reset">Enter your phone number you used to sign up to get a reset code</string>
@@ -47,4 +47,16 @@
     <string name="title_unassigned_pos_terminal">Unassigned POS Terminal</string>
     <string name="action_contact_support">Contact Support</string>
     <string name="action_go_back">Go Back</string>
+    <string name="msg_set_up_your_access_pin_subtitle">Set up your access PIN</string>
+    <string name="msg_confirm_your_access_pin_subtitle">Confirm your access PIN</string>
+    <string name="msg_passcode_reset_successfully">Passcode Reset Successfully</string>
+    <string name="msg_you_have_successfully_reset_your_account_passcode_login_to_continue">You have successfully reset your account passcode. Login to continue</string>
+    <string name="sction_back_to_login">Back to login</string>
+    <string name="exit_warning">Exit Warning</string>
+    <string name="msg_are_you_sure_you_want_to_discontinue_setting_up_your_access_pin">Are you sure you want to discontinue setting up your access PIN?</string>
+    <string name="action_reset_access_pin">Reset</string>
+    <string name="msg_eneter_default_access_code_subtitle">Enter the default access code sent to your phone</string>
+    <string name="msg_reset_access_pin">Reset Access PIN</string>
+    <string name="title_alert">Alert</string>
+    <string name="msg_are_you_sure_you_want_to_discontinue_re_setting_your_access_pin">Are you sure you want to discontinue re-setting your Access PIN</string>
 </resources>

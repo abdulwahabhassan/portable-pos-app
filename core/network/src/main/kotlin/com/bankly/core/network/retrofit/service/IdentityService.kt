@@ -6,6 +6,7 @@ import com.bankly.core.network.BuildConfig.CLIENT_SECRET
 import com.bankly.core.network.BuildConfig.GRANT_TYPE
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
+import com.bankly.core.network.model.request.ForgotTerminalAccessPinRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import com.bankly.core.network.model.response.ApiResponse
@@ -50,4 +51,9 @@ interface IdentityService {
     suspend fun resetPassCode(
         @Body body: ResetPassCodeRequestBody,
     ): ApiResponse<MessageResult>
+
+    @PUT(value = "put/TerminalPasscode/Forgot")
+    suspend fun forgotTerminalAccessPin(
+        @Body body: ForgotTerminalAccessPinRequestBody,
+    ): ApiResponse<StatusResult>
 }

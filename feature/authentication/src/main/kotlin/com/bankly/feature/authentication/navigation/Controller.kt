@@ -36,16 +36,18 @@ internal fun NavHostController.navigateToUnassignedTerminalRoute() {
     this.navigate(unassignedTerminalRoute)
 }
 
-
-internal fun NavHostController.navigateToConfirmPinRoute(topicId: String) {
-    this.navigate(confirmPinRoute)
+internal fun NavHostController.navigateToSetPinRoute(defaultPin: String) {
+    val encodedDefaultPin = Uri.encode(defaultPin)
+    this.navigate("$setPinRoute/$encodedDefaultPin")
 }
 
-internal fun NavHostController.navigateToSetPinRoute(topicId: String) {
-    this.navigate(setPinRoute)
+internal fun NavHostController.navigateToConfirmPinRoute(defaultPin: String, newPin: String) {
+    val encodedDefaultPin = Uri.encode(defaultPin)
+    val encodedNewPin = Uri.encode(newPin)
+    this.navigate("$confirmPinRoute/$encodedDefaultPin/$encodedNewPin")
 }
 
-internal fun NavHostController.navigateToCreateNewPassCodeRoute(topicId: String) {
+internal fun NavHostController.navigateToCreateNewPassCodeRoute() {
     this.navigate(createNewPassCodeRoute)
 }
 

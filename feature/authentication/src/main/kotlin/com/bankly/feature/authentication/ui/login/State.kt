@@ -8,6 +8,8 @@ data class LoginScreenState(
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
     val isLoading: Boolean = false,
+    val isResetAccessPin: Boolean = false,
+    val showExitResetPinDialog: Boolean = false,
 ) {
     val isLoginButtonEnabled: Boolean
         get() = passCode.isNotEmpty() && passCode.all { digit: String -> digit.isNotEmpty() } &&
@@ -18,6 +20,6 @@ data class LoginScreenState(
 
 sealed interface LoginScreenOneShotState : OneShotState {
     object OnLoginSuccess : LoginScreenOneShotState
-    object OnSetUpAccessPin : LoginScreenOneShotState
+    data class OnSetUpAccessPin(val defaultPin: String) : LoginScreenOneShotState
     object OnTerminalUnAssigned : LoginScreenOneShotState
 }

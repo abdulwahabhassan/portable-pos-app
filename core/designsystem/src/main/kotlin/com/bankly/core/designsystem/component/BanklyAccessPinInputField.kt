@@ -27,9 +27,10 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
-fun BanklyAccessCodeInputField(
+fun BanklyAccessPinInputField(
     passCode: List<String>,
     isError: Boolean = false,
+    pinErrorMessage: String = stringResource(R.string.msg_incorrect_access_pin)
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -67,8 +68,8 @@ fun BanklyAccessCodeInputField(
             Box(Modifier.weight(1.5f))
         }
         Text(
-            text = if (isError) stringResource(R.string.msg_incorrect_passcode) else "",
-            style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.error),
+            text = if (isError) pinErrorMessage else "",
+            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.error),
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -80,7 +81,7 @@ fun BanklyAccessCodeInputField(
 @Composable
 private fun BanklyAccessCodeInputFieldPreview1() {
     BanklyTheme {
-        BanklyAccessCodeInputField(
+        BanklyAccessPinInputField(
             listOf("1", "2", "", "", "", ""),
         )
     }
@@ -90,7 +91,7 @@ private fun BanklyAccessCodeInputFieldPreview1() {
 @Composable
 private fun BanklyAccessCodeInputFieldPreview2() {
     BanklyTheme {
-        BanklyAccessCodeInputField(
+        BanklyAccessPinInputField(
             listOf("1", "2", "", "", "", "", "", ""),
             isError = true,
         )
@@ -101,7 +102,7 @@ private fun BanklyAccessCodeInputFieldPreview2() {
 @Composable
 private fun BanklyAccessCodeInputFieldPreview3() {
     BanklyTheme {
-        BanklyAccessCodeInputField(
+        BanklyAccessPinInputField(
             listOf("1", "2", "", ""),
         )
     }

@@ -1,11 +1,11 @@
 package com.bankly.feature.authentication.ui.login
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
+import com.bankly.core.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
+import com.bankly.core.domain.usecase.ForgotTerminalAccessPinUseCase
 import com.bankly.core.domain.usecase.GetTokenUseCase
-import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
@@ -18,9 +18,12 @@ import javax.inject.Inject
 private const val THREE = "3"
 private const val FOUR = "4"
 private const val INVALID_PASSCODE = "invalid passcode"
+private const val PASSCODE = "Passcode"
+private const val ACCESS_PIN = "Access PIN"
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    private val forgotTerminalAccessPinUseCase: ForgotTerminalAccessPinUseCase,
     private val loginTokenUseCase: GetTokenUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<LoginScreenEvent, LoginScreenState, LoginScreenOneShotState>(LoginScreenState()) {
@@ -37,6 +40,26 @@ class LoginViewModel @Inject constructor(
 
             LoginScreenEvent.OnDismissErrorDialog -> {
                 setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
+            }
+
+            LoginScreenEvent.ClearAccessPinInputField -> {
+                setUiState { copy(passCode = List(6) { "" }) }
+            }
+
+            LoginScreenEvent.OnResetAccessPinClick -> {
+                resetAccessPin()
+            }
+
+            LoginScreenEvent.RestoreLoginMode -> {
+                setUiState { copy(isResetAccessPin = false) }
+            }
+
+            LoginScreenEvent.ShowExitResetPinWarningDialog -> {
+                setUiState { copy(showExitResetPinDialog = true) }
+            }
+
+            LoginScreenEvent.OnDismissExitResetPinWarningDialog -> {
+                setUiState { copy(showExitResetPinDialog = false) }
             }
         }
     }
@@ -67,7 +90,7 @@ class LoginViewModel @Inject constructor(
                     when (failureMessage) {
                         THREE -> {
                             setUiState { copy(isLoading = false) }
-                            setOneShotState(LoginScreenOneShotState.OnSetUpAccessPin)
+                            setOneShotState(LoginScreenOneShotState.OnSetUpAccessPin(defaultPin = passCode))
                         }
 
                         FOUR -> {
@@ -80,7 +103,11 @@ class LoginViewModel @Inject constructor(
                                 copy(
                                     isLoading = false,
                                     showErrorDialog = true,
-                                    errorDialogMessage = failureMessage,
+                                    errorDialogMessage = failureMessage.replace(
+                                        oldValue = PASSCODE,
+                                        newValue = ACCESS_PIN,
+                                        ignoreCase = true
+                                    ),
                                     isPassCodeError = failureMessage.contains(
                                         other = INVALID_PASSCODE,
                                         ignoreCase = true
@@ -100,6 +127,24 @@ class LoginViewModel @Inject constructor(
                         ?: ""
                     )
                 }
+            }.launchIn(viewModelScope)
+    }
+
+    private suspend fun resetAccessPin() {
+        forgotTerminalAccessPinUseCase(body = ForgotTerminalAccessPinData(serialNumber = userPreferencesDataStore.data().terminalSerialNumber))
+            .onEach { resource ->
+                resource.onLoading {
+                    setUiState { copy(isLoading = true) }
+                }
+                resource.onReady { _ ->
+                    setUiState { copy(isLoading = false, isResetAccessPin = true) }
+                }
+                resource.onFailure { message ->
+                    setUiState { copy(showErrorDialog = true, errorDialogMessage = message) }
+                }
+            }.catch {
+                it.printStackTrace()
+                setUiState { copy(showErrorDialog = true, errorDialogMessage = it.message ?: "") }
             }.launchIn(viewModelScope)
     }
 }

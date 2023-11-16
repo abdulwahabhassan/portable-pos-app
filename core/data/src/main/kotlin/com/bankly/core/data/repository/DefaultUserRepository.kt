@@ -2,6 +2,7 @@ package com.bankly.core.data.repository
 
 import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.data.di.IODispatcher
@@ -79,6 +80,25 @@ class DefaultUserRepository @Inject constructor(
                     networkMonitor = networkMonitor,
                     json = json,
                     apiRequest = { identityService.forgotPassCode(body.asRequestBody()) },
+                ),
+            )
+        ) {
+            is Result.Error -> emit(Resource.Failed(responseResult.message))
+            is Result.Success -> emit(Resource.Ready(responseResult.data.asStatus()))
+        }
+    }
+
+    override suspend fun forgotTerminalAccessPin(
+        body: ForgotTerminalAccessPinData,
+    ): Flow<Resource<Status>> = flow {
+        emit(Resource.Loading)
+        when (
+            val responseResult = handleApiResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = { identityService.forgotTerminalAccessPin(body.asRequestBody()) },
                 ),
             )
         ) {

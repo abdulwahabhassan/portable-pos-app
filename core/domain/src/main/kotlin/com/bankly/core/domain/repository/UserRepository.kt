@@ -2,6 +2,7 @@ package com.bankly.core.domain.repository
 
 import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.entity.AgentAccountDetails
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun getToken(userName: String, password: String): Flow<Resource<Token>>
     suspend fun forgotPassCode(body: ForgotPassCodeData): Flow<Resource<Status>>
+    suspend fun forgotTerminalAccessPin(body: ForgotTerminalAccessPinData, ): Flow<Resource<Status>>
     suspend fun validateOtp(body: ValidateOtpData): Flow<Resource<Status>>
     suspend fun resetPassCode(body: ResetPassCodeData): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCodeData): Flow<Resource<User>>

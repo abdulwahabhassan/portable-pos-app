@@ -63,7 +63,7 @@ fun BanklyTitleBar(
     },
 ) {
     val shouldShowPageNumber by remember(currentPage, totalPage) {
-        mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage < totalPage)
+        mutableStateOf(currentPage > 0 && totalPage > 0 && currentPage <= totalPage)
     }
 
     Column(
@@ -204,8 +204,8 @@ private fun BanklyTitleBarPreview4() {
         BanklyTitleBar(
             title = "Log In",
             subTitle = buildAnnotatedString { append("Fill in your sign in details to access your account") },
-            currentPage = 3,
-            totalPage = 10,
+            currentPage = 2,
+            totalPage = 2,
             isLoading = true,
         )
     }

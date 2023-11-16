@@ -69,11 +69,8 @@ fun AuthenticationNavHost(
         loginRoute(
             onLoginSuccess = onLoginSuccess,
             onBackPress = onBackPress,
-            onRecoverPassCodeClick = {
-                navHostController.navigateToRecoverPassCodeRoute()
-            },
-            onSetUpAccessPin = {
-
+            onSetUpAccessPin = { defaultPin: String ->
+                navHostController.navigateToSetPinRoute(defaultPin)
             },
             onTerminalUnAssigned = {
                 navHostController.navigateToUnassignedTerminalRoute()
@@ -123,9 +120,25 @@ fun AuthenticationNavHost(
             },
             onContactSupportPress = onContactSupportPress
         )
-        setPinRoute()
-        confirmPinRoute()
+        setPinRoute(
+            onGoToConfirmPinScreen = { defaultPin: String, newPin: String ->
+                navHostController.navigateToConfirmPinRoute(
+                    defaultPin = defaultPin,
+                    newPin = newPin
+                )
+            },
+            onBackPress = {
+                navHostController.popBackStack()
+            }
+        )
+        confirmPinRoute(
+            onBackPress = {
+                navHostController.popBackStack()
+            },
+            onPinChangeSuccess = {
+                navHostController.popBackStack(loginRoute, false)
+            }
+        )
         createNewPassCodeRoute()
-
     }
 }

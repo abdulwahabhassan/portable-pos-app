@@ -21,17 +21,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.designsystem.component.BanklyAccessCodeInputField
-import com.bankly.core.designsystem.component.BanklyActionDialog
+import com.bankly.core.designsystem.component.BanklyAccessPinInputField
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyNumericKeyboard
-import com.bankly.core.designsystem.component.BanklyPassCodeInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.State
 import com.bankly.feature.authentication.R
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,17 +38,21 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit,
-    onSetUpAccessPin: () -> Unit,
+    onSetUpAccessPin: (String) -> Unit,
     onTerminalUnAssigned: () -> Unit
 ) {
-    BackHandler { onBackPress() }
-
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    BackHandler {
+        if (screenState.isResetAccessPin) {
+            viewModel.sendEvent(LoginScreenEvent.ShowExitResetPinWarningDialog)
+        } else {
+            onBackPress()
+        }
+    }
 
     LoginScreen(
         onBackPress = onBackPress,
-        onRecoverPassCodeClick = onRecoverPassCodeClick,
         screenState = screenState,
         onUiEvent = { uiEvent: LoginScreenEvent -> viewModel.sendEvent(uiEvent) },
     )
@@ -60,7 +61,12 @@ internal fun LoginRoute(
         viewModel.oneShotState.onEach { oneShotState: LoginScreenOneShotState ->
             when (oneShotState) {
                 LoginScreenOneShotState.OnLoginSuccess -> onLoginSuccess()
-                LoginScreenOneShotState.OnSetUpAccessPin -> onSetUpAccessPin()
+                is LoginScreenOneShotState.OnSetUpAccessPin -> {
+                    viewModel.sendEvent(LoginScreenEvent.ClearAccessPinInputField)
+                    viewModel.sendEvent(LoginScreenEvent.RestoreLoginMode)
+                    onSetUpAccessPin(oneShotState.defaultPin)
+                }
+
                 LoginScreenOneShotState.OnTerminalUnAssigned -> onTerminalUnAssigned()
             }
         }.launchIn(this)
@@ -70,7 +76,6 @@ internal fun LoginRoute(
 @Composable
 internal fun LoginScreen(
     onBackPress: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit,
     screenState: LoginScreenState,
     onUiEvent: (LoginScreenEvent) -> Unit,
 ) {
@@ -78,10 +83,22 @@ internal fun LoginScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             BanklyTitleBar(
-                onBackPress = onBackPress,
-                title = stringResource(R.string.msg_log_in),
+                onBackPress = {
+                    if (screenState.isResetAccessPin) {
+                        onUiEvent(LoginScreenEvent.ShowExitResetPinWarningDialog)
+                    } else {
+                        onBackPress()
+                    }
+                },
+                title = stringResource(if (screenState.isResetAccessPin) R.string.msg_reset_access_pin else R.string.msg_log_in),
                 subTitle = buildAnnotatedString {
-                    append(stringResource(R.string.msg_login_screen_subtitle))
+                    append(
+                        stringResource(
+                            if (screenState.isResetAccessPin)
+                                R.string.msg_eneter_default_access_code_subtitle
+                            else R.string.msg_login_screen_subtitle
+                        )
+                    )
                 },
                 isLoading = screenState.isLoading,
             )
@@ -97,32 +114,37 @@ internal fun LoginScreen(
             item {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                BanklyAccessCodeInputField(
+                BanklyAccessPinInputField(
                     passCode = screenState.passCode,
                     isError = screenState.isPassCodeError
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                BanklyClickableText(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
-                        ) {
-                            append(stringResource(R.string.msg_forgot_passcode))
-                        }
-                        append("\n")
-                        withStyle(
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.primary,
-                            ).toSpanStyle(),
-                        ) { append(stringResource(R.string.action_recover_passcode)) }
-                    },
-                    onClick = onRecoverPassCodeClick,
-                    isEnabled = screenState.isUserInputEnabled,
-                    backgroundShape = MaterialTheme.shapes.medium,
-                )
+                if (screenState.isResetAccessPin.not()) {
+                    BanklyClickableText(
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
+                            ) {
+                                append(stringResource(R.string.msg_forgot_access_pin))
+                            }
+                            append("\n")
+                            withStyle(
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    color = MaterialTheme.colorScheme.primary,
+                                ).toSpanStyle(),
+                            ) { append(stringResource(R.string.action_reset_access_pin)) }
+                        },
+                        onClick = {
+                            onUiEvent(LoginScreenEvent.ClearAccessPinInputField)
+                            onUiEvent(LoginScreenEvent.OnResetAccessPinClick)
 
+                        },
+                        isEnabled = screenState.isUserInputEnabled,
+                        backgroundShape = MaterialTheme.shapes.medium,
+                    )
+                }
             }
 
             item {
@@ -178,6 +200,25 @@ internal fun LoginScreen(
             onUiEvent(LoginScreenEvent.OnDismissErrorDialog)
         }
     )
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.exit_warning),
+        subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_discontinue_re_setting_your_access_pin),
+        showDialog = screenState.showExitResetPinDialog,
+        icon = BanklyIcons.ErrorAlert,
+        positiveActionText = stringResource(R.string.action_no),
+        negativeActionText = stringResource(R.string.action_yes),
+        positiveAction = {
+            onUiEvent(LoginScreenEvent.OnDismissExitResetPinWarningDialog)
+        },
+        negativeAction = {
+            onUiEvent(LoginScreenEvent.RestoreLoginMode)
+            onUiEvent(LoginScreenEvent.ClearAccessPinInputField)
+        },
+        onDismissDialog = {
+            onUiEvent(LoginScreenEvent.OnDismissExitResetPinWarningDialog)
+        }
+    )
 }
 
 @Composable
@@ -186,7 +227,6 @@ private fun LoginScreenPreview() {
     BanklyTheme {
         LoginScreen(
             onBackPress = {},
-            onRecoverPassCodeClick = {},
             screenState = LoginScreenState(),
             onUiEvent = {},
         )

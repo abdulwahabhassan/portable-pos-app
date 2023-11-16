@@ -7,4 +7,5 @@
     <string name="msg_check_your_internet_connection">Check your internet connection!</string>
     <string name="action_no">No</string>
     <string name="msg_incorrect_passcode">Incorrect Passcode</string>
+    <string name="msg_incorrect_access_pin">Incorrect Access PIN</string>
 </resources>

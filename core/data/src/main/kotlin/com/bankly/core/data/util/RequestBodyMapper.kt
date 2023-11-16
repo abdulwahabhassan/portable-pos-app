@@ -7,6 +7,7 @@ import com.bankly.core.data.CardTransferData
 import com.bankly.core.data.ChangePassCodeData
 import com.bankly.core.data.EodTransactionListData
 import com.bankly.core.data.ForgotPassCodeData
+import com.bankly.core.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.GetRecentFundingData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.SendReceiptData
@@ -25,6 +26,7 @@ import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
 import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.network.model.request.CardTransferAccountInquiryRequestBody
 import com.bankly.core.network.model.request.CardTransferRequestBody
+import com.bankly.core.network.model.request.ForgotTerminalAccessPinRequestBody
 import com.bankly.core.network.model.request.SyncEodRequestBody
 import com.bankly.core.network.model.request.SyncEodTransactionData
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
@@ -43,6 +45,11 @@ fun ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
 fun ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
     phoneNumber = phoneNumber,
 )
+
+fun ForgotTerminalAccessPinData.asRequestBody() = ForgotTerminalAccessPinRequestBody(
+    serialNumber = serialNumber,
+)
+
 
 fun ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
     username = username,

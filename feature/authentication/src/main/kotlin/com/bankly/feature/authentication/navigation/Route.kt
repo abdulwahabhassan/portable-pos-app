@@ -1,20 +1,21 @@
 package com.bankly.feature.authentication.navigation
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.bankly.feature.authentication.R
+import com.bankly.feature.authentication.ui.confirmpin.ConfirmPinRoute
 import com.bankly.feature.authentication.ui.createnewpasscode.CreateNewPassCodeScreen
 import com.bankly.feature.authentication.ui.login.LoginRoute
-import com.bankly.feature.authentication.ui.pin.ConfirmPinScreen
-import com.bankly.feature.authentication.ui.pin.SetPinScreen
 import com.bankly.feature.authentication.ui.recoverpasscode.RecoverPassCodeRoute
 import com.bankly.feature.authentication.ui.setnewpasscode.SetNewPassCodeRoute
+import com.bankly.feature.authentication.ui.setuppin.SetPinRoute
 import com.bankly.feature.authentication.ui.success.SuccessRoute
 import com.bankly.feature.authentication.ui.unassignedterminal.UnassignedTerminalRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
 import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeRoute
-import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeScreen
 
 const val authenticationNavGraphRoute = "authentication_nav_graph"
 internal const val authenticationRoute = authenticationNavGraphRoute.plus("/auth_route")
@@ -32,15 +33,13 @@ internal const val unassignedTerminalRoute = authenticationRoute.plus("/unassign
 internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
-    onRecoverPassCodeClick: () -> Unit,
-    onSetUpAccessPin: () -> Unit,
+    onSetUpAccessPin: (defaultPin: String) -> Unit,
     onTerminalUnAssigned: () -> Unit
 ) {
     composable(route = loginRoute) {
         LoginRoute(
             onLoginSuccess = onLoginSuccess,
             onBackPress = onBackPress,
-            onRecoverPassCodeClick = onRecoverPassCodeClick,
             onSetUpAccessPin = onSetUpAccessPin,
             onTerminalUnAssigned = onTerminalUnAssigned
         )
@@ -114,11 +113,12 @@ internal fun NavGraphBuilder.successfulRoute(
             navArgument(successMessageArg) { type = NavType.StringType },
         ),
     ) {
+        val context = LocalContext.current
         val message = it.arguments?.getString(successMessageArg)
         SuccessRoute(
-            message = message ?: "Passcode Reset Successfully",
-            subMessage = "You have successfully reset your account passcode. Login to continue",
-            buttonText = "Back to login",
+            message = message ?: context.getString(R.string.msg_passcode_reset_successfully),
+            subMessage = context.getString(R.string.msg_you_have_successfully_reset_your_account_passcode_login_to_continue),
+            buttonText = context.getString(R.string.sction_back_to_login),
             onBackToLoginClick = onBackToLoginClick,
         )
     }
@@ -132,19 +132,48 @@ internal fun NavGraphBuilder.createNewPassCodeRoute() {
     }
 }
 
-internal fun NavGraphBuilder.setPinRoute() {
+internal fun NavGraphBuilder.setPinRoute(
+    onGoToConfirmPinScreen: (defaultPin: String, newPin: String) -> Unit,
+    onBackPress: () -> Unit
+) {
     composable(
-        route = setPinRoute,
+        route = "$setPinRoute/{$defaultPinArg}",
+        arguments = listOf(
+            navArgument(defaultPinArg) { type = NavType.StringType },
+        ),
     ) {
-        SetPinScreen()
+        it.arguments?.getString(defaultPinArg)?.let { defaultPin: String ->
+            SetPinRoute(
+                onBackPress = onBackPress,
+                onGoToConfirmPinScreen = onGoToConfirmPinScreen,
+                defaultPin = defaultPin,
+            )
+        }
     }
 }
 
-internal fun NavGraphBuilder.confirmPinRoute() {
+internal fun NavGraphBuilder.confirmPinRoute(
+    onBackPress: () -> Unit,
+    onPinChangeSuccess: () -> Unit
+) {
     composable(
-        route = confirmPinRoute,
+        route = "$confirmPinRoute/{$defaultPinArg}/{$newPinArg}",
+        arguments = listOf(
+            navArgument(defaultPinArg) { type = NavType.StringType },
+            navArgument(newPinArg) { type = NavType.StringType },
+        ),
     ) {
-        ConfirmPinScreen()
+
+        it.arguments?.getString(defaultPinArg)?.let { defaultPin: String ->
+            it.arguments?.getString(newPinArg)?.let { newPin: String ->
+                ConfirmPinRoute(
+                    onBackPress = onBackPress,
+                    onPinChangeSuccess = onPinChangeSuccess,
+                    defaultPin = defaultPin,
+                    newPin = newPin
+                )
+            }
+        }
     }
 }
 
