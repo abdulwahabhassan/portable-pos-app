@@ -24,7 +24,8 @@ internal fun NavGraphBuilder.homeRoute(
     currentHomeTab: DashboardTab,
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
-    activity: Activity
+    activity: Activity,
+    onSessionExpired: () -> Unit
 ) {
     composable(route = homeRoute) {
         when (currentHomeTab) {
@@ -37,7 +38,8 @@ internal fun NavGraphBuilder.homeRoute(
             DashboardTab.Home -> {
                 HomeTab(
                     onFeatureCardClick = onFeatureClick,
-                    activity = activity
+                    activity = activity,
+                    onSessionExpired = onSessionExpired
                 )
             }
         }
@@ -47,13 +49,15 @@ internal fun NavGraphBuilder.homeRoute(
 internal fun NavGraphBuilder.transactionsRoute(
     onBackPress: () -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
-    updateLoadingStatus: (Boolean) -> Unit
+    updateLoadingStatus: (Boolean) -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     composable(route = transactionsRoute) {
         TransactionsRoute(
             onBackPress = onBackPress,
             onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
-            updateLoadingStatus = updateLoadingStatus
+            updateLoadingStatus = updateLoadingStatus,
+            onSessionExpired = onSessionExpired
         )
     }
 }

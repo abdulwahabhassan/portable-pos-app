@@ -76,4 +76,5 @@ internal data class BeneficiaryScreenState(
 internal sealed interface BeneficiaryScreenOneShotState : OneShotState {
     data class GoToConfirmTransactionScreen(val transactionData: TransactionData) :
         BeneficiaryScreenOneShotState
+    object OnSessionExpired : BeneficiaryScreenOneShotState
 }

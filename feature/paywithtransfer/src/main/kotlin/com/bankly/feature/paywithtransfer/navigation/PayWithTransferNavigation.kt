@@ -12,6 +12,7 @@ import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.payWithTransferNavGraph(
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     navigation(
         route = payWithTransferNavGraphRoute,
@@ -22,6 +23,7 @@ fun NavGraphBuilder.payWithTransferNavGraph(
             PayWithTransferNavHost(
                 navHostController = payWithTransferState.navHostController,
                 onBackPress = onBackPress,
+                onSessionExpired = onSessionExpired
             )
         }
     }
@@ -31,6 +33,7 @@ fun NavGraphBuilder.payWithTransferNavGraph(
 private fun PayWithTransferNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -42,7 +45,8 @@ private fun PayWithTransferNavHost(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
-            onGoToHomeClick = onBackPress
+            onGoToHomeClick = onBackPress,
+            onSessionExpired = onSessionExpired
         )
         transactionDetailsRoute(
             onShareClick = { },

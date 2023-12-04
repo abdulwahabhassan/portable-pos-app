@@ -62,6 +62,7 @@ internal fun BeneficiaryRoute(
     billType: BillType,
     onContinueClick: (TransactionData) -> Unit,
     onCloseClick: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
@@ -136,30 +137,34 @@ internal fun BeneficiaryRoute(
         merge(
             newBeneficiaryViewModel.oneShotState,
             savedBeneficiaryViewModel.oneShotState
-        ).onEach { beneficiaryScreenOneShotState ->
+        ).onEach { beneficiaryScreenOneShotState: BeneficiaryScreenOneShotState ->
             when (beneficiaryScreenOneShotState) {
                 is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
                     onContinueClick(beneficiaryScreenOneShotState.transactionData)
                 }
-            }
 
-        }.launchIn(this)
-
-        newBeneficiaryViewModel.oneShotState.onEach { oneShotUiState ->
-            when (oneShotUiState) {
-                is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
-                    onContinueClick(oneShotUiState.transactionData)
-                }
+                BeneficiaryScreenOneShotState.OnSessionExpired -> onSessionExpired()
             }
         }.launchIn(this)
+
+//        newBeneficiaryViewModel.oneShotState.onEach { oneShotUiState ->
+//            when (oneShotUiState) {
+//                is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
+//                    onContinueClick(oneShotUiState.transactionData)
+//                }
+//
+//                BeneficiaryScreenOneShotState.Logout -> onLogOut()
+//            }
+//        }.launchIn(this)
 
         this.launch {
             newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.UpdateBillType(billType))
             savedBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.UpdateBillType(billType))
-        }
-        this.launch {
             newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.FetchProviders(billType))
         }
+//        this.launch {
+//            newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.FetchProviders(billType))
+//        }
 
     }
 

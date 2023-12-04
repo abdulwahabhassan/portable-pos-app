@@ -47,6 +47,5 @@ internal data class TransactionsScreenState(
 }
 
 internal sealed interface TransactionsScreenOneShotState : OneShotState {
-    data class GoToTransactionDetailsScreen(val transaction: TransactionReceipt.TransactionHistory) :
-        TransactionsScreenOneShotState
+    object OnSessionExpired : TransactionsScreenOneShotState
 }

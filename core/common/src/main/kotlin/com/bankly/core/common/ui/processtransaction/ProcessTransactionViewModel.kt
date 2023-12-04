@@ -1,6 +1,5 @@
 package com.bankly.core.common.ui.processtransaction
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.BaseViewModel
@@ -11,6 +10,7 @@ import com.bankly.core.domain.usecase.PayBillUseCase
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -49,6 +49,9 @@ class ProcessTransactionViewModel @Inject constructor(
                                     ),
                                 )
                             }
+                            resource.onSessionExpired {
+                                setOneShotState(ProcessTransactionScreenOneShotState.OnSessionExpired)
+                            }
                         }.catch {
                             it.printStackTrace()
                             setOneShotState(
@@ -78,6 +81,9 @@ class ProcessTransactionViewModel @Inject constructor(
                                     ),
                                 )
                             }
+                            resource.onSessionExpired {
+                                setOneShotState(ProcessTransactionScreenOneShotState.OnSessionExpired)
+                            }
                         }.catch {
                             it.printStackTrace()
                             setOneShotState(
@@ -106,6 +112,9 @@ class ProcessTransactionViewModel @Inject constructor(
                                         message = message,
                                     ),
                                 )
+                            }
+                            resource.onSessionExpired {
+                                setOneShotState(ProcessTransactionScreenOneShotState.OnSessionExpired)
                             }
                         }.catch {
                             it.printStackTrace()

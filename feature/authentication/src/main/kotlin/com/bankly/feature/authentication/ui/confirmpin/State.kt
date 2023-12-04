@@ -22,4 +22,5 @@ data class ConfirmPinScreenState(
 
 sealed interface ConfirmPinScreenOneShotState : OneShotState {
     data class OnSetPinSuccess(val message: String) : ConfirmPinScreenOneShotState
+    object OnSessionExpired : ConfirmPinScreenOneShotState
 }

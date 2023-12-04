@@ -9,6 +9,7 @@ import com.bankly.core.domain.usecase.GetTokenUseCase
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -66,7 +67,8 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun performLogin(passCode: String) {
         loginTokenUseCase(
-            userName = userPreferencesDataStore.data().terminalSerialNumber,
+            userName = "P260300061091",
+//            userName = Tools.serialNumber,
             password = passCode
         )
             .onEach { resource ->
@@ -131,7 +133,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun resetAccessPin() {
-        forgotTerminalAccessPinUseCase(body = ForgotTerminalAccessPinData(serialNumber = userPreferencesDataStore.data().terminalSerialNumber))
+        forgotTerminalAccessPinUseCase(body = ForgotTerminalAccessPinData(serialNumber = Tools.serialNumber))
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(isLoading = true) }

@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 
 fun NavGraphBuilder.authenticationNavGraph(
     appNavController: NavHostController,
@@ -46,7 +45,7 @@ fun NavGraphBuilder.authenticationNavGraph(
                 onBackPress = if (isValidatePassCode) onPopBackStack else onBackPress,
                 onGoToSettingsRoute = onGoToSettingsRoute,
                 isValidatePassCode = isValidatePassCode,
-                onContactSupportPress = onContactSupportPress
+                onContactSupportPress = onContactSupportPress,
             )
         }
     }
@@ -59,7 +58,7 @@ fun AuthenticationNavHost(
     onBackPress: () -> Unit,
     onGoToSettingsRoute: () -> Unit,
     isValidatePassCode: Boolean,
-    onContactSupportPress: () -> Unit
+    onContactSupportPress: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -136,6 +135,9 @@ fun AuthenticationNavHost(
                 navHostController.popBackStack()
             },
             onPinChangeSuccess = {
+                navHostController.popBackStack(loginRoute, false)
+            },
+            onSessionExpired = {
                 navHostController.popBackStack(loginRoute, false)
             }
         )

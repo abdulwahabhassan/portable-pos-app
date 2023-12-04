@@ -16,6 +16,7 @@ class BanklyFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:model"))
                 add("implementation", project(":core:common"))
+                add("api", files("../../app/libs/KozonPaymentLibraryModule-release.aar"))
             }
         }
     }

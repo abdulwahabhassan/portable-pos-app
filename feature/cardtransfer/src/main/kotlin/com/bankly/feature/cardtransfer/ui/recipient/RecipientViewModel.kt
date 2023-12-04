@@ -18,6 +18,7 @@ import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -199,6 +200,9 @@ internal class RecipientViewModel @Inject constructor(
                     )
                 }
             }
+            resource.onSessionExpired {
+                setOneShotState(RecipientScreenOneShotState.OnSessionExpired)
+            }
         }.catch {
             it.printStackTrace()
             setUiState {
@@ -231,6 +235,9 @@ internal class RecipientViewModel @Inject constructor(
                             errorDialogMessage = message
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(RecipientScreenOneShotState.OnSessionExpired)
                 }
             }
             .catch {
@@ -286,6 +293,9 @@ internal class RecipientViewModel @Inject constructor(
                             isAccountNumberError = true,
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(RecipientScreenOneShotState.OnSessionExpired)
                 }
             }.catch {
                 it.printStackTrace()

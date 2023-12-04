@@ -38,6 +38,7 @@ internal fun ConfirmPinRoute(
     onBackPress: () -> Unit,
     defaultPin: String,
     newPin: String,
+    onSessionExpired: () -> Unit
 ) {
 
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,6 +56,10 @@ internal fun ConfirmPinRoute(
                 is ConfirmPinScreenOneShotState.OnSetPinSuccess -> {
                     Toast.makeText(context, oneShotState.message, Toast.LENGTH_LONG).show()
                     onPinChangeSuccess()
+                }
+
+                ConfirmPinScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
                 }
             }
         }.launchIn(this)

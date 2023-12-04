@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +31,16 @@ import com.bankly.core.entity.RecentFund
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.paywithtransfer.R
 import com.bankly.feature.paywithtransfer.ui.component.RecentFundListItem
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun PayWithTransferRoute(
     viewModel: PayWithTransferViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
     onViewTransactionDetailsClick: (TransactionReceipt.PayWithTransfer) -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     PayWithTransferScreen(
@@ -48,6 +52,16 @@ internal fun PayWithTransferRoute(
         onViewTransactionDetailsClick = onViewTransactionDetailsClick,
         onGoToHomeClick = onGoToHomeClick
     )
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach { oneShotState: PayWithTransferScreenOneShotState ->
+            when (oneShotState) {
+                PayWithTransferScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
+                }
+            }
+        }.launchIn(this)
+    })
 }
 
 @OptIn(ExperimentalFoundationApi::class)

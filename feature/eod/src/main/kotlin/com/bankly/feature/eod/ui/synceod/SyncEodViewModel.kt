@@ -12,6 +12,7 @@ import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -75,6 +76,9 @@ internal class SyncEodViewModel @Inject constructor(
                             errorDialogMessage = message
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(SyncEodScreenOneShotState.OnSessionExpired)
                 }
             }.catch {
                 it.printStackTrace()

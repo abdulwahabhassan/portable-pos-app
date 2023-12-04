@@ -37,6 +37,7 @@ fun ProcessTransactionRoute(
     transactionData: TransactionData,
     onTransactionSuccess: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -51,6 +52,10 @@ fun ProcessTransactionRoute(
                     }
                     is ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen -> {
                         onTransactionSuccess(oneShotUiState.transactionReceipt)
+                    }
+
+                    ProcessTransactionScreenOneShotState.OnSessionExpired -> {
+                        onSessionExpired()
                     }
                 }
             }

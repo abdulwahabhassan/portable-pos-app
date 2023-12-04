@@ -79,3 +79,4 @@ abstract class BaseViewModel<E, S, O : OneShotState>(initialState: S) : ViewMode
 }
 
 interface OneShotState
+

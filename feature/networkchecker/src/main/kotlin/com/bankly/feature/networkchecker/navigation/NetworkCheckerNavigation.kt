@@ -11,6 +11,7 @@ import androidx.navigation.compose.navigation
 
 fun NavGraphBuilder.networkCheckerNavGraph(
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     navigation(
         route = networkCheckerNavGraphRoute,
@@ -21,6 +22,7 @@ fun NavGraphBuilder.networkCheckerNavGraph(
             NetworkCheckerNavHost(
                 navHostController = networkCheckerState.navHostController,
                 onBackPress = onBackPress,
+                onSessionExpired = onSessionExpired
             )
         }
     }
@@ -30,6 +32,7 @@ fun NavGraphBuilder.networkCheckerNavGraph(
 private fun NetworkCheckerNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -38,6 +41,7 @@ private fun NetworkCheckerNavHost(
     ) {
         networkCheckerListRoute(
             onBackPress = onBackPress,
+            onSessionExpired = onSessionExpired
         )
     }
 }

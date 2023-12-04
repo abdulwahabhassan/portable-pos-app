@@ -1,4 +1,5 @@
 import com.bankly.buildlogic.BuildType
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.io.FileInputStream
 import java.util.Properties
 

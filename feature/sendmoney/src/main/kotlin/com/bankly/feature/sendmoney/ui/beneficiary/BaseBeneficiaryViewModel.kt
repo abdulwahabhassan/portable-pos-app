@@ -17,6 +17,7 @@ import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -192,6 +193,9 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(bankListState = State.Error(message))
                     }
                 }
+                resource.onSessionExpired {
+                    setOneShotState(BeneficiaryScreenOneShotState.OnSessionExpired)
+                }
             }
             .catch {
                 it.printStackTrace()
@@ -258,6 +262,9 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         )
                     }
                 }
+                resource.onSessionExpired {
+                    setOneShotState(BeneficiaryScreenOneShotState.OnSessionExpired)
+                }
             }.catch {
                 it.printStackTrace()
                 setUiState {
@@ -299,6 +306,9 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             isAccountOrPhoneError = true,
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(BeneficiaryScreenOneShotState.OnSessionExpired)
                 }
             }.catch {
                 it.printStackTrace()

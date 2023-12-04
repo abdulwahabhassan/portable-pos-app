@@ -1,6 +1,7 @@
 package com.bankly.feature.dashboard.ui.home
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,12 +29,15 @@ import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
 import com.bankly.kozonpaymentlibrarymodule.helper.ConfigParameters
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onFeatureCardClick: (Feature) -> Unit,
-    activity: Activity
+    activity: Activity,
+    onSessionExpired: () -> Unit
 ) {
     val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
     HomeScreen(
@@ -44,6 +48,16 @@ internal fun HomeTab(
     LaunchedEffect(key1 = Unit, block = {
         viewModel.sendEvent(HomeScreenEvent.FetchWalletBalance)
         ConfigParameters.downloadTmsParams(activity)
+    })
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach { oneShotState: HomeScreenOneShotState ->
+            when (oneShotState) {
+                HomeScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
+                }
+            }
+        }.launchIn(this)
     })
 }
 
@@ -58,7 +72,7 @@ internal fun HomeScreen(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp),
 
-        ) {
+            ) {
             WalletCard(
                 shouldShowWalletBalance = screenState.shouldShowWalletBalance,
                 onToggleWalletBalanceVisibility = { toggleState ->

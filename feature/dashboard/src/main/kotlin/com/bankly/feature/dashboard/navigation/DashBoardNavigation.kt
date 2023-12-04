@@ -25,7 +25,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
-    activity: Activity
+    activity: Activity,
+    onSessionExpired: () -> Unit
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -61,7 +62,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
                         onSupportOptionClick = onSupportOptionClick,
                         onLogOutClick = onLogOutClick,
-                        activity = activity
+                        activity = activity,
+                        onSessionExpired = onSessionExpired
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -85,7 +87,8 @@ fun DashBoardNavHost(
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
-    activity: Activity
+    activity: Activity,
+    onSessionExpired: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -96,7 +99,8 @@ fun DashBoardNavHost(
             currentHomeTab = currentHomeTab,
             onFeatureClick = onFeatureClick,
             onContinueToPayWithCardClick = onContinueToPayWithCardClick,
-            activity = activity
+            activity = activity,
+            onSessionExpired = onSessionExpired
         )
         transactionsRoute(
             onBackPress = {
@@ -105,7 +109,8 @@ fun DashBoardNavHost(
             onGoToTransactionDetailsScreen = { transactionReceipt: TransactionReceipt ->
                 onGoToTransactionDetailsScreen(transactionReceipt)
             },
-            updateLoadingStatus = updateLoadingStatus
+            updateLoadingStatus = updateLoadingStatus,
+            onSessionExpired = onSessionExpired
         )
         supportRoute(
             onBackPress = {

@@ -60,6 +60,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asBankTransfer()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -85,6 +86,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asBankTransfer()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -112,6 +114,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asNameEnquiry()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -137,6 +140,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asNameEnquiry()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -156,6 +160,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { bankResult: BankResult -> bankResult.asBank() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -181,6 +186,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asAccountInquiry()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -206,6 +212,7 @@ class DefaultTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asCardTransfer()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 }

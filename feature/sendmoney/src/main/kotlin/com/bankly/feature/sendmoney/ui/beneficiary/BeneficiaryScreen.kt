@@ -38,6 +38,8 @@ import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBaseBen
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,6 +50,7 @@ internal fun BeneficiaryRoute(
     sendMoneyChannel: SendMoneyChannel,
     onContinueClick: (TransactionData) -> Unit,
     onCloseClick: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
@@ -77,7 +80,7 @@ internal fun BeneficiaryRoute(
                     narration = newBeneficiaryScreenState.narrationTFV.text,
                     accountNumberType = newBeneficiaryScreenState.accountNumberType,
 
-                ),
+                    ),
             )
         },
         onSavedBeneficiaryContinueButtonClick = {
@@ -98,24 +101,20 @@ internal fun BeneficiaryRoute(
     )
 
     LaunchedEffect(key1 = Unit) {
-        coroutineScope.launch {
-            newBeneficiaryViewModel.oneShotState.collectLatest { oneShotUiState ->
-                when (oneShotUiState) {
-                    is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
-                        onContinueClick(oneShotUiState.transactionData)
-                    }
+        newBeneficiaryViewModel.oneShotState.onEach { oneShotUiState ->
+            when (oneShotUiState) {
+                is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
+                    onContinueClick(oneShotUiState.transactionData)
+                }
+
+                BeneficiaryScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
                 }
             }
-        }
-        coroutineScope.launch {
-            savedBeneficiaryViewModel.oneShotState.collectLatest { oneShotUiState ->
-                when (oneShotUiState) {
-                    is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
-                        onContinueClick(oneShotUiState.transactionData)
-                    }
-                }
-            }
-        }
+        }.launchIn(this)
+    }
+
+    LaunchedEffect(key1 = Unit) {
         if (sendMoneyChannel == SendMoneyChannel.BANKLY_TO_BANKLY) {
             newBeneficiaryViewModel.sendEvent(
                 BeneficiaryScreenEvent.OnSelectBank(

@@ -19,4 +19,6 @@ internal data class PayWithTransferScreenState(
         get() = isRecentFundsLoading || isAgentAccountDetailsLoading
 }
 
-internal sealed interface PayWithTransferScreenOneShotState : OneShotState
+internal sealed interface PayWithTransferScreenOneShotState : OneShotState {
+    object OnSessionExpired: PayWithTransferScreenOneShotState
+}

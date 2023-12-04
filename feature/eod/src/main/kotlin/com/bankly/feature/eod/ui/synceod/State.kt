@@ -27,4 +27,6 @@ internal data class SyncEodScreenState(
         get() = isLoading.not()
 }
 
-internal sealed interface SyncEodScreenOneShotState : OneShotState
+internal sealed interface SyncEodScreenOneShotState : OneShotState {
+    object OnSessionExpired: SyncEodScreenOneShotState
+}

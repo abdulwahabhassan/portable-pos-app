@@ -52,6 +52,7 @@ class DefaultTransactionRepository  @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { it.asTransaction() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -76,6 +77,7 @@ class DefaultTransactionRepository  @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { it.asTransaction() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -95,6 +97,7 @@ class DefaultTransactionRepository  @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(requestResult.message))
             is Result.Success -> emit(Resource.Ready(requestResult.data.map { it.asTransactionFilterType() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 }

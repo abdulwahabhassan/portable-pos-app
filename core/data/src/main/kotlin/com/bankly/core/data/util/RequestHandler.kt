@@ -21,7 +21,8 @@ suspend fun <T> handleRequest(
             Result.Success(apiRequest.invoke())
         } catch (e: HttpException) {
             if (e.code() == 401) {
-                Result.Error(message = "Session expired! Please logout and login again to continue")
+//                Result.Error(message = "Session expired! Please logout and login again to continue")
+                Result.SessionExpired
             } else {
                 val response = handleHttpException(e, json)
                 Result.Error(

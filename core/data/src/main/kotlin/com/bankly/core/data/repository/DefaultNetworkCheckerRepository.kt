@@ -62,6 +62,7 @@ class DefaultNetworkCheckerRepository @Inject constructor(
                     })
                 )
             }
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 

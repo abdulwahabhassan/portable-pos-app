@@ -10,6 +10,8 @@ import com.bankly.core.entity.User
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -65,7 +67,7 @@ class ConfirmPinViewModel @Inject constructor(
     ) {
         changePassCodeUseCase(
             body = ChangePassCodeData(
-                serialNumber = userPreferencesDataStore.data().terminalSerialNumber,
+                serialNumber = Tools.serialNumber,
                 oldPasscode = defaultPin,
                 newPasscode = newPin,
                 confirmPasscode = confirmPin
@@ -95,6 +97,9 @@ class ConfirmPinViewModel @Inject constructor(
                             errorDialogMessage = failureMessage,
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(ConfirmPinScreenOneShotState.OnSessionExpired)
                 }
             }.catch {
                 it.printStackTrace()

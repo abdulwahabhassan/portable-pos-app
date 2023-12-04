@@ -8,8 +8,6 @@ import kotlinx.serialization.Serializable
 data class UserPreferences(
     val token: String = "",
     val shouldShowWalletBalance: Boolean = false,
-    val terminalSerialNumber: String = "P260300061091",
-    val terminalId: String = "2035144J",
     val transactionFilter: TransactionFilter = TransactionFilter(),
     val featureToggleList: List<Feature> = Feature.values().toList()
 )

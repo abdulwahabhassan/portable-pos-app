@@ -5,6 +5,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 
+internal fun NavHostController.navigateToLoginRoute(
+    navOptions: NavOptions? = null
+) {
+    this.navigate(loginRoute, navOptions)
+}
+
 internal fun NavHostController.navigateToRecoverPassCodeRoute() {
     this.navigate(recoverPassCodeRoute)
 }

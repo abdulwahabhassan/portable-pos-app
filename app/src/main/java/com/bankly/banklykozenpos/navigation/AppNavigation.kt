@@ -3,17 +3,20 @@ package com.bankly.banklykozenpos.navigation
 import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.activity
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.ui.BanklyAppState
+import com.bankly.core.designsystem.component.BanklyCenterDialog
+import com.bankly.core.designsystem.icon.BanklyIcons
+import com.bankly.core.entity.Feature
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
-import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
-import com.bankly.feature.contactus.navigation.contactUsNavGraph
-import com.bankly.core.entity.Feature
 import com.bankly.feature.authentication.navigation.isValidatePassCodeArg
+import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraph
 import com.bankly.feature.checkcardbalance.navigation.checkCardBalanceNavGraph
+import com.bankly.feature.contactus.navigation.contactUsNavGraph
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.eod.navigation.eodNavGraph
@@ -26,15 +29,16 @@ import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraph
 import com.bankly.feature.settings.navigation.settingsNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
 
-
 @Composable
 fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
     onExitApp: () -> Unit,
-    onLogOutClick: () -> Unit,
-    activity: Activity
+    activity: Activity,
+    isSessionExpired: Boolean,
+    onSessionExpired: () -> Unit,
+    onSessionRenewed: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -44,6 +48,7 @@ fun AppNavHost(
         authenticationNavGraph(
             appNavController = appState.navHostController,
             onLoginSuccess = {
+                onSessionRenewed()
                 appState.navigateTo(AppTopLevelDestination.DASHBOARD)
             },
             onBackPress = onExitApp,
@@ -105,8 +110,11 @@ fun AppNavHost(
                     }
                 }
             },
-            onLogOutClick = onLogOutClick,
-            activity = activity
+            onLogOutClick = {
+                appState.navHostController.logOut()
+            },
+            activity = activity,
+            onSessionExpired = onSessionExpired
         )
         payWithCardNavGraph(
             onBackPress = {
@@ -118,28 +126,33 @@ fun AppNavHost(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
+            onSessionExpired = onSessionExpired
         )
         payWithTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
+            onSessionExpired = onSessionExpired
         )
         sendMoneyNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onForgotPinClick = {},
+            onSessionExpired = onSessionExpired
         )
         networkCheckerNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
+            onSessionExpired = onSessionExpired
         )
         billPaymentNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onForgotPinClick = {}
+            onForgotPinClick = {},
+            onSessionExpired = onSessionExpired
         )
         transactionDetailsNavGraph(
             appNavController = appState.navHostController,
@@ -150,7 +163,8 @@ fun AppNavHost(
         eodNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
-            }
+            },
+            onSessionExpired = onSessionExpired
         )
         contactUsNavGraph(
             onBackPress = {
@@ -174,6 +188,22 @@ fun AppNavHost(
             },
         )
     }
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.title_session_expired),
+        subtitle = stringResource(R.string.msg_session_expired_log_in_to_continue),
+        icon = BanklyIcons.ErrorAlert,
+        showDialog = isSessionExpired,
+        positiveActionText = stringResource(R.string.action_okay),
+        positiveAction = {
+            appState.navHostController.logOut()
+            onSessionRenewed()
+        },
+        onDismissDialog = {
+            appState.navHostController.logOut()
+            onSessionRenewed()
+        }
+    )
 }
 
 

@@ -15,23 +15,18 @@ import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraphRoute
 import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraphRoute
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraphRoute
-import com.bankly.feature.settings.navigation.settingsNavGraphRoute
 import com.bankly.feature.sendmoney.navigation.sendMoneyNavGraphRoute
+import com.bankly.feature.settings.navigation.settingsNavGraphRoute
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraphRoute
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 internal fun NavHostController.navigateToAuthenticationNavGraph(
+    isValidatePassCode: Boolean? = false,
     navOptions: NavOptions? = null,
 ) {
-    this.navigate(authenticationNavGraphRoute, navOptions)
-}
-
-internal fun NavHostController.navigateToAuthenticationNavGraph(
-    isValidatePassCode: Boolean? = false
-) {
     val encodedIsValidatePassCode = Uri.encode(isValidatePassCode.toString())
-    this.navigate("$authenticationNavGraphRoute/$encodedIsValidatePassCode")
+    this.navigate("$authenticationNavGraphRoute/$encodedIsValidatePassCode", navOptions)
 }
 
 internal fun NavHostController.navigateToDashBoardNavGraph(
@@ -96,19 +91,19 @@ internal fun NavHostController.navigateToTransactionDetailsNavGraph(
     this.navigate("$transactionDetailsNavGraphRoute/$encodedTransactionReceipt", navOptions)
 }
 
-internal fun NavHostController.navigateToContactUsNavGraph(navOptions: NavOptions? = null,) {
+internal fun NavHostController.navigateToContactUsNavGraph(navOptions: NavOptions? = null) {
     this.navigate(contactUsNavGraphRoute, navOptions)
 }
 
-internal fun NavHostController.navigateToLogComplaintNavGraph(navOptions: NavOptions? = null,) {
+internal fun NavHostController.navigateToLogComplaintNavGraph(navOptions: NavOptions? = null) {
     this.navigate(logComplaintNavGraphRoute, navOptions)
 }
 
-internal fun NavHostController.navigateToNetworkCheckerNavGraph(navOptions: NavOptions? = null,) {
+internal fun NavHostController.navigateToNetworkCheckerNavGraph(navOptions: NavOptions? = null) {
     this.navigate(networkCheckerNavGraphRoute, navOptions)
 }
 
-internal fun NavHostController.navigateToSettingsNavGraph(navOptions: NavOptions? = null,) {
+internal fun NavHostController.navigateToSettingsNavGraph(navOptions: NavOptions? = null) {
     this.navigate(settingsNavGraphRoute, navOptions)
 }
 
@@ -116,3 +111,11 @@ internal fun NavHostController.navigateToCheckCardBalancedNavGraph(navOptions: N
     this.navigate(checkCardBalanceNavGraphRoute, navOptions)
 }
 
+internal fun NavHostController.logOut() {
+    val navOptions = NavOptions.Builder()
+        .setPopUpTo(dashBoardNavGraphRoute, true)
+        .build()
+    this.navigateToAuthenticationNavGraph(
+        navOptions = navOptions
+    )
+}

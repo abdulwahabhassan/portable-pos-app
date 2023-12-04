@@ -21,6 +21,7 @@ private const val SUCCESSFUL_STATUS_NAME = "Successful"
 
 fun NavGraphBuilder.cardTransferNavGraph(
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     navigation(
         route = cardTransferNavGraphRoute,
@@ -31,6 +32,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
             CardTransferNavHost(
                 navHostController = cardTransferState.navHostController,
                 onBackPress = onBackPress,
+                onSessionExpired = onSessionExpired
             )
         }
     }
@@ -40,6 +42,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
 private fun CardTransferNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     val context = LocalContext.current
     NavHost(
@@ -52,6 +55,7 @@ private fun CardTransferNavHost(
             onContinueClick = { transactionData: TransactionData ->
                 navHostController.navigateToSelectAccountTypeRoute(transactionData = transactionData)
             },
+            onSessionExpired = onSessionExpired
         )
         selectAccountTypeRoute(
             onAccountSelected = { accountType: AccountType, transactionData: TransactionData ->
@@ -93,6 +97,7 @@ private fun CardTransferNavHost(
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
             },
+            onSessionExpired = onSessionExpired
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

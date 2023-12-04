@@ -51,4 +51,5 @@ internal data class RecipientScreenState(
 internal sealed interface RecipientScreenOneShotState : OneShotState {
     data class GoToSelectAccountTypeScreen(val transactionData: TransactionData) :
         RecipientScreenOneShotState
+    object OnSessionExpired: RecipientScreenOneShotState
 }

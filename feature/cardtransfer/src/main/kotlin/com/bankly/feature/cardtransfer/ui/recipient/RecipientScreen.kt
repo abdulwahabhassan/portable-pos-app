@@ -40,6 +40,8 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 import com.bankly.feature.cardtransfer.R
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,6 +49,7 @@ internal fun RecipientRoute(
     viewModel: RecipientViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
     onContinueClick: (TransactionData) -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -57,13 +60,17 @@ internal fun RecipientRoute(
 
     LaunchedEffect(key1 = Unit) {
         coroutineScope.launch {
-            viewModel.oneShotState.collectLatest { oneShotUiState ->
+            viewModel.oneShotState.onEach { oneShotUiState ->
                 when (oneShotUiState) {
                     is RecipientScreenOneShotState.GoToSelectAccountTypeScreen -> {
                         onContinueClick(oneShotUiState.transactionData)
                     }
+
+                    RecipientScreenOneShotState.OnSessionExpired -> {
+                        onSessionExpired()
+                    }
                 }
-            }
+            }.launchIn(this)
         }
     }
 }

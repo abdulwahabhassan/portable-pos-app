@@ -15,4 +15,6 @@ internal data class NetworkCheckerScreenState(
         get() = isBankListLoading
 }
 
-internal sealed interface NetworkCheckerScreenOneShotState : OneShotState
+internal sealed interface NetworkCheckerScreenOneShotState : OneShotState {
+    object OnSessionExpired : NetworkCheckerScreenOneShotState
+}

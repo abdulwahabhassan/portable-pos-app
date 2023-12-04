@@ -23,11 +23,14 @@ import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.networkchecker.R
 import com.bankly.feature.networkchecker.model.NetworkCheckerTab
 import com.bankly.feature.networkchecker.ui.component.BankNetworkSearchableListView
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Composable
 internal fun NetworkCheckerListRoute(
     viewModel: NetworkCheckerViewModel = hiltViewModel(),
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     NetworkCheckerListScreen(
@@ -40,6 +43,16 @@ internal fun NetworkCheckerListRoute(
     LaunchedEffect(key1 = Unit) {
         viewModel.sendEvent(NetworkCheckerScreenEvent.LoadUiData)
     }
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach { oneShotState: NetworkCheckerScreenOneShotState ->
+            when (oneShotState) {
+                NetworkCheckerScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
+                }
+            }
+        }.launchIn(this)
+    })
 }
 
 @Composable
@@ -72,7 +85,7 @@ private fun NetworkCheckerListScreen(
             }
         },
     ) { paddingValues ->
-        when(screenState.selectedTab) {
+        when (screenState.selectedTab) {
             NetworkCheckerTab.TRANSFERS -> {
                 BankNetworkSearchableListView(
                     modifier = Modifier.padding(paddingValues),
@@ -80,6 +93,7 @@ private fun NetworkCheckerListScreen(
                     bankList = screenState.bankNetworks,
                 )
             }
+
             NetworkCheckerTab.WITHDRAWALS -> {
 
             }

@@ -42,6 +42,7 @@ class DefaultEndOfDayRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asEodInfo()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -66,6 +67,7 @@ class DefaultEndOfDayRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asSyncEod()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 

@@ -9,6 +9,7 @@ import com.bankly.core.entity.UserWallet
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -25,10 +26,8 @@ internal class HomeScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            Tools.serialNumber = userPreferencesDataStore.data().terminalSerialNumber
-            Tools.terminalId = userPreferencesDataStore.data().terminalId
-            Tools.routeConfigURL = "https://tms-prod-alb.bankly.ng/api/v1/terminal/configure"
-            Tools.transUrl = "https://tms-prod-alb.bankly.ng/api/v1/transaction/transaction-request"
+            Tools.serialNumber = "P260300061091"
+            Tools.terminalId = "2035144J"
         }
     }
 
@@ -68,6 +67,9 @@ internal class HomeScreenViewModel @Inject constructor(
                     setUiState {
                         copy(message = message, shouldShowErrorDialog = true)
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(HomeScreenOneShotState.OnSessionExpired)
                 }
             }.catch {
                 it.printStackTrace()

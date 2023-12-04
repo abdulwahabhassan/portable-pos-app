@@ -15,6 +15,7 @@ import com.bankly.feature.paybills.model.BillType
 fun NavGraphBuilder.billPaymentNavGraph(
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     navigation(
         route = billPaymentNavGraphRoute,
@@ -26,7 +27,7 @@ fun NavGraphBuilder.billPaymentNavGraph(
                 navHostController = sendMoneyState.navHostController,
                 onBackPress = onBackPress,
                 onForgotPinClick = onForgotPinClick,
-
+                onSessionExpired = onSessionExpired
             )
         }
     }
@@ -37,6 +38,8 @@ private fun BillPaymentNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
+    onSessionExpired: () -> Unit,
+
 ) {
     NavHost(
         modifier = Modifier,
@@ -59,6 +62,7 @@ private fun BillPaymentNavHost(
                 navHostController.popBackStack()
             },
             onCloseClick = onBackPress,
+            onSessionExpired = onSessionExpired
         )
         confirmTransactionRoute(
             onConfirmationSuccess = { transactionData: TransactionData ->
@@ -77,6 +81,7 @@ private fun BillPaymentNavHost(
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
             },
+            onSessionExpired = onSessionExpired
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

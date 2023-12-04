@@ -25,13 +25,15 @@ internal const val doneRoute = payWithTransferRoute.plus("/success_screen")
 internal fun NavGraphBuilder.payWithTransferRoute(
     onBackPress: () -> Unit,
     onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = payWithTransferHomeRoute) {
         PayWithTransferRoute(
             onBackPress = onBackPress,
             onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-            onGoToHomeClick = onGoToHomeClick
+            onGoToHomeClick = onGoToHomeClick,
+            onSessionExpired = onSessionExpired
         )
     }
 }

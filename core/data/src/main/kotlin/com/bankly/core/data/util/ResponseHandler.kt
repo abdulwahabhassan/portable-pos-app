@@ -22,6 +22,8 @@ fun <T> handleApiResponse(
     is Result.Error -> {
         Result.Error(requestResult.message)
     }
+
+    Result.SessionExpired -> Result.SessionExpired
 }
 
 fun handleTokenApiResponse(
@@ -40,6 +42,8 @@ fun handleTokenApiResponse(
     is Result.Error -> {
         Result.Error(requestResult.message)
     }
+
+    else ->  Result.Error(message = "Request could not be completed",)
 }
 
 fun <T> handleTransactionApiResponse(
@@ -58,6 +62,8 @@ fun <T> handleTransactionApiResponse(
     is Result.Error -> {
         Result.Error(requestResult.message)
     }
+
+    Result.SessionExpired -> Result.SessionExpired
 }
 
 fun <T> handleNetworkCheckerApiResponse(
@@ -76,4 +82,6 @@ fun <T> handleNetworkCheckerApiResponse(
     is Result.Error -> {
         Result.Error(requestResult.message)
     }
+
+    Result.SessionExpired -> Result.SessionExpired
 }

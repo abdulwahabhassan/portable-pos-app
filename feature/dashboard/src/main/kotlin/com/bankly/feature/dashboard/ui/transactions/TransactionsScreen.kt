@@ -40,6 +40,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.common.model.DateRange
@@ -63,7 +64,10 @@ import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.R
 import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.feature.dashboard.ui.component.TransactionListItem
+import com.bankly.feature.dashboard.ui.home.HomeScreenOneShotState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
@@ -72,7 +76,8 @@ internal fun TransactionsRoute(
     viewModel: TransactionsViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
-    updateLoadingStatus: (Boolean) -> Unit
+    updateLoadingStatus: (Boolean) -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -92,6 +97,13 @@ internal fun TransactionsRoute(
     LaunchedEffect(key1 = Unit) {
         viewModel.sendEvent(TransactionsScreenEvent.LoadUiData)
     }
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach { oneShotState: TransactionsScreenOneShotState ->
+            when (oneShotState) {
+                TransactionsScreenOneShotState.OnSessionExpired -> onSessionExpired()
+            }
+        }.launchIn(this)
+    })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -259,7 +271,7 @@ private fun TransactionsScreen(
                 onDismissRequest = {
                     onUiEvent(TransactionsScreenEvent.LoadUiData)
                 },
-                windowInsets = WindowInsets(top = 24.dp)
+                windowInsets = WindowInsets(top = 24.dp, bottom = 50.dp),
             ) {
                 FilterView(
                     isTransactionReferenceError = screenState.isTransactionReferenceError,

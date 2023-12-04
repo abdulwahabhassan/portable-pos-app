@@ -58,6 +58,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asBillPayment()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -83,6 +84,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asMeterNameEnquiry()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -108,6 +110,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asCableTvNameEnquiry()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -127,6 +130,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { providerResult: ProviderResult -> providerResult.asProvider() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -146,6 +150,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { providerResult: ProviderResult -> providerResult.asProvider() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -165,6 +170,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { providerResult: ProviderResult -> providerResult.asProvider() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -185,6 +191,7 @@ class DefaultBillsRepository @Inject constructor(
             ) {
                 is Result.Error -> emit(Resource.Failed(responseResult.message))
                 is Result.Success -> emit(Resource.Ready(responseResult.data.map { providerResult: ProviderResult -> providerResult.asProvider() }))
+                Result.SessionExpired -> emit(Resource.SessionExpired)
             }
         }
 
@@ -203,6 +210,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -221,6 +229,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -239,6 +248,7 @@ class DefaultBillsRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 

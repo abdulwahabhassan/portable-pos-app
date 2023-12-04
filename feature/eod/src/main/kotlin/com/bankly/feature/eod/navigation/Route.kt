@@ -40,10 +40,12 @@ internal fun NavGraphBuilder.eodRoute(
 
 internal fun NavGraphBuilder.syncEodRoute(
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = syncEodRoute) {
         SyncEodRoute(
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
+            onSessionExpired = onSessionExpired
         )
     }
 }

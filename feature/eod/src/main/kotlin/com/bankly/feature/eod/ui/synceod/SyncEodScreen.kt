@@ -43,12 +43,15 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.eod.R
 import com.bankly.feature.eod.ui.component.SyncEodItemCard
 import com.bankly.feature.eod.ui.dashboard.EodDashboardScreenEvent
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 @Composable
 internal fun SyncEodRoute(
     viewModel: SyncEodViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     SyncEodScreen(
@@ -64,6 +67,16 @@ internal fun SyncEodRoute(
             viewModel.sendEvent(SyncEodScreenEvent.LoadUiData)
         }
     )
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach { oneShotState: SyncEodScreenOneShotState ->
+            when (oneShotState) {
+                SyncEodScreenOneShotState.OnSessionExpired -> {
+                    onSessionExpired()
+                }
+            }
+        }.launchIn(this)
+    })
 }
 
 @Composable

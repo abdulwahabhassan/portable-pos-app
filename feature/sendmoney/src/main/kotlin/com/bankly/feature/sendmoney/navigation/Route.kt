@@ -43,6 +43,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
     onContinueClick: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     composable(
         route = "$beneficiaryRoute/{$sendMoneyChannelArg}",
@@ -62,6 +63,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
                     sendMoneyChannel = channelEnum,
                     onContinueClick = onContinueClick,
                     onCloseClick = onCloseClick,
+                    onSessionExpired = onSessionExpired
                 )
             }
         }
@@ -96,6 +98,7 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     composable(
         route = "$processTransactionRoute/{$transactionDataArg}",
@@ -109,6 +112,7 @@ internal fun NavGraphBuilder.processTransactionRoute(
                 transactionData = data,
                 onTransactionSuccess = onSuccessfulTransaction,
                 onFailedTransaction = onFailedTransaction,
+                onSessionExpired = onSessionExpired
             )
         }
     }

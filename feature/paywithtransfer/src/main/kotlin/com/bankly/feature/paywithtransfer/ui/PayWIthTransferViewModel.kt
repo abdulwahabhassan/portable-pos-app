@@ -12,6 +12,8 @@ import com.bankly.core.domain.usecase.SyncRecentFundingUseCase
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -63,6 +65,9 @@ internal class PayWithTransferViewModel @Inject constructor(
                         )
                     }
                 }
+                resource.onSessionExpired {
+                    setOneShotState(PayWithTransferScreenOneShotState.OnSessionExpired)
+                }
             }
             .catch {
                 Log.d("debug agent account details", "catch agent account details: ${it.message}")
@@ -81,7 +86,7 @@ internal class PayWithTransferViewModel @Inject constructor(
     private suspend fun getRecentFunding() {
         getRecentFundingUseCase.invoke(
             userPreferencesDataStore.data().token,
-            GetRecentFundingData(false, userPreferencesDataStore.data().terminalSerialNumber)
+            GetRecentFundingData(false, Tools.serialNumber)
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -102,6 +107,9 @@ internal class PayWithTransferViewModel @Inject constructor(
                             errorDialogMessage = message
                         )
                     }
+                }
+                resource.onSessionExpired {
+                    setOneShotState(PayWithTransferScreenOneShotState.OnSessionExpired)
                 }
             }
             .catch {

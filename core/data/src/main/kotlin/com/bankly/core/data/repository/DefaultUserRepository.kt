@@ -66,6 +66,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asToken()))
+            else -> {}
         }
     }
 
@@ -85,6 +86,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asStatus()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -104,6 +106,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asStatus()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -121,6 +124,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asStatus()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -140,6 +144,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asMessage()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -159,6 +164,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asUser()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -178,6 +184,7 @@ class DefaultUserRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.asUserWallet()))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -198,6 +205,7 @@ class DefaultUserRepository @Inject constructor(
             ) {
                 is Result.Error -> emit(Resource.Failed(responseResult.message))
                 is Result.Success -> emit(Resource.Ready(responseResult.data.asAgentAccountDetails()))
+                Result.SessionExpired -> emit(Resource.SessionExpired)
             }
         }
 
@@ -220,6 +228,7 @@ class DefaultUserRepository @Inject constructor(
                 ) {
                     is Result.Error -> emit(Resource.Failed(responseResult.message))
                     is Result.Success -> emit(Resource.Ready(responseResult.data.asToken()))
+                    else -> {}
                 }
             }
         }

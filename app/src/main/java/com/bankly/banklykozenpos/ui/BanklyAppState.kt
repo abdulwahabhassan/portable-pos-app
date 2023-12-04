@@ -2,6 +2,7 @@ package com.bankly.banklykozenpos.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -82,7 +83,10 @@ data class BanklyAppState(
             restoreState = true
         }
         when (destination) {
-            AUTHENTICATION -> navHostController.navigateToAuthenticationNavGraph(navOption)
+            AUTHENTICATION -> navHostController.navigateToAuthenticationNavGraph(
+                isValidatePassCode = false,
+                navOptions = navOption
+            )
             DASHBOARD -> navHostController.navigateToDashBoardNavGraph(navOption)
             PAY_WITH_CARD -> navHostController.navigateToPayWithCardNavGraph(navOption)
             PAY_WITH_TRANSFER -> navHostController.navigateToPayWithTransferNavGraph(navOption)

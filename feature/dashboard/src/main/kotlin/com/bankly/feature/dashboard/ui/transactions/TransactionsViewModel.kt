@@ -225,6 +225,10 @@ internal class TransactionsViewModel @Inject constructor(
                 }
             }
 
+            if (triple.first is Resource.SessionExpired || triple.second is Resource.SessionExpired) {
+                setOneShotState(TransactionsScreenOneShotState.OnSessionExpired)
+            }
+
             triple.first.onFailure { message: String ->
                 setUiState {
                     copy(

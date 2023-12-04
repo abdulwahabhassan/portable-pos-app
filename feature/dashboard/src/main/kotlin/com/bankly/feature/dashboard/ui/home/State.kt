@@ -14,4 +14,6 @@ data class HomeScreenState(
     val shouldShowVisibilityIcon: Boolean = false,
 )
 
-sealed interface HomeScreenOneShotState : OneShotState
+sealed interface HomeScreenOneShotState : OneShotState {
+    object OnSessionExpired: HomeScreenOneShotState
+}

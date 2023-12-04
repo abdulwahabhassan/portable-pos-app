@@ -51,6 +51,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -76,6 +77,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data.map { recentFundResult: RecentFundResult -> recentFundResult.asRecentFund() }))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 
@@ -98,6 +100,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> emit(Resource.Ready(responseResult.data))
+            Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
 }

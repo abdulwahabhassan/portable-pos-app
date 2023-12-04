@@ -29,11 +29,13 @@ internal const val transactionDetailsRoute = cardTransferRoute.plus("/transactio
 internal fun NavGraphBuilder.enterRecipientDetailsRoute(
     onBackPress: () -> Unit,
     onContinueClick: (TransactionData) -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = enterRecipientDetailsRoute) {
         RecipientRoute(
             onBackPress = onBackPress,
             onContinueClick = onContinueClick,
+            onSessionExpired = onSessionExpired
         )
     }
 }
@@ -65,6 +67,7 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     composable(
         route = "$processTransactionRoute/{$transactionDataArg}",
@@ -78,6 +81,7 @@ internal fun NavGraphBuilder.processTransactionRoute(
                 transactionData = data,
                 onTransactionSuccess = onSuccessfulTransaction,
                 onFailedTransaction = onFailedTransaction,
+                onSessionExpired = onSessionExpired
             )
         }
     }

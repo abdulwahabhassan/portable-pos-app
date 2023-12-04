@@ -154,7 +154,8 @@ internal fun NavGraphBuilder.setPinRoute(
 
 internal fun NavGraphBuilder.confirmPinRoute(
     onBackPress: () -> Unit,
-    onPinChangeSuccess: () -> Unit
+    onPinChangeSuccess: () -> Unit,
+    onSessionExpired: () -> Unit
 ) {
     composable(
         route = "$confirmPinRoute/{$defaultPinArg}/{$newPinArg}",
@@ -170,7 +171,8 @@ internal fun NavGraphBuilder.confirmPinRoute(
                     onBackPress = onBackPress,
                     onPinChangeSuccess = onPinChangeSuccess,
                     defaultPin = defaultPin,
-                    newPin = newPin
+                    newPin = newPin,
+                    onSessionExpired = onSessionExpired
                 )
             }
         }

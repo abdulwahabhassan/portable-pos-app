@@ -13,6 +13,7 @@ import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
+import com.bankly.core.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -60,6 +61,9 @@ internal class NetworkCheckerViewModel @Inject constructor(
                                     bankNetworks = bankNetworks
                                 )
                             }
+                        }
+                        resource.onSessionExpired {
+                            setOneShotState(NetworkCheckerScreenOneShotState.OnSessionExpired)
                         }
                     }.catch {
                         it.printStackTrace()

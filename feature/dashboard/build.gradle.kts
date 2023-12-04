@@ -6,6 +6,3 @@ android {
     namespace = "com.bankly.feature.dashboard"
 }
 
-dependencies {
-    api(files("../../app/libs/KozonPaymentLibraryModule-release.aar"))
-}

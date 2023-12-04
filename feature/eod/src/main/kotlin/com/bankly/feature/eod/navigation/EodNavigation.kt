@@ -12,6 +12,7 @@ import com.bankly.core.sealed.TransactionReceipt
 
 fun NavGraphBuilder.eodNavGraph(
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     navigation(
         route = eodNavGraphRoute,
@@ -22,6 +23,7 @@ fun NavGraphBuilder.eodNavGraph(
             EodNavHost(
                 navHostController = eodState.navHostController,
                 onBackPress = onBackPress,
+                onSessionExpired = onSessionExpired
             )
         }
     }
@@ -31,6 +33,7 @@ fun NavGraphBuilder.eodNavGraph(
 private fun EodNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onSessionExpired: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -88,6 +91,7 @@ private fun EodNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
+            onSessionExpired = onSessionExpired
         )
     }
 }
