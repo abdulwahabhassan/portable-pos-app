@@ -6,7 +6,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 
-internal fun Project.configureCompose(
+fun Project.configureDesign(
     commonExtension: CommonExtension<*, *, *, *, *>,
 ) {
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -18,7 +18,7 @@ internal fun Project.configureCompose(
             kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
         }
         dependencies {
-            groupedCompose(libs)
+            groupedDesignDependencies(libs)
         }
     }
 }

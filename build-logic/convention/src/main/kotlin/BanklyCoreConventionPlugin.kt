@@ -12,27 +12,11 @@ import org.gradle.kotlin.dsl.kotlin
 class BanklyCoreConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
+            pluginManager.apply{
                 apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
-                apply("org.jetbrains.kotlin.kapt")
-                apply("dagger.hilt.android.plugin")
-                apply("kotlinx-serialization")
             }
-            configureToolChain()
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-            }
-            val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-            dependencies {
-                add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
-                add("implementation", libs.findLibrary("kotlinx.datetime").get())
-                add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
-                add("implementation", libs.findLibrary("hilt.android").get())
-                add("kapt", libs.findLibrary("hilt.compiler").get())
-                add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())
-                add("testImplementation", kotlin("test"))
-                add("androidTestImplementation", kotlin("test"))
             }
         }
     }

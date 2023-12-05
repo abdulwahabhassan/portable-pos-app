@@ -6,10 +6,10 @@ android {
     namespace = "com.bankly.core.data"
 }
 
+
 dependencies {
-    implementation(project(":core:model"))
-    implementation(project(":core:network"))
-    implementation(project(":core:domain"))
+    api(project(":core:network"))
+    api(project(":core:domain"))
     implementation(libs.retrofit.core)
     implementation(libs.androidx.dataStore.core)
     implementation(libs.moshi.kotlin)

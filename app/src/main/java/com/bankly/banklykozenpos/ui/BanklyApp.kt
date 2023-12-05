@@ -7,14 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.bankly.banklykozenpos.navigation.AppNavHost
-import com.bankly.core.data.util.NetworkMonitor
 
 @Composable
 fun BanklyApp(
-    networkMonitor: NetworkMonitor,
-    appState: BanklyAppState = rememberBanklyAppState(
-        networkMonitor = networkMonitor,
-    ),
+    appState: BanklyAppState = rememberBanklyAppState(),
     onCloseApp: () -> Unit,
     activity: Activity
 ) {

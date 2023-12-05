@@ -1,5 +1,4 @@
 import com.bankly.buildlogic.BuildType
-import org.jetbrains.kotlin.gradle.plugin.extraProperties
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -48,11 +47,11 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:data"))
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
-    implementation(project(":core:model"))
+//    implementation(project(":core:designsystem"))
+//    implementation(project(":core:data"))
+//    implementation(project(":core:common"))
+//    implementation(project(":core:domain"))
+//    implementation(project(":core:model"))
 
     implementation(project(":feature:authentication"))
     implementation(project(":feature:dashboard"))

@@ -2,7 +2,6 @@ package com.bankly.banklykozenpos.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -33,27 +32,20 @@ import com.bankly.banklykozenpos.navigation.navigateToPayBillsNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithCardNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToPayWithTransferNavGraph
 import com.bankly.banklykozenpos.navigation.navigateToSendMoneyNavGraph
-import com.bankly.core.data.util.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 @Composable
 fun rememberBanklyAppState(
-    networkMonitor: NetworkMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navHostController: NavHostController = rememberNavController(),
 ): BanklyAppState {
     return remember(
         navHostController,
         coroutineScope,
-        networkMonitor,
     ) {
         BanklyAppState(
             navHostController,
             coroutineScope,
-            networkMonitor,
         )
     }
 }
@@ -62,15 +54,7 @@ fun rememberBanklyAppState(
 data class BanklyAppState(
     val navHostController: NavHostController,
     private val coroutineScope: CoroutineScope,
-    val networkMonitor: NetworkMonitor,
 ) {
-    val isOffline = networkMonitor.isOnline
-        .map(Boolean::not)
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )
 
     fun navigateTo(destination: AppTopLevelDestination) {
         val navOption = navOptions {
