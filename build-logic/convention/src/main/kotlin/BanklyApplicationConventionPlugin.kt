@@ -12,6 +12,8 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("com.android.application")
+//                apply("com.google.gms.google-services")
+//                apply("com.google.firebase.crashlytics")
             }
             extensions.configure<ApplicationExtension> {
                 defaultConfig.targetSdk = 33

@@ -35,9 +35,5 @@ gradlePlugin {
             id = "com.bankly.convention.feature"
             implementationClass = "BanklyFeatureConventionPlugin"
         }
-        register("banklyUiConvention") {
-            id = "com.bankly.convention.ui"
-            implementationClass = "BanklyUiConventionPlugin"
-        }
     }
 }
