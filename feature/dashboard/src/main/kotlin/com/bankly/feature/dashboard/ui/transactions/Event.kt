@@ -42,4 +42,6 @@ internal sealed interface TransactionsScreenEvent {
 
     class OnApplyFilterClick(val transactionFilter: TransactionFilter) : TransactionsScreenEvent
     class RemoveTransactionTypeFilterItem(val item: TransactionFilterType) : TransactionsScreenEvent
+
+    object OnRefresh : TransactionsScreenEvent
 }

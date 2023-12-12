@@ -15,6 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,7 +44,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.common.model.DateRange
@@ -50,6 +53,7 @@ import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDatePicker
+import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.icon.BanklyIcons
@@ -62,10 +66,7 @@ import com.bankly.core.entity.TransactionFilter
 import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.R
-import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.feature.dashboard.ui.component.TransactionListItem
-import com.bankly.feature.dashboard.ui.home.HomeScreenOneShotState
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -106,7 +107,7 @@ internal fun TransactionsRoute(
     })
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 private fun TransactionsScreen(
     onBackPress: () -> Unit,
@@ -183,82 +184,99 @@ private fun TransactionsScreen(
                 )
             }
         }
+
+
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            if (screenState.selectedTransactionFilterTypes.isNotEmpty()) {
-                item {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp, bottom = 8.dp)
-                    ) {
-                        LazyRow(
-                            modifier = Modifier
-                                .padding(end = 16.dp, start = 16.dp)
-                                .align(Alignment.CenterStart)
-                                .fillMaxWidth(0.755f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            items(
-                                screenState.selectedTransactionFilterTypes,
-                                key = TransactionFilterType::id
-                            ) { item: TransactionFilterType ->
-                                BanklyFilterChip(
-                                    title = item.name,
-                                    isSelected = item.isSelected,
-                                    onClick = {
-                                        onUiEvent(
-                                            TransactionsScreenEvent.RemoveTransactionTypeFilterItem(
-                                                item
-                                            )
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        Icon(
-                                            painter = painterResource(id = BanklyIcons.Remove),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified
-                                        )
-                                    }
-                                )
-                            }
-                        }
+
+        val pullRefreshState =
+            rememberPullRefreshState(refreshing = screenState.isRefreshing, onRefresh = {
+                onUiEvent(TransactionsScreenEvent.OnRefresh)
+            })
+
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                if (screenState.selectedTransactionFilterTypes.isNotEmpty()) {
+                    item {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .padding(end = 16.dp)
+                                .fillMaxWidth()
+                                .padding(top = 8.dp, bottom = 8.dp)
                         ) {
-                            BanklyClickableText(
-                                text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
-                                onClick = {
-                                    onUiEvent(TransactionsScreenEvent.OnClearAllFilters)
-                                },
-                                backgroundShape = RoundedCornerShape(4.dp),
-                                textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
-                            )
+                            LazyRow(
+                                modifier = Modifier
+                                    .padding(end = 16.dp, start = 16.dp)
+                                    .align(Alignment.CenterStart)
+                                    .fillMaxWidth(0.755f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                items(
+                                    screenState.selectedTransactionFilterTypes,
+                                    key = TransactionFilterType::id
+                                ) { item: TransactionFilterType ->
+                                    BanklyFilterChip(
+                                        title = item.name,
+                                        isSelected = item.isSelected,
+                                        onClick = {
+                                            onUiEvent(
+                                                TransactionsScreenEvent.RemoveTransactionTypeFilterItem(
+                                                    item
+                                                )
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            Icon(
+                                                painter = painterResource(id = BanklyIcons.Remove),
+                                                contentDescription = null,
+                                                tint = Color.Unspecified
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .padding(end = 16.dp)
+                            ) {
+                                BanklyClickableText(
+                                    text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
+                                    onClick = {
+                                        onUiEvent(TransactionsScreenEvent.OnClearAllFilters)
+                                    },
+                                    backgroundShape = RoundedCornerShape(4.dp),
+                                    textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            items(filteredList) { item ->
-                TransactionListItem(
-                    transaction = item,
-                    onClick = {
-                        onTransactionSelected(item.toTransactionReceipt())
-                    },
-                )
+                items(filteredList) { item ->
+                    TransactionListItem(
+                        transaction = item,
+                        onClick = {
+                            onTransactionSelected(item.toTransactionReceipt())
+                        },
+                    )
+                }
             }
+            PullRefreshIndicator(
+                refreshing = screenState.isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.Center),
+                contentColor = MaterialTheme.colorScheme.primary
+            )
         }
+
         if (sheetState.isVisible) {
             ModalBottomSheet(
                 modifier = Modifier

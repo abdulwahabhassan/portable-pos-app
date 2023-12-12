@@ -167,10 +167,23 @@ internal class TransactionsViewModel @Inject constructor(
                 }
                 loadUiData()
             }
+
+            TransactionsScreenEvent.OnRefresh -> {
+                val userPrefData = userPreferencesDataStore.data()
+                loadUiData(
+                    filter = TransactionFilterData(
+                        dateCreatedFrom = userPrefData.transactionFilter.dateFrom?.toString() ?: "",
+                        dateCreatedTo = userPrefData.transactionFilter.dateTo?.toString() ?: "",
+                        transactionType = if (userPrefData.transactionFilter.transactionTypes.size == 1)
+                            userPrefData.transactionFilter.transactionTypes[0].id.toString() else ""
+                    ),
+                    isTriggeredByRefresh = true
+                )
+            }
         }
     }
 
-    private suspend fun loadUiData(filter: TransactionFilterData? = null) {
+    private suspend fun loadUiData(filter: TransactionFilterData? = null, isTriggeredByRefresh: Boolean = false) {
         combine(
             flow = getTransactionsUseCase.invoke(
                 token = userPreferencesDataStore.data().token,
@@ -197,21 +210,22 @@ internal class TransactionsViewModel @Inject constructor(
                         transactionReferenceTFV = TextFieldValue(transactionFilter.transactionReference),
                         accountNameTFV = TextFieldValue(transactionFilter.accountName),
                         allTransactionFilterTypes = transactionFilter.transactionTypes,
-                        selectedTransactionFilterTypes = transactionFilter.transactionTypes.filter { type -> type.isSelected }
+                        selectedTransactionFilterTypes = transactionFilter.transactionTypes.filter { type -> type.isSelected },
+                        isRefreshing = isTriggeredByRefresh
                     )
                 }
             }
             if (triple.first is Resource.Ready && triple.second is Resource.Ready) {
+                val selectedTransactionFilterTypes =
+                    triple.third.transactionFilter.transactionTypes.filter { it.isSelected }
+                val allTransactionFilterTypes =
+                    (triple.second as Resource.Ready<List<TransactionFilterType>>).data.distinct()
+                        .map { type ->
+                            selectedTransactionFilterTypes.find { selectedType ->
+                                type.id == selectedType.id
+                            } ?: type
+                        }
                 setUiState {
-                    val selectedTransactionFilterTypes =
-                        triple.third.transactionFilter.transactionTypes.filter { it.isSelected }
-                    val allTransactionFilterTypes =
-                        (triple.second as Resource.Ready<List<TransactionFilterType>>).data.distinct()
-                            .map { type ->
-                                selectedTransactionFilterTypes.find { selectedType ->
-                                    type.id == selectedType.id
-                                } ?: type
-                            }
                     copy(
                         isTransactionFilterTypesLoading = false,
                         allTransactionFilterTypes = allTransactionFilterTypes,
@@ -220,7 +234,8 @@ internal class TransactionsViewModel @Inject constructor(
                         transactions = filterTransactions(
                             transactions = (triple.first as Resource.Ready<List<Transaction>>).data,
                             userPrefData = triple.third
-                        )
+                        ),
+                        isRefreshing = false
                     )
                 }
             }
@@ -234,7 +249,8 @@ internal class TransactionsViewModel @Inject constructor(
                     copy(
                         isTransactionsLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = message
+                        errorDialogMessage = message,
+                        isRefreshing = false
                     )
                 }
             }
@@ -244,7 +260,8 @@ internal class TransactionsViewModel @Inject constructor(
                     copy(
                         isTransactionFilterTypesLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = message
+                        errorDialogMessage = message,
+                        isRefreshing = false
                     )
                 }
             }
@@ -254,7 +271,8 @@ internal class TransactionsViewModel @Inject constructor(
                 copy(
                     isTransactionFilterTypesLoading = false,
                     showErrorDialog = true,
-                    errorDialogMessage = it.message ?: ""
+                    errorDialogMessage = it.message ?: "",
+                    isRefreshing = false
                 )
             }
         }.launchIn(viewModelScope)

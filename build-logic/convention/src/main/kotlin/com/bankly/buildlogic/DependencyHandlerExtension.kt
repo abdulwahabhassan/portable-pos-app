@@ -20,6 +20,7 @@ private fun DependencyHandler.groupedComposeDependencies(libs: VersionCatalog) {
     add("api", libs.findLibrary("androidx.compose.foundation").get())
     add("api", libs.findLibrary("androidx.compose.foundation.layout").get())
     add("api", libs.findLibrary("androidx.compose.material.iconsExtended").get())
+    add("api", libs.findLibrary("androidx.compose.material").get())
     add("api", libs.findLibrary("androidx.compose.material3").get())
     add("api", libs.findLibrary("androidx.compose.runtime").get())
     add("api", libs.findLibrary("androidx.compose.ui.tooling.preview").get())

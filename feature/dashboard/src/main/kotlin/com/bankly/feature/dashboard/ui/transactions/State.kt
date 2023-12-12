@@ -36,7 +36,8 @@ internal data class TransactionsScreenState(
     val isEndDateFilterError: Boolean = false,
     val showAllTransactionFilterType: Boolean = false,
     val cashFlows: List<CashFlow> = emptyList(),
-    val selectedTransactionFilterTypes: List<TransactionFilterType> = emptyList()
+    val selectedTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
+    val isRefreshing: Boolean = false
 ) {
 
     val isLoading: Boolean
