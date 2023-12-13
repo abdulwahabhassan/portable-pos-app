@@ -87,7 +87,7 @@ internal fun SavedBeneficiaryView(
                 }
             }
         } else {
-            EmptyStateView()
+            EmptyStateView(stringResource(R.string.msg_no_saved_beneficiary))
         }
     } else {
         Column {

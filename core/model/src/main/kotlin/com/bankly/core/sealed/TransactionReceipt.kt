@@ -3,11 +3,13 @@ package com.bankly.core.sealed
 import com.bankly.core.util.Formatter.formatServerDateTime
 import kotlinx.serialization.Serializable
 
+private const val SUCCESSFUL = "Successful"
+
 @Serializable
-sealed class TransactionReceipt (
+sealed class TransactionReceipt(
     val transactionAmount: Double,
     val transactionMessage: String,
-){
+) {
     @Serializable
     data class BankTransfer(
         val accountName: String,
@@ -79,7 +81,7 @@ sealed class TransactionReceipt (
         val sessionId: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = message
+        transactionMessage = statusName
     )
 
     @Serializable
@@ -107,46 +109,46 @@ sealed class TransactionReceipt (
         val isTokenType: Boolean
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = description
+        transactionMessage = SUCCESSFUL
     )
 
     @Serializable
     data class TransactionHistory(
-    val statusName: String,
-    val userType: Long,
-    val senderName: String,
-    val receiverName: String,
-    val balanceBeforeTransaction: Double,
-    val id: Long,
-    val reference: String,
-    val transactionType: Long,
-    val transactionTypeName: String,
-    val description: String,
-    val narration: String,
-    val amount: Double,
-    val creditAccountNumber: String,
-    val parentReference: String,
-    val transactionDate: String,
-    val credit: Double,
-    val debit: Double,
-    val balanceAfterTransaction: Double,
-    val sender: String,
-    val receiver: String,
-    val status: Long,
-    val charges: Double,
-    val aggregatorCommission: Double,
-    val hasCharges: Boolean,
-    val agentCommission: Double,
-    val debitAccountNumber: String,
-    val stateId: Long,
-    val lgaId: Long,
-    val regionId: String,
-    val aggregatorId: Long,
-    val isCredit: Boolean,
-    val isDebit: Boolean
+        val statusName: String,
+        val userType: Long,
+        val senderName: String,
+        val receiverName: String,
+        val balanceBeforeTransaction: Double,
+        val id: Long,
+        val reference: String,
+        val transactionType: Long,
+        val transactionTypeName: String,
+        val description: String,
+        val narration: String,
+        val amount: Double,
+        val creditAccountNumber: String,
+        val parentReference: String,
+        val transactionDate: String,
+        val credit: Double,
+        val debit: Double,
+        val balanceAfterTransaction: Double,
+        val sender: String,
+        val receiver: String,
+        val status: Long,
+        val charges: Double,
+        val aggregatorCommission: Double,
+        val hasCharges: Boolean,
+        val agentCommission: Double,
+        val debitAccountNumber: String,
+        val stateId: Long,
+        val lgaId: Long,
+        val regionId: String,
+        val aggregatorId: Long,
+        val isCredit: Boolean,
+        val isDebit: Boolean
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = description
+        transactionMessage = statusName
     )
 
 
@@ -237,19 +239,21 @@ sealed class TransactionReceipt (
 
     private fun getPaidForTitle(transactionType: String): String {
         return if (transactionType.contains("Airtime", true) ||
-            transactionType.contains("Data", true)) "Phone Number"
+            transactionType.contains("Data", true)
+        ) "Phone Number"
         else if (transactionType.contains("Electricity", true)) "Meter Number"
         else if (transactionType.contains("Cable", true)) "IUC/Decoder Number"
         else "UID"
     }
 
     fun isSuccessfulTransaction() = transactionMessage.contains(
-    "transaction approved",
-    true,
+        "transaction approved",
+        true,
     ) || listOf(
-    "successful",
-    "Successful",
-    "approved",
-    "Approved"
+        "successful",
+        "Successful",
+        "approved",
+        "Approved",
+        "Transfer Completed Successfully"
     ).any { keyword -> transactionMessage == keyword }
 }

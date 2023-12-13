@@ -52,7 +52,7 @@ fun BanklyInputField(
     isPasswordField: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: Int? = null,
-    onTrailingIconClick: () -> Unit = {},
+    onTrailingIconClick: (() -> Unit)? = null,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     horizontalPadding: Dp = 24.dp,
@@ -147,6 +147,7 @@ fun BanklyInputField(
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
+                singleLine = maxlines == 1,
                 minLines = minLines,
                 maxLines = maxlines,
                 placeholder = {
@@ -236,6 +237,7 @@ fun BanklyInputField(
                 enabled = isEnabled,
                 readOnly = readOnly,
                 isError = isError,
+                singleLine = maxlines == 1,
                 minLines = minLines,
                 maxLines = maxlines,
                 keyboardOptions = keyboardOptions,
@@ -243,7 +245,7 @@ fun BanklyInputField(
                 shape = MaterialTheme.shapes.medium,
                 colors = textFieldColors,
                 trailingIcon = {
-                    trailingIcon?.let {
+                    if (trailingIcon != null && onTrailingIconClick != null) {
                         Icon(
                             painter = painterResource(trailingIcon),
                             contentDescription = "Trailing icon",

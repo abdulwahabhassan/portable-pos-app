@@ -37,4 +37,5 @@
     <string name="title_select_cable_plan">Select Cable Plan</string>
     <string name="title_select_electricity_plan">Select Electricity Plan</string>
     <string name="msg_enter_iuc_or_decoder_number">Enter IUC/Decoder number</string>
+    <string name="msg_no_saved_beneficiary">No saved beneficiary</string>
 </resources>

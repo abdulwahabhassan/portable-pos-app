@@ -90,7 +90,7 @@ internal fun SavedBeneficiaryView(
                 }
             }
         } else {
-            EmptyStateView()
+            EmptyStateView(stringResource(R.string.msg_no_saved_beneficiary))
         }
     } else {
         Column {
@@ -176,7 +176,9 @@ internal fun SavedBeneficiaryView(
                                 isError = screenState.isAmountError,
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
-                                visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
+                                visualTransformation = AmountInputVisualTransformation(
+                                    AmountFormatter()
+                                ),
                             )
                         }
 
@@ -211,7 +213,9 @@ internal fun SavedBeneficiaryView(
                                 isError = screenState.isAmountError,
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
-                                visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
+                                visualTransformation = AmountInputVisualTransformation(
+                                    AmountFormatter()
+                                ),
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -283,7 +287,9 @@ internal fun SavedBeneficiaryView(
                                 isError = screenState.isAmountError,
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
-                                visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
+                                visualTransformation = AmountInputVisualTransformation(
+                                    AmountFormatter()
+                                ),
                             )
                         }
 
@@ -303,7 +309,9 @@ internal fun SavedBeneficiaryView(
                                 isError = screenState.isAmountError,
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
-                                visualTransformation = AmountInputVisualTransformation(AmountFormatter()),
+                                visualTransformation = AmountInputVisualTransformation(
+                                    AmountFormatter()
+                                ),
                             )
                         }
                     }

@@ -24,4 +24,5 @@
     <string name="title_confirm_transaction_error">Confirm transaction error</string>
     <string name="action_okay">Okay</string>
     <string name="title_please_select_transaction_channel">Please select transaction channel</string>
+    <string name="msg_no_saved_beneficiary">No saved beneficiary</string>
 </resources>

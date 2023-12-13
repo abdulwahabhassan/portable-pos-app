@@ -58,6 +58,7 @@ object BanklyIcons {
     val Mtn = R.drawable.ic_mtn_logo
     val Close = R.drawable.ic_close
     val SadFace = R.drawable.ic_sad_face
+    val NoSavedBeneficiary = R.drawable.ic_no_saved_beneficiary
     val Filter = R.drawable.ic_filter
     val BoxSadFace = R.drawable.ic_box_sad_face
     val Document = R.drawable.ic_document

@@ -26,28 +26,28 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
-fun EmptyStateView() {
+fun EmptyStateView(
+    message: String = "Empty"
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            modifier = Modifier.size(100.dp).padding(8.dp),
-            painter = painterResource(id = BanklyIcons.SadFace),
+            modifier = Modifier
+                .size(120.dp)
+                .background(color = MaterialTheme.colorScheme.primaryContainer, shape = MaterialTheme.shapes.small)
+                .padding(8.dp),
+            painter = painterResource(id = BanklyIcons.NoSavedBeneficiary),
             contentDescription = null,
             tint = Color.Unspecified
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(R.string.title_empty),
+            text = message,
             style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.msg_it_s_quite_lonely_here),
-            style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
         )
     }
