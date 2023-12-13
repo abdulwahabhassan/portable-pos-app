@@ -51,8 +51,8 @@ internal fun NavGraphBuilder.beneficiaryRoute(
             navArgument(sendMoneyChannelArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(sendMoneyChannelArg)?.let { sendMoneyChannel: String ->
-            val channelEnum = when (sendMoneyChannel) {
+        it.arguments?.getString(sendMoneyChannelArg)?.let { sendMoneyChannelString: String ->
+            val channelEnum = when (sendMoneyChannelString) {
                 SendMoneyChannel.BANKLY_TO_BANKLY.name -> SendMoneyChannel.BANKLY_TO_BANKLY
                 SendMoneyChannel.BANKLY_TO_OTHER.name -> SendMoneyChannel.BANKLY_TO_OTHER
                 else -> null
@@ -82,10 +82,10 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
             navArgument(transactionDataArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
-            val data: TransactionData = Json.decodeFromString(transactionData)
+        it.arguments?.getString(transactionDataArg)?.let { transactionDataString: String ->
+            val transactionData: TransactionData = Json.decodeFromString(transactionDataString)
             ConfirmTransactionRoute(
-                transactionData = data,
+                transactionData = transactionData,
                 onConfirmationSuccess = onConfirmationSuccess,
                 onBackPress = onBackPress,
                 onCloseClick = onCloseClick,
@@ -106,12 +106,14 @@ internal fun NavGraphBuilder.processTransactionRoute(
             navArgument(transactionDataArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
-            val data: TransactionData = Json.decodeFromString(transactionData)
+        it.arguments?.getString(transactionDataArg)?.let { transactionDataString: String ->
+            val transactionData: TransactionData = Json.decodeFromString(transactionDataString)
             ProcessTransactionRoute(
-                transactionData = data,
+                transactionData = transactionData,
                 onTransactionSuccess = onSuccessfulTransaction,
-                onFailedTransaction = onFailedTransaction,
+                onFailedTransaction = { message: String, _ ->
+                    onFailedTransaction(message)
+                },
                 onSessionExpired = onSessionExpired
             )
         }
@@ -128,11 +130,12 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
+            val transactionReceipt: TransactionReceipt =
+                Json.decodeFromString(transactionReceiptString)
             TransactionSuccessRoute(
-                transactionReceipt = trans,
-                message = trans.transactionMessage,
+                transactionReceipt = transactionReceipt,
+                message = transactionReceipt.transactionMessage,
                 onViewTransactionDetailsClick = onViewTransactionDetailsClick,
                 onGoToHome = onGoHomeClick,
             )
@@ -149,7 +152,8 @@ internal fun NavGraphBuilder.transactionFailedRoute(
             navArgument(messageArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(messageArg)?.let { message: String ->
+        it.arguments?.getString(messageArg)?.let { messageString: String ->
+            val message: String = Json.decodeFromString(messageString)
             TransactionFailedRoute(
                 onGoToHome = onGoHomeClick,
                 message = message,
@@ -170,10 +174,12 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
+            val transactionReceipt: TransactionReceipt =
+                Json.decodeFromString(transactionReceiptString)
             TransactionDetailsRoute(
-                transactionReceipt = trans,
+                transactionReceipt = transactionReceipt,
+                isSuccess = transactionReceipt.isSuccessfulTransaction(),
                 onShareClick = onShareClick,
                 onSmsClick = onSmsClick,
                 onLogComplaintClick = onLogComplaintClick,

@@ -35,8 +35,9 @@ import kotlinx.coroutines.launch
 fun ProcessTransactionRoute(
     viewModel: ProcessTransactionViewModel = hiltViewModel(),
     transactionData: TransactionData,
+    cardTransactionReceipt: TransactionReceipt? = null,
     onTransactionSuccess: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String) -> Unit,
+    onFailedTransaction: (String, TransactionReceipt?) -> Unit,
     onSessionExpired: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -48,7 +49,7 @@ fun ProcessTransactionRoute(
             viewModel.oneShotState.collectLatest { oneShotUiState ->
                 when (oneShotUiState) {
                     is ProcessTransactionScreenOneShotState.GoToTransactionFailedScreen -> {
-                        onFailedTransaction(oneShotUiState.message)
+                        onFailedTransaction(oneShotUiState.message, cardTransactionReceipt)
                     }
                     is ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen -> {
                         onTransactionSuccess(oneShotUiState.transactionReceipt)

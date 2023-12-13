@@ -45,6 +45,7 @@ import com.bankly.core.sealed.TransactionReceipt
 @Composable
 fun TransactionDetailsRoute(
     transactionReceipt: TransactionReceipt,
+    isSuccess: Boolean,
     onShareClick: () -> Unit,
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
@@ -53,6 +54,7 @@ fun TransactionDetailsRoute(
 ) {
     TransactionDetailsScreen(
         transactionReceipt = transactionReceipt,
+        isSuccess = isSuccess,
         onShareClick = onShareClick,
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
@@ -64,6 +66,7 @@ fun TransactionDetailsRoute(
 @Composable
 fun TransactionDetailsScreen(
     transactionReceipt: TransactionReceipt,
+    isSuccess: Boolean,
     onShareClick: () -> Unit,
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
@@ -147,7 +150,7 @@ fun TransactionDetailsScreen(
 
                     Icon(
                         modifier = Modifier.size(60.dp),
-                        painter = painterResource(id = BanklyIcons.Successful),
+                        painter = if (isSuccess) painterResource(id = BanklyIcons.Successful) else painterResource(id = BanklyIcons.Failed),
                         contentDescription = null,
                         tint = Color.Unspecified,
                     )
@@ -237,7 +240,8 @@ fun TransactionDetailsScreenPreview() {
             onSmsClick = {},
             onLogComplaintClick = {},
             onGoToHomeClick = {},
-            onBackPress = {}
+            onBackPress = {},
+            isSuccess = true
         )
     }
 }

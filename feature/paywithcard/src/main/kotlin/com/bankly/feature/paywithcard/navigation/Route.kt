@@ -5,10 +5,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
-import com.bankly.core.common.model.TransactionData
-import com.bankly.core.common.ui.entercardpin.EnterCardPinRoute
-import com.bankly.core.common.ui.insertcard.InsertCardRoute
-import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
@@ -48,11 +44,11 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
+            val transactionReceipt: TransactionReceipt = Json.decodeFromString(transactionReceiptString)
             TransactionSuccessRoute(
-                transactionReceipt = trans,
-                message = trans.transactionMessage,
+                transactionReceipt = transactionReceipt,
+                message = transactionReceipt.transactionMessage,
                 onViewTransactionDetailsClick = onViewTransactionDetailsClick,
                 onGoToHome = onGoHomeClick,
             )
@@ -62,17 +58,25 @@ internal fun NavGraphBuilder.transactionSuccessRoute(
 
 internal fun NavGraphBuilder.transactionFailedRoute(
     onGoHomeClick: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
 ) {
     composable(
-        route = "$transactionFailedRoute/{$messageArg}",
+        route = "$transactionFailedRoute/{$messageArg}/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(messageArg) { type = NavType.StringType },
+            navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
-    ) {
-        it.arguments?.getString(messageArg)?.let { message: String ->
+    ) { navBackStackEntry ->
+        navBackStackEntry.arguments?.getString(messageArg)?.let { messageString: String ->
+            val message: String = Json.decodeFromString(messageString)
+            val transactionReceipt: TransactionReceipt? =
+                navBackStackEntry.arguments?.getString(transactionReceiptArg)
+                    ?.let { transactionString: String -> Json.decodeFromString(transactionString) }
             TransactionFailedRoute(
                 onGoToHome = onGoHomeClick,
                 message = message,
+                transactionReceipt = transactionReceipt,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             )
         }
     }
@@ -90,10 +94,11 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
+        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
+            val transactionReceipt: TransactionReceipt = Json.decodeFromString(transactionReceiptString)
             TransactionDetailsRoute(
-                transactionReceipt = trans,
+                transactionReceipt = transactionReceipt,
+                isSuccess = transactionReceipt.isSuccessfulTransaction(),
                 onShareClick = onShareClick,
                 onSmsClick = onSmsClick,
                 onLogComplaintClick = onLogComplaintClick,

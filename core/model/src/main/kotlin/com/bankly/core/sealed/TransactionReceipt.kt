@@ -183,7 +183,8 @@ sealed class TransactionReceipt (
                 "Status" to this.statusName,
                 "Description" to this.message,
                 "Terminal ID" to this.terminalId,
-                "Transaction REF" to this.cardType,
+                "Card Type" to this.cardType,
+                "Transaction REF" to this.reference,
                 "Date/Time" to formatServerDateTime(this.dateTime),
                 "Response Code" to this.responseCode,
                 "RRN" to this.rrn,
@@ -241,4 +242,14 @@ sealed class TransactionReceipt (
         else if (transactionType.contains("Cable", true)) "IUC/Decoder Number"
         else "UID"
     }
+
+    fun isSuccessfulTransaction() = transactionMessage.contains(
+    "transaction approved",
+    true,
+    ) || listOf(
+    "successful",
+    "Successful",
+    "approved",
+    "Approved"
+    ).any { keyword -> transactionMessage == keyword }
 }

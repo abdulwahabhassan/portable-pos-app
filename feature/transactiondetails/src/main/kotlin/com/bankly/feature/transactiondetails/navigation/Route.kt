@@ -31,6 +31,7 @@ internal fun NavGraphBuilder.transactionDetailsRoute(
     ) {
             TransactionDetailsRoute(
                 transactionReceipt = transactionReceipt,
+                isSuccess = transactionReceipt.isSuccessfulTransaction(),
                 onShareClick = onShareClick,
                 onSmsClick = onSmsClick,
                 onLogComplaintClick = onLogComplaintClick,
@@ -50,10 +51,10 @@ internal fun NavGraphBuilder.sendReceiptRoute(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { encodedTransactionReceipt: String ->
-            val decodedTransactionReceipt: TransactionReceipt = Json.decodeFromString(encodedTransactionReceipt)
+        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
+            val transactionReceipt: TransactionReceipt = Json.decodeFromString(transactionReceiptString)
             SendReceiptRoute(
-                transactionReceipt = decodedTransactionReceipt,
+                transactionReceipt = transactionReceipt,
                 onGoToSuccessScreen = onGoToSuccessScreen,
                 onBackPress = onBackPress
             )
@@ -71,13 +72,13 @@ internal fun NavGraphBuilder.doneRoute(
             navArgument(doneMessageArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(doneTitleArg)?.let { encodedTitle: String ->
-            it.arguments?.getString(doneMessageArg)?.let { encodedMessage: String ->
-                val decodedTitle: String = Json.decodeFromString(encodedTitle)
-                val decodedMessage: String = Json.decodeFromString(encodedMessage)
+        it.arguments?.getString(doneTitleArg)?.let { titleString: String ->
+            it.arguments?.getString(doneMessageArg)?.let { messageString: String ->
+                val title: String = Json.decodeFromString(titleString)
+                val message: String = Json.decodeFromString(messageString)
                 DoneRoute(
-                    title = decodedTitle,
-                    message = decodedMessage,
+                    title = title,
+                    message = message,
                     onDoneClick = onDoneClick,
                 )
             }

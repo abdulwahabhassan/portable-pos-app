@@ -23,18 +23,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.R
+import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
+import com.bankly.core.sealed.TransactionReceipt
 
 @Composable
 fun TransactionFailedRoute(
     message: String = "",
     onGoToHome: () -> Unit,
+    transactionReceipt: TransactionReceipt? = null,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit = {},
 ) {
     TransactionFailedScreen(
         message = message,
         onGoToHome = onGoToHome,
+        onViewTransactionDetailsClick = { transactionReceipt?.let { onViewTransactionDetailsClick(it) } },
     )
 }
 
@@ -42,6 +47,7 @@ fun TransactionFailedRoute(
 fun TransactionFailedScreen(
     message: String,
     onGoToHome: () -> Unit,
+    onViewTransactionDetailsClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -77,13 +83,25 @@ fun TransactionFailedScreen(
                 style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
             )
         }
-        Box(
+        Column(
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 32.dp)
                 .align(Alignment.BottomCenter),
+            verticalArrangement = Arrangement.Bottom,
         ) {
+            BanklyFilledButton(
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .fillMaxWidth(),
+                text = stringResource(R.string.action_view_transaction_details),
+                onClick = onViewTransactionDetailsClick,
+                isEnabled = true,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
             BanklyOutlinedButton(
                 modifier = Modifier
-                    .padding(32.dp)
+                    .padding(horizontal = 32.dp)
                     .fillMaxWidth(),
                 text = stringResource(R.string.action_go_to_home),
                 onClick = onGoToHome,
@@ -101,6 +119,7 @@ fun SuccessfulScreenPreview() {
         TransactionFailedScreen(
             message = stringResource(R.string.msg_transaction_failed),
             onGoToHome = {},
+            onViewTransactionDetailsClick = {}
         )
     }
 }

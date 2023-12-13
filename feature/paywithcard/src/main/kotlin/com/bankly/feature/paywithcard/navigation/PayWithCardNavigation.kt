@@ -1,6 +1,7 @@
 package com.bankly.feature.paywithcard.navigation
 
 import ProcessPayment
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -73,11 +74,12 @@ private fun PayWithCardNavHost(
                 Tools.transactionType =
                     com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
                 ProcessPayment(context) { transactionResponse, _ ->
+                    Log.d("debug transaction response", "$transactionResponse")
                     val receipt = transactionResponse.toTransactionReceipt()
                     if (receipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
                         navHostController.navigateToTransactionSuccessRoute(receipt)
                     } else {
-                        navHostController.navigateToTransactionFailedRoute(receipt.message)
+                        navHostController.navigateToTransactionFailedRoute(receipt.message, receipt)
                     }
                 }
             },
@@ -94,6 +96,9 @@ private fun PayWithCardNavHost(
         )
         transactionFailedRoute(
             onGoHomeClick = onBackPress,
+            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
+            },
         )
         transactionDetailsRoute(
             onShareClick = { },

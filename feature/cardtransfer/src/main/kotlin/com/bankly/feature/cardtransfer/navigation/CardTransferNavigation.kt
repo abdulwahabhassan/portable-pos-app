@@ -78,10 +78,11 @@ private fun CardTransferNavHost(
                             transaction.copy(
                                 responseMessage = transactionResponse.responseMessage ?: "",
                                 responseCode = transactionResponse.responseCode ?: ""
-                            )
+                            ),
+                            receipt
                         )
                     } else {
-                        navHostController.navigateToTransactionFailedRoute(receipt.message)
+                        navHostController.navigateToTransactionFailedRoute(receipt.message, receipt)
                     }
                 }
             },
@@ -94,8 +95,8 @@ private fun CardTransferNavHost(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
                 navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
             },
-            onFailedTransaction = { message: String ->
-                navHostController.navigateToTransactionFailedRoute(message = message)
+            onFailedTransaction = { message: String, cardTransactionReceipt: TransactionReceipt? ->
+                navHostController.navigateToTransactionFailedRoute(message = message, cardTransactionReceipt)
             },
             onSessionExpired = onSessionExpired
         )
@@ -107,6 +108,9 @@ private fun CardTransferNavHost(
         )
         transactionFailedRoute(
             onGoHomeClick = onBackPress,
+            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
+                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
+            },
         )
         transactionDetailsRoute(
             onShareClick = { },

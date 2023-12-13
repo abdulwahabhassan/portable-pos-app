@@ -51,11 +51,11 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
             navArgument(transactionDataArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
-            val data: TransactionData = Json.decodeFromString(transactionData)
+        it.arguments?.getString(transactionDataArg)?.let { transactionDataString: String ->
+            val transactionData: TransactionData = Json.decodeFromString(transactionDataString)
             SelectAccountTypeRoute(
                 onAccountSelected = { accountType: AccountType ->
-                    onAccountSelected(accountType, data)
+                    onAccountSelected(accountType, transactionData)
                 },
                 onBackPress = onBackPress,
                 onCancelPress = onCancelPress
@@ -66,88 +66,109 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
 
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String) -> Unit,
+    onFailedTransaction: (String, TransactionReceipt?) -> Unit,
     onSessionExpired: () -> Unit
 ) {
     composable(
-        route = "$processTransactionRoute/{$transactionDataArg}",
+        route = "$processTransactionRoute/{$transactionDataArg}/{$transactionReceiptArg}",
         arguments = listOf(
             navArgument(transactionDataArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionDataArg)?.let { transactionData: String ->
-            val data: TransactionData = Json.decodeFromString(transactionData)
-            ProcessTransactionRoute(
-                transactionData = data,
-                onTransactionSuccess = onSuccessfulTransaction,
-                onFailedTransaction = onFailedTransaction,
-                onSessionExpired = onSessionExpired
-            )
-        }
-    }
-}
-
-internal fun NavGraphBuilder.transactionSuccessRoute(
-    onGoHomeClick: () -> Unit,
-    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
-) {
-    composable(
-        route = "$transactionSuccessRoute/{$transactionReceiptArg}",
-        arguments = listOf(
             navArgument(transactionReceiptArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
-            TransactionSuccessRoute(
-                transactionReceipt = trans,
-                message = trans.transactionMessage,
-                onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-                onGoToHome = onGoHomeClick,
-            )
+        it.arguments?.getString(transactionDataArg)?.let { transactionDataString: String ->
+            val transactionData: TransactionData =
+                Json.decodeFromString(transactionDataString)
+            it.arguments?.getString(transactionReceiptArg)
+                ?.let { transactionReceiptString: String ->
+                    val transactionReceipt: TransactionReceipt =
+                        Json.decodeFromString(transactionReceiptString)
+                    ProcessTransactionRoute(
+                        transactionData = transactionData,
+                        cardTransactionReceipt = transactionReceipt,
+                        onTransactionSuccess = onSuccessfulTransaction,
+                        onFailedTransaction = onFailedTransaction,
+                        onSessionExpired = onSessionExpired
+                    )
+                }
         }
     }
 }
 
-internal fun NavGraphBuilder.transactionFailedRoute(
-    onGoHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$transactionFailedRoute/{$messageArg}",
-        arguments = listOf(
-            navArgument(messageArg) { type = NavType.StringType },
-        ),
+    internal fun NavGraphBuilder.transactionSuccessRoute(
+        onGoHomeClick: () -> Unit,
+        onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
     ) {
-        it.arguments?.getString(messageArg)?.let { message: String ->
-            TransactionFailedRoute(
-                onGoToHome = onGoHomeClick,
-                message = message,
-            )
+        composable(
+            route = "$transactionSuccessRoute/{$transactionReceiptArg}",
+            arguments = listOf(
+                navArgument(transactionReceiptArg) { type = NavType.StringType },
+            ),
+        ) {
+            it.arguments?.getString(transactionReceiptArg)
+                ?.let { transactionReceiptString: String ->
+                    val transactionReceipt: TransactionReceipt =
+                        Json.decodeFromString(transactionReceiptString)
+                    TransactionSuccessRoute(
+                        transactionReceipt = transactionReceipt,
+                        message = transactionReceipt.transactionMessage,
+                        onViewTransactionDetailsClick = onViewTransactionDetailsClick,
+                        onGoToHome = onGoHomeClick,
+                    )
+                }
         }
     }
-}
 
-internal fun NavGraphBuilder.transactionDetailsRoute(
-    onShareClick: () -> Unit,
-    onSmsClick: (TransactionReceipt) -> Unit,
-    onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$transactionDetailsRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
+    internal fun NavGraphBuilder.transactionFailedRoute(
+        onGoHomeClick: () -> Unit,
+        onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
     ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transaction: String ->
-            val trans: TransactionReceipt = Json.decodeFromString(transaction)
-            TransactionDetailsRoute(
-                transactionReceipt = trans,
-                onShareClick = onShareClick,
-                onSmsClick = onSmsClick,
-                onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick,
-            )
+        composable(
+            route = "$transactionFailedRoute/{$messageArg}/{$transactionReceiptArg}",
+            arguments = listOf(
+                navArgument(messageArg) { type = NavType.StringType },
+                navArgument(transactionReceiptArg) { type = NavType.StringType },
+            ),
+        ) { navBackStackEntry ->
+            navBackStackEntry.arguments?.getString(messageArg)?.let { messageString: String ->
+                val message: String = Json.decodeFromString(messageString)
+                val transactionReceipt: TransactionReceipt? =
+                    navBackStackEntry.arguments?.getString(transactionReceiptArg)
+                        ?.let { transactionString: String -> Json.decodeFromString(transactionString) }
+                TransactionFailedRoute(
+                    onGoToHome = onGoHomeClick,
+                    message = message,
+                    transactionReceipt = transactionReceipt,
+                    onViewTransactionDetailsClick = onViewTransactionDetailsClick,
+                )
+            }
         }
     }
-}
+
+    internal fun NavGraphBuilder.transactionDetailsRoute(
+        onShareClick: () -> Unit,
+        onSmsClick: (TransactionReceipt) -> Unit,
+        onLogComplaintClick: () -> Unit,
+        onGoToHomeClick: () -> Unit,
+    ) {
+        composable(
+            route = "$transactionDetailsRoute/{$transactionReceiptArg}",
+            arguments = listOf(
+                navArgument(transactionReceiptArg) { type = NavType.StringType },
+            ),
+        ) {
+            it.arguments?.getString(transactionReceiptArg)
+                ?.let { transactionReceiptString: String ->
+                    val transactionReceipt: TransactionReceipt =
+                        Json.decodeFromString(transactionReceiptString)
+                    TransactionDetailsRoute(
+                        transactionReceipt = transactionReceipt,
+                        isSuccess = transactionReceipt.isSuccessfulTransaction(),
+                        onShareClick = onShareClick,
+                        onSmsClick = onSmsClick,
+                        onLogComplaintClick = onLogComplaintClick,
+                        onGoToHomeClick = onGoToHomeClick,
+                    )
+                }
+        }
+    }
