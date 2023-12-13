@@ -39,7 +39,6 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 import com.bankly.feature.cardtransfer.R
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -145,16 +144,16 @@ private fun RecipientScreen(
                         onTextFieldValueChange = { },
                         trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
-                        onTrailingIconClick = {
-                            coroutineScope.launch {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
-                            }
-                        },
                         placeholderText = stringResource(R.string.msg_bank_name),
                         labelText = stringResource(R.string.msg_select_bank),
                         isError = screenState.isBankNameError,
                         feedbackText = screenState.bankNameFeedBack,
                         isEnabled = screenState.isUserInputEnabled,
+                        onSurfaceAreaClick = {
+                            coroutineScope.launch {
+                                bottomSheetScaffoldState.bottomSheetState.expand()
+                            }
+                        }
                     )
 
                     BanklyInputField(

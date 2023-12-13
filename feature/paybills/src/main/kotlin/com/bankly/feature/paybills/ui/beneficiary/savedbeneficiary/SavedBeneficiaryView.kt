@@ -128,7 +128,6 @@ internal fun SavedBeneficiaryView(
                         onTextFieldValueChange = { },
                         trailingIcon = BanklyIcons.ChevronDown,
                         readOnly = true,
-                        onTrailingIconClick = onProviderDropDownIconClick,
                         placeholderText = stringResource(R.string.msg_select_provider),
                         labelText = stringResource(
                             when (billType) {
@@ -140,6 +139,7 @@ internal fun SavedBeneficiaryView(
                         isError = screenState.isProviderError,
                         feedbackText = screenState.providerFeedBack,
                         isEnabled = screenState.isProviderFieldEnable,
+                        onSurfaceAreaClick = onProviderDropDownIconClick
                     )
 
                     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -151,14 +151,14 @@ internal fun SavedBeneficiaryView(
                                 onTextFieldValueChange = { },
                                 trailingIcon = BanklyIcons.ChevronDown,
                                 readOnly = true,
-                                onTrailingIconClick = {
-                                    onPlanDropDownIconClick(billType)
-                                },
                                 placeholderText = stringResource(R.string.msg_select_data_plan),
                                 labelText = stringResource(R.string.title_data_plan),
                                 isError = screenState.isPlanError,
                                 feedbackText = screenState.planFeedBack,
                                 isEnabled = screenState.isPlanFieldEnabled,
+                                onSurfaceAreaClick = {
+                                    onPlanDropDownIconClick(billType)
+                                }
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -188,14 +188,14 @@ internal fun SavedBeneficiaryView(
                                 onTextFieldValueChange = { },
                                 trailingIcon = BanklyIcons.ChevronDown,
                                 readOnly = true,
-                                onTrailingIconClick = {
-                                    onPlanDropDownIconClick(billType)
-                                },
                                 placeholderText = stringResource(R.string.msg_select_cable_plan),
                                 labelText = stringResource(R.string.title_cable_plan),
                                 isError = screenState.isPlanError,
                                 feedbackText = screenState.planFeedBack,
                                 isEnabled = screenState.isPlanFieldEnabled,
+                                onSurfaceAreaClick = {
+                                    onPlanDropDownIconClick(billType)
+                                }
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -244,14 +244,14 @@ internal fun SavedBeneficiaryView(
                                 onTextFieldValueChange = { },
                                 trailingIcon = BanklyIcons.ChevronDown,
                                 readOnly = true,
-                                onTrailingIconClick = {
-                                    onPlanDropDownIconClick(billType)
-                                },
                                 placeholderText = stringResource(R.string.msg_select_electricity_package),
                                 labelText = stringResource(R.string.title_electricity_package),
                                 isError = screenState.isPlanError,
                                 feedbackText = screenState.planFeedBack,
                                 isEnabled = screenState.isPlanFieldEnabled,
+                                onSurfaceAreaClick = {
+                                    onPlanDropDownIconClick(billType)
+                                }
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))

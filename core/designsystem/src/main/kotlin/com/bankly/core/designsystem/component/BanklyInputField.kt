@@ -3,13 +3,13 @@ package com.bankly.core.designsystem.component
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -38,7 +39,6 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BanklyInputField(
     textFieldValue: TextFieldValue,
@@ -52,12 +52,13 @@ fun BanklyInputField(
     isPasswordField: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: Int? = null,
-    onTrailingIconClick: (() -> Unit)? = null,
+    onTrailingIconClick: () -> Unit = { },
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     horizontalPadding: Dp = 24.dp,
     minLines: Int = 1,
-    maxlines: Int = 1
+    maxlines: Int = 1,
+    onSurfaceAreaClick: (() -> Unit)? = null
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -107,153 +108,81 @@ fun BanklyInputField(
         errorPlaceholderColor = MaterialTheme.colorScheme.error,
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-    ) {
-        if (labelText.isNotEmpty()) {
-            Text(
-                text = labelText,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.padding(horizontal = horizontalPadding),
-            )
-        }
-        if (isPasswordField) {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = horizontalPadding, vertical = 8.dp)
-                    .border(
-                        width = 1.dp,
-                        color = if (isFocused) {
-                            if (!isEnabled) {
-                                MaterialTheme.colorScheme.tertiary
-                            } else if (isError) {
-                                MaterialTheme.colorScheme.error
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+        ) {
+            if (labelText.isNotEmpty()) {
+                Text(
+                    text = labelText,
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                )
+            }
+            if (isPasswordField) {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = horizontalPadding, vertical = 8.dp)
+                        .border(
+                            width = 1.dp,
+                            color = if (isFocused) {
+                                if (!isEnabled) {
+                                    MaterialTheme.colorScheme.tertiary
+                                } else if (isError) {
+                                    MaterialTheme.colorScheme.error
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                }
                             } else {
-                                MaterialTheme.colorScheme.primary
-                            }
-                        } else {
-                            Color.Transparent
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                    )
-                    .onFocusChanged { focusState ->
-                        isFocused = focusState.isFocused
-                    },
-                value = textFieldValue,
-                onValueChange = onTextFieldValueChange,
-                enabled = isEnabled,
-                readOnly = readOnly,
-                isError = isError,
-                singleLine = maxlines == 1,
-                minLines = minLines,
-                maxLines = maxlines,
-                placeholder = {
-                    Text(
-                        text = placeholderText,
-                        style = textStyle,
-                    )
-                },
-                keyboardOptions = keyboardOptions,
-                textStyle = MaterialTheme.typography.bodyMedium,
-                shape = MaterialTheme.shapes.medium,
-                visualTransformation = if (isVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation('*')
-                },
-                trailingIcon = {
-                    Icon(
-                        painter = painterResource(
-                            id = if (isVisible) {
-                                BanklyIcons.VisibilityOff
-                            } else {
-                                BanklyIcons.VisibilityOn
+                                Color.Transparent
                             },
-                        ),
-                        contentDescription = "Visibility Icon",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clip(MaterialTheme.shapes.small)
-                            .clickable(
-                                onClick = {
-                                    isVisible = !isVisible
-                                },
-                                enabled = isEnabled,
-                                role = Role.Button,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = rememberRipple(
-                                    bounded = true,
-                                    color = if (isError) {
-                                        MaterialTheme.colorScheme.error
-                                    } else {
-                                        MaterialTheme.colorScheme.primary
-                                    },
-                                ),
-                            ),
-                        tint = if (isError) {
-                            MaterialTheme.colorScheme.error
-                        } else {
-                            MaterialTheme.colorScheme.primary
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                        .onFocusChanged { focusState ->
+                            isFocused = focusState.isFocused
                         },
-                    )
-                },
-                colors = textFieldColors,
-            )
-        } else {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = horizontalPadding, vertical = 8.dp)
-                    .border(
-                        width = 1.dp,
-                        color = if (isFocused) {
-                            if (!isEnabled) {
-                                MaterialTheme.colorScheme.tertiary
-                            } else if (isError) {
-                                MaterialTheme.colorScheme.error
-                            } else {
-                                MaterialTheme.colorScheme.primary
-                            }
-                        } else {
-                            Color.Transparent
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                    )
-                    .onFocusChanged { focusState ->
-                        isFocused = focusState.isFocused
+                    value = textFieldValue,
+                    onValueChange = onTextFieldValueChange,
+                    enabled = isEnabled,
+                    readOnly = readOnly,
+                    isError = isError,
+                    singleLine = maxlines == 1,
+                    minLines = minLines,
+                    maxLines = maxlines,
+                    placeholder = {
+                        Text(
+                            text = placeholderText,
+                            style = textStyle,
+                        )
                     },
-                value = textFieldValue,
-                placeholder = {
-                    Text(
-                        text = placeholderText,
-                        style = textStyle,
-                    )
-                },
-                visualTransformation = visualTransformation,
-                onValueChange = onTextFieldValueChange,
-                enabled = isEnabled,
-                readOnly = readOnly,
-                isError = isError,
-                singleLine = maxlines == 1,
-                minLines = minLines,
-                maxLines = maxlines,
-                keyboardOptions = keyboardOptions,
-                textStyle = textStyle,
-                shape = MaterialTheme.shapes.medium,
-                colors = textFieldColors,
-                trailingIcon = {
-                    if (trailingIcon != null && onTrailingIconClick != null) {
+                    keyboardOptions = keyboardOptions,
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    shape = MaterialTheme.shapes.medium,
+                    visualTransformation = if (isVisible) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation('*')
+                    },
+                    trailingIcon = {
                         Icon(
-                            painter = painterResource(trailingIcon),
-                            contentDescription = "Trailing icon",
+                            painter = painterResource(
+                                id = if (isVisible) {
+                                    BanklyIcons.VisibilityOff
+                                } else {
+                                    BanklyIcons.VisibilityOn
+                                },
+                            ),
+                            contentDescription = "Visibility Icon",
                             modifier = Modifier
                                 .size(24.dp)
                                 .clip(MaterialTheme.shapes.small)
                                 .clickable(
-                                    onClick = onTrailingIconClick,
+                                    onClick = {
+                                        isVisible = !isVisible
+                                    },
                                     enabled = isEnabled,
                                     role = Role.Button,
                                     interactionSource = remember { MutableInteractionSource() },
@@ -266,27 +195,110 @@ fun BanklyInputField(
                                         },
                                     ),
                                 ),
-                            tint = Color.Unspecified,
+                            tint = if (isError) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            },
                         )
-                    }
-                },
+                    },
+                    colors = textFieldColors,
+                )
+            } else {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = horizontalPadding, vertical = 8.dp)
+                        .border(
+                            width = 1.dp,
+                            color = if (isFocused) {
+                                if (!isEnabled) {
+                                    MaterialTheme.colorScheme.tertiary
+                                } else if (isError) {
+                                    MaterialTheme.colorScheme.error
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                }
+                            } else {
+                                Color.Transparent
+                            },
+                            shape = MaterialTheme.shapes.medium,
+                        )
+                        .onFocusChanged { focusState ->
+                            isFocused = focusState.isFocused
+                        },
+                    value = textFieldValue,
+                    placeholder = {
+                        Text(
+                            text = placeholderText,
+                            style = textStyle,
+                        )
+                    },
+                    visualTransformation = visualTransformation,
+                    onValueChange = onTextFieldValueChange,
+                    enabled = isEnabled,
+                    readOnly = readOnly,
+                    isError = isError,
+                    singleLine = maxlines == 1,
+                    minLines = minLines,
+                    maxLines = maxlines,
+                    keyboardOptions = keyboardOptions,
+                    textStyle = textStyle,
+                    shape = MaterialTheme.shapes.medium,
+                    colors = textFieldColors,
+                    trailingIcon = {
+                        if (trailingIcon != null) {
+                            Icon(
+                                painter = painterResource(trailingIcon),
+                                contentDescription = "Trailing icon",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(MaterialTheme.shapes.small)
+                                    .clickable(
+                                        onClick = onTrailingIconClick,
+                                        enabled = isEnabled,
+                                        role = Role.Button,
+                                        interactionSource = remember { MutableInteractionSource() },
+                                        indication = rememberRipple(
+                                            bounded = true,
+                                            color = if (isError) {
+                                                MaterialTheme.colorScheme.error
+                                            } else {
+                                                MaterialTheme.colorScheme.primary
+                                            },
+                                        ),
+                                    ),
+                                tint = Color.Unspecified,
+                            )
+                        }
+                    },
+                )
+            }
+            Text(
+                text = feedbackText,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = if (!isEnabled) {
+                        MaterialTheme.colorScheme.tertiary
+                    } else if (isError) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    },
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = horizontalPadding),
             )
         }
-        Text(
-            text = feedbackText,
-            style = MaterialTheme.typography.bodySmall.copy(
-                color = if (!isEnabled) {
-                    MaterialTheme.colorScheme.tertiary
-                } else if (isError) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.primary
-                },
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(horizontal = horizontalPadding),
-        )
+        if (onSurfaceAreaClick != null) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .alpha(0f)
+                    .clickable(onClick = onSurfaceAreaClick, enabled = isEnabled),
+            )
+
+        }
     }
 }
 

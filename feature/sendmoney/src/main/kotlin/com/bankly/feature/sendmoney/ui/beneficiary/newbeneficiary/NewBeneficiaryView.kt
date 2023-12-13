@@ -69,12 +69,12 @@ internal fun NewBeneficiaryView(
                     onTextFieldValueChange = { },
                     trailingIcon = BanklyIcons.ChevronDown,
                     readOnly = true,
-                    onTrailingIconClick = onBankNameDropDownIconClick,
                     placeholderText = stringResource(R.string.msg_select_bank),
                     labelText = stringResource(R.string.msg_bank_name),
                     isError = screenState.isBankNameError,
                     feedbackText = screenState.bankNameFeedBack,
                     isEnabled = screenState.isUserInputEnabled,
+                    onSurfaceAreaClick = onBankNameDropDownIconClick
                 )
             }
 
