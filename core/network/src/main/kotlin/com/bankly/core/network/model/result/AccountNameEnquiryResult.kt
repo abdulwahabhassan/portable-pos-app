@@ -9,5 +9,3 @@ data class AccountNameEnquiryResult(
     val bankCode: String?,
     val bankName: String?,
 )
-
-

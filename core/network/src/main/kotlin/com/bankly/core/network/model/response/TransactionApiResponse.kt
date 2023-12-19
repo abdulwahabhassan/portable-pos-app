@@ -1,7 +1,7 @@
 package com.bankly.core.network.model.response
 
-import kotlinx.serialization.Serializable
 import com.bankly.core.network.retrofit.model.Any
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class TransactionApiResponse<T> (
@@ -9,5 +9,5 @@ data class TransactionApiResponse<T> (
     val total: Long?,
     val info: Double?,
     val otherInfo: Any?,
-    val message: String?
+    val message: String?,
 )

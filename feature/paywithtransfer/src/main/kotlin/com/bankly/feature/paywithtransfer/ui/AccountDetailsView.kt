@@ -70,7 +70,7 @@ internal fun AccountDetailsView(
                 onClick = {
                     onExpandIconClick(isExpanded)
                 },
-                enabled = isLoading.not()
+                enabled = isLoading.not(),
             )
         }
         AnimatedVisibility(visible = isExpanded) {
@@ -143,8 +143,8 @@ private fun AccountDetailsPreview() {
             accountDetails = AgentAccountDetails(
                 fundingAccountNumber = "5010000017",
                 name = "Josh Osazuwa",
-                fundingSourceName = "Bankly MFB"
-            )
+                fundingSourceName = "Bankly MFB",
+            ),
         )
     }
 }

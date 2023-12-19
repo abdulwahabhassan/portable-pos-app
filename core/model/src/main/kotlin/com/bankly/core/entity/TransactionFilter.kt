@@ -10,5 +10,5 @@ data class TransactionFilter(
     val cashFlows: List<CashFlow> = listOf(CashFlow.Debit(false), CashFlow.Credit(false)),
     val transactionTypes: List<TransactionFilterType> = emptyList(),
     val dateFrom: LocalDate? = null,
-    val dateTo: LocalDate? = null
+    val dateTo: LocalDate? = null,
 ) 

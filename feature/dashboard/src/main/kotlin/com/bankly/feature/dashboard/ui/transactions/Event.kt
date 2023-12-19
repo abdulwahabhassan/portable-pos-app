@@ -4,9 +4,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.model.TransactionCategoryTab
 import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.entity.TransactionFilter
+import com.bankly.core.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 internal sealed interface TransactionsScreenEvent {
@@ -36,7 +35,7 @@ internal sealed interface TransactionsScreenEvent {
 
     class OnTransactionFilterTypeSelected(
         val transactionFilterType: TransactionFilterType,
-        val transactionFilterTypes: List<TransactionFilterType>
+        val transactionFilterTypes: List<TransactionFilterType>,
     ) :
         TransactionsScreenEvent
 

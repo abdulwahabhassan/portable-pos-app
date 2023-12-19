@@ -42,7 +42,7 @@ internal fun ExportEodItem(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = text,
@@ -68,8 +68,8 @@ private fun ExportEodItemPreview() {
             Icon(
                 painter = painterResource(id = BanklyIcons.BoxCheck),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
-        }
+        },
     )
 }

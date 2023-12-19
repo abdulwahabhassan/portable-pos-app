@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
 class BanklyCoreConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            pluginManager.apply{
+            pluginManager.apply {
                 apply("com.android.library")
             }
             extensions.configure<LibraryExtension> {

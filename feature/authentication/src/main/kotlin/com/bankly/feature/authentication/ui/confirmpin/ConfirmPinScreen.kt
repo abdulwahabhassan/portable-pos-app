@@ -38,9 +38,8 @@ internal fun ConfirmPinRoute(
     onBackPress: () -> Unit,
     defaultPin: String,
     newPin: String,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
-
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -69,8 +68,8 @@ internal fun ConfirmPinRoute(
         viewModel.sendEvent(
             ConfirmPinScreenEvent.OnSetPins(
                 defaultPin = defaultPin,
-                newPin = newPin
-            )
+                newPin = newPin,
+            ),
         )
     })
 }
@@ -92,7 +91,7 @@ private fun ConfirmPinScreen(
                 subTitle = buildAnnotatedString {
                     append(stringResource(R.string.msg_confirm_your_access_pin_subtitle))
                 },
-                isLoading = screenState.isLoading
+                isLoading = screenState.isLoading,
             )
         },
     ) { padding ->
@@ -109,7 +108,7 @@ private fun ConfirmPinScreen(
                 BanklyAccessPinInputField(
                     passCode = screenState.confirmPin,
                     isError = screenState.isConfirmPinError,
-                    pinErrorMessage = screenState.pinErrorMessage
+                    pinErrorMessage = screenState.pinErrorMessage,
                 )
             }
 
@@ -126,8 +125,8 @@ private fun ConfirmPinScreen(
                                     onUiEvent(
                                         ConfirmPinScreenEvent.OnEnterConfirmPin(
                                             confirmPin = newPin,
-                                            screenState.newPin
-                                        )
+                                            screenState.newPin,
+                                        ),
                                     )
                                 }
                             }
@@ -137,7 +136,7 @@ private fun ConfirmPinScreen(
                                     ConfirmPinScreenEvent.OnDoneClick(
                                         screenState.defaultPin,
                                         screenState.newPin,
-                                        screenState.confirmPin
+                                        screenState.confirmPin,
                                     ),
                                 )
                             }
@@ -151,8 +150,8 @@ private fun ConfirmPinScreen(
                                     onUiEvent(
                                         ConfirmPinScreenEvent.OnEnterConfirmPin(
                                             confirmPin = newPin,
-                                            screenState.newPin
-                                        )
+                                            screenState.newPin,
+                                        ),
                                     )
                                 }
                             }
@@ -175,7 +174,7 @@ private fun ConfirmPinScreen(
         negativeAction = onBackPress,
         onDismissDialog = {
             onUiEvent(ConfirmPinScreenEvent.OnDismissErrorDialog)
-        }
+        },
     )
 }
 

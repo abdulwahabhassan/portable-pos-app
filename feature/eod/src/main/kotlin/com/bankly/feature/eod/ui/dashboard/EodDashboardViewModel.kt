@@ -9,14 +9,12 @@ import javax.inject.Inject
 internal class EodDashboardViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<EodDashboardScreenEvent, EodDashboardScreenState, EodDashboardScreenOneShotState>(
-    EodDashboardScreenState()
+    EodDashboardScreenState(),
 ) {
     override suspend fun handleUiEvents(event: EodDashboardScreenEvent) {
         when (event) {
             EodDashboardScreenEvent.LoadUiData -> {
-
             }
         }
     }
 }
-

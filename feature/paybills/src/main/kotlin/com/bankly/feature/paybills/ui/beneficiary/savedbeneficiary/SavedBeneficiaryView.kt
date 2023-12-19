@@ -68,7 +68,7 @@ internal fun SavedBeneficiaryView(
     onContinueClick: () -> Unit,
     onChangeSelectedSavedBeneficiary: () -> Unit,
     onBeneficiarySelected: (SavedBeneficiary) -> Unit,
-    onToggleSaveAsBeneficiary: (Boolean) -> Unit
+    onToggleSaveAsBeneficiary: (Boolean) -> Unit,
 ) {
     if (screenState.shouldShowSavedBeneficiaryList) {
         if (savedBeneficiaries.isNotEmpty()) {
@@ -134,12 +134,12 @@ internal fun SavedBeneficiaryView(
                                 BillType.AIRTIME, BillType.INTERNET_DATA -> R.string.msg_network_provider
                                 BillType.ELECTRICITY -> R.string.msg_electricity_provider
                                 BillType.CABLE_TV -> R.string.msg_cable_tv_provider
-                            }
+                            },
                         ),
                         isError = screenState.isProviderError,
                         feedbackText = screenState.providerFeedBack,
                         isEnabled = screenState.isProviderFieldEnable,
-                        onSurfaceAreaClick = onProviderDropDownIconClick
+                        onSurfaceAreaClick = onProviderDropDownIconClick,
                     )
 
                     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -158,7 +158,7 @@ internal fun SavedBeneficiaryView(
                                 isEnabled = screenState.isPlanFieldEnabled,
                                 onSurfaceAreaClick = {
                                     onPlanDropDownIconClick(billType)
-                                }
+                                },
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -177,7 +177,7 @@ internal fun SavedBeneficiaryView(
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
                                 visualTransformation = AmountInputVisualTransformation(
-                                    AmountFormatter()
+                                    AmountFormatter(),
                                 ),
                             )
                         }
@@ -195,7 +195,7 @@ internal fun SavedBeneficiaryView(
                                 isEnabled = screenState.isPlanFieldEnabled,
                                 onSurfaceAreaClick = {
                                     onPlanDropDownIconClick(billType)
-                                }
+                                },
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -214,7 +214,7 @@ internal fun SavedBeneficiaryView(
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
                                 visualTransformation = AmountInputVisualTransformation(
-                                    AmountFormatter()
+                                    AmountFormatter(),
                                 ),
                             )
 
@@ -235,7 +235,6 @@ internal fun SavedBeneficiaryView(
                                 feedbackText = screenState.cableTvNumberFeedBack,
                                 isEnabled = screenState.isCableTvNumberFieldEnabled,
                             )
-
                         }
 
                         BillType.ELECTRICITY -> {
@@ -251,7 +250,7 @@ internal fun SavedBeneficiaryView(
                                 isEnabled = screenState.isPlanFieldEnabled,
                                 onSurfaceAreaClick = {
                                     onPlanDropDownIconClick(billType)
-                                }
+                                },
                             )
 
                             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -288,7 +287,7 @@ internal fun SavedBeneficiaryView(
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
                                 visualTransformation = AmountInputVisualTransformation(
-                                    AmountFormatter()
+                                    AmountFormatter(),
                                 ),
                             )
                         }
@@ -310,7 +309,7 @@ internal fun SavedBeneficiaryView(
                                 feedbackText = screenState.amountFeedBack,
                                 isEnabled = screenState.isAmountFieldEnabled,
                                 visualTransformation = AmountInputVisualTransformation(
-                                    AmountFormatter()
+                                    AmountFormatter(),
                                 ),
                             )
                         }
@@ -330,7 +329,6 @@ internal fun SavedBeneficiaryView(
                         feedbackText = screenState.phoneNumberFeedBack,
                         isEnabled = screenState.isPhoneNumberFieldEnabled,
                     )
-
 
                     Row(
                         horizontalArrangement = Arrangement.End,
@@ -384,7 +382,7 @@ private fun SavedBeneficiaryPreview() {
             onEnterMeterNumber = {},
             onEnterIDorCardNumber = {},
             onEnterPhoneNumber = {},
-            onToggleSaveAsBeneficiary = {}
+            onToggleSaveAsBeneficiary = {},
         )
     }
 }

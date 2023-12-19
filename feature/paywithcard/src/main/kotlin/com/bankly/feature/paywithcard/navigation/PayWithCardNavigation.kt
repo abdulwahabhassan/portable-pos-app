@@ -86,7 +86,7 @@ private fun PayWithCardNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCancelPress = onBackPress
+            onCancelPress = onBackPress,
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

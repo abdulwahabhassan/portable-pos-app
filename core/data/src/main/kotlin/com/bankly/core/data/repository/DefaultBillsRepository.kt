@@ -11,13 +11,13 @@ import com.bankly.core.data.util.asMeterNameEnquiry
 import com.bankly.core.data.util.asPlan
 import com.bankly.core.data.util.asProvider
 import com.bankly.core.data.util.asRequestBody
-import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleApiResponse
+import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.BillsRepository
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.CableTvNameEnquiry
+import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.network.model.result.PlanResult
 import com.bankly.core.network.model.result.ProviderResult
 import com.bankly.core.network.retrofit.service.BillsService
@@ -38,7 +38,7 @@ class DefaultBillsRepository @Inject constructor(
 ) : BillsRepository {
     override suspend fun performBillPayment(
         token: String,
-        body: BillPaymentData
+        body: BillPaymentData,
     ): Flow<Resource<TransactionReceipt.BillPayment>> = flow {
         emit(Resource.Loading)
         when (
@@ -64,7 +64,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun performMeterNameEnquiry(
         token: String,
-        body: ValidateElectricityMeterNumberData
+        body: ValidateElectricityMeterNumberData,
     ): Flow<Resource<MeterNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
@@ -76,7 +76,7 @@ class DefaultBillsRepository @Inject constructor(
                     apiRequest = {
                         billsService.validateElectricityMeterNumber(
                             token = token,
-                            body = body.asRequestBody()
+                            body = body.asRequestBody(),
                         )
                     },
                 ),
@@ -90,7 +90,7 @@ class DefaultBillsRepository @Inject constructor(
 
     override suspend fun performCableTvNameEnquiry(
         token: String,
-        body: ValidateCableTvNumberData
+        body: ValidateCableTvNumberData,
     ): Flow<Resource<CableTvNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
@@ -102,7 +102,7 @@ class DefaultBillsRepository @Inject constructor(
                     apiRequest = {
                         billsService.validateCableTvNumber(
                             token = token,
-                            body = body.asRequestBody()
+                            body = body.asRequestBody(),
                         )
                     },
                 ),
@@ -115,7 +115,7 @@ class DefaultBillsRepository @Inject constructor(
     }
 
     override suspend fun getAirtimeProviders(
-        token: String
+        token: String,
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
@@ -135,7 +135,7 @@ class DefaultBillsRepository @Inject constructor(
     }
 
     override suspend fun getInternetDataProviders(
-        token: String
+        token: String,
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
@@ -155,7 +155,7 @@ class DefaultBillsRepository @Inject constructor(
     }
 
     override suspend fun getCableTvProviders(
-        token: String
+        token: String,
     ): Flow<Resource<List<BillProvider>>> = flow {
         emit(Resource.Loading)
         when (
@@ -175,7 +175,7 @@ class DefaultBillsRepository @Inject constructor(
     }
 
     override suspend fun getElectricityProviders(
-        token: String
+        token: String,
     ): Flow<Resource<List<BillProvider>>> =
         flow {
             emit(Resource.Loading)
@@ -196,60 +196,59 @@ class DefaultBillsRepository @Inject constructor(
         }
 
     override suspend fun getInternetDataPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
-    flow {
-        emit(Resource.Loading)
-        when (
-            val responseResult = handleApiResponse(
-                requestResult = handleRequest(
-                    dispatcher = ioDispatcher,
-                    networkMonitor = networkMonitor,
-                    json = json,
-                    apiRequest = { billsService.getInternetDataPlans(token = token, billId = billId) },
-                ),
-            )
-        ) {
-            is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
-            Result.SessionExpired -> emit(Resource.SessionExpired)
+        flow {
+            emit(Resource.Loading)
+            when (
+                val responseResult = handleApiResponse(
+                    requestResult = handleRequest(
+                        dispatcher = ioDispatcher,
+                        networkMonitor = networkMonitor,
+                        json = json,
+                        apiRequest = { billsService.getInternetDataPlans(token = token, billId = billId) },
+                    ),
+                )
+            ) {
+                is Result.Error -> emit(Resource.Failed(responseResult.message))
+                is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+                Result.SessionExpired -> emit(Resource.SessionExpired)
+            }
         }
-    }
 
     override suspend fun getCableTvPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
-    flow {
-        emit(Resource.Loading)
-        when (
-            val responseResult = handleApiResponse(
-                requestResult = handleRequest(
-                    dispatcher = ioDispatcher,
-                    networkMonitor = networkMonitor,
-                    json = json,
-                    apiRequest = { billsService.getCableTvPlans(token = token, billId = billId) },
-                ),
-            )
-        ) {
-            is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
-            Result.SessionExpired -> emit(Resource.SessionExpired)
+        flow {
+            emit(Resource.Loading)
+            when (
+                val responseResult = handleApiResponse(
+                    requestResult = handleRequest(
+                        dispatcher = ioDispatcher,
+                        networkMonitor = networkMonitor,
+                        json = json,
+                        apiRequest = { billsService.getCableTvPlans(token = token, billId = billId) },
+                    ),
+                )
+            ) {
+                is Result.Error -> emit(Resource.Failed(responseResult.message))
+                is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+                Result.SessionExpired -> emit(Resource.SessionExpired)
+            }
         }
-    }
 
     override suspend fun getElectricityPlans(token: String, billId: Long): Flow<Resource<List<BillPlan>>> =
-    flow {
-        emit(Resource.Loading)
-        when (
-            val responseResult = handleApiResponse(
-                requestResult = handleRequest(
-                    dispatcher = ioDispatcher,
-                    networkMonitor = networkMonitor,
-                    json = json,
-                    apiRequest = { billsService.getElectricityPlans(token = token, billId = billId) },
-                ),
-            )
-        ) {
-            is Result.Error -> emit(Resource.Failed(responseResult.message))
-            is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
-            Result.SessionExpired -> emit(Resource.SessionExpired)
+        flow {
+            emit(Resource.Loading)
+            when (
+                val responseResult = handleApiResponse(
+                    requestResult = handleRequest(
+                        dispatcher = ioDispatcher,
+                        networkMonitor = networkMonitor,
+                        json = json,
+                        apiRequest = { billsService.getElectricityPlans(token = token, billId = billId) },
+                    ),
+                )
+            ) {
+                is Result.Error -> emit(Resource.Failed(responseResult.message))
+                is Result.Success -> emit(Resource.Ready(responseResult.data.map { planResult: PlanResult -> planResult.asPlan() }))
+                Result.SessionExpired -> emit(Resource.SessionExpired)
+            }
         }
-    }
-
 }

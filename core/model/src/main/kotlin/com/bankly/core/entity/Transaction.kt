@@ -47,7 +47,7 @@ data class Transaction(
     val regionId: String,
     val aggregatorId: Long,
     val isCredit: Boolean,
-    val isDebit: Boolean
+    val isDebit: Boolean,
 ) {
     fun toTransactionReceipt(): TransactionReceipt.TransactionHistory {
         return TransactionReceipt.TransactionHistory(
@@ -82,7 +82,7 @@ data class Transaction(
             regionId = regionId,
             aggregatorId = aggregatorId,
             isCredit = isCredit,
-            isDebit = isDebit
+            isDebit = isDebit,
         )
     }
 }

@@ -53,7 +53,7 @@ fun BanklyDateInputFieldPreview() {
             onClick = {},
             isError = false,
             feedBackText = "",
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }

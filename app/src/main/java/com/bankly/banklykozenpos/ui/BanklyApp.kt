@@ -12,7 +12,7 @@ import com.bankly.banklykozenpos.navigation.AppNavHost
 fun BanklyApp(
     appState: BanklyAppState = rememberBanklyAppState(),
     onCloseApp: () -> Unit,
-    activity: Activity
+    activity: Activity,
 ) {
     var isSessionExpired: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -26,6 +26,6 @@ fun BanklyApp(
         },
         onSessionRenewed = {
             isSessionExpired = false
-        }
+        },
     )
 }

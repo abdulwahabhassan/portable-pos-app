@@ -132,7 +132,7 @@ internal fun SavedBeneficiaryView(
                             isError = screenState.isBankNameError,
                             feedbackText = screenState.bankNameFeedBack,
                             isEnabled = screenState.isUserInputEnabled,
-                            onSurfaceAreaClick = onBankNameDropDownIconClick
+                            onSurfaceAreaClick = onBankNameDropDownIconClick,
                         )
                     }
 

@@ -19,9 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ValidatePassCodeViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
-    private val validatePassCodeUseCase: ValidatePassCodeUseCase
+    private val validatePassCodeUseCase: ValidatePassCodeUseCase,
 ) : BaseViewModel<ValidatePassCodeScreenEvent, ValidatePassCodeScreenState, ValidatePassCodeScreenOneShotState>(
-    ValidatePassCodeScreenState()
+    ValidatePassCodeScreenState(),
 ) {
 
     override suspend fun handleUiEvents(event: ValidatePassCodeScreenEvent) {
@@ -52,7 +52,7 @@ class ValidatePassCodeViewModel @Inject constructor(
     private suspend fun performValidation(password: String) {
         validatePassCodeUseCase.invoke(
             password,
-            userPreferencesDataStore.data().token.substringAfter(" ")
+            userPreferencesDataStore.data().token.substringAfter(" "),
         )
             .onEach { resource: Resource<Token> ->
                 Log.d("debug token", "token ${userPreferencesDataStore.data().token}")
@@ -64,7 +64,7 @@ class ValidatePassCodeViewModel @Inject constructor(
                         copy(
                             isLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = errorMessage
+                            errorDialogMessage = errorMessage,
                         )
                     }
                 }
@@ -82,7 +82,7 @@ class ValidatePassCodeViewModel @Inject constructor(
                     copy(
                         isLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: ""
+                        errorDialogMessage = it.message ?: "",
                     )
                 }
             }.launchIn(viewModelScope)

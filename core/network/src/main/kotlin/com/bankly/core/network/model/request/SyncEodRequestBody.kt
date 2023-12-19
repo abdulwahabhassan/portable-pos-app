@@ -2,12 +2,11 @@ package com.bankly.core.network.model.request
 
 import kotlinx.serialization.Serializable
 
-
 typealias SyncEodTransactions = List<SyncEodTransactionData>
 
 @Serializable
 data class SyncEodRequestBody(
-    val transactions: SyncEodTransactions
+    val transactions: SyncEodTransactions,
 )
 
 @Serializable
@@ -22,6 +21,5 @@ data class SyncEodTransactionData(
     val maskedPan: String,
     val terminalId: String,
     val rrn: String,
-    val transType: String
+    val transType: String,
 )
-

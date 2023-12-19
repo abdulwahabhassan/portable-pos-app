@@ -36,7 +36,7 @@ internal sealed interface EodTransactionsScreenEvent {
 
     class OnTransactionFilterTypeSelected(
         val transactionFilterType: TransactionFilterType,
-        val transactionFilterTypes: List<TransactionFilterType>
+        val transactionFilterTypes: List<TransactionFilterType>,
     ) :
         EodTransactionsScreenEvent
 

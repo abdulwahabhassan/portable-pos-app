@@ -15,7 +15,7 @@ import com.bankly.core.sealed.TransactionReceipt
 fun NavGraphBuilder.sendMoneyNavGraph(
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     navigation(
         route = sendMoneyNavGraphRoute,
@@ -27,7 +27,7 @@ fun NavGraphBuilder.sendMoneyNavGraph(
                 navHostController = sendMoneyState.navHostController,
                 onBackPress = onBackPress,
                 onForgotPinClick = onForgotPinClick,
-                onSessionExpired = onSessionExpired
+                onSessionExpired = onSessionExpired,
             )
         }
     }
@@ -38,7 +38,7 @@ private fun SendMoneyNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -61,7 +61,7 @@ private fun SendMoneyNavHost(
                 navHostController.popBackStack()
             },
             onCloseClick = onBackPress,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         confirmTransactionRoute(
             onConfirmationSuccess = { transactionData: TransactionData ->
@@ -80,7 +80,7 @@ private fun SendMoneyNavHost(
             onFailedTransaction = { message: String ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

@@ -10,12 +10,12 @@ data class ConfirmPinScreenState(
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
     val isLoading: Boolean = false,
-    val pinErrorMessage: String = ""
+    val pinErrorMessage: String = "",
 ) {
     val isDoneButtonEnabled: Boolean
         get() = newPin.isNotEmpty() && confirmPin.all { digit: String -> digit.isNotEmpty() } &&
-                newPin == confirmPin.joinToString("") && isConfirmPinError.not() &&
-                isLoading.not()
+            newPin == confirmPin.joinToString("") && isConfirmPinError.not() &&
+            isLoading.not()
     val isUserInputEnabled: Boolean
         get() = isLoading.not()
 }

@@ -74,7 +74,7 @@ internal fun NewBeneficiaryView(
                     isError = screenState.isBankNameError,
                     feedbackText = screenState.bankNameFeedBack,
                     isEnabled = screenState.isUserInputEnabled,
-                    onSurfaceAreaClick = onBankNameDropDownIconClick
+                    onSurfaceAreaClick = onBankNameDropDownIconClick,
                 )
             }
 

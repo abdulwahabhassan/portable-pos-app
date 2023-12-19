@@ -2,7 +2,6 @@ package com.bankly.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +33,7 @@ fun BanklySearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     searchPlaceholder: String,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Row(
         modifier = modifier
@@ -59,7 +58,7 @@ fun BanklySearchBar(
                     ),
                 ),
 
-            ) {
+        ) {
             Icon(
                 modifier = modifier
                     .size(20.dp)
@@ -113,8 +112,9 @@ private fun SearchBarPreview() {
                 BanklyClickableIcon(
                     modifier = Modifier.padding(end = 16.dp),
                     icon = BanklyIcons.Filter,
-                    onClick = { /*TODO*/ })
-            }
+                    onClick = { /*TODO*/ },
+                )
+            },
         )
     }
 }

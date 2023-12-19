@@ -3,7 +3,7 @@ package com.bankly.core.network.model.request
 import kotlinx.serialization.Serializable
 
 @Serializable
-class CardTransferAccountInquiryRequestBody (
+class CardTransferAccountInquiryRequestBody(
     val bankId: Long,
     val accountNumber: String,
     val amount: Double,
@@ -11,5 +11,5 @@ class CardTransferAccountInquiryRequestBody (
     val terminalId: String,
     val channel: String,
     val geoLocation: String,
-    val deviceType: String
+    val deviceType: String,
 )

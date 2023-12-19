@@ -11,10 +11,9 @@ import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.core.entity.Bank
 import com.bankly.core.entity.AccountNameEnquiry
+import com.bankly.core.entity.Bank
 import com.bankly.core.entity.CardTransferAccountInquiry
-import com.bankly.core.sealed.State
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
@@ -135,12 +134,11 @@ internal class RecipientViewModel @Inject constructor(
                         Tools.terminalId,
                         "4",
                         Tools.deviceLocation ?: Tools.merchantLocation ?: "",
-                        "POS"
+                        "POS",
                     ),
                     senderPhoneNumber = event.senderPhoneNumber,
-                    amount
+                    amount,
                 )
-
             }
 
             RecipientScreenEvent.OnDismissErrorDialog -> {
@@ -152,7 +150,7 @@ internal class RecipientViewModel @Inject constructor(
     private suspend fun performAccountInquiry(
         cardTransferAccountInquiryData: CardTransferAccountInquiryData,
         senderPhoneNumber: String,
-        amount: Double
+        amount: Double,
     ) {
         nameEnquiryUseCase.performCardTransferAccountInquiry(
             token = userPreferencesDataStore.data().token,
@@ -180,13 +178,12 @@ internal class RecipientViewModel @Inject constructor(
                             ),
                         ),
                     )
-
                 } else {
                     setUiState {
                         copy(
                             isAccountValidationLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = "You do not have sufficient balance in your wallet to perform this transaction"
+                            errorDialogMessage = "You do not have sufficient balance in your wallet to perform this transaction",
                         )
                     }
                 }
@@ -196,7 +193,7 @@ internal class RecipientViewModel @Inject constructor(
                 setUiState {
                     copy(
                         showErrorDialog = true,
-                        errorDialogMessage = message
+                        errorDialogMessage = message,
                     )
                 }
             }
@@ -208,7 +205,7 @@ internal class RecipientViewModel @Inject constructor(
             setUiState {
                 copy(
                     showErrorDialog = true,
-                    errorDialogMessage = it.message ?: "An unexpected error occurred"
+                    errorDialogMessage = it.message ?: "An unexpected error occurred",
                 )
             }
         }.launchIn(viewModelScope)
@@ -232,7 +229,7 @@ internal class RecipientViewModel @Inject constructor(
                         copy(
                             isBankListLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -246,7 +243,7 @@ internal class RecipientViewModel @Inject constructor(
                     copy(
                         isBankListLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: ""
+                        errorDialogMessage = it.message ?: "",
                     )
                 }
             }
@@ -270,7 +267,7 @@ internal class RecipientViewModel @Inject constructor(
                     setUiState {
                         copy(
                             isNameInquiryLoading = true,
-                            validationIcon = BanklyIcons.ValidationInProgress
+                            validationIcon = BanklyIcons.ValidationInProgress,
                         )
                     }
                 }
@@ -280,7 +277,7 @@ internal class RecipientViewModel @Inject constructor(
                             isNameInquiryLoading = false,
                             accountNumberFeedBack = accountNameEnquiry.accountName,
                             isAccountNumberError = false,
-                            validationIcon = BanklyIcons.ValidationPassed
+                            validationIcon = BanklyIcons.ValidationPassed,
                         )
                     }
                 }
@@ -308,7 +305,6 @@ internal class RecipientViewModel @Inject constructor(
                         isAccountNumberError = true,
                     )
                 }
-
             }.launchIn(viewModelScope)
         }
     }

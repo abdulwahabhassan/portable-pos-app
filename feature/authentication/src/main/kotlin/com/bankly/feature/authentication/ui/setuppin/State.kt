@@ -10,7 +10,7 @@ data class SetPinScreenState(
 ) {
     val isDoneButtonEnabled: Boolean
         get() = newPin.isNotEmpty() && newPin.all { digit: String -> digit.isNotEmpty() } &&
-                isNewPinError.not()
+            isNewPinError.not()
 }
 
 sealed interface SetPinScreenOneShotState : OneShotState {

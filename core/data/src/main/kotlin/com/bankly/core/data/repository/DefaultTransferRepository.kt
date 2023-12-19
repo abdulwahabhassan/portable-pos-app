@@ -11,8 +11,8 @@ import com.bankly.core.data.util.asBankTransfer
 import com.bankly.core.data.util.asCardTransfer
 import com.bankly.core.data.util.asNameEnquiry
 import com.bankly.core.data.util.asRequestBody
-import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleApiResponse
+import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.Bank
@@ -145,7 +145,7 @@ class DefaultTransferRepository @Inject constructor(
     }
 
     override suspend fun getBanks(
-        token: String
+        token: String,
     ): Flow<Resource<List<Bank>>> = flow {
         emit(Resource.Loading)
         when (
@@ -166,7 +166,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performCardTransferAccountInquiry(
         token: String,
-        body: CardTransferAccountInquiryData
+        body: CardTransferAccountInquiryData,
     ): Flow<Resource<CardTransferAccountInquiry>> = flow {
         emit(Resource.Loading)
         when (
@@ -192,7 +192,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performCardTransfer(
         token: String,
-        body: CardTransferData
+        body: CardTransferData,
     ): Flow<Resource<TransactionReceipt.CardTransfer>> = flow {
         emit(Resource.Loading)
         when (

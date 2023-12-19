@@ -55,20 +55,18 @@ fun CardBalanceScreen(
     onGoToDashboardClick: () -> Unit,
     amount: String,
     responseCode: String,
-    responseMessage: String
+    responseMessage: String,
 ) {
-
     BackHandler {
         onGoToDashboardClick()
     }
-    
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         item {
             Box(Modifier)
         }
@@ -85,7 +83,7 @@ fun CardBalanceScreen(
                     modifier = Modifier.size(100.dp),
                     painter = painterResource(id = if (responseCode == SUCCESSFUL_RESPONSE_CODE) BanklyIcons.Successful else BanklyIcons.Failed),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
@@ -106,7 +104,7 @@ fun CardBalanceScreen(
                         .padding(horizontal = 16.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer,
-                            shape = MaterialTheme.shapes.medium
+                            shape = MaterialTheme.shapes.medium,
                         )
                         .clip(MaterialTheme.shapes.medium)
                         .padding(horizontal = 24.dp, vertical = 24.dp),
@@ -118,7 +116,7 @@ fun CardBalanceScreen(
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -126,7 +124,7 @@ fun CardBalanceScreen(
                         style = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.primary),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             } else {
@@ -136,7 +134,7 @@ fun CardBalanceScreen(
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -161,7 +159,7 @@ fun CardBalanceScreenPreview() {
             onGoToDashboardClick = {},
             amount = "200.00",
             responseCode = "00",
-            responseMessage = "Successful"
+            responseMessage = "Successful",
         )
     }
 }

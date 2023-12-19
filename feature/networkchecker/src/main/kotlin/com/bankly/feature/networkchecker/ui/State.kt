@@ -6,7 +6,7 @@ import com.bankly.feature.networkchecker.model.NetworkCheckerTab
 
 internal data class NetworkCheckerScreenState(
     val isBankListLoading: Boolean = false,
-    val bankNetworks:  List<BankNetwork> = emptyList(),
+    val bankNetworks: List<BankNetwork> = emptyList(),
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
     val selectedTab: NetworkCheckerTab = NetworkCheckerTab.TRANSFERS,

@@ -2,11 +2,8 @@ package com.bankly.feature.paywithtransfer.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
@@ -17,16 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bankly.core.common.ui.view.EmptyStateView
 import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.paywithtransfer.R
@@ -50,7 +44,7 @@ internal fun PayWithTransferRoute(
             viewModel.sendEvent(uiEvent)
         },
         onViewTransactionDetailsClick = onViewTransactionDetailsClick,
-        onGoToHomeClick = onGoToHomeClick
+        onGoToHomeClick = onGoToHomeClick,
     )
 
     LaunchedEffect(key1 = Unit, block = {
@@ -71,7 +65,7 @@ private fun PayWithTransferScreen(
     screenState: PayWithTransferScreenState,
     onUiEvent: (PayWithTransferScreenEvent) -> Unit,
     onViewTransactionDetailsClick: (TransactionReceipt.PayWithTransfer) -> Unit,
-    onGoToHomeClick: () -> Unit
+    onGoToHomeClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -98,10 +92,11 @@ private fun PayWithTransferScreen(
                         onExpandIconClick = { currentState ->
                             onUiEvent(
                                 PayWithTransferScreenEvent.OnAccountDetailsExpandButtonClick(
-                                    currentState
-                                )
+                                    currentState,
+                                ),
                             )
-                        })
+                        },
+                    )
                 }
             }
             if (screenState.isAccountDetailsExpanded.not()) {
@@ -110,7 +105,7 @@ private fun PayWithTransferScreen(
                         recentFund = item,
                         onClick = {
                             onUiEvent(PayWithTransferScreenEvent.OnRecentFundSelected(item))
-                        }
+                        },
                     )
                 }
             }
@@ -129,9 +124,9 @@ private fun PayWithTransferScreen(
                     onGoToHomeClick = onGoToHomeClick,
                     onCloseIconClick = {
                         onUiEvent(PayWithTransferScreenEvent.CloseRecentFundSummaryDialog)
-                    }
+                    },
                 )
-            }
+            },
         )
     }
 
@@ -142,7 +137,7 @@ private fun PayWithTransferScreen(
             positiveActionText = stringResource(R.string.action_dismiss),
             positiveAction = {
                 onUiEvent(PayWithTransferScreenEvent.DismissErrorDialog)
-            }
+            },
         )
     }
 }
@@ -171,11 +166,11 @@ private fun PayWithTransferScreenPreview() {
                     receiverBankName = "Bankly MFB",
                     receiverAccountNumber = "3000291002",
                     receiverAccountName = "John Doe",
-                )
+                ),
             ),
             onUiEvent = {},
             onViewTransactionDetailsClick = {},
-            onGoToHomeClick = {}
+            onGoToHomeClick = {},
         )
     }
 }

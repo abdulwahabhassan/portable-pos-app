@@ -17,7 +17,7 @@ data class RecentFund(
     val senderBankName: String,
     val receiverBankName: String,
     val receiverAccountNumber: String,
-    val receiverAccountName: String
+    val receiverAccountName: String,
 ) {
     fun toTransactionReceipt(): TransactionReceipt.PayWithTransfer {
         return TransactionReceipt.PayWithTransfer(

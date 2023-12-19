@@ -24,7 +24,7 @@ internal fun EodTotalAmountItem(
     amount: Double,
     title: String,
     amountColor: Color = MaterialTheme.colorScheme.tertiary,
-    backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer
+    backgroundColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
 ) {
     Column(
         modifier = Modifier
@@ -32,7 +32,7 @@ internal fun EodTotalAmountItem(
             .padding(vertical = 8.dp, horizontal = 16.dp)
             .background(
                 color = backgroundColor,
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
             )
             .clip(MaterialTheme.shapes.medium)
             .padding(horizontal = 24.dp, vertical = 16.dp),
@@ -49,7 +49,7 @@ internal fun EodTotalAmountItem(
             text = Formatter.formatAmount(
                 value = amount,
                 includeNairaSymbol = true,
-                addSpaceBetweenSymbolAndAmount = true
+                addSpaceBetweenSymbolAndAmount = true,
             ),
             style = MaterialTheme.typography.headlineSmall.copy(color = amountColor),
             overflow = TextOverflow.Ellipsis,
@@ -64,7 +64,7 @@ private fun SupportListItemPreview() {
     BanklyTheme {
         EodTotalAmountItem(
             65.50,
-            "Total Transaction"
+            "Total Transaction",
         )
     }
 }

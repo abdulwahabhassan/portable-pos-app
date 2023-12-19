@@ -4,7 +4,7 @@ sealed interface ConfirmPinScreenEvent {
     data class OnDoneClick(
         val defaultPin: String,
         val newPin: String,
-        val confirmPin: List<String>
+        val confirmPin: List<String>,
     ) : ConfirmPinScreenEvent
 
     data class OnSetPins(

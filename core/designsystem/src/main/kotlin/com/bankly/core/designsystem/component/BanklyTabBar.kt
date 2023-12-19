@@ -89,7 +89,7 @@ fun <T : Enum<T>> BanklyTabBar(
                             FontWeight.Medium
                         } else {
                             FontWeight.Normal
-                        }
+                        },
                     ),
                 )
             }

@@ -38,7 +38,7 @@ fun ProcessTransactionRoute(
     cardTransactionReceipt: TransactionReceipt? = null,
     onTransactionSuccess: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String, TransactionReceipt?) -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 

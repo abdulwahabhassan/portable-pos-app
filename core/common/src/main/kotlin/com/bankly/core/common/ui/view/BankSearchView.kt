@@ -38,7 +38,6 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.entity.Bank
 
-
 const val COMMERCIAL_BANKS = "Commercial Banks"
 
 @Composable
@@ -81,13 +80,13 @@ fun BankSearchView(
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = stringResource(R.string.title_select_bank), style = MaterialTheme.typography.titleMedium)
                 BanklyClickableIcon(
                     icon = BanklyIcons.Close,
                     onClick = onCloseIconClick,
-                    shape = CircleShape
+                    shape = CircleShape,
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -129,7 +128,7 @@ fun BankSearchView(
                     ) {
                         BankListItem(bankName = transformItemToString(item))
                     }
-                }
+                },
             )
             BanklyExpandableList(
                 title = stringResource(R.string.title_other_banks),
@@ -159,7 +158,7 @@ fun BankSearchView(
                     ) {
                         BankListItem(bankName = transformItemToString(item))
                     }
-                }
+                },
             )
         }
     }
@@ -173,7 +172,7 @@ private fun BankSearchViewPreview() {
             isBankListLoading = false,
             bankList = emptyList(),
             onSelectBank = {},
-            onCloseIconClick = {}
+            onCloseIconClick = {},
         )
     }
 }

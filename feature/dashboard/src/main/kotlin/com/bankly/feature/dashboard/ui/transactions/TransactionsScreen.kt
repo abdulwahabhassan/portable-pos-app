@@ -78,7 +78,7 @@ internal fun TransactionsRoute(
     onBackPress: () -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     updateLoadingStatus: (Boolean) -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -88,7 +88,7 @@ internal fun TransactionsRoute(
         onUiEvent = { uiEvent: TransactionsScreenEvent ->
             viewModel.sendEvent(uiEvent)
         },
-        onTransactionSelected = onGoToTransactionDetailsScreen
+        onTransactionSelected = onGoToTransactionDetailsScreen,
     )
 
     LaunchedEffect(key1 = screenState.isLoading) {
@@ -113,7 +113,7 @@ private fun TransactionsScreen(
     onBackPress: () -> Unit,
     screenState: TransactionsScreenState,
     onUiEvent: (TransactionsScreenEvent) -> Unit,
-    onTransactionSelected: (TransactionReceipt) -> Unit
+    onTransactionSelected: (TransactionReceipt) -> Unit,
 ) {
     BackHandler {
         onBackPress()
@@ -123,7 +123,7 @@ private fun TransactionsScreen(
     val filteredList by remember(
         screenState.transactions,
         screenState.searchQuery,
-        screenState.selectedCategoryTab
+        screenState.selectedCategoryTab,
     ) {
         val resultList = when (screenState.selectedCategoryTab) {
             TransactionCategoryTab.ALL -> screenState.transactions
@@ -131,21 +131,21 @@ private fun TransactionsScreen(
             TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebit }
         }.filter {
             it.amount.toString().contains(screenState.searchQuery, true) || it.reference.contains(
-                screenState.searchQuery, true
+                screenState.searchQuery, true,
             ) || it.transactionTypeName.contains(screenState.searchQuery, true)
         }
         mutableStateOf(resultList)
     }
 
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
     )
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             Column(
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                modifier = Modifier.background(MaterialTheme.colorScheme.background),
             ) {
                 BanklySearchBar(
                     modifier = Modifier,
@@ -162,7 +162,7 @@ private fun TransactionsScreen(
                                 coroutineScope.launch {
                                     sheetState.show()
                                 }
-                            }
+                            },
                         )
                     },
                 )
@@ -180,11 +180,10 @@ private fun TransactionsScreen(
                         TransactionCategoryTab.CREDIT -> BanklySuccessColor.successColor
                         TransactionCategoryTab.DEBIT -> MaterialTheme.colorScheme.error
                     },
-                    unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
-        }
-
+        },
 
     ) { padding ->
 
@@ -207,7 +206,7 @@ private fun TransactionsScreen(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 8.dp, bottom = 8.dp)
+                                .padding(top = 8.dp, bottom = 8.dp),
                         ) {
                             LazyRow(
                                 modifier = Modifier
@@ -219,7 +218,7 @@ private fun TransactionsScreen(
                             ) {
                                 items(
                                     screenState.selectedTransactionFilterTypes,
-                                    key = TransactionFilterType::id
+                                    key = TransactionFilterType::id,
                                 ) { item: TransactionFilterType ->
                                     BanklyFilterChip(
                                         title = item.name,
@@ -227,17 +226,17 @@ private fun TransactionsScreen(
                                         onClick = {
                                             onUiEvent(
                                                 TransactionsScreenEvent.RemoveTransactionTypeFilterItem(
-                                                    item
-                                                )
+                                                    item,
+                                                ),
                                             )
                                         },
                                         trailingIcon = {
                                             Icon(
                                                 painter = painterResource(id = BanklyIcons.Remove),
                                                 contentDescription = null,
-                                                tint = Color.Unspecified
+                                                tint = Color.Unspecified,
                                             )
-                                        }
+                                        },
                                     )
                                 }
                             }
@@ -245,7 +244,7 @@ private fun TransactionsScreen(
                                 contentAlignment = Alignment.Center,
                                 modifier = Modifier
                                     .align(Alignment.CenterEnd)
-                                    .padding(end = 16.dp)
+                                    .padding(end = 16.dp),
                             ) {
                                 BanklyClickableText(
                                     text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
@@ -253,7 +252,7 @@ private fun TransactionsScreen(
                                         onUiEvent(TransactionsScreenEvent.OnClearAllFilters)
                                     },
                                     backgroundShape = RoundedCornerShape(4.dp),
-                                    textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
+                                    textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
                                 )
                             }
                         }
@@ -273,7 +272,7 @@ private fun TransactionsScreen(
                 refreshing = screenState.isRefreshing,
                 state = pullRefreshState,
                 modifier = Modifier.align(Alignment.Center),
-                contentColor = MaterialTheme.colorScheme.primary
+                contentColor = MaterialTheme.colorScheme.primary,
             )
         }
 
@@ -309,8 +308,8 @@ private fun TransactionsScreen(
                         onUiEvent(
                             TransactionsScreenEvent.OnCashFlowFilterChipClick(
                                 cashFlow,
-                                cashFlows = screenState.cashFlows
-                            )
+                                cashFlows = screenState.cashFlows,
+                            ),
                         )
                     },
                     shouldShowAllTransactionFilterType = screenState.showAllTransactionFilterType,
@@ -338,8 +337,8 @@ private fun TransactionsScreen(
                         onUiEvent(
                             TransactionsScreenEvent.OnTransactionFilterTypeSelected(
                                 transactionFilterType,
-                                screenState.allTransactionFilterTypes
-                            )
+                                screenState.allTransactionFilterTypes,
+                            ),
                         )
                     },
                     onApplyClick = { filter: TransactionFilter ->
@@ -353,11 +352,10 @@ private fun TransactionsScreen(
                         coroutineScope.launch {
                             sheetState.hide()
                         }
-                    }
+                    },
                 )
             }
         }
-
     }
 
     if (screenState.showDatePicker && screenState.whichDateRange != null) {
@@ -367,13 +365,13 @@ private fun TransactionsScreen(
                 onUiEvent(
                     TransactionsScreenEvent.OnDateSelected(
                         date,
-                        screenState.whichDateRange
-                    )
+                        screenState.whichDateRange,
+                    ),
                 )
             },
             onDismissDatePicker = {
                 onUiEvent(TransactionsScreenEvent.OnDismissDatePicker)
-            }
+            },
         )
     }
 
@@ -388,11 +386,9 @@ private fun TransactionsScreen(
         showDialog = screenState.showErrorDialog,
         onDismissDialog = {
             onUiEvent(TransactionsScreenEvent.DismissErrorDialog)
-        }
+        },
     )
-
 }
-
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
@@ -448,11 +444,11 @@ private fun TransactionsScreenPreview() {
                         aggregatorId = 0,
                         isCredit = false,
                         isDebit = true,
-                    )
+                    ),
                 ),
             ),
             onUiEvent = {},
-            onTransactionSelected = {}
+            onTransactionSelected = {},
         )
     }
 }

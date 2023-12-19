@@ -10,4 +10,3 @@ data class CardTransferAccountInquiry(
     val bankId: Long,
     val bankName: String,
 )
-

@@ -46,7 +46,7 @@ internal fun LoggedComplaintRoute(
     LoggedComplaintScreen(
         onBackPress = onBackPress,
         onGoToHome = onGoToHome,
-        complaintId = complaintId
+        complaintId = complaintId,
     )
 }
 
@@ -69,7 +69,7 @@ internal fun LoggedComplaintScreen(
                 .padding(padding)
                 .padding(bottom = 24.dp, start = 24.dp, end = 24.dp),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             item {
                 Box(modifier = Modifier.height(56.dp))
@@ -80,32 +80,32 @@ internal fun LoggedComplaintScreen(
                         modifier = Modifier.size(100.dp),
                         painter = painterResource(id = BanklyIcons.Successful),
                         contentDescription = "Successful Icon",
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = stringResource(R.string.msg_complaint_logged),
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = MaterialTheme.colorScheme.tertiary,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = stringResource(R.string.msg_complaint_logged_successfully),
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.tertiary,
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     BanklyClickableText(
                         text = buildAnnotatedString {
                             withStyle(
                                 MaterialTheme.typography.titleMedium.copy(
-                                    color = MaterialTheme.colorScheme.primary
-                                ).toSpanStyle()
+                                    color = MaterialTheme.colorScheme.primary,
+                                ).toSpanStyle(),
                             ) {
                                 append("ID: 38924y4920ID")
                             }
@@ -122,9 +122,9 @@ internal fun LoggedComplaintScreen(
                                 onClick = {
                                     context.copyToClipboard(complaintId)
                                 },
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -134,7 +134,7 @@ internal fun LoggedComplaintScreen(
                     BanklyFilledButton(
                         modifier = Modifier.fillMaxWidth(),
                         text = "Go to Home",
-                        onClick = onGoToHome
+                        onClick = onGoToHome,
                     )
                 }
             }
@@ -149,7 +149,7 @@ private fun NewComplaintScreenPreview() {
         LoggedComplaintScreen(
             onBackPress = {},
             onGoToHome = {},
-            complaintId = "ID: 38924y4920ID"
+            complaintId = "ID: 38924y4920ID",
         )
     }
 }

@@ -56,7 +56,7 @@ fun UploadFile(
             .dashedBorder(
                 border = BorderStroke(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 shape = MaterialTheme.shapes.medium,
                 on = 4.dp,
@@ -90,13 +90,13 @@ fun UploadFile(
                         Text(
                             text = docName,
                             style = MaterialTheme.typography.labelMedium.copy(
-                                color = MaterialTheme.colorScheme.tertiary
+                                color = MaterialTheme.colorScheme.tertiary,
                             ),
                         )
                         Text(
                             text = stringResource(R.string.action_upload_file_here),
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                             ),
                         )
                     }
@@ -122,7 +122,7 @@ fun UploadFile(
                         Text(
                             text = stringResource(R.string.action_upload_file_here),
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                             ),
                             textAlign = TextAlign.Center,
                         )

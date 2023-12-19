@@ -29,7 +29,7 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
         SelectAccountTypeRoute(
             onAccountSelected = onAccountSelected,
             onBackPress = onBackPress,
-            onCancelPress = onCancelPress
+            onCancelPress = onCancelPress,
         )
     }
 }

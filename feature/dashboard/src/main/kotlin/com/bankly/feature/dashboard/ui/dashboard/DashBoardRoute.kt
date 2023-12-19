@@ -25,7 +25,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
@@ -68,7 +67,7 @@ fun DashBoardRoute(
         negativeAction = onExitApp,
         positiveActionText = stringResource(R.string.action_no),
         positiveAction = { showActionDialog.value = false },
-        onDismissDialog = { showActionDialog.value = false }
+        onDismissDialog = { showActionDialog.value = false },
     )
 
     Scaffold(
@@ -88,7 +87,6 @@ fun DashBoardRoute(
                             isLoading = showLoadingIndicator,
                             title = currentBottomNavDestination.title ?: "",
                             onTrailingIconClick = {
-
                             },
                             trailingIcon = { onClick: () -> Unit ->
                                 Text(
@@ -106,12 +104,13 @@ fun DashBoardRoute(
                                     text = buildAnnotatedString {
                                         withStyle(
                                             MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
-                                                .toSpanStyle()
+                                                .toSpanStyle(),
                                         ) {
                                             append(stringResource(R.string.action_export))
                                         }
-                                    })
-                            }
+                                    },
+                                )
+                            },
                         )
                     }
 
@@ -126,7 +125,7 @@ fun DashBoardRoute(
         bottomBar = {
             AnimatedVisibility(
                 visible = showBottomNavBar,
-                exit = fadeOut() + slideOutHorizontally()
+                exit = fadeOut() + slideOutHorizontally(),
             ) {
                 DashBoardBottomNavBar(
                     destinations = BottomNavDestination.values()

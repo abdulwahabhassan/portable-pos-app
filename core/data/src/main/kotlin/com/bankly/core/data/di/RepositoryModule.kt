@@ -1,6 +1,5 @@
 package com.bankly.core.data.di
 
-import android.content.Context
 import com.bankly.core.data.repository.DefaultBillsRepository
 import com.bankly.core.data.repository.DefaultEndOfDayRepository
 import com.bankly.core.data.repository.DefaultNetworkCheckerRepository
@@ -18,7 +17,6 @@ import com.bankly.core.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -52,11 +50,11 @@ interface RepositoryModule {
 
     @Binds
     fun bindsNetworkCheckerRepository(
-       repository: DefaultNetworkCheckerRepository
+        repository: DefaultNetworkCheckerRepository,
     ): NetworkCheckerRepository
 
     @Binds
     fun bindsEndOfDayRepository(
-        repository: DefaultEndOfDayRepository
+        repository: DefaultEndOfDayRepository,
     ): EndOfDayRepository
 }

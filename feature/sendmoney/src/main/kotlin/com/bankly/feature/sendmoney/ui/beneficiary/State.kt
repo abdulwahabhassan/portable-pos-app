@@ -5,8 +5,8 @@ import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.entity.Bank
 import com.bankly.core.entity.AccountNameEnquiry
+import com.bankly.core.entity.Bank
 import com.bankly.core.sealed.State
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary

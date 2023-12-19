@@ -9,7 +9,7 @@ data class ValidatePassCodeScreenState(
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
     val passCodeFeedBack: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
 ) {
     val isContinueButtonEnabled: Boolean
         get() = passCodeTFV.text.isNotEmpty() && isPassCodeError.not()
@@ -18,5 +18,5 @@ data class ValidatePassCodeScreenState(
 }
 
 sealed interface ValidatePassCodeScreenOneShotState : OneShotState {
-    object GoToSettingsScreen: ValidatePassCodeScreenOneShotState
+    object GoToSettingsScreen : ValidatePassCodeScreenOneShotState
 }

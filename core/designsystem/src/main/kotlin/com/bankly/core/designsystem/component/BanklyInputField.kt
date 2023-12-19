@@ -58,7 +58,7 @@ fun BanklyInputField(
     horizontalPadding: Dp = 24.dp,
     minLines: Int = 1,
     maxlines: Int = 1,
-    onSurfaceAreaClick: (() -> Unit)? = null
+    onSurfaceAreaClick: (() -> Unit)? = null,
 ) {
     var isVisible by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
@@ -297,7 +297,6 @@ fun BanklyInputField(
                     .alpha(0f)
                     .clickable(onClick = onSurfaceAreaClick, enabled = isEnabled),
             )
-
         }
     }
 }

@@ -36,5 +36,4 @@ internal class MoreScreenViewModel @Inject constructor(
             }
         }
     }
-
 }

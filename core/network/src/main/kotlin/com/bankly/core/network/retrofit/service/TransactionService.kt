@@ -13,7 +13,7 @@ interface TransactionService {
         @Header("Authorization") token: String,
         @Path("min") minimum: Long,
         @Path("max") maximum: Long,
-        @Path("filter") filter: String
+        @Path("filter") filter: String,
     ): TransactionApiResponse<TransactionResult>
 
     @GET(value = "get/transaction/agenttransactionTypes")

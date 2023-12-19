@@ -8,5 +8,5 @@ enum class TransactionType(val title: String) {
     BILL_PAYMENT_AIRTIME("Airtime"),
     BILL_PAYMENT_INTERNET_DATA("Internet Data"),
     BILL_PAYMENT_ELECTRICITY("Electricity"),
-    BILL_PAYMENT_CABLE_TV("Cable TV")
+    BILL_PAYMENT_CABLE_TV("Cable TV"),
 }

@@ -10,5 +10,5 @@ data class BankLogo(
     val institutionCode: String,
     @SerialName("InstitutionName")
     val institutionName: String,
-    val logo: String
+    val logo: String,
 )

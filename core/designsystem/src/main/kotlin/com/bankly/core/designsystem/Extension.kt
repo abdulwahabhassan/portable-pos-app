@@ -112,7 +112,7 @@ fun Modifier.dashedBorder(width: Dp, brush: Brush, shape: Shape, on: Dp, off: Dp
                         if (stroke != null) {
                             if (insetOutline != null && pathClip != null) {
                                 val isSimpleRoundRect = insetOutline is Outline.Rounded &&
-                                        insetOutline.roundRect.isSimple
+                                    insetOutline.roundRect.isSimple
                                 withTransform({
                                     clipPath(pathClip)
                                     // we are drawing the round rect not as a path so we must

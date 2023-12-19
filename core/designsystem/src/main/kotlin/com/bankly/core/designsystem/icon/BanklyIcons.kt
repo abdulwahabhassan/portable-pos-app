@@ -64,9 +64,9 @@ object BanklyIcons {
     val Document = R.drawable.ic_document
     val Chat = R.drawable.ic_chat
     val FilledArrowForward = R.drawable.ic_filled_arrow_forward
-    val Remove =R.drawable.ic_remove
-    val SyncEOD =R.drawable.ic_sync
-    val BoxCheck =R.drawable.ic_box_check
+    val Remove = R.drawable.ic_remove
+    val SyncEOD = R.drawable.ic_sync
+    val BoxCheck = R.drawable.ic_box_check
     val SyncProcessed = R.drawable.ic_sync_processed
     val SyncSettled = R.drawable.ic_sync_settled
     val ContactUsEmail = R.drawable.ic_contact_us_email

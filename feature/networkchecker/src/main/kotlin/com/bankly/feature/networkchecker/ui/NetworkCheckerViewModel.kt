@@ -1,14 +1,10 @@
 package com.bankly.feature.networkchecker.ui
 
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.datastore.UserPreferences
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBankNetworksUseCase
 import com.bankly.core.entity.BankNetwork
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
@@ -23,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class NetworkCheckerViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
-    private val getNetworkCheckerUseCase: GetBankNetworksUseCase
+    private val getNetworkCheckerUseCase: GetBankNetworksUseCase,
 ) :
     BaseViewModel<NetworkCheckerScreenEvent, NetworkCheckerScreenState, NetworkCheckerScreenOneShotState>(
         NetworkCheckerScreenState(),
@@ -50,7 +46,7 @@ internal class NetworkCheckerViewModel @Inject constructor(
                                 copy(
                                     isBankListLoading = false,
                                     showErrorDialog = true,
-                                    errorDialogMessage = errorMessage
+                                    errorDialogMessage = errorMessage,
                                 )
                             }
                         }
@@ -58,7 +54,7 @@ internal class NetworkCheckerViewModel @Inject constructor(
                             setUiState {
                                 copy(
                                     isBankListLoading = false,
-                                    bankNetworks = bankNetworks
+                                    bankNetworks = bankNetworks,
                                 )
                             }
                         }
@@ -71,7 +67,7 @@ internal class NetworkCheckerViewModel @Inject constructor(
                             copy(
                                 isBankListLoading = false,
                                 showErrorDialog = true,
-                                errorDialogMessage = it.message ?: ""
+                                errorDialogMessage = it.message ?: "",
                             )
                         }
                     }.launchIn(viewModelScope)

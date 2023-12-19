@@ -12,7 +12,7 @@ class SyncEodUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         token: String,
-        eodTransactionListData: EodTransactionListData
+        eodTransactionListData: EodTransactionListData,
     ): Flow<Resource<SyncEod>> =
         eodRepository.syncEod(token, eodTransactionListData)
 }

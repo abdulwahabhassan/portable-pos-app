@@ -32,7 +32,7 @@ fun NavGraphBuilder.transactionDetailsNavGraph(
             val parentEntry = remember(backStackEntry) {
                 appNavController.getBackStackEntry(transactionDetailsRoute)
             }
-            val transactionReceipt = parentEntry.arguments?.getString(transactionReceiptArg,)
+            val transactionReceipt = parentEntry.arguments?.getString(transactionReceiptArg)
             val decodedTransactionReceipt: TransactionReceipt? = transactionReceipt?.let { Json.decodeFromString(it) }
             Log.d("debug transaction receipt", "transaction receipt details nav graph $transactionReceipt")
             val transactionDetailsState by rememberTransactionDetailsState()
@@ -65,7 +65,7 @@ private fun TransactionDetailsNavHost(
                 navHostController.navigateToSendReceiptRoute(transactionReceipt = transactionReceipt)
             },
             onLogComplaintClick = { },
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
         )
         sendReceiptRoute(
             onGoToSuccessScreen = {
@@ -73,7 +73,7 @@ private fun TransactionDetailsNavHost(
             },
             onBackPress = {
                 navHostController.popBackStack()
-            }
+            },
         )
         doneRoute(
             onDoneClick = {

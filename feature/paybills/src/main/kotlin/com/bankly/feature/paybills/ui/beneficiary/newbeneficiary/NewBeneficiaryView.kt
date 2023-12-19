@@ -42,7 +42,7 @@ internal fun NewBeneficiaryView(
     onEnterAmount: (TextFieldValue) -> Unit,
     billType: BillType,
     onContinueClick: () -> Unit,
-    onToggleSaveAsBeneficiary: (Boolean) -> Unit
+    onToggleSaveAsBeneficiary: (Boolean) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -62,12 +62,12 @@ internal fun NewBeneficiaryView(
                         BillType.AIRTIME, BillType.INTERNET_DATA -> R.string.msg_network_provider
                         BillType.ELECTRICITY -> R.string.msg_electricity_provider
                         BillType.CABLE_TV -> R.string.msg_cable_tv_provider
-                    }
+                    },
                 ),
                 isError = screenState.isProviderError,
                 feedbackText = screenState.providerFeedBack,
                 isEnabled = screenState.isProviderFieldEnable,
-                onSurfaceAreaClick = onProviderDropDownIconClick
+                onSurfaceAreaClick = onProviderDropDownIconClick,
             )
 
             Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -86,7 +86,7 @@ internal fun NewBeneficiaryView(
                         isEnabled = screenState.isPlanFieldEnabled,
                         onSurfaceAreaClick = {
                             onPlanDropDownIconClick(billType)
-                        }
+                        },
                     )
 
                     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -121,7 +121,7 @@ internal fun NewBeneficiaryView(
                         isEnabled = screenState.isPlanFieldEnabled,
                         onSurfaceAreaClick = {
                             onPlanDropDownIconClick(billType)
-                        }
+                        },
                     )
 
                     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -159,7 +159,6 @@ internal fun NewBeneficiaryView(
                         feedbackText = screenState.cableTvNumberFeedBack,
                         isEnabled = screenState.isCableTvNumberFieldEnabled,
                     )
-
                 }
 
                 BillType.ELECTRICITY -> {
@@ -175,7 +174,7 @@ internal fun NewBeneficiaryView(
                         isEnabled = screenState.isPlanFieldEnabled,
                         onSurfaceAreaClick = {
                             onPlanDropDownIconClick(billType)
-                        }
+                        },
                     )
 
                     Spacer(modifier = Modifier.padding(top = 8.dp))
@@ -264,7 +263,7 @@ internal fun NewBeneficiaryView(
                 BanklySwitchButton(
                     checked = screenState.saveAsBeneficiary,
                     isEnabled = screenState.isSaveAsBeneficiarySwitchEnabled,
-                    onCheckedChange = onToggleSaveAsBeneficiary
+                    onCheckedChange = onToggleSaveAsBeneficiary,
                 )
             }
         }
@@ -296,7 +295,7 @@ private fun NewBeneficiaryViewPreview() {
             billType = BillType.AIRTIME,
             onContinueClick = {},
             onEnterIDorCardNumber = {},
-            onToggleSaveAsBeneficiary = {}
+            onToggleSaveAsBeneficiary = {},
         )
     }
 }

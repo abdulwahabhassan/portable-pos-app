@@ -2,7 +2,6 @@ package com.bankly.feature.paywithcard.util
 
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.model.TransactionData
-import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
 internal fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {

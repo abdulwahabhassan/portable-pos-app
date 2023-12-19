@@ -15,18 +15,18 @@ interface PayWithTransferService {
     @PUT("update-as-synced")
     suspend fun syncRecentFunding(
         @Header("Authorization") token: String,
-        @Body body: SyncRecentFundingRequestBody
+        @Body body: SyncRecentFundingRequestBody,
     ): ApiResponse<String>
 
     @POST("recent-fundings")
     suspend fun getRecentFunding(
         @Header("Authorization") token: String,
-        @Body body: GetRecentFundingRequestBody
+        @Body body: GetRecentFundingRequestBody,
     ): ApiResponse<List<RecentFundResult>>
 
     @POST("send-receipt")
     suspend fun sendReceipt(
         @Header("Authorization") token: String,
-        @Body body: SendReceiptRequestBody
+        @Body body: SendReceiptRequestBody,
     ): ApiResponse<String>
 }

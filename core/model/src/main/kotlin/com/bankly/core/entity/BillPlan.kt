@@ -1,6 +1,6 @@
 package com.bankly.core.entity
 
-data class BillPlan (
+data class BillPlan(
     val id: Long,
     val billId: Long,
     val code: String,
@@ -11,6 +11,5 @@ data class BillPlan (
     val hasFixedAmount: Boolean,
     val minimumAmount: Double,
     val isTokenType: Boolean,
-    val available: Long
+    val available: Long,
 )
-

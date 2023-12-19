@@ -20,21 +20,21 @@ private val roboto: FontFamily = FontFamily(
 )
 
 internal val banklyTypography = Typography(
-    headlineLarge =  TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = roboto,
         fontWeight = FontWeight.SemiBold,
         fontSize = 32.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.sp,
     ),
-    headlineMedium =  TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = roboto,
         fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.sp,
     ),
-    headlineSmall =  TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = roboto,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,

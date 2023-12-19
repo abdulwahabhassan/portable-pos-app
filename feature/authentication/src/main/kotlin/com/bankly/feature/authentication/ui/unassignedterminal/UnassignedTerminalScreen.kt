@@ -32,18 +32,18 @@ import com.bankly.core.designsystem.theme.PreviewColor
 @Composable
 internal fun UnassignedTerminalRoute(
     onGoToBackPress: () -> Unit,
-    onContactSupportPress: () -> Unit
+    onContactSupportPress: () -> Unit,
 ) {
     UnassignedTerminalScreen(
         onGoToBackPress = onGoToBackPress,
-        onContactSupportPress = onContactSupportPress
+        onContactSupportPress = onContactSupportPress,
     )
 }
 
 @Composable
 internal fun UnassignedTerminalScreen(
     onGoToBackPress: () -> Unit,
-    onContactSupportPress: () -> Unit
+    onContactSupportPress: () -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.SpaceBetween,
@@ -64,7 +64,7 @@ internal fun UnassignedTerminalScreen(
                         modifier = Modifier.size(100.dp),
                         painter = painterResource(id = BanklyIcons.WarningAlert),
                         contentDescription = null,
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
@@ -108,7 +108,8 @@ internal fun UnassignedTerminalScreen(
                     )
                 }
             }
-        })
+        },
+    )
 }
 
 @Composable
@@ -117,7 +118,7 @@ private fun UnassignedTerminalScreenPreview() {
     BanklyTheme {
         UnassignedTerminalScreen(
             onGoToBackPress = {},
-            onContactSupportPress = {}
+            onContactSupportPress = {},
         )
     }
 }

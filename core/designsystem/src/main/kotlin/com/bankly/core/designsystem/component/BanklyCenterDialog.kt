@@ -51,7 +51,7 @@ fun BanklyCenterDialog(
             onDismissRequest = onDismissDialog,
             properties = DialogProperties(
                 dismissOnBackPress = false,
-                dismissOnClickOutside = false
+                dismissOnClickOutside = false,
             ),
         ) {
             Box(
@@ -69,26 +69,26 @@ fun BanklyCenterDialog(
                     ) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             if (showCloseIcon) {
                                 BanklyClickableIcon(
                                     Modifier.align(Alignment.TopEnd),
                                     icon = BanklyIcons.Close,
                                     onClick = onDismissDialog,
-                                    shape = CircleShape
+                                    shape = CircleShape,
                                 )
                             }
                             icon?.let {
-                               Column {
-                                   Spacer(modifier = Modifier.height(16.dp))
-                                   Icon(
-                                       modifier = Modifier.size(40.dp),
-                                       painter = painterResource(id = icon),
-                                       contentDescription = "Error alert icon",
-                                       tint = Color.Unspecified,
-                                   )
-                               }
+                                Column {
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                    Icon(
+                                        modifier = Modifier.size(40.dp),
+                                        painter = painterResource(id = icon),
+                                        contentDescription = "Error alert icon",
+                                        tint = Color.Unspecified,
+                                    )
+                                }
                             }
                         }
 
@@ -142,7 +142,7 @@ fun BanklyCenterDialog(
                                 )
                             }
                         }
-                        if(extraContent != null) {
+                        if (extraContent != null) {
                             extraContent()
                         }
                     }
@@ -165,7 +165,7 @@ fun BanklyCenterDialogPreview1() {
             },
             negativeActionText = stringResource(R.string.action_yes_cancel),
             showDialog = false,
-            onDismissDialog = {}
+            onDismissDialog = {},
         )
     }
 }
@@ -182,7 +182,7 @@ fun BanklyCenterDialogPreview2() {
             positiveAction = {
             },
             showDialog = false,
-            onDismissDialog = {}
+            onDismissDialog = {},
         )
     }
 }

@@ -1,16 +1,16 @@
 package com.bankly.core.data.util
 
-import com.bankly.core.entity.Bank
-import com.bankly.core.entity.Message
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.AgentAccountDetails
+import com.bankly.core.entity.Bank
 import com.bankly.core.entity.BankNetwork
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.CardTransferAccountInquiry
 import com.bankly.core.entity.EodInfo
+import com.bankly.core.entity.Message
+import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.SyncEod
@@ -20,25 +20,25 @@ import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.entity.User
 import com.bankly.core.entity.UserWallet
 import com.bankly.core.network.model.response.TokenApiResponse
+import com.bankly.core.network.model.result.AccountNameEnquiryResult
+import com.bankly.core.network.model.result.AccountNumberTransactionResult
+import com.bankly.core.network.model.result.AgentAccountResult
 import com.bankly.core.network.model.result.AgentResult
 import com.bankly.core.network.model.result.AuthenticatedUserResult
+import com.bankly.core.network.model.result.BankNetworkResult
 import com.bankly.core.network.model.result.BankResult
-import com.bankly.core.network.model.result.PhoneNumberTransactionResult
-import com.bankly.core.network.model.result.MessageResult
-import com.bankly.core.network.model.result.AccountNameEnquiryResult
-import com.bankly.core.network.model.result.StatusResult
-import com.bankly.core.network.model.result.AccountNumberTransactionResult
 import com.bankly.core.network.model.result.BillPaymentResult
 import com.bankly.core.network.model.result.CableTvNameEnquiryResult
-import com.bankly.core.network.model.result.MeterNameEnquiryResult
-import com.bankly.core.network.model.result.PlanResult
-import com.bankly.core.network.model.result.ProviderResult
-import com.bankly.core.network.model.result.RecentFundResult
-import com.bankly.core.network.model.result.AgentAccountResult
-import com.bankly.core.network.model.result.BankNetworkResult
 import com.bankly.core.network.model.result.CardTransferAccountInquiryResult
 import com.bankly.core.network.model.result.CardTransferTransactionResult
 import com.bankly.core.network.model.result.EodInfoResult
+import com.bankly.core.network.model.result.MessageResult
+import com.bankly.core.network.model.result.MeterNameEnquiryResult
+import com.bankly.core.network.model.result.PhoneNumberTransactionResult
+import com.bankly.core.network.model.result.PlanResult
+import com.bankly.core.network.model.result.ProviderResult
+import com.bankly.core.network.model.result.RecentFundResult
+import com.bankly.core.network.model.result.StatusResult
 import com.bankly.core.network.model.result.SyncEodResult
 import com.bankly.core.network.model.result.TransactionFilterTypeResult
 import com.bankly.core.network.model.result.TransactionResult
@@ -74,9 +74,10 @@ fun AgentAccountResult.asUserWallet() = UserWallet(
 )
 
 fun AgentAccountResult.asAgentAccountDetails() = AgentAccountDetails(
-    fundingAccountNumber = fundingAccountNumber, name = name, fundingSourceName = fundingSourceName
+    fundingAccountNumber = fundingAccountNumber,
+    name = name,
+    fundingSourceName = fundingSourceName,
 )
-
 
 fun BankResult.asBank() = Bank(
     name = name,
@@ -100,7 +101,7 @@ fun CardTransferAccountInquiryResult.asAccountInquiry() = CardTransferAccountInq
     accountNumber = accountNumber ?: "",
     bankCode = bankCode ?: "",
     bankId = bankId ?: 0,
-    bankName = bankName ?: ""
+    bankName = bankName ?: "",
 )
 
 fun AgentResult.asNameEnquiry() = AccountNameEnquiry(
@@ -152,7 +153,7 @@ fun CardTransferTransactionResult.asCardTransfer() = TransactionReceipt.CardTran
     message = message ?: "",
     dateCreated = dateCreated ?: "",
     statusName = statusName ?: "",
-    sessionId = sessionId ?: ""
+    sessionId = sessionId ?: "",
 )
 
 fun ProviderResult.asProvider() = BillProvider(
@@ -177,7 +178,7 @@ fun ProviderResult.asProvider() = BillProvider(
     providerAmount = providerAmount ?: 0.00,
     providerId = providerId ?: 0,
     dateCreated = dateCreated ?: "",
-    minimumAmount = minimumAmount ?: 0.00
+    minimumAmount = minimumAmount ?: 0.00,
 )
 
 fun PlanResult.asPlan() = BillPlan(
@@ -197,7 +198,7 @@ fun PlanResult.asPlan() = BillPlan(
 fun CableTvNameEnquiryResult.asCableTvNameEnquiry() = CableTvNameEnquiry(
     cardNumber = cardNumber,
     customerName = customerName,
-    packageName = packageName
+    packageName = packageName,
 )
 
 fun MeterNameEnquiryResult.asMeterNameEnquiry() = MeterNameEnquiry(
@@ -207,7 +208,7 @@ fun MeterNameEnquiryResult.asMeterNameEnquiry() = MeterNameEnquiry(
     address = address,
     meterType = meterType,
     packageName = packageName,
-    debtRepayment = debtRepayment
+    debtRepayment = debtRepayment,
 )
 
 fun BillPaymentResult.asBillPayment() = TransactionReceipt.BillPayment(
@@ -231,7 +232,7 @@ fun BillPaymentResult.asBillPayment() = TransactionReceipt.BillPayment(
     receiver = receiver ?: "",
     commission = commission ?: 0.00,
     billToken = billToken ?: "",
-    isTokenType = isTokenType ?: false
+    isTokenType = isTokenType ?: false,
 )
 
 fun RecentFundResult.asRecentFund() = RecentFund(
@@ -249,7 +250,7 @@ fun RecentFundResult.asRecentFund() = RecentFund(
     senderBankName = senderBankName ?: "",
     receiverBankName = receiverBankName ?: "",
     receiverAccountNumber = receiverAccountNumber ?: "",
-    receiverAccountName = receiverAccountName ?: ""
+    receiverAccountName = receiverAccountName ?: "",
 )
 
 fun TransactionResult.asTransaction() = Transaction(
@@ -297,18 +298,20 @@ fun TransactionResult.asTransaction() = Transaction(
     regionId = regionId ?: "",
     aggregatorId = aggregatorId ?: 0,
     isCredit = isCredit ?: false,
-    isDebit = isDebit ?: false
+    isDebit = isDebit ?: false,
 )
 
 fun TransactionFilterTypeResult.asTransactionFilterType() = TransactionFilterType(
-    name = name, id = id, isSelected = false
+    name = name,
+    id = id,
+    isSelected = false,
 )
 
 fun BankNetworkResult.asBankNetwork() = BankNetwork(
     bankName = bankName ?: "",
     bankIcon = "",
     networkPercentage = countPercentage ?: 0.00,
-    totalCount = totalCount ?: 0
+    totalCount = totalCount ?: 0,
 )
 
 fun EodInfoResult.asEodInfo() = EodInfo(
@@ -319,7 +322,7 @@ fun EodInfoResult.asEodInfo() = EodInfo(
     responseCode = responseCode ?: "",
     terminalId = terminalId ?: "",
     balance = balance ?: 0.00,
-    amountAdded = amountAdded ?: 0.00
+    amountAdded = amountAdded ?: 0.00,
 )
 
 fun SyncEodResult.asSyncEod() = SyncEod(
@@ -328,5 +331,5 @@ fun SyncEodResult.asSyncEod() = SyncEod(
     responseCode = responseCode ?: "",
     terminalId = terminalId ?: "",
     balance = balance ?: 0.00,
-    amountAdded = amountAdded ?: 0.00
+    amountAdded = amountAdded ?: 0.00,
 )

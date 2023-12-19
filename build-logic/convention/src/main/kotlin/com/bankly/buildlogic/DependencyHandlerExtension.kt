@@ -34,3 +34,18 @@ private fun DependencyHandler.groupedComposeDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("coil.kt.compose").get())
 }
 
+internal fun DependencyHandler.groupedNetworkDependency(libs: VersionCatalog) {
+    add("implementation", libs.findLibrary("okhttp.logging").get())
+    add("implementation", libs.findLibrary("retrofit.core").get())
+    add("implementation", libs.findLibrary("retrofit.kotlin.serialization").get())
+}
+
+internal fun DependencyHandler.groupedDatabaseDependency(libs: VersionCatalog) {
+    add("implementation", libs.findLibrary("room.runtime").get())
+    add("implementation", libs.findLibrary("room.compiler").get())
+    add("annotationProcessor", libs.findLibrary("room.compiler").get())
+    add("implementation", libs.findLibrary("room.ktx").get())
+    add("implementation", libs.findLibrary("room.paging").get())
+    add("implementation", libs.findLibrary("room.testing").get())
+    add("kapt", libs.findLibrary("room.compiler").get())
+}

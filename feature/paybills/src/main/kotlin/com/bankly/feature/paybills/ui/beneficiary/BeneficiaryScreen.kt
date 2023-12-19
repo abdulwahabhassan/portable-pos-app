@@ -62,7 +62,7 @@ internal fun BeneficiaryRoute(
     billType: BillType,
     onContinueClick: (TransactionData) -> Unit,
     onCloseClick: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
@@ -94,14 +94,16 @@ internal fun BeneficiaryRoute(
                         else -> ""
                     },
                     when (billType) {
-                        BillType.CABLE_TV -> newBeneficiaryScreenState.cableTvNameEnquiry?.customerName
-                            ?: ""
+                        BillType.CABLE_TV ->
+                            newBeneficiaryScreenState.cableTvNameEnquiry?.customerName
+                                ?: ""
 
-                        BillType.ELECTRICITY -> newBeneficiaryScreenState.meterNameEnquiry?.customerName
-                            ?: ""
+                        BillType.ELECTRICITY ->
+                            newBeneficiaryScreenState.meterNameEnquiry?.customerName
+                                ?: ""
 
                         else -> ""
-                    }
+                    },
                 ),
             )
         },
@@ -119,14 +121,16 @@ internal fun BeneficiaryRoute(
                         else -> ""
                     },
                     when (billType) {
-                        BillType.CABLE_TV -> savedBeneficiaryScreenState.cableTvNameEnquiry?.customerName
-                            ?: ""
+                        BillType.CABLE_TV ->
+                            savedBeneficiaryScreenState.cableTvNameEnquiry?.customerName
+                                ?: ""
 
-                        BillType.ELECTRICITY -> savedBeneficiaryScreenState.meterNameEnquiry?.customerName
-                            ?: ""
+                        BillType.ELECTRICITY ->
+                            savedBeneficiaryScreenState.meterNameEnquiry?.customerName
+                                ?: ""
 
                         else -> ""
-                    }
+                    },
                 ),
             )
         },
@@ -136,7 +140,7 @@ internal fun BeneficiaryRoute(
     LaunchedEffect(key1 = Unit) {
         merge(
             newBeneficiaryViewModel.oneShotState,
-            savedBeneficiaryViewModel.oneShotState
+            savedBeneficiaryViewModel.oneShotState,
         ).onEach { beneficiaryScreenOneShotState: BeneficiaryScreenOneShotState ->
             when (beneficiaryScreenOneShotState) {
                 is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
@@ -165,7 +169,6 @@ internal fun BeneficiaryRoute(
 //        this.launch {
 //            newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.FetchProviders(billType))
 //        }
-
     }
 
     if (newBeneficiaryScreenState.showErrorDialog) {
@@ -175,7 +178,7 @@ internal fun BeneficiaryRoute(
             positiveActionText = stringResource(R.string.action_dismiss),
             positiveAction = {
                 newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.OnDismissDialog)
-            }
+            },
         )
     }
 
@@ -186,10 +189,9 @@ internal fun BeneficiaryRoute(
             positiveActionText = stringResource(R.string.action_dismiss),
             positiveAction = {
                 savedBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.OnDismissDialog)
-            }
+            },
         )
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -265,7 +267,7 @@ private fun BeneficiaryScreen(
                                             billType = billType,
                                             billPlan = item as BillPlan,
                                         )
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -283,7 +285,7 @@ private fun BeneficiaryScreen(
                                             billType = billType,
                                             billPlan = item as BillPlan,
                                         )
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -340,7 +342,7 @@ private fun BeneficiaryScreen(
                                         },
                                         modifier = Modifier.size(32.dp),
                                         contentDescription = null,
-                                        contentScale = ContentScale.Fit
+                                        contentScale = ContentScale.Fit,
                                     )
                                 }
                             }
@@ -351,14 +353,16 @@ private fun BeneficiaryScreen(
                 },
                 searchPredicate = if (bottomSheetType == BottomSheetType.PLAN && (billType == BillType.CABLE_TV || billType == BillType.INTERNET_DATA)) {
                     { item -> (item as BillPlan).description.contains(searchQuery, true) }
-                } else null,
+                } else {
+                    null
+                },
                 searchQuery = searchQuery,
                 onSearchQueryChange = { newQuery: String ->
                     searchQuery = newQuery
-                }
+                },
             )
         },
-    ) {paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -410,7 +414,7 @@ private fun BeneficiaryScreen(
                                     BeneficiaryScreenEvent.OnInputAmount(
                                         textFieldValue,
                                         minimumAmount = newBeneficiaryScreenState.selectedBillPlan?.minimumAmount
-                                            ?: newBeneficiaryScreenState.selectedBillProvider?.minimumAmount
+                                            ?: newBeneficiaryScreenState.selectedBillProvider?.minimumAmount,
                                     ),
                                 )
                             },
@@ -420,7 +424,7 @@ private fun BeneficiaryScreen(
                                     onNewBeneficiaryUiEvent(
                                         BeneficiaryScreenEvent.OnInputCableTvNumber(
                                             textFieldValue,
-                                            newBeneficiaryScreenState.selectedBillPlan.billId
+                                            newBeneficiaryScreenState.selectedBillPlan.billId,
                                         ),
                                     )
                                 }
@@ -431,7 +435,7 @@ private fun BeneficiaryScreen(
                                         BeneficiaryScreenEvent.OnInputMeterNumber(
                                             textFieldValue,
                                             newBeneficiaryScreenState.selectedBillPlan.billId,
-                                            newBeneficiaryScreenState.selectedBillPlan.id
+                                            newBeneficiaryScreenState.selectedBillPlan.id,
                                         ),
                                     )
                                 }
@@ -440,7 +444,7 @@ private fun BeneficiaryScreen(
                                 onNewBeneficiaryUiEvent(
                                     BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
                                 )
-                            }
+                            },
                         )
                     }
 
@@ -474,7 +478,7 @@ private fun BeneficiaryScreen(
                                     BeneficiaryScreenEvent.OnInputAmount(
                                         amountTFV = textFieldValue,
                                         minimumAmount = savedBeneficiaryScreenState.selectedBillPlan?.minimumAmount
-                                            ?: savedBeneficiaryScreenState.selectedBillProvider?.minimumAmount
+                                            ?: savedBeneficiaryScreenState.selectedBillProvider?.minimumAmount,
                                     ),
                                 )
                             },
@@ -492,7 +496,7 @@ private fun BeneficiaryScreen(
                                     onSavedBeneficiaryUiEvent(
                                         BeneficiaryScreenEvent.OnInputCableTvNumber(
                                             textFieldValue,
-                                            savedBeneficiaryScreenState.selectedBillPlan.billId
+                                            savedBeneficiaryScreenState.selectedBillPlan.billId,
                                         ),
                                     )
                                 }
@@ -503,7 +507,7 @@ private fun BeneficiaryScreen(
                                         BeneficiaryScreenEvent.OnInputMeterNumber(
                                             textFieldValue,
                                             savedBeneficiaryScreenState.selectedBillPlan.billId,
-                                            savedBeneficiaryScreenState.selectedBillPlan.id
+                                            savedBeneficiaryScreenState.selectedBillPlan.id,
                                         ),
                                     )
                                 }
@@ -512,14 +516,13 @@ private fun BeneficiaryScreen(
                                 onSavedBeneficiaryUiEvent(
                                     BeneficiaryScreenEvent.OnToggleSaveAsBeneficiary(state),
                                 )
-                            }
+                            },
                         )
                     }
                 }
             }
         }
     }
-
 }
 
 @Composable

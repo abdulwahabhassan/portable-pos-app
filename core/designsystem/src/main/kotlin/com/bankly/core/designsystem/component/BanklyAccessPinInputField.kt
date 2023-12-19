@@ -30,10 +30,10 @@ import com.bankly.core.designsystem.theme.PreviewColor
 fun BanklyAccessPinInputField(
     passCode: List<String>,
     isError: Boolean = false,
-    pinErrorMessage: String = stringResource(R.string.msg_incorrect_access_pin)
+    pinErrorMessage: String = stringResource(R.string.msg_incorrect_access_pin),
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
             modifier = Modifier
@@ -60,7 +60,7 @@ fun BanklyAccessPinInputField(
                             MaterialTheme.colorScheme.primary
                         } else {
                             Color.Unspecified
-                        }
+                        },
                     )
                 }
                 if (index != passCode.lastIndex) Spacer(modifier = Modifier.width(8.dp))
@@ -70,11 +70,10 @@ fun BanklyAccessPinInputField(
         Text(
             text = if (isError) pinErrorMessage else "",
             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.error),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
     }
-
 }
 
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)

@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SendReceiptUseCase @Inject constructor(
-    private val payWithTransferRepository: PayWithTransferRepository
+    private val payWithTransferRepository: PayWithTransferRepository,
 ) {
     suspend operator fun invoke(
         token: String,
-        body: SendReceiptData
+        body: SendReceiptData,
     ): Flow<Resource<String>> = payWithTransferRepository.sendReceipt(token, body)
 }

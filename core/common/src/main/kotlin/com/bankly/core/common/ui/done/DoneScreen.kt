@@ -1,6 +1,5 @@
 package com.bankly.core.common.ui.done
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,7 +48,6 @@ fun DoneScreen(
     message: String,
     onDoneClick: () -> Unit,
 ) {
-
     LazyColumn(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxSize(),
@@ -69,7 +67,7 @@ fun DoneScreen(
                         modifier = Modifier.size(100.dp),
                         painter = painterResource(id = BanklyIcons.Successful),
                         contentDescription = "Successful Icon",
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
@@ -104,7 +102,7 @@ fun DoneScreen(
                     )
                 }
             }
-        }
+        },
     )
 }
 

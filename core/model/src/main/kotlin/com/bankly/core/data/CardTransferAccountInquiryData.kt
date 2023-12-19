@@ -1,7 +1,6 @@
 package com.bankly.core.data
 
-
-class CardTransferAccountInquiryData (
+class CardTransferAccountInquiryData(
     val bankId: Long,
     val accountNumber: String,
     val amount: Double,
@@ -9,5 +8,5 @@ class CardTransferAccountInquiryData (
     val terminalId: String,
     val channel: String,
     val geoLocation: String,
-    val deviceType: String
+    val deviceType: String,
 )

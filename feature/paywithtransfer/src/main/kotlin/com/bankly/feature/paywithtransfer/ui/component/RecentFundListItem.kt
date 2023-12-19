@@ -56,7 +56,7 @@ internal fun RecentFundListItem(
             Icon(
                 painter = painterResource(id = BanklyIcons.TransferInward),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
@@ -65,7 +65,7 @@ internal fun RecentFundListItem(
                     style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    )
+                )
                 Text(
                     text = formatServerDateTime(recentFund.transactionDate),
                     style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
@@ -76,7 +76,7 @@ internal fun RecentFundListItem(
                 Text(
                     text = stringResource(R.string.symbol_plus_sign) + Formatter.formatAmount(
                         recentFund.amount,
-                        true
+                        true,
                     ),
                     style = MaterialTheme.typography.bodyMedium.copy(color = BanklySuccessColor.successColor),
                 )
@@ -87,7 +87,7 @@ internal fun RecentFundListItem(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             thickness = 0.5.dp,
-            color = MaterialTheme.colorScheme.tertiaryContainer
+            color = MaterialTheme.colorScheme.tertiaryContainer,
         )
     }
 }
@@ -113,8 +113,8 @@ private fun RecentFundListItemPreview() {
                 receiverBankName = "Bankly MFB",
                 receiverAccountNumber = "3000291002",
                 receiverAccountName = "John Doe",
-                ),
-            onClick = {}
+            ),
+            onClick = {},
         )
     }
 }

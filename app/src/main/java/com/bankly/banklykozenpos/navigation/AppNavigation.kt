@@ -38,7 +38,7 @@ fun AppNavHost(
     activity: Activity,
     isSessionExpired: Boolean,
     onSessionExpired: () -> Unit,
-    onSessionRenewed: () -> Unit
+    onSessionRenewed: () -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -58,7 +58,7 @@ fun AppNavHost(
                         popUpTo("$authenticationNavGraphRoute/{$isValidatePassCodeArg}") {
                             inclusive = true
                         }
-                    }
+                    },
                 )
             },
             onPopBackStack = {
@@ -66,7 +66,7 @@ fun AppNavHost(
             },
             onContactSupportPress = {
                 appState.navHostController.navigateToContactUsNavGraph()
-            }
+            },
         )
         dashBoardNavGraph(
             onExitApp = onExitApp,
@@ -93,7 +93,8 @@ fun AppNavHost(
                     navOptions = navOptions {
                         launchSingleTop = true
                         restoreState = true
-                    })
+                    },
+                )
             },
             onGoToTransactionDetailsScreen = { transactionReceipt ->
                 appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
@@ -114,7 +115,7 @@ fun AppNavHost(
                 appState.navHostController.logOut()
             },
             activity = activity,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         payWithCardNavGraph(
             onBackPress = {
@@ -126,61 +127,61 @@ fun AppNavHost(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         payWithTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         sendMoneyNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onForgotPinClick = {},
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         networkCheckerNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         billPaymentNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onForgotPinClick = {},
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         transactionDetailsNavGraph(
             appNavController = appState.navHostController,
             onBackPress = {
                 appState.navHostController.popBackStack()
-            }
+            },
         )
         eodNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         contactUsNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
-            }
+            },
         )
 
         logComplaintNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
-            }
+            },
         )
         settingsNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
-            }
+            },
         )
         checkCardBalanceNavGraph(
             onBackPress = {
@@ -202,8 +203,6 @@ fun AppNavHost(
         onDismissDialog = {
             appState.navHostController.logOut()
             onSessionRenewed()
-        }
+        },
     )
 }
-
-

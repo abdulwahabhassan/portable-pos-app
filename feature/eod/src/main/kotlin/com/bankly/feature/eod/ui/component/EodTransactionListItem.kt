@@ -55,11 +55,14 @@ internal fun EodTransactionListItem(
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (transaction.isCredit) BanklyIcons.TransferInward
-                    else BanklyIcons.TransferOutward
+                    id = if (transaction.isCredit) {
+                        BanklyIcons.TransferInward
+                    } else {
+                        BanklyIcons.TransferOutward
+                    },
                 ),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
@@ -79,11 +82,14 @@ internal fun EodTransactionListItem(
                 Text(
                     text = stringResource(R.string.symbol_plus_sign) + Formatter.formatAmount(
                         transaction.amount,
-                        true
+                        true,
                     ),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = if (transaction.isCredit) BanklySuccessColor.successColor
-                        else MaterialTheme.colorScheme.error
+                        color = if (transaction.isCredit) {
+                            BanklySuccessColor.successColor
+                        } else {
+                            MaterialTheme.colorScheme.error
+                        },
                     ),
                 )
             }
@@ -93,7 +99,7 @@ internal fun EodTransactionListItem(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             thickness = 0.5.dp,
-            color = MaterialTheme.colorScheme.tertiaryContainer
+            color = MaterialTheme.colorScheme.tertiaryContainer,
         )
     }
 }
@@ -148,9 +154,9 @@ private fun EodTransactionListItemPreview() {
                 regionId = "",
                 aggregatorId = 0,
                 isCredit = false,
-                isDebit = false
+                isDebit = false,
             ),
-            onClick = {}
+            onClick = {},
         )
     }
 }

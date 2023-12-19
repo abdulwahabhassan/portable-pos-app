@@ -85,8 +85,8 @@ private fun RecipientScreen(
         rememberBottomSheetScaffoldState(
             SheetState(
                 skipPartiallyExpanded = false,
-                initialValue = SheetValue.Hidden
-            )
+                initialValue = SheetValue.Hidden,
+            ),
         )
     val coroutineScope = rememberCoroutineScope()
 
@@ -112,8 +112,8 @@ private fun RecipientScreen(
                     onUiEvent(
                         RecipientScreenEvent.OnSelectBank(
                             bank,
-                            screenState.accountNumberTFV.text
-                        )
+                            screenState.accountNumberTFV.text,
+                        ),
                     )
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
@@ -123,7 +123,7 @@ private fun RecipientScreen(
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
-                }
+                },
             )
         },
     ) { padding ->
@@ -153,7 +153,7 @@ private fun RecipientScreen(
                             coroutineScope.launch {
                                 bottomSheetScaffoldState.bottomSheetState.expand()
                             }
-                        }
+                        },
                     )
 
                     BanklyInputField(
@@ -232,7 +232,7 @@ private fun RecipientScreen(
                                 accountName = screenState.accountNumberTFV.text,
                                 selectedBankId = screenState.selectedBank?.id,
 
-                                ),
+                            ),
                         )
                     },
                     isEnabled = screenState.isContinueButtonEnabled,
@@ -252,7 +252,7 @@ private fun RecipientScreen(
         showDialog = screenState.showErrorDialog,
         onDismissDialog = {
             onUiEvent(RecipientScreenEvent.OnDismissErrorDialog)
-        }
+        },
     )
 }
 

@@ -6,13 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.SendMoneyChannel
 import com.bankly.core.common.model.TransactionData
+import com.bankly.core.common.ui.confirmtransaction.ConfirmTransactionRoute
 import com.bankly.core.common.ui.processtransaction.ProcessTransactionRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.sendmoney.ui.beneficiary.BeneficiaryRoute
-import com.bankly.core.common.ui.confirmtransaction.ConfirmTransactionRoute
 import com.bankly.feature.sendmoney.ui.selectchannel.SelectChannelRoute
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -43,7 +43,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
     onContinueClick: (TransactionData) -> Unit,
     onBackPress: () -> Unit,
     onCloseClick: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(
         route = "$beneficiaryRoute/{$sendMoneyChannelArg}",
@@ -63,7 +63,7 @@ internal fun NavGraphBuilder.beneficiaryRoute(
                     sendMoneyChannel = channelEnum,
                     onContinueClick = onContinueClick,
                     onCloseClick = onCloseClick,
-                    onSessionExpired = onSessionExpired
+                    onSessionExpired = onSessionExpired,
                 )
             }
         }
@@ -98,7 +98,7 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
 internal fun NavGraphBuilder.processTransactionRoute(
     onSuccessfulTransaction: (TransactionReceipt) -> Unit,
     onFailedTransaction: (String) -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(
         route = "$processTransactionRoute/{$transactionDataArg}",
@@ -114,7 +114,7 @@ internal fun NavGraphBuilder.processTransactionRoute(
                 onFailedTransaction = { message: String, _ ->
                     onFailedTransaction(message)
                 },
-                onSessionExpired = onSessionExpired
+                onSessionExpired = onSessionExpired,
             )
         }
     }

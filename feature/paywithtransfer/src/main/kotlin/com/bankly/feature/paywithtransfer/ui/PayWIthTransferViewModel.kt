@@ -61,7 +61,7 @@ internal class PayWithTransferViewModel @Inject constructor(
                         copy(
                             isAgentAccountDetailsLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -76,7 +76,7 @@ internal class PayWithTransferViewModel @Inject constructor(
                     copy(
                         isAgentAccountDetailsLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: "Request could not be completed"
+                        errorDialogMessage = it.message ?: "Request could not be completed",
                     )
                 }
             }
@@ -86,7 +86,7 @@ internal class PayWithTransferViewModel @Inject constructor(
     private suspend fun getRecentFunding() {
         getRecentFundingUseCase.invoke(
             userPreferencesDataStore.data().token,
-            GetRecentFundingData(false, Tools.serialNumber)
+            GetRecentFundingData(false, Tools.serialNumber),
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -104,7 +104,7 @@ internal class PayWithTransferViewModel @Inject constructor(
                         copy(
                             isRecentFundsLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -118,7 +118,7 @@ internal class PayWithTransferViewModel @Inject constructor(
                     copy(
                         isRecentFundsLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: "Request could not be completed"
+                        errorDialogMessage = it.message ?: "Request could not be completed",
                     )
                 }
             }
@@ -135,7 +135,7 @@ internal class PayWithTransferViewModel @Inject constructor(
                 setUiState {
                     copy(
                         showRecentFundDialog = true,
-                        selectedRecentFund = event.recentFund
+                        selectedRecentFund = event.recentFund,
                     )
                 }
             }

@@ -1,7 +1,6 @@
 package com.bankly.core.domain.usecase
 
 import com.bankly.core.data.CardTransferAccountInquiryData
-import com.bankly.core.data.CardTransferData
 import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.domain.repository.BillsRepository
@@ -16,11 +15,11 @@ import javax.inject.Inject
 
 class NameEnquiryUseCase @Inject constructor(
     private val transferRepository: TransferRepository,
-    private val billsRepository: BillsRepository
+    private val billsRepository: BillsRepository,
 ) {
     suspend fun performBankAccountNameEnquiry(
         token: String,
-        phoneNumber: String
+        phoneNumber: String,
     ): Flow<Resource<AccountNameEnquiry>> =
         transferRepository.performBankAccountNameEnquiry(token = token, phoneNumber = phoneNumber)
 
@@ -49,12 +48,12 @@ class NameEnquiryUseCase @Inject constructor(
     ): Flow<Resource<CableTvNameEnquiry>> =
         billsRepository.performCableTvNameEnquiry(
             token = token,
-            body = body
+            body = body,
         )
 
     suspend fun performCardTransferAccountInquiry(
         token: String,
-        body: CardTransferAccountInquiryData
+        body: CardTransferAccountInquiryData,
     ): Flow<Resource<CardTransferAccountInquiry>> = transferRepository.performCardTransferAccountInquiry(
         token = token,
         body = body,

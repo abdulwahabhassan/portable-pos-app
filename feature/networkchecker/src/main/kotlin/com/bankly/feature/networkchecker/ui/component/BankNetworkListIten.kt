@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,8 +35,11 @@ internal fun BankNetworkListItem(
     val statusColor = when (bankNetwork.networkPercentage) {
         in 1.00..50.00 -> BanklyErrorColor.errorColor
         in 51.00..69.00 -> BanklyWarningColor.warningColor
-        else -> if (bankNetwork.totalCount > 0L && bankNetwork.networkPercentage == 0.00)
-            BanklyErrorColor.errorColor else BanklySuccessColor.successColor
+        else -> if (bankNetwork.totalCount > 0L && bankNetwork.networkPercentage == 0.00) {
+            BanklyErrorColor.errorColor
+        } else {
+            BanklySuccessColor.successColor
+        }
     }
 
     Card(
@@ -46,7 +47,7 @@ internal fun BankNetworkListItem(
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 6.dp),
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(0.5.dp)
+        elevation = CardDefaults.cardElevation(0.5.dp),
     ) {
         Row(
             modifier = Modifier
@@ -63,7 +64,7 @@ internal fun BankNetworkListItem(
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 AsyncImage(
                     modifier = Modifier
@@ -77,7 +78,7 @@ internal fun BankNetworkListItem(
                     text = bankNetwork.bankName,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Box(
@@ -85,18 +86,16 @@ internal fun BankNetworkListItem(
                     .size(width = 64.dp, height = 40.dp)
                     .background(color = statusColor, shape = MaterialTheme.shapes.small)
                     .padding(8.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = bankNetwork.networkPercentage.roundToInt().toString().plus("%"),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary,
                 )
             }
-
         }
     }
-
 }
 
 @Composable

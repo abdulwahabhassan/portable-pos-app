@@ -39,7 +39,7 @@ internal fun LoginRoute(
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
     onSetUpAccessPin: (String) -> Unit,
-    onTerminalUnAssigned: () -> Unit
+    onTerminalUnAssigned: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -94,10 +94,12 @@ internal fun LoginScreen(
                 subTitle = buildAnnotatedString {
                     append(
                         stringResource(
-                            if (screenState.isResetAccessPin)
+                            if (screenState.isResetAccessPin) {
                                 R.string.msg_eneter_default_access_code_subtitle
-                            else R.string.msg_login_screen_subtitle
-                        )
+                            } else {
+                                R.string.msg_login_screen_subtitle
+                            },
+                        ),
                     )
                 },
                 isLoading = screenState.isLoading,
@@ -116,7 +118,7 @@ internal fun LoginScreen(
 
                 BanklyAccessPinInputField(
                     passCode = screenState.passCode,
-                    isError = screenState.isPassCodeError
+                    isError = screenState.isPassCodeError,
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -139,7 +141,6 @@ internal fun LoginScreen(
                         onClick = {
                             onUiEvent(LoginScreenEvent.ClearAccessPinInputField)
                             onUiEvent(LoginScreenEvent.OnResetAccessPinClick)
-
                         },
                         isEnabled = screenState.isUserInputEnabled,
                         backgroundShape = MaterialTheme.shapes.medium,
@@ -198,7 +199,7 @@ internal fun LoginScreen(
         },
         onDismissDialog = {
             onUiEvent(LoginScreenEvent.OnDismissErrorDialog)
-        }
+        },
     )
 
     BanklyCenterDialog(
@@ -217,7 +218,7 @@ internal fun LoginScreen(
         },
         onDismissDialog = {
             onUiEvent(LoginScreenEvent.OnDismissExitResetPinWarningDialog)
-        }
+        },
     )
 }
 

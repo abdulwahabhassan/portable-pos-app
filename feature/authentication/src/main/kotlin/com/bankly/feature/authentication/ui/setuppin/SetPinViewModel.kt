@@ -1,8 +1,6 @@
 package com.bankly.feature.authentication.ui.setuppin
 
-import android.util.Log
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.datastore.UserPreferencesDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,8 +17,8 @@ class SetPinViewModel @Inject constructor() :
                 setOneShotState(
                     SetPinScreenOneShotState.OnGoToConfirmPinScreen(
                         defaultPin = event.defaultPin,
-                        newPin = event.newPin
-                    )
+                        newPin = event.newPin,
+                    ),
                 )
             }
 
@@ -45,5 +43,4 @@ class SetPinViewModel @Inject constructor() :
             }
         }
     }
-
 }

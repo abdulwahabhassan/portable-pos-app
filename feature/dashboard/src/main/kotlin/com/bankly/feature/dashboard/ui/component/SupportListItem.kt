@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,14 +39,14 @@ internal fun SupportListItem(
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(1.dp)
+        elevation = CardDefaults.cardElevation(1.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = MaterialTheme.shapes.medium
+                    shape = MaterialTheme.shapes.medium,
                 )
                 .clip(MaterialTheme.shapes.medium)
                 .clickable(
@@ -68,7 +67,7 @@ internal fun SupportListItem(
                 Icon(
                     painter = painterResource(id = supportOption.icon),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
                 )
                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                 Text(
@@ -82,7 +81,7 @@ internal fun SupportListItem(
             Icon(
                 painter = painterResource(id = BanklyIcons.FilledArrowForward),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
         }
     }
@@ -93,7 +92,6 @@ internal fun SupportListItem(
 private fun SupportListItemPreview() {
     BanklyTheme {
         SupportListItem(supportOption = SupportOption.CONTACT_US) {
-
         }
     }
 }

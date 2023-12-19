@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetRecentFundingUseCase @Inject constructor(
-    private val payWithTransferRepository: PayWithTransferRepository
+    private val payWithTransferRepository: PayWithTransferRepository,
 ) {
     suspend operator fun invoke(
         token: String,
-        body: GetRecentFundingData
+        body: GetRecentFundingData,
     ): Flow<Resource<List<RecentFund>>> = payWithTransferRepository.getRecentFunding(token, body)
 }

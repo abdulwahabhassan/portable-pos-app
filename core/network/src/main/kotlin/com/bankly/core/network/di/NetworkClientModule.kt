@@ -31,7 +31,7 @@ object NetworkClientModule {
                         .addHeader("Content-Type", "application/json")
                         .addHeader(
                             "x-api-key",
-                            if (BuildConfig.DEBUG) SANDBOX_X_API_KEY else BuildConfig.PROD_X_API_KEY
+                            if (BuildConfig.DEBUG) SANDBOX_X_API_KEY else BuildConfig.PROD_X_API_KEY,
                         )
                         .addHeader("Accept", "*/*")
                         .build(),

@@ -1,7 +1,5 @@
 package com.bankly.core.designsystem.component
 
-import androidx.compose.material3.MaterialTheme
-
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -17,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bankly.core.designsystem.theme.BanklyTheme
-
 
 @Composable
 fun BanklySwitchButton(
@@ -71,7 +69,7 @@ fun BanklySwitchButton(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                enabled = isEnabled
+                enabled = isEnabled,
             ) {
                 onCheckedChange(checked)
             },
@@ -105,7 +103,7 @@ fun BanklySwitchButtonPreview() {
         BanklySwitchButton(
             checked = true,
             onCheckedChange = {},
-            isEnabled = true
+            isEnabled = true,
         )
     }
 }

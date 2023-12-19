@@ -12,23 +12,23 @@ import com.bankly.core.data.GetRecentFundingData
 import com.bankly.core.data.ResetPassCodeData
 import com.bankly.core.data.SendReceiptData
 import com.bankly.core.data.SyncRecentFundingData
+import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.data.ValidateOtpData
 import com.bankly.core.network.model.request.BankTransferRequestBody
 import com.bankly.core.network.model.request.BillPaymentRequestBody
+import com.bankly.core.network.model.request.CardTransferAccountInquiryRequestBody
+import com.bankly.core.network.model.request.CardTransferRequestBody
 import com.bankly.core.network.model.request.ChangePassCodeRequestBody
 import com.bankly.core.network.model.request.ForgotPassCodeRequestBody
+import com.bankly.core.network.model.request.ForgotTerminalAccessPinRequestBody
 import com.bankly.core.network.model.request.GetRecentFundingRequestBody
 import com.bankly.core.network.model.request.ResetPassCodeRequestBody
 import com.bankly.core.network.model.request.SendReceiptRequestBody
-import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
-import com.bankly.core.data.TransactionFilterData
-import com.bankly.core.network.model.request.CardTransferAccountInquiryRequestBody
-import com.bankly.core.network.model.request.CardTransferRequestBody
-import com.bankly.core.network.model.request.ForgotTerminalAccessPinRequestBody
 import com.bankly.core.network.model.request.SyncEodRequestBody
 import com.bankly.core.network.model.request.SyncEodTransactionData
+import com.bankly.core.network.model.request.SyncRecentFundingRequestBody
 import com.bankly.core.network.model.request.ValidateCableTvNumberRequestBody
 import com.bankly.core.network.model.request.ValidateElectricityMeterNumberRequestBody
 import com.bankly.core.network.model.request.ValidateOtpRequestBody
@@ -49,7 +49,6 @@ fun ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
 fun ForgotTerminalAccessPinData.asRequestBody() = ForgotTerminalAccessPinRequestBody(
     serialNumber = serialNumber,
 )
-
 
 fun ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
     username = username,
@@ -108,30 +107,36 @@ fun BillPaymentData.asRequestBody() = BillPaymentRequestBody(
     clientRequestId = clientRequestId,
     deviceId = deviceId,
     paidForPhone = paidForPhone,
-    paidForName = paidForName
+    paidForName = paidForName,
 )
 
 fun ValidateCableTvNumberData.asRequestBody() = ValidateCableTvNumberRequestBody(
     cardNumber = cardNumber,
-    billId = billId
+    billId = billId,
 )
 
 fun ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMeterNumberRequestBody(
     meterNumber = meterNumber,
     billId = billId,
-    billItemId = billItemId
+    billItemId = billItemId,
 )
 
 fun GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
-    updateOnFetch = updateOnFetch, serialNumber = serialNumber, location = location
+    updateOnFetch = updateOnFetch,
+    serialNumber = serialNumber,
+    location = location,
 )
 
 fun SendReceiptData.asRequestBody() = SendReceiptRequestBody(
-    sessionId = sessionId, beneficiary = beneficiary, routeType = routeType
+    sessionId = sessionId,
+    beneficiary = beneficiary,
+    routeType = routeType,
 )
 
 fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
-    sessionId = sessionId, serialNumber = serialNumber, location = location
+    sessionId = sessionId,
+    serialNumber = serialNumber,
+    location = location,
 )
 
 fun TransactionFilterData.asRequestParam() = Json.encodeToString(this)
@@ -149,9 +154,9 @@ fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
             it.maskedPan,
             it.terminalId,
             it.rrn,
-            it.transType
+            it.transType,
         )
-    }
+    },
 )
 
 fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
@@ -162,7 +167,7 @@ fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryR
     terminalId = terminalId,
     channel = channel,
     geoLocation = geoLocation,
-    deviceType = deviceType
+    deviceType = deviceType,
 )
 
 fun CardTransferData.asRequestBody() = CardTransferRequestBody(
@@ -175,5 +180,5 @@ fun CardTransferData.asRequestBody() = CardTransferRequestBody(
     sendersPhoneNumber = sendersPhoneNumber,
     clientRequestId = clientRequestId,
     responseCode = responseCode,
-    responseMessage = responseMessage
+    responseMessage = responseMessage,
 )

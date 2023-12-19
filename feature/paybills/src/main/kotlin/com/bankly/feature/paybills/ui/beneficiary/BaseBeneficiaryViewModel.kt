@@ -54,7 +54,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
             }
             .onEach { validateCableTvNumberData ->
                 validateCableTvNumber(validateCableTvNumberData)
-
             }.launchIn(viewModelScope)
 
         meterNameEnquiryIdentifierFlow
@@ -155,7 +154,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 setOneShotState(
                     BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen(
                         transactionData = TransactionData.BillPayment(
-                            billsProviderType =  when (event.billType) {
+                            billsProviderType = when (event.billType) {
                                 BillType.AIRTIME -> BillsProviderType.AIRTIME
                                 BillType.INTERNET_DATA -> BillsProviderType.INTERNET_DATA
                                 BillType.CABLE_TV -> BillsProviderType.CABLE_TV
@@ -170,7 +169,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             billProvider = event.billProvider?.name ?: "",
                             billPlan = event.billPlan?.name ?: "",
                             cableTvNumberOrMeterNumber = event.cableTvNumberOrMeterNumber ?: "",
-                            cableTvOwnerNameOrMeterOwnerName = event.cableTvOwnerNameOrMeterOwnerName
+                            cableTvOwnerNameOrMeterOwnerName = event.cableTvOwnerNameOrMeterOwnerName,
                         ),
                     ),
                 )
@@ -189,7 +188,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 cableTvNameEnquiryIdentifierFlow.value =
                     ValidateCableTvNumberData(
                         cardNumber = event.cableTvNumber.text,
-                        billId = event.providerId
+                        billId = event.providerId,
                     )
             }
 
@@ -200,13 +199,13 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         meterNumberFeedBack = "",
                         isMeterNumberError = false,
                         meterNameEnquiry = null,
-                        validationStatusIcon = null
+                        validationStatusIcon = null,
                     )
                 }
                 meterNameEnquiryIdentifierFlow.value = ValidateElectricityMeterNumberData(
                     meterNumber = event.meterNumberTFV.text,
                     billId = event.providerId,
-                    billItemId = event.planId
+                    billItemId = event.planId,
                 )
             }
 
@@ -215,7 +214,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                 setUiState {
                     copy(
                         selectedBillPlan = event.billPlan,
-                        amountTFV = TextFieldValue(polishedAmount)
+                        amountTFV = TextFieldValue(polishedAmount),
                     )
                 }
             }
@@ -259,7 +258,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             isProviderListLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -273,7 +272,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     copy(
                         isProviderListLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: "Request could not be completed"
+                        errorDialogMessage = it.message ?: "Request could not be completed",
                     )
                 }
             }
@@ -305,7 +304,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             copy(
                                 isPlanListLoading = false,
                                 showErrorDialog = true,
-                                errorDialogMessage = message
+                                errorDialogMessage = message,
                             )
                         }
                     }
@@ -319,7 +318,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(
                             isPlanListLoading = false,
                             showErrorDialog = false,
-                            errorDialogMessage = it.message ?: "Request could not be completed"
+                            errorDialogMessage = it.message ?: "Request could not be completed",
                         )
                     }
                 }
@@ -327,9 +326,8 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         }
     }
 
-
     private suspend fun validateMeterNumber(
-        data: ValidateElectricityMeterNumberData
+        data: ValidateElectricityMeterNumberData,
     ) {
         nameEnquiryUseCase.performElectricMeterNameEnquiry(
             token = userPreferencesDataStore.data().token,
@@ -342,12 +340,12 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     )
                 }
             }
-            resource.onReady {meterNameEnquiry ->
+            resource.onReady { meterNameEnquiry ->
                 setUiState {
                     copy(
                         validationStatusIcon = BanklyIcons.ValidationPassed,
                         meterNameEnquiry = meterNameEnquiry,
-                        meterNumberFeedBack = "${meterNameEnquiry.customerName}, ${meterNameEnquiry.address}"
+                        meterNumberFeedBack = "${meterNameEnquiry.customerName}, ${meterNameEnquiry.address}",
                     )
                 }
             }
@@ -374,7 +372,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     isMeterNumberError = true,
                 )
             }
-
         }.launchIn(viewModelScope)
     }
 
@@ -395,7 +392,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     copy(
                         validationStatusIcon = BanklyIcons.ValidationPassed,
                         cableTvNameEnquiry = cableTvNameEnquiry,
-                        cableTvNumberFeedBack = cableTvNameEnquiry.customerName
+                        cableTvNumberFeedBack = cableTvNameEnquiry.customerName,
                     )
                 }
             }
@@ -422,7 +419,6 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     isCableTvNumberError = true,
                 )
             }
-
         }.launchIn(viewModelScope)
     }
 }

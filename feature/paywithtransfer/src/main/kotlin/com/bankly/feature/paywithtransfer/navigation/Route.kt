@@ -33,7 +33,7 @@ internal fun NavGraphBuilder.payWithTransferRoute(
             onBackPress = onBackPress,
             onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             onGoToHomeClick = onGoToHomeClick,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
     }
 }
@@ -80,7 +80,7 @@ internal fun NavGraphBuilder.sendReceiptRoute(
             SendReceiptRoute(
                 transactionReceipt = transactionReceipt,
                 onGoToSuccessScreen = onGoToSuccessScreen,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }

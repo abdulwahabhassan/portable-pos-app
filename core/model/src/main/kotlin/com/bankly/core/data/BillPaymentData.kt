@@ -13,5 +13,5 @@ data class BillPaymentData(
     val serialNumber: String,
     val terminalId: String,
     val clientRequestId: String,
-    val deviceId: String
+    val deviceId: String,
 )

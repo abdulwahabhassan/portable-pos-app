@@ -48,5 +48,5 @@ data class TransactionResult(
     val regionId: String?,
     val aggregatorId: Long?,
     val isCredit: Boolean?,
-    val isDebit: Boolean?
+    val isDebit: Boolean?,
 )

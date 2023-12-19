@@ -37,7 +37,7 @@ private fun CardTransferNavHost(
         startDestination = contactUsRoute,
     ) {
         contactUsRoute(
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
         )
     }
 }

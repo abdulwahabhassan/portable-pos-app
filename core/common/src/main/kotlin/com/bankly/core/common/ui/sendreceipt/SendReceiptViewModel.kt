@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SendReceiptViewModel @Inject constructor() :
     BaseViewModel<SendReceiptScreenEvent, SendReceiptScreenState, SendReceiptScreenOneShotState>(
-        SendReceiptScreenState()
+        SendReceiptScreenState(),
     ) {
 
     override suspend fun handleUiEvents(event: SendReceiptScreenEvent) {
@@ -25,8 +25,11 @@ class SendReceiptViewModel @Inject constructor() :
                     copy(
                         phoneNumberTFV = event.phoneNumberTFV,
                         isPhoneNumberError = !isPhoneNumberValid(event.phoneNumberTFV.text),
-                        phoneNumberFeedBack = if (isPhoneNumberValid(event.phoneNumberTFV.text)) ""
-                        else "Please enter a valid phone number",
+                        phoneNumberFeedBack = if (isPhoneNumberValid(event.phoneNumberTFV.text)) {
+                            ""
+                        } else {
+                            "Please enter a valid phone number"
+                        },
                     )
                 }
             }
@@ -34,6 +37,5 @@ class SendReceiptViewModel @Inject constructor() :
     }
 
     private suspend fun sendReceipt(phoneNumber: String) {
-
     }
 }

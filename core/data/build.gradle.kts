@@ -6,7 +6,6 @@ android {
     namespace = "com.bankly.core.data"
 }
 
-
 dependencies {
     api(project(":core:network"))
     api(project(":core:domain"))

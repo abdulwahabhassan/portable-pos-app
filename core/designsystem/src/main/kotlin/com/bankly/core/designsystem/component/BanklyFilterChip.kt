@@ -15,13 +15,13 @@ fun BanklyFilterChip(
     onClick: (Boolean) -> Unit,
     isSelected: Boolean,
     trailingIcon: (@Composable () -> Unit)? = null,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
 ) {
     BanklyClickableText(
         text = buildAnnotatedString {
             withStyle(
                 MaterialTheme.typography.bodySmall.copy(color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary)
-                    .toSpanStyle()
+                    .toSpanStyle(),
             ) { append(title) }
         },
         onClick = {
@@ -30,7 +30,7 @@ fun BanklyFilterChip(
         backgroundColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer,
         backgroundShape = MaterialTheme.shapes.extraSmall,
         trailingIcon = trailingIcon,
-        textStyle = textStyle
+        textStyle = textStyle,
     )
 }
 

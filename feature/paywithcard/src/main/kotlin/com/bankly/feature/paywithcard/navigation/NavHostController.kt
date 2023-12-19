@@ -3,7 +3,6 @@ package com.bankly.feature.paywithcard.navigation
 import android.net.Uri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import com.bankly.core.common.model.TransactionData
 import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -16,18 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bankly.core.common.R
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
 fun EmptyStateView(
-    message: String = "Empty"
+    message: String = "Empty",
 ) {
     Column(
         modifier = Modifier
@@ -42,7 +40,7 @@ fun EmptyStateView(
                 .padding(8.dp),
             painter = painterResource(id = BanklyIcons.NoSavedBeneficiary),
             contentDescription = null,
-            tint = Color.Unspecified
+            tint = Color.Unspecified,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(

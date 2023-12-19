@@ -28,7 +28,6 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -100,7 +99,6 @@ internal fun ValidatePassCodeScreen(
                         isError = screenState.isPassCodeError,
                         feedbackText = screenState.passCodeFeedBack,
                     )
-
                 }
             }
 
@@ -134,7 +132,7 @@ internal fun ValidatePassCodeScreen(
         showDialog = screenState.showErrorDialog,
         onDismissDialog = {
             onUiEvent(ValidatePassCodeScreenEvent.OnDismissErrorDialog)
-        }
+        },
     )
 }
 

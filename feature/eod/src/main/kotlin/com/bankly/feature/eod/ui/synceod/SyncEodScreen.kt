@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,10 +41,8 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.eod.R
 import com.bankly.feature.eod.ui.component.SyncEodItemCard
-import com.bankly.feature.eod.ui.dashboard.EodDashboardScreenEvent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
 
 @Composable
 internal fun SyncEodRoute(
@@ -59,13 +56,13 @@ internal fun SyncEodRoute(
         onBackPress = onBackPress,
         onUiEvent = { event: SyncEodScreenEvent ->
             viewModel.sendEvent(event)
-        }
+        },
     )
     LaunchedEffect(
         key1 = Unit,
         block = {
             viewModel.sendEvent(SyncEodScreenEvent.LoadUiData)
-        }
+        },
     )
 
     LaunchedEffect(key1 = Unit, block = {
@@ -83,7 +80,7 @@ internal fun SyncEodRoute(
 internal fun SyncEodScreen(
     screenState: SyncEodScreenState,
     onBackPress: () -> Unit,
-    onUiEvent: (SyncEodScreenEvent) -> Unit
+    onUiEvent: (SyncEodScreenEvent) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -91,9 +88,9 @@ internal fun SyncEodScreen(
             BanklyTitleBar(
                 isLoading = screenState.isLoading,
                 onBackPress = onBackPress,
-                title = stringResource(id = R.string.sync_od)
+                title = stringResource(id = R.string.sync_od),
             )
-        }
+        },
     ) { paddingValues: PaddingValues ->
         if (screenState.isLoading) {
             Column(
@@ -101,13 +98,15 @@ internal fun SyncEodScreen(
                     .fillMaxSize()
                     .padding(paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = if (screenState.isEodSyncLoading)
+                    text = if (screenState.isEodSyncLoading) {
                         stringResource(R.string.msg_syncing_eod_please_wait)
-                    else stringResource(R.string.msg_loading),
+                    } else {
+                        stringResource(R.string.msg_loading)
+                    },
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
                     textAlign = TextAlign.Center,
                 )
@@ -118,7 +117,7 @@ internal fun SyncEodScreen(
                     .fillMaxSize()
                     .padding(paddingValues),
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 item {
                     Row(
@@ -126,14 +125,14 @@ internal fun SyncEodScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Box(modifier = Modifier.weight(1f)) {
                             SyncEodItemCard(
                                 screenState.processedAmount,
                                 stringResource(R.string.msg_processed),
                                 MaterialTheme.colorScheme.primary,
-                                icon = BanklyIcons.SyncProcessed
+                                icon = BanklyIcons.SyncProcessed,
                             )
                         }
                         Box(modifier = Modifier.weight(1f)) {
@@ -141,7 +140,7 @@ internal fun SyncEodScreen(
                                 screenState.settledAmount,
                                 stringResource(R.string.msg_settled),
                                 BanklySuccessColor.successColor,
-                                icon = BanklyIcons.SyncSettled
+                                icon = BanklyIcons.SyncSettled,
                             )
                         }
                     }
@@ -168,12 +167,12 @@ internal fun SyncEodScreen(
                                 ),
                             )
                             .padding(vertical = 6.dp, horizontal = 12.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = stringResource(id = R.string.action_tap_to_sync_eod),
                             style = MaterialTheme.typography.titleMedium.copy(
-                                color = MaterialTheme.colorScheme.onPrimary
+                                color = MaterialTheme.colorScheme.onPrimary,
                             ),
                             textAlign = TextAlign.Center,
                         )
@@ -184,9 +183,9 @@ internal fun SyncEodScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         text = stringResource(R.string.msg_sync_eod_to_get_updated_transaction_report),
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.tertiary
+                            color = MaterialTheme.colorScheme.tertiary,
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(40.dp))
                 }
@@ -205,7 +204,7 @@ internal fun SyncEodScreen(
         showDialog = screenState.showErrorDialog,
         onDismissDialog = {
             onUiEvent(SyncEodScreenEvent.OnDismissErrorDialog)
-        }
+        },
     )
 
     BanklyCenterDialog(
@@ -219,7 +218,7 @@ internal fun SyncEodScreen(
         showDialog = screenState.showSuccessfulEodSyncDialog,
         onDismissDialog = {
             onUiEvent(SyncEodScreenEvent.OnDismissSuccessfulEodSyncDialog)
-        }
+        },
     )
 }
 
@@ -230,7 +229,7 @@ private fun SyncEodScreenPreview() {
         SyncEodScreen(
             screenState = SyncEodScreenState(),
             onBackPress = {},
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

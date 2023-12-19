@@ -18,4 +18,3 @@ internal fun NavGraphBuilder.featureToggleListRoute(
         )
     }
 }
-

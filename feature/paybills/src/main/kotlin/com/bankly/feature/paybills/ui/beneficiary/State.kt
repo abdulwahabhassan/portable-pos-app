@@ -5,9 +5,9 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.entity.BillPlan
+import com.bankly.core.entity.BillProvider
 import com.bankly.core.entity.CableTvNameEnquiry
 import com.bankly.core.entity.MeterNameEnquiry
-import com.bankly.core.entity.BillProvider
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
 import com.bankly.feature.paybills.model.SavedBeneficiary
@@ -47,7 +47,7 @@ internal data class BeneficiaryScreenState(
     val isProviderListLoading: Boolean = false,
     val isPlanListLoading: Boolean = false,
     val validationStatusIcon: Int? = null,
-    val isPaymentLoading: Boolean = false
+    val isPaymentLoading: Boolean = false,
 ) {
     private val isAnyLoading: Boolean
         get() = isProviderListLoading || isPlanListLoading || isPaymentLoading || isPaymentLoading
@@ -56,34 +56,33 @@ internal data class BeneficiaryScreenState(
         get() = when (billType) {
             BillType.AIRTIME -> {
                 selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
+                    phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
+                    amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
             }
 
             BillType.INTERNET_DATA -> {
                 selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
-                        phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
+                    selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                    phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
+                    amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not()
             }
 
             BillType.CABLE_TV -> {
                 selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
-                        phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
-                        cableTvNumberTFV.text.isNotEmpty() && isCableTvNumberError.not() &&
-                        cableTvNameEnquiry != null
-
+                    selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                    phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
+                    amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
+                    cableTvNumberTFV.text.isNotEmpty() && isCableTvNumberError.not() &&
+                    cableTvNameEnquiry != null
             }
 
             BillType.ELECTRICITY -> {
                 selectedBillProvider != null && providerTFV.text.isNotEmpty() && isProviderError.not() &&
-                        selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
-                        phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
-                        amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
-                        meterNumberTFV.text.isNotEmpty() && isMeterNumberError.not() &&
-                        meterNameEnquiry != null
+                    selectedBillPlan != null && planTFV.text.isNotEmpty() && isPlanError.not() &&
+                    phoneNumberTFV.text.isNotEmpty() && isPhoneNumberError.not() &&
+                    amountTFV.text.isNotEmpty() && isAmountError.not() && isAnyLoading.not() &&
+                    meterNumberTFV.text.isNotEmpty() && isMeterNumberError.not() &&
+                    meterNameEnquiry != null
             }
 
             null -> false

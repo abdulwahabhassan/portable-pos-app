@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class DefaultTransactionRepository  @Inject constructor(
+class DefaultTransactionRepository @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val networkMonitor: NetworkMonitor,
     private val json: Json,
@@ -30,7 +30,7 @@ class DefaultTransactionRepository  @Inject constructor(
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: TransactionFilterData
+        filter: TransactionFilterData,
     ): Flow<Resource<List<Transaction>>> = flow {
         emit(Resource.Loading)
         when (
@@ -44,7 +44,7 @@ class DefaultTransactionRepository  @Inject constructor(
                             token = token,
                             minimum = minimum,
                             maximum = maximum,
-                            filter = filter.asRequestParam()
+                            filter = filter.asRequestParam(),
                         )
                     },
                 ),
@@ -69,7 +69,7 @@ class DefaultTransactionRepository  @Inject constructor(
                             token = token,
                             minimum = 1,
                             maximum = 100,
-                            filter = filter.asRequestParam()
+                            filter = filter.asRequestParam(),
                         )
                     },
                 ),
@@ -81,7 +81,7 @@ class DefaultTransactionRepository  @Inject constructor(
         }
     }
 
-    override suspend fun getTransactionsFilterTypes(token: String): Flow<Resource<List<TransactionFilterType>>> =  flow {
+    override suspend fun getTransactionsFilterTypes(token: String): Flow<Resource<List<TransactionFilterType>>> = flow {
         emit(Resource.Loading)
         when (
             val requestResult = handleRequest(

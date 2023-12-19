@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
@@ -38,7 +37,7 @@ fun BanklyClickableText(
     indicationColor: Color = MaterialTheme.colorScheme.primary,
     backgroundShape: Shape = CircleShape,
     trailingIcon: (@Composable () -> Unit)? = null,
-    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary),
 ) {
     Row(
         modifier = Modifier
@@ -46,7 +45,6 @@ fun BanklyClickableText(
                 shape = backgroundShape,
                 color = backgroundColor,
             )
-
             .clip(backgroundShape)
             .clickable(
                 onClick = onClick,
@@ -59,7 +57,7 @@ fun BanklyClickableText(
                 ),
             )
             .padding(vertical = 6.dp, horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = text,

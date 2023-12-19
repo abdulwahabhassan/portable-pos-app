@@ -194,8 +194,8 @@ private fun ConfirmTransactionScreen(
                                 PassCodeKey.DONE -> {
                                     onUiEvent(
                                         ConfirmTransactionScreenEvent.OnDoneClick(
-                                            transactionData
-                                        )
+                                            transactionData,
+                                        ),
                                     )
                                 }
 

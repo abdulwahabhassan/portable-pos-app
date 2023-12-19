@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.bankly.core.designsystem.component.BanklySwitchButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -33,14 +31,14 @@ import com.bankly.core.entity.Feature
 @Composable
 internal fun FeatureToggleListItem(
     feature: Feature,
-    onToggle: (Boolean) -> Unit
+    onToggle: (Boolean) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 6.dp),
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(0.5.dp)
+        elevation = CardDefaults.cardElevation(0.5.dp),
     ) {
         Row(
             modifier = Modifier
@@ -62,7 +60,7 @@ internal fun FeatureToggleListItem(
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Image(
                     modifier = Modifier
@@ -81,7 +79,7 @@ internal fun FeatureToggleListItem(
                             is Feature.EndOfDay -> BanklyIcons.EndOfDay
                             is Feature.NetworkChecker -> BanklyIcons.NetworkChecker
                             is Feature.Settings -> BanklyIcons.Settings
-                        }
+                        },
                     ),
                     contentDescription = null,
                     alignment = Alignment.Center,
@@ -90,17 +88,17 @@ internal fun FeatureToggleListItem(
                     text = feature.title,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Box(
                 modifier = Modifier.padding(8.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 BanklySwitchButton(
                     checked = feature.isEnabled,
                     isEnabled = true,
-                    onCheckedChange = onToggle
+                    onCheckedChange = onToggle,
                 )
             }
         }
@@ -113,7 +111,7 @@ private fun SavedBeneficiaryItemPreview() {
     BanklyTheme {
         FeatureToggleListItem(
             feature = Feature.SendMoney(),
-            onToggle = {}
+            onToggle = {},
         )
     }
 }

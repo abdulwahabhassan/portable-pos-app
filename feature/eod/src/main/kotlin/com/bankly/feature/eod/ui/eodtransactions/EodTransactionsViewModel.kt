@@ -26,7 +26,7 @@ import javax.inject.Inject
 internal class EodTransactionsViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
     private val getEodTransactionsUseCase: GetEodTransactionsUseCase,
-    private val getTransactionFilterTypesUseCase: GetTransactionFilterTypesUseCase
+    private val getTransactionFilterTypesUseCase: GetTransactionFilterTypesUseCase,
 ) : BaseViewModel<EodTransactionsScreenEvent, EodTransactionsScreenState, EodTransactionsScreenOneShotState>(
     EodTransactionsScreenState(),
 ) {
@@ -51,24 +51,29 @@ internal class EodTransactionsViewModel @Inject constructor(
                     filter = TransactionFilterData(
                         dateCreatedFrom = userPrefData.transactionFilter.dateFrom?.toString() ?: "",
                         dateCreatedTo = userPrefData.transactionFilter.dateTo?.toString() ?: "",
-                        transactionType = if (userPrefData.transactionFilter.transactionTypes.size == 1)
-                            userPrefData.transactionFilter.transactionTypes[0].id.toString() else ""
-                    )
+                        transactionType = if (userPrefData.transactionFilter.transactionTypes.size == 1) {
+                            userPrefData.transactionFilter.transactionTypes[0].id.toString()
+                        } else {
+                            ""
+                        },
+                    ),
                 )
             }
 
             is EodTransactionsScreenEvent.OnCashFlowFilterChipClick -> {
                 setUiState {
-                    copy(cashFlows = event.cashFlows.map { cashFlowFilter ->
-                        if (cashFlowFilter.title == event.cashFlow.title) {
-                            when (val filter = event.cashFlow) {
-                                is CashFlow.Credit -> filter.copy(state = filter.state.not())
-                                is CashFlow.Debit -> filter.copy(state = filter.state.not())
+                    copy(
+                        cashFlows = event.cashFlows.map { cashFlowFilter ->
+                            if (cashFlowFilter.title == event.cashFlow.title) {
+                                when (val filter = event.cashFlow) {
+                                    is CashFlow.Credit -> filter.copy(state = filter.state.not())
+                                    is CashFlow.Debit -> filter.copy(state = filter.state.not())
+                                }
+                            } else {
+                                cashFlowFilter
                             }
-                        } else {
-                            cashFlowFilter
-                        }
-                    })
+                        },
+                    )
                 }
             }
 
@@ -78,7 +83,6 @@ internal class EodTransactionsViewModel @Inject constructor(
 
             is EodTransactionsScreenEvent.OnInputTransactionReference -> {
                 setUiState { copy(transactionReferenceTFV = event.transactionReferenceTFV) }
-
             }
 
             EodTransactionsScreenEvent.OnShowLessFilterTypesClick -> {
@@ -101,13 +105,13 @@ internal class EodTransactionsViewModel @Inject constructor(
                         DateRange.START_DATE -> copy(
                             startDateFilter = event.date,
                             showDatePicker = false,
-                            whichDateRange = null
+                            whichDateRange = null,
                         )
 
                         DateRange.END_DATE -> copy(
                             endDateFilter = event.date,
                             showDatePicker = false,
-                            whichDateRange = null
+                            whichDateRange = null,
                         )
                     }
                 }
@@ -141,8 +145,8 @@ internal class EodTransactionsViewModel @Inject constructor(
                     filter = TransactionFilterData(
                         dateCreatedFrom = filter.dateFrom?.toString() ?: "",
                         filter.dateTo?.toString() ?: "",
-                        if (isOneTransactionTypeSelected) filter.transactionTypes.find { it.isSelected }?.id.toString() else ""
-                    )
+                        if (isOneTransactionTypeSelected) filter.transactionTypes.find { it.isSelected }?.id.toString() else "",
+                    ),
                 )
             }
 
@@ -151,12 +155,15 @@ internal class EodTransactionsViewModel @Inject constructor(
                     copy(
                         transactionFilter = transactionFilter.copy(
                             transactionTypes = transactionFilter.transactionTypes.map { type ->
-                                if (type.id == event.item.id) type.copy(
-                                    isSelected = type.isSelected.not()
-                                )
-                                else type
-                            }
-                        )
+                                if (type.id == event.item.id) {
+                                    type.copy(
+                                        isSelected = type.isSelected.not(),
+                                    )
+                                } else {
+                                    type
+                                }
+                            },
+                        ),
                     )
                 }
             }
@@ -174,12 +181,12 @@ internal class EodTransactionsViewModel @Inject constructor(
         combine(
             flow = getEodTransactionsUseCase.invoke(
                 userPreferencesDataStore.data().token,
-                filter = filter ?: TransactionFilterData()
+                filter = filter ?: TransactionFilterData(),
             ),
             flow2 = getTransactionFilterTypesUseCase.invoke(
                 token = userPreferencesDataStore.data().token,
             ),
-            flow3 = userPreferencesDataStore.flow()
+            flow3 = userPreferencesDataStore.flow(),
         ) { transactions, transactionFilterTypes, userPreferences ->
             Triple(transactions, transactionFilterTypes, userPreferences)
         }.onEach { triple: Triple<Resource<List<Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
@@ -195,7 +202,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                         transactionReferenceTFV = TextFieldValue(transactionFilter.transactionReference),
                         accountNameTFV = TextFieldValue(transactionFilter.accountName),
                         allTransactionFilterTypes = transactionFilter.transactionTypes,
-                        selectedTransactionFilterTypes = transactionFilter.transactionTypes.filter { type -> type.isSelected }
+                        selectedTransactionFilterTypes = transactionFilter.transactionTypes.filter { type -> type.isSelected },
                     )
                 }
             }
@@ -217,8 +224,8 @@ internal class EodTransactionsViewModel @Inject constructor(
                         isTransactionsLoading = false,
                         transactions = filterTransactions(
                             transactions = (triple.first as Resource.Ready<List<Transaction>>).data,
-                            userPrefData = triple.third
-                        )
+                            userPrefData = triple.third,
+                        ),
                     )
                 }
             }
@@ -228,7 +235,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                     copy(
                         isTransactionsLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = message
+                        errorDialogMessage = message,
                     )
                 }
             }
@@ -238,7 +245,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                     copy(
                         isTransactionFilterTypesLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = message
+                        errorDialogMessage = message,
                     )
                 }
             }
@@ -248,7 +255,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                 copy(
                     isTransactionFilterTypesLoading = false,
                     showErrorDialog = true,
-                    errorDialogMessage = it.message ?: ""
+                    errorDialogMessage = it.message ?: "",
                 )
             }
         }.launchIn(viewModelScope)
@@ -256,40 +263,46 @@ internal class EodTransactionsViewModel @Inject constructor(
 
     private fun filterTransactions(
         transactions: List<Transaction>,
-        userPrefData: UserPreferences
+        userPrefData: UserPreferences,
     ): List<Transaction> {
         return transactions
             .filter { transaction: Transaction ->
                 val selectedTypeIDs = userPrefData.transactionFilter.transactionTypes
                     .filter { type: TransactionFilterType -> type.isSelected }
                     .map { type: TransactionFilterType -> type.id }
-                if (selectedTypeIDs.isEmpty()) true
-                else selectedTypeIDs.any { id: Long -> id == transaction.transactionType }
+                if (selectedTypeIDs.isEmpty()) {
+                    true
+                } else {
+                    selectedTypeIDs.any { id: Long -> id == transaction.transactionType }
+                }
             }
             .filter { transaction: Transaction ->
                 val selectedCashFlows = userPrefData.transactionFilter.cashFlows
                     .filter { cashFlow: CashFlow -> cashFlow.isSelected }
-                if (selectedCashFlows.isEmpty()) true
-                else selectedCashFlows.any { cashFlow: CashFlow ->
-                    when (cashFlow) {
-                        is CashFlow.Credit -> transaction.isCredit
-                        is CashFlow.Debit -> transaction.isDebit
+                if (selectedCashFlows.isEmpty()) {
+                    true
+                } else {
+                    selectedCashFlows.any { cashFlow: CashFlow ->
+                        when (cashFlow) {
+                            is CashFlow.Credit -> transaction.isCredit
+                            is CashFlow.Debit -> transaction.isDebit
+                        }
                     }
                 }
             }
             .filter { transaction: Transaction ->
                 transaction.reference.contains(
                     userPrefData.transactionFilter.transactionReference,
-                    true
+                    true,
                 )
             }
             .filter { transaction: Transaction ->
                 transaction.receiverName.contains(
                     userPrefData.transactionFilter.accountName,
-                    true
+                    true,
                 ) || transaction.senderName.contains(
                     userPrefData.transactionFilter.accountName,
-                    true
+                    true,
                 )
             }
     }

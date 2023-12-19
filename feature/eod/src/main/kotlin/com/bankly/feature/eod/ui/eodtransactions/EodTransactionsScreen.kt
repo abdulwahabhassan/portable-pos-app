@@ -81,7 +81,7 @@ internal fun EodTransactionsRoute(
         onUiEvent = { uiEvent: EodTransactionsScreenEvent ->
             viewModel.sendEvent(uiEvent)
         },
-        onTransactionSelected = onGoToTransactionDetailsScreen
+        onTransactionSelected = onGoToTransactionDetailsScreen,
     )
 
     LaunchedEffect(key1 = Unit) {
@@ -105,7 +105,7 @@ private fun EodTransactionsScreen(
     val filteredList by remember(
         screenState.transactions,
         screenState.searchQuery,
-        screenState.selectedCategoryTab
+        screenState.selectedCategoryTab,
     ) {
         val resultList = when (screenState.selectedCategoryTab) {
             TransactionCategoryTab.ALL -> screenState.transactions
@@ -113,26 +113,26 @@ private fun EodTransactionsScreen(
             TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebit }
         }.filter {
             it.amount.toString().contains(screenState.searchQuery, true) || it.reference.contains(
-                screenState.searchQuery, true
+                screenState.searchQuery, true,
             ) || it.transactionTypeName.contains(screenState.searchQuery, true)
         }
         mutableStateOf(resultList)
     }
 
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
     )
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             Column(
-                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                modifier = Modifier.background(MaterialTheme.colorScheme.background),
             ) {
                 BanklyTitleBar(
                     isLoading = screenState.isLoading,
                     onBackPress = onBackPress,
-                    title = stringResource(id = R.string.title_eod_transactions)
+                    title = stringResource(id = R.string.title_eod_transactions),
                 )
                 BanklySearchBar(
                     modifier = Modifier,
@@ -149,7 +149,7 @@ private fun EodTransactionsScreen(
                                 coroutineScope.launch {
                                     sheetState.show()
                                 }
-                            }
+                            },
                         )
                     },
                 )
@@ -167,10 +167,10 @@ private fun EodTransactionsScreen(
                         TransactionCategoryTab.CREDIT -> BanklySuccessColor.successColor
                         TransactionCategoryTab.DEBIT -> MaterialTheme.colorScheme.error
                     },
-                    unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    unselectedTabTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
-        }
+        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -185,7 +185,7 @@ private fun EodTransactionsScreen(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 8.dp, bottom = 8.dp)
+                            .padding(top = 8.dp, bottom = 8.dp),
                     ) {
                         LazyRow(
                             modifier = Modifier
@@ -197,7 +197,7 @@ private fun EodTransactionsScreen(
                         ) {
                             items(
                                 screenState.selectedTransactionFilterTypes,
-                                key = TransactionFilterType::id
+                                key = TransactionFilterType::id,
                             ) { item: TransactionFilterType ->
                                 BanklyFilterChip(
                                     title = item.name,
@@ -205,17 +205,17 @@ private fun EodTransactionsScreen(
                                     onClick = {
                                         onUiEvent(
                                             EodTransactionsScreenEvent.RemoveTransactionTypeFilterItem(
-                                                item
-                                            )
+                                                item,
+                                            ),
                                         )
                                     },
                                     trailingIcon = {
                                         Icon(
                                             painter = painterResource(id = BanklyIcons.Remove),
                                             contentDescription = null,
-                                            tint = Color.Unspecified
+                                            tint = Color.Unspecified,
                                         )
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -223,7 +223,7 @@ private fun EodTransactionsScreen(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .align(Alignment.CenterEnd)
-                                .padding(end = 16.dp)
+                                .padding(end = 16.dp),
                         ) {
                             BanklyClickableText(
                                 text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
@@ -231,7 +231,7 @@ private fun EodTransactionsScreen(
                                     onUiEvent(EodTransactionsScreenEvent.OnClearAllFilters)
                                 },
                                 backgroundShape = RoundedCornerShape(4.dp),
-                                textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary)
+                                textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
                             )
                         }
                     }
@@ -259,7 +259,7 @@ private fun EodTransactionsScreen(
                 onDismissRequest = {
                     onUiEvent(EodTransactionsScreenEvent.LoadUiData)
                 },
-                windowInsets = WindowInsets(top = 24.dp)
+                windowInsets = WindowInsets(top = 24.dp),
             ) {
                 FilterView(
                     isTransactionReferenceError = screenState.isTransactionReferenceError,
@@ -268,8 +268,8 @@ private fun EodTransactionsScreen(
                     onEnterTransactionReference = { textFieldValue: TextFieldValue ->
                         onUiEvent(
                             EodTransactionsScreenEvent.OnInputTransactionReference(
-                                textFieldValue
-                            )
+                                textFieldValue,
+                            ),
                         )
                     },
                     isUserInputEnabled = screenState.isUserInputEnabled,
@@ -283,8 +283,8 @@ private fun EodTransactionsScreen(
                         onUiEvent(
                             EodTransactionsScreenEvent.OnCashFlowFilterChipClick(
                                 cashFlow,
-                                cashFlows = screenState.cashFlows
-                            )
+                                cashFlows = screenState.cashFlows,
+                            ),
                         )
                     },
                     shouldShowAllTransactionFilterType = screenState.showAllTransactionFilterType,
@@ -312,8 +312,8 @@ private fun EodTransactionsScreen(
                         onUiEvent(
                             EodTransactionsScreenEvent.OnTransactionFilterTypeSelected(
                                 transactionFilterType,
-                                screenState.allTransactionFilterTypes
-                            )
+                                screenState.allTransactionFilterTypes,
+                            ),
                         )
                     },
                     onApplyClick = { filter: TransactionFilter ->
@@ -327,13 +327,11 @@ private fun EodTransactionsScreen(
                         coroutineScope.launch {
                             sheetState.hide()
                         }
-                    }
+                    },
                 )
             }
         }
-
     }
-
 
     if (screenState.showDatePicker && screenState.whichDateRange != null) {
         BanklyDatePicker(
@@ -342,13 +340,13 @@ private fun EodTransactionsScreen(
                 onUiEvent(
                     EodTransactionsScreenEvent.OnDateSelected(
                         date,
-                        screenState.whichDateRange
-                    )
+                        screenState.whichDateRange,
+                    ),
                 )
             },
             onDismissDatePicker = {
                 onUiEvent(EodTransactionsScreenEvent.OnDismissDatePicker)
-            }
+            },
         )
     }
 
@@ -363,7 +361,7 @@ private fun EodTransactionsScreen(
         showDialog = screenState.showErrorDialog,
         onDismissDialog = {
             onUiEvent(EodTransactionsScreenEvent.DismissErrorDialog)
-        }
+        },
     )
 }
 
@@ -421,11 +419,11 @@ private fun EodTransactionsScreenPreview() {
                         aggregatorId = 0,
                         isCredit = false,
                         isDebit = true,
-                    )
+                    ),
                 ),
             ),
             onUiEvent = {},
-            onTransactionSelected = {}
+            onTransactionSelected = {},
         )
     }
 }

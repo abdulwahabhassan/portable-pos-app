@@ -16,28 +16,26 @@ internal const val transactionDetailsRoute = transactionDetailsNavGraphRoute.plu
 internal const val sendReceiptRoute = transactionDetailsRoute.plus("/send_receipt_screen")
 internal const val doneRoute = transactionDetailsRoute.plus("/success_screen")
 
-
-
 internal fun NavGraphBuilder.transactionDetailsRoute(
     transactionReceipt: TransactionReceipt,
     onShareClick: () -> Unit,
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: (() -> Unit)? = null,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(
         route = transactionDetailsRoute,
     ) {
-            TransactionDetailsRoute(
-                transactionReceipt = transactionReceipt,
-                isSuccess = transactionReceipt.isSuccessfulTransaction(),
-                onShareClick = onShareClick,
-                onSmsClick = onSmsClick,
-                onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick,
-                onBackPress = onBackPress
-            )
+        TransactionDetailsRoute(
+            transactionReceipt = transactionReceipt,
+            isSuccess = transactionReceipt.isSuccessfulTransaction(),
+            onShareClick = onShareClick,
+            onSmsClick = onSmsClick,
+            onLogComplaintClick = onLogComplaintClick,
+            onGoToHomeClick = onGoToHomeClick,
+            onBackPress = onBackPress,
+        )
     }
 }
 
@@ -56,7 +54,7 @@ internal fun NavGraphBuilder.sendReceiptRoute(
             SendReceiptRoute(
                 transactionReceipt = transactionReceipt,
                 onGoToSuccessScreen = onGoToSuccessScreen,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }

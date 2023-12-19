@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed class Feature(
     val title: String,
     val isQuickAction: Boolean = false,
-    val isEnabled: Boolean
+    val isEnabled: Boolean,
 ) {
     @Serializable
     data class PayWithCard(val enabled: Boolean = true) :
@@ -65,7 +65,7 @@ sealed class Feature(
                 Float(),
                 EndOfDay(),
                 NetworkChecker(),
-                Settings()
+                Settings(),
             )
         }
     }

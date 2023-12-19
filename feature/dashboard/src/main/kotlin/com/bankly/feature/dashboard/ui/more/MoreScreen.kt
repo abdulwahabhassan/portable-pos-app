@@ -16,8 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,7 +52,7 @@ internal fun MoreRoute(
         onUIEvent = { event: MoreScreenEvent ->
             viewModel.sendEvent(event)
         },
-        onLogOutClick = onLogOutClick
+        onLogOutClick = onLogOutClick,
     )
 
     LaunchedEffect(
@@ -67,7 +65,7 @@ internal fun MoreRoute(
                     }
                 }
             }.launchIn(this)
-        }
+        },
     )
 
     BanklyCenterDialog(
@@ -101,7 +99,7 @@ internal fun MoreScreen(
     screenState: MoreScreenState,
     onBackPress: () -> Unit,
     onLogOutClick: () -> Unit,
-    onUIEvent: (MoreScreenEvent) -> Unit
+    onUIEvent: (MoreScreenEvent) -> Unit,
 ) {
     val context = LocalContext.current
     BackHandler {
@@ -109,13 +107,13 @@ internal fun MoreScreen(
     }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 16.dp)
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 16.dp),
     ) {
         items(Feature.values().filter { it.isQuickAction.not() }.chunked(2)) {
             Row {
                 if (it.firstOrNull() != null) {
                     Box(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         FeatureCard(
                             feature = it.first(),
@@ -126,13 +124,13 @@ internal fun MoreScreen(
                     }
                 } else {
                     Box(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
 
                 if (it.size == 2) {
                     Box(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         FeatureCard(
                             feature = it.last(),
@@ -143,7 +141,7 @@ internal fun MoreScreen(
                     }
                 } else {
                     Box(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -164,9 +162,9 @@ internal fun MoreScreen(
                     Icon(
                         painter = painterResource(id = BanklyIcons.Logout),
                         contentDescription = null,
-                        tint = Color.Unspecified
+                        tint = Color.Unspecified,
                     )
-                }
+                },
             )
         }
     }
@@ -192,7 +190,7 @@ private fun MoreScreenPreview() {
             screenState = MoreScreenState(showLogoutWarningDialog = false),
             onBackPress = {},
             onUIEvent = {},
-            onLogOutClick = {}
+            onLogOutClick = {},
         )
     }
 }

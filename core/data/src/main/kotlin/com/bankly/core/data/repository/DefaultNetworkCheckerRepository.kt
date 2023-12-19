@@ -26,23 +26,25 @@ class DefaultNetworkCheckerRepository @Inject constructor(
     private val networkMonitor: NetworkMonitor,
     private val json: Json,
     private val networkCheckerService: NetworkCheckerService,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : NetworkCheckerRepository {
 
     override suspend fun getBankNetworks(token: String): Flow<Resource<List<BankNetwork>>> = flow {
         emit(Resource.Loading)
-        when (val responseResult = handleNetworkCheckerApiResponse(
-            requestResult = handleRequest(
-                dispatcher = ioDispatcher,
-                networkMonitor = networkMonitor,
-                json = json,
-                apiRequest = {
-                    networkCheckerService.getBankNetworkList(
-                        token = token
-                    )
-                },
-            ),
-        )) {
+        when (
+            val responseResult = handleNetworkCheckerApiResponse(
+                requestResult = handleRequest(
+                    dispatcher = ioDispatcher,
+                    networkMonitor = networkMonitor,
+                    json = json,
+                    apiRequest = {
+                        networkCheckerService.getBankNetworkList(
+                            token = token,
+                        )
+                    },
+                ),
+            )
+        ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> {
                 val bankLogos = loadJsonFromAsset<List<BankLogo>>(
@@ -51,19 +53,20 @@ class DefaultNetworkCheckerRepository @Inject constructor(
                     json,
                 )
                 emit(
-                    Resource.Ready(responseResult.data.map { bankNetworkResult: BankNetworkResult ->
-                        bankNetworkResult.asBankNetwork().copy(
-                        bankIcon = bankLogos?.find { bankLogo ->
-                            bankNetworkResult.bankCode?.let { bankCode ->
-                                bankLogo.institutionCode == bankCode
-                            } ?: false
-                        }?.logo ?: ""
-                    )
-                    })
+                    Resource.Ready(
+                        responseResult.data.map { bankNetworkResult: BankNetworkResult ->
+                            bankNetworkResult.asBankNetwork().copy(
+                                bankIcon = bankLogos?.find { bankLogo ->
+                                    bankNetworkResult.bankCode?.let { bankCode ->
+                                        bankLogo.institutionCode == bankCode
+                                    } ?: false
+                                }?.logo ?: "",
+                            )
+                        },
+                    ),
                 )
             }
             Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
-
 }

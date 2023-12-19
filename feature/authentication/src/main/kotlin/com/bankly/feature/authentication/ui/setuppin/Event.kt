@@ -7,5 +7,5 @@ sealed interface SetPinScreenEvent {
     data class OnEnterNewPin(val pin: List<String>) : SetPinScreenEvent
     data class SetDefaultPin(val defaultPin: String) : SetPinScreenEvent
     object OnDismissOnBackPressWarningDialog : SetPinScreenEvent
-    object OnBackPress: SetPinScreenEvent
+    object OnBackPress : SetPinScreenEvent
 }

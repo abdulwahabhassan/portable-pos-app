@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.logcomplaints.ui.LoggedComplaintRoute
 import com.bankly.feature.logcomplaints.ui.NewComplaintRoute
 
@@ -15,12 +14,12 @@ internal const val complaintLoggedRoute = logComplaintRoute.plus("/complaint_log
 
 internal fun NavGraphBuilder.newComplaintRoute(
     onBackPress: () -> Unit,
-    onSuccessfulLog: (String) -> Unit
+    onSuccessfulLog: (String) -> Unit,
 ) {
     composable(route = newComplaintRoute) {
         NewComplaintRoute(
             onBackPress = onBackPress,
-            onSuccessfulLog = onSuccessfulLog
+            onSuccessfulLog = onSuccessfulLog,
         )
     }
 }
@@ -39,7 +38,7 @@ internal fun NavGraphBuilder.complaintLoggedRoute(
             LoggedComplaintRoute(
                 onBackPress = onBackPress,
                 onGoToHome = onGoToHomeClick,
-                complaintId = complaintId
+                complaintId = complaintId,
             )
         }
     }

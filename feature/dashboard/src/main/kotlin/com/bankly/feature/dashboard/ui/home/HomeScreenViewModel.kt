@@ -35,7 +35,7 @@ internal class HomeScreenViewModel @Inject constructor(
         when (event) {
             is HomeScreenEvent.ToggleWalletBalanceVisibility -> toggleWalletBalanceVisibility(event.shouldShowWalletBalance)
             HomeScreenEvent.OnDismissErrorDialog -> dismissErrorDialog()
-            HomeScreenEvent.FetchWalletBalance -> { getWallet()  }
+            HomeScreenEvent.FetchWalletBalance -> { getWallet() }
         }
     }
 

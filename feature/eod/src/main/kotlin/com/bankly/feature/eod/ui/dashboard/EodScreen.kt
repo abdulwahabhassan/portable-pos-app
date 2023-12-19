@@ -30,9 +30,9 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.feature.eod.R
+import com.bankly.feature.eod.model.EodAction
 import com.bankly.feature.eod.ui.component.EodActionListItem
 import com.bankly.feature.eod.ui.component.EodTotalAmountItem
-import com.bankly.feature.eod.model.EodAction
 import com.bankly.feature.eod.ui.eodtransactions.ExportEodView
 import kotlinx.coroutines.launch
 
@@ -42,7 +42,7 @@ internal fun EodRoute(
     onBackPress: () -> Unit,
     onSyncEodClick: () -> Unit,
     onViewEodTransactionsClick: () -> Unit,
-    onExportFullEodClick: () -> Unit
+    onExportFullEodClick: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsState()
     EodScreen(
@@ -50,13 +50,13 @@ internal fun EodRoute(
         onBackPress = onBackPress,
         onSyncEodClick = onSyncEodClick,
         onViewEodTransactionsClick = onViewEodTransactionsClick,
-        onExportFullEodClick = onExportFullEodClick
+        onExportFullEodClick = onExportFullEodClick,
     )
     LaunchedEffect(
         key1 = Unit,
         block = {
             viewModel.sendEvent(EodDashboardScreenEvent.LoadUiData)
-        }
+        },
     )
 }
 
@@ -67,12 +67,12 @@ private fun EodScreen(
     onBackPress: () -> Unit,
     onSyncEodClick: () -> Unit,
     onViewEodTransactionsClick: () -> Unit,
-    onExportFullEodClick: () -> Unit
+    onExportFullEodClick: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
         confirmValueChange = { sheetValue: SheetValue ->
             sheetValue != SheetValue.Expanded
-        }
+        },
     )
     val coroutineScope = rememberCoroutineScope()
 
@@ -86,26 +86,26 @@ private fun EodScreen(
         },
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         ) {
             item {
                 EodTotalAmountItem(
                     amount = screenState.totalTransactionAmount,
                     title = "Total Transaction",
                     amountColor = MaterialTheme.colorScheme.primary,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 )
                 EodTotalAmountItem(
                     amount = screenState.totalSuccessfulTransactionAmount,
                     title = "Total Successful",
                     amountColor = BanklySuccessColor.successColor,
-                    backgroundColor = BanklySuccessColor.successBackgroundColor
+                    backgroundColor = BanklySuccessColor.successBackgroundColor,
                 )
                 EodTotalAmountItem(
                     amount = screenState.totalFailedTransactionAmount,
                     title = "Total Failed",
                     amountColor = BanklyErrorColor.errorColor,
-                    backgroundColor = BanklyErrorColor.errorBackgroundColor
+                    backgroundColor = BanklyErrorColor.errorBackgroundColor,
                 )
             }
             items(EodAction.values()) { eodAction: EodAction ->
@@ -121,7 +121,7 @@ private fun EodScreen(
                                 }
                             }
                         }
-                    }
+                    },
                 )
             }
 
@@ -132,8 +132,7 @@ private fun EodScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     text = "Share EOD",
                     onClick = {
-
-                    }
+                    },
                 )
             }
         }
@@ -144,7 +143,7 @@ private fun EodScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 sheetState = sheetState,
                 onDismissRequest = { },
-                windowInsets = WindowInsets(top = 24.dp)
+                windowInsets = WindowInsets(top = 24.dp),
             ) {
                 ExportEodView {
                     coroutineScope.launch {
@@ -165,7 +164,7 @@ private fun EodScreenPreview() {
             onBackPress = {},
             onSyncEodClick = {},
             onViewEodTransactionsClick = {},
-            onExportFullEodClick = {}
+            onExportFullEodClick = {},
         )
     }
 }

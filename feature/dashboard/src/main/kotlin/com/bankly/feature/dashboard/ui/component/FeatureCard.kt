@@ -25,10 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.entity.Feature
-import com.bankly.core.designsystem.icon.BanklyIcons
 
 @Composable
 fun FeatureCard(
@@ -72,19 +72,21 @@ fun FeatureCard(
             Column {
                 Icon(
                     modifier = Modifier.size(32.dp),
-                    painter = painterResource(id = when (feature) {
-                        is Feature.PayWithCard -> BanklyIcons.PayWithCard
-                        is Feature.PayWithTransfer -> BanklyIcons.PayWithTransfer
-                        is Feature.CardTransfer -> BanklyIcons.CardTransfer
-                        is Feature.SendMoney -> BanklyIcons.SendMoney
-                        is Feature.PayBills -> BanklyIcons.PayBills
-                        is Feature.CheckBalance -> BanklyIcons.CheckBalance
-                        is Feature.PayWithUssd -> BanklyIcons.PayWithUssd
-                        is Feature.Float -> BanklyIcons.Float
-                        is Feature.EndOfDay -> BanklyIcons.EndOfDay
-                        is Feature.NetworkChecker -> BanklyIcons.NetworkChecker
-                        is Feature.Settings -> BanklyIcons.Settings
-                    }),
+                    painter = painterResource(
+                        id = when (feature) {
+                            is Feature.PayWithCard -> BanklyIcons.PayWithCard
+                            is Feature.PayWithTransfer -> BanklyIcons.PayWithTransfer
+                            is Feature.CardTransfer -> BanklyIcons.CardTransfer
+                            is Feature.SendMoney -> BanklyIcons.SendMoney
+                            is Feature.PayBills -> BanklyIcons.PayBills
+                            is Feature.CheckBalance -> BanklyIcons.CheckBalance
+                            is Feature.PayWithUssd -> BanklyIcons.PayWithUssd
+                            is Feature.Float -> BanklyIcons.Float
+                            is Feature.EndOfDay -> BanklyIcons.EndOfDay
+                            is Feature.NetworkChecker -> BanklyIcons.NetworkChecker
+                            is Feature.Settings -> BanklyIcons.Settings
+                        },
+                    ),
                     contentDescription = null,
                     tint = Color.Unspecified,
                 )

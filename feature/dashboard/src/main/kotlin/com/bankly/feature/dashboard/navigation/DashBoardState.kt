@@ -16,7 +16,7 @@ import com.bankly.feature.dashboard.model.DashboardTab
 fun rememberDashBoardState(
     currentTab: DashboardTab = DashboardTab.Home,
     navHostController: NavHostController = rememberNavController(),
-    showLoadingIndicator: Boolean = false
+    showLoadingIndicator: Boolean = false,
 ): MutableState<DashBoardState> {
     return remember(
         currentTab,
@@ -26,7 +26,7 @@ fun rememberDashBoardState(
             DashBoardState(
                 currentTab = currentTab,
                 navHostController = navHostController,
-                showLoadingIndicator = showLoadingIndicator
+                showLoadingIndicator = showLoadingIndicator,
             ),
         )
     }

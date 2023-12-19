@@ -15,5 +15,5 @@ data class HomeScreenState(
 )
 
 sealed interface HomeScreenOneShotState : OneShotState {
-    object OnSessionExpired: HomeScreenOneShotState
+    object OnSessionExpired : HomeScreenOneShotState
 }

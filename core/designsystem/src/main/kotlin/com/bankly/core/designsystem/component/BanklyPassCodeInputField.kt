@@ -67,7 +67,7 @@ fun BanklyPassCodeInputField(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = if (s.isNotEmpty()) if(isFocused) s else "*" else s,
+                    text = if (s.isNotEmpty()) if (isFocused) s else "*" else s,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium
                         .copy(

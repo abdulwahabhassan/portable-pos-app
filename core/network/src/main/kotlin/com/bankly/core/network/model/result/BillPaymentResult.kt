@@ -3,7 +3,7 @@ package com.bankly.core.network.model.result
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BillPaymentResult (
+data class BillPaymentResult(
     val id: Long,
     val reference: String?,
     val narration: String?,
@@ -24,5 +24,5 @@ data class BillPaymentResult (
     val receiver: String?,
     val commission: Double?,
     val billToken: String?,
-    val isTokenType: Boolean?
+    val isTokenType: Boolean?,
 )

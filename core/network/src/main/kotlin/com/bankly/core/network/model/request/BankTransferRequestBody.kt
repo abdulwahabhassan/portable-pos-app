@@ -15,7 +15,7 @@ sealed class BankTransferRequestBody {
         val clientRequestId: String,
         val deviceId: String,
         val channel: String,
-    ): BankTransferRequestBody()
+    ) : BankTransferRequestBody()
 
     @Serializable
     data class AccountNumber(
@@ -34,5 +34,5 @@ sealed class BankTransferRequestBody {
         val deviceId: String,
         val isWeb: String,
         val senderName: String,
-    ): BankTransferRequestBody()
+    ) : BankTransferRequestBody()
 }

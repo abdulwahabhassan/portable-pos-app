@@ -7,7 +7,6 @@ import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.entity.CashFlow
 import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilterType
-import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.datetime.LocalDate
 
 internal data class TransactionsScreenState(
@@ -37,7 +36,7 @@ internal data class TransactionsScreenState(
     val showAllTransactionFilterType: Boolean = false,
     val cashFlows: List<CashFlow> = emptyList(),
     val selectedTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
 ) {
 
     val isLoading: Boolean

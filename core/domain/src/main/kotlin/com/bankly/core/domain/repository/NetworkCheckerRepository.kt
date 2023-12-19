@@ -5,5 +5,5 @@ import com.bankly.core.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface NetworkCheckerRepository {
-    suspend fun getBankNetworks(token:  String): Flow<Resource<List<BankNetwork>>>
+    suspend fun getBankNetworks(token: String): Flow<Resource<List<BankNetwork>>>
 }

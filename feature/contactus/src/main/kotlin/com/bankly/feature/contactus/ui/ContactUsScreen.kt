@@ -27,14 +27,12 @@ internal fun ContactUsRoute(
 }
 
 @Composable
-
 private fun ContactUsScreen(
     onBackPress: () -> Unit,
 ) {
     BackHandler {
         onBackPress()
     }
-
 
     Scaffold(
         topBar = {
@@ -44,16 +42,16 @@ private fun ContactUsScreen(
                 subTitle = buildAnnotatedString {
                     withStyle(
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.tertiary)
-                            .toSpanStyle()
+                            .toSpanStyle(),
                     ) {
                         append("Need help? Contact us via our support channels")
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         ) {
             items(ContactUsOption.values()) { option: ContactUsOption ->
                 ContactUsListItem(
@@ -62,9 +60,7 @@ private fun ContactUsScreen(
             }
         }
     }
-
 }
-
 
 @Composable
 @Preview(showBackground = true, backgroundColor = PreviewColor.grey)

@@ -34,13 +34,12 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.feature.eod.ui.component.ExportEodItem
 import com.bankly.feature.eod.model.EodExport
+import com.bankly.feature.eod.ui.component.ExportEodItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExportEodView(onCloseClick: () -> Unit) {
-
     val items = EodExport.values().toList()
     var selectedExportType: EodExport? by remember {
         mutableStateOf(null)
@@ -59,16 +58,16 @@ fun ExportEodView(onCloseClick: () -> Unit) {
                     .padding(bottom = 16.dp)
                     .padding(start = 16.dp, end = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = stringResource(id = com.bankly.feature.eod.R.string.title_export_eod_as),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 BanklyClickableIcon(
                     icon = BanklyIcons.Close,
                     onClick = onCloseClick,
-                    shape = CircleShape
+                    shape = CircleShape,
                 )
             }
         }
@@ -81,13 +80,17 @@ fun ExportEodView(onCloseClick: () -> Unit) {
                     selectedExportType = item
                 },
                 trailingIcon = {
-                    if (item == selectedExportType) Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(id = BanklyIcons.BoxCheck),
-                        contentDescription = null,
-                        tint = Color.Unspecified
-                    ) else Box(modifier = Modifier.size(24.dp))
-                }
+                    if (item == selectedExportType) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            painter = painterResource(id = BanklyIcons.BoxCheck),
+                            contentDescription = null,
+                            tint = Color.Unspecified,
+                        )
+                    } else {
+                        Box(modifier = Modifier.size(24.dp))
+                    }
+                },
             )
             if (index < items.lastIndex) {
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -100,7 +103,7 @@ fun ExportEodView(onCloseClick: () -> Unit) {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp),
                 text = stringResource(com.bankly.feature.eod.R.string.action_export_eod),
-                onClick = {}
+                onClick = {},
             )
         }
     }

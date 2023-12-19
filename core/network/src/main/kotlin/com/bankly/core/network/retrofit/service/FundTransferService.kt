@@ -45,5 +45,4 @@ interface FundTransferService {
         @Header("Authorization") token: String,
         @Body body: CardTransferRequestBody,
     ): ApiResponse<CardTransferTransactionResult>
-
 }

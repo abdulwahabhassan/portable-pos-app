@@ -3,9 +3,9 @@ package com.bankly.feature.dashboard.navigation
 import android.app.Activity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.bankly.core.entity.Feature
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.home.HomeTab
 import com.bankly.feature.dashboard.ui.more.MoreRoute
@@ -25,7 +25,7 @@ internal fun NavGraphBuilder.homeRoute(
     onFeatureClick: (Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
     activity: Activity,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = homeRoute) {
         when (currentHomeTab) {
@@ -39,7 +39,7 @@ internal fun NavGraphBuilder.homeRoute(
                 HomeTab(
                     onFeatureCardClick = onFeatureClick,
                     activity = activity,
-                    onSessionExpired = onSessionExpired
+                    onSessionExpired = onSessionExpired,
                 )
             }
         }
@@ -50,26 +50,26 @@ internal fun NavGraphBuilder.transactionsRoute(
     onBackPress: () -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     updateLoadingStatus: (Boolean) -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = transactionsRoute) {
         TransactionsRoute(
             onBackPress = onBackPress,
             onGoToTransactionDetailsScreen = onGoToTransactionDetailsScreen,
             updateLoadingStatus = updateLoadingStatus,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
     }
 }
 
 internal fun NavGraphBuilder.supportRoute(
     onBackPress: () -> Unit,
-    onSupportOptionClick: (SupportOption) -> Unit
+    onSupportOptionClick: (SupportOption) -> Unit,
 ) {
     composable(route = supportRoute) {
         SupportRoute(
             onBackPress = onBackPress,
-            onSupportOptionClick = onSupportOptionClick
+            onSupportOptionClick = onSupportOptionClick,
         )
     }
 }
@@ -83,8 +83,7 @@ internal fun NavGraphBuilder.moreRoute(
         MoreRoute(
             onFeatureCardClick = onFeatureClick,
             onBackPress = onBackPress,
-            onLogOutClick = onLogOutClick
+            onLogOutClick = onLogOutClick,
         )
     }
 }
-

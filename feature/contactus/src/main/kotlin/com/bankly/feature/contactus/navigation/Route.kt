@@ -12,7 +12,7 @@ internal fun NavGraphBuilder.contactUsRoute(
 ) {
     composable(route = contactUsRoute) {
         ContactUsRoute(
-            onBackPress = onBackPress
+            onBackPress = onBackPress,
         )
     }
 }

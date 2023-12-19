@@ -18,7 +18,7 @@ import java.util.Date
 fun BanklyDatePicker(
     context: Context,
     onDateSelected: (LocalDate) -> Unit,
-    onDismissDatePicker: () -> Unit
+    onDismissDatePicker: () -> Unit,
 ) {
     val mCalendar = Calendar.getInstance()
     val year = mCalendar.get(Calendar.YEAR)
@@ -32,10 +32,12 @@ fun BanklyDatePicker(
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             val actualMonth = mMonth + 1
             val twoDigitIntDayOfMonth = if (mDayOfMonth < 10) "0$mDayOfMonth" else "$mDayOfMonth"
-            val twoDigitIntMonth = if (actualMonth < 10) "0${actualMonth}" else "$actualMonth"
-            onDateSelected("$mYear-${twoDigitIntMonth}-$twoDigitIntDayOfMonth".toLocalDate())
+            val twoDigitIntMonth = if (actualMonth < 10) "0$actualMonth" else "$actualMonth"
+            onDateSelected("$mYear-$twoDigitIntMonth-$twoDigitIntDayOfMonth".toLocalDate())
         },
-        year, month, day
+        year,
+        month,
+        day,
     )
     mDatePickerDialog.setOnDismissListener {
         onDismissDatePicker()
@@ -50,7 +52,7 @@ fun BanklyDatePickerPreview() {
         BanklyDatePicker(
             context = LocalContext.current,
             onDateSelected = {},
-            onDismissDatePicker = {}
+            onDismissDatePicker = {},
         )
     }
 }

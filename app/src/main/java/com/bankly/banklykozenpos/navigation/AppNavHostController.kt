@@ -116,6 +116,6 @@ internal fun NavHostController.logOut() {
         .setPopUpTo(dashBoardNavGraphRoute, true)
         .build()
     this.navigateToAuthenticationNavGraph(
-        navOptions = navOptions
+        navOptions = navOptions,
     )
 }

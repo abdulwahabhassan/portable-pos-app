@@ -2,7 +2,6 @@ import com.bankly.buildlogic.configureDesign
 
 plugins {
     id("com.bankly.convention.core")
-
 }
 
 android {

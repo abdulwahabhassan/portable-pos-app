@@ -13,12 +13,12 @@ internal data class PayWithTransferScreenState(
     val showRecentFundDialog: Boolean = false,
     val selectedRecentFund: RecentFund? = null,
     val showErrorDialog: Boolean = false,
-    val errorDialogMessage: String = ""
+    val errorDialogMessage: String = "",
 ) {
     val isLoading: Boolean
         get() = isRecentFundsLoading || isAgentAccountDetailsLoading
 }
 
 internal sealed interface PayWithTransferScreenOneShotState : OneShotState {
-    object OnSessionExpired: PayWithTransferScreenOneShotState
+    object OnSessionExpired : PayWithTransferScreenOneShotState
 }

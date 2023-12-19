@@ -39,6 +39,4 @@ internal sealed interface BeneficiaryScreenEvent {
 
     class UpdateBillType(val billType: BillType) :
         BeneficiaryScreenEvent
-
-
 }

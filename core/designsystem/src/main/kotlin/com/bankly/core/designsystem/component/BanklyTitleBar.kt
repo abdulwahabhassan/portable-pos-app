@@ -172,7 +172,7 @@ private fun BanklyTitleBarPreview1() {
             currentPage = 1,
             totalPage = 2,
 
-            )
+        )
     }
 }
 
@@ -220,7 +220,7 @@ private fun BanklyTitleBarPreview5() {
             title = "Log In",
             isLoading = true,
             currentPage = 1,
-            totalPage = 5
+            totalPage = 5,
         )
     }
 }
@@ -248,18 +248,17 @@ private fun BanklyTitleBarPreview7() {
             isLoading = true,
             onTrailingIconClick = {},
             trailingIcon = { onClick: () -> Unit ->
-                Text(text = buildAnnotatedString {
-                    withStyle(
-                        MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
-                            .toSpanStyle()
-                    ) {
-                        append("Export")
-                    }
-                })
-            }
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
+                                .toSpanStyle(),
+                        ) {
+                            append("Export")
+                        }
+                    },
+                )
+            },
         )
     }
 }
-
-
-

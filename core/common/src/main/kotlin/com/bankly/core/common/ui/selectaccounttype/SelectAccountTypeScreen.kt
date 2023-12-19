@@ -37,12 +37,12 @@ import com.bankly.core.designsystem.theme.BanklyTheme
 fun SelectAccountTypeRoute(
     onAccountSelected: (AccountType) -> Unit,
     onBackPress: () -> Unit,
-    onCancelPress: () -> Unit
+    onCancelPress: () -> Unit,
 ) {
     SelectAccountTypeScreen(
         onAccountSelected = onAccountSelected,
         onBackPress = onBackPress,
-        onCancelPress = onCancelPress
+        onCancelPress = onCancelPress,
     )
 }
 
@@ -53,7 +53,7 @@ fun SelectAccountTypeScreenPreview() {
         SelectAccountTypeScreen(
             onAccountSelected = {},
             onBackPress = {},
-            onCancelPress = {}
+            onCancelPress = {},
         )
     }
 }

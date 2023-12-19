@@ -6,7 +6,6 @@ import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asEodInfo
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.asSyncEod
-import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.EndOfDayRepository
 import com.bankly.core.entity.EodInfo
@@ -35,7 +34,7 @@ class DefaultEndOfDayRepository @Inject constructor(
                 json = json,
                 apiRequest = {
                     posNotificationService.getEodInfo(
-                        token = token
+                        token = token,
                     )
                 },
             )
@@ -46,10 +45,9 @@ class DefaultEndOfDayRepository @Inject constructor(
         }
     }
 
-
     override suspend fun syncEod(
         token: String,
-        eodTransactionListData: EodTransactionListData
+        eodTransactionListData: EodTransactionListData,
     ): Flow<Resource<SyncEod>> = flow {
         emit(Resource.Loading)
         when (
@@ -60,7 +58,7 @@ class DefaultEndOfDayRepository @Inject constructor(
                 apiRequest = {
                     posNotificationService.postEod(
                         token = token,
-                        body = eodTransactionListData.asRequestBody()
+                        body = eodTransactionListData.asRequestBody(),
                     )
                 },
             )
@@ -70,5 +68,4 @@ class DefaultEndOfDayRepository @Inject constructor(
             Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
-
 }

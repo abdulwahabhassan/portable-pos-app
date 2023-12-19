@@ -34,14 +34,14 @@ internal fun NavGraphBuilder.loginRoute(
     onLoginSuccess: () -> Unit,
     onBackPress: () -> Unit,
     onSetUpAccessPin: (defaultPin: String) -> Unit,
-    onTerminalUnAssigned: () -> Unit
+    onTerminalUnAssigned: () -> Unit,
 ) {
     composable(route = loginRoute) {
         LoginRoute(
             onLoginSuccess = onLoginSuccess,
             onBackPress = onBackPress,
             onSetUpAccessPin = onSetUpAccessPin,
-            onTerminalUnAssigned = onTerminalUnAssigned
+            onTerminalUnAssigned = onTerminalUnAssigned,
         )
     }
 }
@@ -134,7 +134,7 @@ internal fun NavGraphBuilder.createNewPassCodeRoute() {
 
 internal fun NavGraphBuilder.setPinRoute(
     onGoToConfirmPinScreen: (defaultPin: String, newPin: String) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     composable(
         route = "$setPinRoute/{$defaultPinArg}",
@@ -155,7 +155,7 @@ internal fun NavGraphBuilder.setPinRoute(
 internal fun NavGraphBuilder.confirmPinRoute(
     onBackPress: () -> Unit,
     onPinChangeSuccess: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(
         route = "$confirmPinRoute/{$defaultPinArg}/{$newPinArg}",
@@ -164,7 +164,6 @@ internal fun NavGraphBuilder.confirmPinRoute(
             navArgument(newPinArg) { type = NavType.StringType },
         ),
     ) {
-
         it.arguments?.getString(defaultPinArg)?.let { defaultPin: String ->
             it.arguments?.getString(newPinArg)?.let { newPin: String ->
                 ConfirmPinRoute(
@@ -172,7 +171,7 @@ internal fun NavGraphBuilder.confirmPinRoute(
                     onPinChangeSuccess = onPinChangeSuccess,
                     defaultPin = defaultPin,
                     newPin = newPin,
-                    onSessionExpired = onSessionExpired
+                    onSessionExpired = onSessionExpired,
                 )
             }
         }
@@ -188,14 +187,14 @@ internal fun NavGraphBuilder.validatePassCodeRoute(
     ) {
         ValidatePassCodeRoute(
             onBackPress = onBackPress,
-            onGoToSettingsScreen = onGoToSettingsRoute
+            onGoToSettingsScreen = onGoToSettingsRoute,
         )
     }
 }
 
 internal fun NavGraphBuilder.unassignedTerminalRoute(
     onGoToBackPress: () -> Unit,
-    onContactSupportPress: () -> Unit
+    onContactSupportPress: () -> Unit,
 ) {
     composable(
         route = unassignedTerminalRoute,

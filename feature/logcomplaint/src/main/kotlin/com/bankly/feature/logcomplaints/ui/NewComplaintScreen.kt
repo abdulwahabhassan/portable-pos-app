@@ -32,7 +32,7 @@ internal fun NewComplaintRoute(
 ) {
     NewComplaintScreen(
         onBackPress = onBackPress,
-        onSuccessfulLog = onSuccessfulLog
+        onSuccessfulLog = onSuccessfulLog,
     )
 }
 
@@ -52,7 +52,7 @@ internal fun NewComplaintScreen(
         },
     ) { padding ->
         LazyColumn(
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
         ) {
             item {
                 BanklyInputField(
@@ -61,7 +61,6 @@ internal fun NewComplaintScreen(
                     trailingIcon = BanklyIcons.ChevronDown,
                     readOnly = true,
                     onTrailingIconClick = {
-
                     },
                     placeholderText = stringResource(R.string.msg_select_complaint_type),
                     labelText = stringResource(R.string.enter_complaint_type),
@@ -91,7 +90,7 @@ internal fun NewComplaintScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(R.string.msg_document_must_be_injpg_pdf_ms_word_or_excel_formats),
-                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     )
                 }
 
@@ -106,7 +105,7 @@ internal fun NewComplaintScreen(
                     feedbackText = "",
                     isEnabled = true,
                     minLines = 4,
-                    maxlines = 4
+                    maxlines = 4,
                 )
                 BanklyFilledButton(
                     modifier = Modifier
@@ -115,7 +114,7 @@ internal fun NewComplaintScreen(
                     text = stringResource(R.string.action_send),
                     onClick = {
                         onSuccessfulLog("ID: 38924y4920ID")
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -129,7 +128,7 @@ private fun NewComplaintScreenPreview() {
     BanklyTheme {
         NewComplaintScreen(
             onBackPress = {},
-            onSuccessfulLog = {}
+            onSuccessfulLog = {},
         )
     }
 }

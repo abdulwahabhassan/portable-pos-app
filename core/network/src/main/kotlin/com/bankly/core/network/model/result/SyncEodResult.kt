@@ -9,6 +9,5 @@ data class SyncEodResult(
     val responseCode: String?,
     val terminalId: String?,
     val balance: Double?,
-    val amountAdded: Double?
+    val amountAdded: Double?,
 )
-

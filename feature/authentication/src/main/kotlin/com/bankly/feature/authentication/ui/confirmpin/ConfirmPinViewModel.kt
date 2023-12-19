@@ -26,7 +26,7 @@ class ConfirmPinViewModel @Inject constructor(
     private val changePassCodeUseCase: ChangePassCodeUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<ConfirmPinScreenEvent, ConfirmPinScreenState, ConfirmPinScreenOneShotState>(
-    ConfirmPinScreenState()
+    ConfirmPinScreenState(),
 ) {
 
     override suspend fun handleUiEvents(event: ConfirmPinScreenEvent) {
@@ -40,7 +40,7 @@ class ConfirmPinViewModel @Inject constructor(
                     copy(
                         confirmPin = event.confirmPin,
                         isConfirmPinError = isEqual.not(),
-                        pinErrorMessage = "PIN Mismatch!"
+                        pinErrorMessage = "PIN Mismatch!",
                     )
                 }
             }
@@ -56,22 +56,21 @@ class ConfirmPinViewModel @Inject constructor(
             is ConfirmPinScreenEvent.OnSetPins -> {
                 setUiState { copy(defaultPin = event.defaultPin, newPin = event.newPin) }
             }
-
         }
     }
 
     private suspend fun changeAccessPin(
         defaultPin: String,
         newPin: String,
-        confirmPin: String
+        confirmPin: String,
     ) {
         changePassCodeUseCase(
             body = ChangePassCodeData(
                 serialNumber = Tools.serialNumber,
                 oldPasscode = defaultPin,
                 newPasscode = newPin,
-                confirmPasscode = confirmPin
-            )
+                confirmPasscode = confirmPin,
+            ),
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -84,9 +83,9 @@ class ConfirmPinViewModel @Inject constructor(
                             message = user.message.replace(
                                 PASSCODE,
                                 ACCESS_PIN,
-                                true
-                            )
-                        )
+                                true,
+                            ),
+                        ),
                     )
                 }
                 resource.onFailure { failureMessage ->
@@ -108,7 +107,7 @@ class ConfirmPinViewModel @Inject constructor(
                         isLoading = false,
                         showErrorDialog = true,
                         errorDialogMessage = it.localizedMessage ?: it.message
-                        ?: ""
+                            ?: "",
                     )
                 }
             }.launchIn(viewModelScope)

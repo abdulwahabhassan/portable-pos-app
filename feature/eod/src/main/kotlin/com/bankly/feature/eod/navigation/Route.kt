@@ -45,7 +45,7 @@ internal fun NavGraphBuilder.syncEodRoute(
     composable(route = syncEodRoute) {
         SyncEodRoute(
             onBackPress = onBackPress,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
     }
 }
@@ -104,7 +104,7 @@ internal fun NavGraphBuilder.sendReceiptRoute(
             SendReceiptRoute(
                 transactionReceipt = transactionReceipt,
                 onGoToSuccessScreen = onGoToSuccessScreen,
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         }
     }

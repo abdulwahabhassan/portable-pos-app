@@ -30,7 +30,6 @@ suspend fun <T> handleRequest(
                         ?: response?.message ?: "Request could not be completed",
                 )
             }
-
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "Request could not be completed")
         }
@@ -51,12 +50,14 @@ suspend fun handleTokenRequest(
         } catch (e: HttpException) {
             val response = handleTokenHttpException(e, json)
             Result.Error(
-                message = if (response?.status == 3L || response?.status == 4L)
+                message = if (response?.status == 3L || response?.status == 4L) {
                     response.status.toString()
-                else response?.errorDescription
-                    ?: response?.error
-                    ?: response?.message
-                    ?: "Request could not be completed",
+                } else {
+                    response?.errorDescription
+                        ?: response?.error
+                        ?: response?.message
+                        ?: "Request could not be completed"
+                },
             )
         } catch (e: Exception) {
             Result.Error(message = e.localizedMessage ?: "Request could not be completed")

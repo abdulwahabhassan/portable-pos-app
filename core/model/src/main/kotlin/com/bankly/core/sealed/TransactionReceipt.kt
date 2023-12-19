@@ -28,7 +28,7 @@ sealed class TransactionReceipt(
         val sessionId: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = message
+        transactionMessage = message,
     )
 
     @Serializable
@@ -43,7 +43,7 @@ sealed class TransactionReceipt(
         val sessionId: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = message
+        transactionMessage = message,
     )
 
     @Serializable
@@ -62,7 +62,7 @@ sealed class TransactionReceipt(
         val responseCode: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = message
+        transactionMessage = message,
     )
 
     @Serializable
@@ -81,7 +81,7 @@ sealed class TransactionReceipt(
         val sessionId: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = statusName
+        transactionMessage = statusName,
     )
 
     @Serializable
@@ -106,10 +106,10 @@ sealed class TransactionReceipt(
         val receiver: String,
         val commission: Double,
         val billToken: String,
-        val isTokenType: Boolean
+        val isTokenType: Boolean,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = SUCCESSFUL
+        transactionMessage = SUCCESSFUL,
     )
 
     @Serializable
@@ -145,12 +145,11 @@ sealed class TransactionReceipt(
         val regionId: String,
         val aggregatorId: Long,
         val isCredit: Boolean,
-        val isDebit: Boolean
+        val isDebit: Boolean,
     ) : TransactionReceipt(
         transactionAmount = amount,
-        transactionMessage = statusName
+        transactionMessage = statusName,
     )
-
 
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
@@ -215,7 +214,7 @@ sealed class TransactionReceipt(
                 getPaidForTitle(this.transactionType) to this.paidFor,
                 "Reference" to this.reference,
                 "Narration" to this.narration,
-                "Token" to this.billToken
+                "Token" to this.billToken,
             )
 
             is TransactionHistory -> mapOf(
@@ -240,10 +239,15 @@ sealed class TransactionReceipt(
     private fun getPaidForTitle(transactionType: String): String {
         return if (transactionType.contains("Airtime", true) ||
             transactionType.contains("Data", true)
-        ) "Phone Number"
-        else if (transactionType.contains("Electricity", true)) "Meter Number"
-        else if (transactionType.contains("Cable", true)) "IUC/Decoder Number"
-        else "UID"
+        ) {
+            "Phone Number"
+        } else if (transactionType.contains("Electricity", true)) {
+            "Meter Number"
+        } else if (transactionType.contains("Cable", true)) {
+            "IUC/Decoder Number"
+        } else {
+            "UID"
+        }
     }
 
     fun isSuccessfulTransaction() = transactionMessage.contains(
@@ -254,6 +258,6 @@ sealed class TransactionReceipt(
         "Successful",
         "approved",
         "Approved",
-        "Transfer Completed Successfully"
+        "Transfer Completed Successfully",
     ).any { keyword -> transactionMessage == keyword }
 }

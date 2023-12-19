@@ -16,7 +16,7 @@ internal fun NavHostController.navigateToSelectAccountTypeRoute(transactionData:
 
 internal fun NavHostController.navigateToProcessTransactionRoute(
     transactionData: TransactionData,
-    transactionReceipt: TransactionReceipt.CardPayment
+    transactionReceipt: TransactionReceipt.CardPayment,
 ) {
     val transactionDataString = Json.encodeToString(transactionData)
     val encodedTransactionData = Uri.encode(transactionDataString)
@@ -29,7 +29,6 @@ internal fun NavHostController.navigateToProcessTransactionRoute(
 }
 
 internal fun NavHostController.navigateToTransactionSuccessRoute(transactionReceipt: TransactionReceipt) {
-
     val transactionReceiptString = Json.encodeToString(transactionReceipt)
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     val options = NavOptions.Builder()

@@ -20,7 +20,7 @@ fun NavGraphBuilder.authenticationNavGraph(
     onBackPress: () -> Unit,
     onGoToSettingsRoute: () -> Unit,
     onPopBackStack: () -> Unit,
-    onContactSupportPress: () -> Unit
+    onContactSupportPress: () -> Unit,
 ) {
     navigation(
         route = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
@@ -29,7 +29,6 @@ fun NavGraphBuilder.authenticationNavGraph(
             navArgument(isValidatePassCodeArg) { type = NavType.StringType },
         ),
     ) {
-
         composable(authenticationRoute) { backStackEntry: NavBackStackEntry ->
             val parentEntry = remember(backStackEntry) {
                 appNavController.getBackStackEntry(authenticationRoute)
@@ -73,7 +72,7 @@ fun AuthenticationNavHost(
             },
             onTerminalUnAssigned = {
                 navHostController.navigateToUnassignedTerminalRoute()
-            }
+            },
         )
         recoverPassCodeRoute(
             onRecoverPassCodeSuccess = { phoneNumber: String ->
@@ -111,24 +110,24 @@ fun AuthenticationNavHost(
             onBackPress = {
                 if (navHostController.popBackStack().not()) onBackPress()
             },
-            onGoToSettingsRoute = onGoToSettingsRoute
+            onGoToSettingsRoute = onGoToSettingsRoute,
         )
         unassignedTerminalRoute(
             onGoToBackPress = {
                 navHostController.popBackStack()
             },
-            onContactSupportPress = onContactSupportPress
+            onContactSupportPress = onContactSupportPress,
         )
         setPinRoute(
             onGoToConfirmPinScreen = { defaultPin: String, newPin: String ->
                 navHostController.navigateToConfirmPinRoute(
                     defaultPin = defaultPin,
-                    newPin = newPin
+                    newPin = newPin,
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
-            }
+            },
         )
         confirmPinRoute(
             onBackPress = {
@@ -139,7 +138,7 @@ fun AuthenticationNavHost(
             },
             onSessionExpired = {
                 navHostController.popBackStack(loginRoute, false)
-            }
+            },
         )
         createNewPassCodeRoute()
     }

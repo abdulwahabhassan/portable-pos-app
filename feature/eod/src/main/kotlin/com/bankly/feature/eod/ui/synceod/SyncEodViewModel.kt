@@ -1,6 +1,5 @@
 package com.bankly.feature.eod.ui.synceod
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
@@ -23,9 +22,9 @@ import javax.inject.Inject
 internal class SyncEodViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
     private val getEodInfoUseCase: GetEodInfoUseCase,
-    private val syncEodInfoUseCase: SyncEodUseCase
+    private val syncEodInfoUseCase: SyncEodUseCase,
 ) : BaseViewModel<SyncEodScreenEvent, SyncEodScreenState, SyncEodScreenOneShotState>(
-    SyncEodScreenState()
+    SyncEodScreenState(),
 ) {
     override suspend fun handleUiEvents(event: SyncEodScreenEvent) {
         when (event) {
@@ -45,7 +44,7 @@ internal class SyncEodViewModel @Inject constructor(
                 setUiState {
                     copy(
                         showSuccessfulEodSyncDialog = false,
-                        successfulEodSyncMessage = ""
+                        successfulEodSyncMessage = "",
                     )
                 }
             }
@@ -63,7 +62,7 @@ internal class SyncEodViewModel @Inject constructor(
                         copy(
                             isEodSyncLoading = false,
                             showSuccessfulEodSyncDialog = true,
-                            successfulEodSyncMessage = syncEod.responseMessage
+                            successfulEodSyncMessage = syncEod.responseMessage,
                         )
                     }
                     fetchEodInfo()
@@ -73,7 +72,7 @@ internal class SyncEodViewModel @Inject constructor(
                         copy(
                             isEodSyncLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -86,7 +85,7 @@ internal class SyncEodViewModel @Inject constructor(
                     copy(
                         isEodSyncLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: ""
+                        errorDialogMessage = it.message ?: "",
                     )
                 }
             }.launchIn(viewModelScope)
@@ -111,7 +110,7 @@ internal class SyncEodViewModel @Inject constructor(
                         copy(
                             isEodInfoLoading = false,
                             showErrorDialog = true,
-                            errorDialogMessage = message
+                            errorDialogMessage = message,
                         )
                     }
                 }
@@ -121,10 +120,9 @@ internal class SyncEodViewModel @Inject constructor(
                     copy(
                         isEodInfoLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: ""
+                        errorDialogMessage = it.message ?: "",
                     )
                 }
             }.launchIn(viewModelScope)
     }
 }
-

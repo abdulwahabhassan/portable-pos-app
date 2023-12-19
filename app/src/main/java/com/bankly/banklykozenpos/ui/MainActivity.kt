@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
                     onCloseApp = {
                         finish()
                     },
-                    activity = this
+                    activity = this,
                 )
             }
         }

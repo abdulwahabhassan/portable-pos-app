@@ -50,7 +50,7 @@ fun TransactionDetailsRoute(
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: (() -> Unit)? = null,
-    onBackPress: (() -> Unit)? = null
+    onBackPress: (() -> Unit)? = null,
 ) {
     TransactionDetailsScreen(
         transactionReceipt = transactionReceipt,
@@ -59,7 +59,7 @@ fun TransactionDetailsRoute(
         onSmsClick = onSmsClick,
         onLogComplaintClick = onLogComplaintClick,
         onGoToHomeClick = onGoToHomeClick,
-        onBackPress = onBackPress
+        onBackPress = onBackPress,
     )
 }
 
@@ -71,19 +71,19 @@ fun TransactionDetailsScreen(
     onSmsClick: (TransactionReceipt) -> Unit,
     onLogComplaintClick: () -> Unit,
     onGoToHomeClick: (() -> Unit)? = null,
-    onBackPress: (() -> Unit)? = null
+    onBackPress: (() -> Unit)? = null,
 ) {
     if (onBackPress != null) {
-       BackHandler {
-           onBackPress()
-       }
+        BackHandler {
+            onBackPress()
+        }
     }
 
     Scaffold(
         topBar = {
             BanklyTitleBar(
                 title = stringResource(R.string.title_transaction_receipt),
-                onBackPress = onBackPress
+                onBackPress = onBackPress,
             )
         },
     ) { padding ->
@@ -241,7 +241,7 @@ fun TransactionDetailsScreenPreview() {
             onLogComplaintClick = {},
             onGoToHomeClick = {},
             onBackPress = {},
-            isSuccess = true
+            isSuccess = true,
         )
     }
 }

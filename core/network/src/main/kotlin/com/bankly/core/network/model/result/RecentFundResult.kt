@@ -18,5 +18,5 @@ data class RecentFundResult(
     val senderBankName: String?,
     val receiverBankName: String?,
     val receiverAccountNumber: String?,
-    val receiverAccountName: String?
+    val receiverAccountName: String?,
 )

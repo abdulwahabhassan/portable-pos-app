@@ -40,12 +40,12 @@ private fun LogComplaintNavHost(
             onBackPress = onBackPress,
             onSuccessfulLog = { complaintId ->
                 navHostController.navigateToComplaintLoggedRoute(complaintId)
-            }
+            },
         )
 
         complaintLoggedRoute(
             onBackPress = onBackPress,
-            onGoToHomeClick = onBackPress
+            onGoToHomeClick = onBackPress,
         )
     }
 }

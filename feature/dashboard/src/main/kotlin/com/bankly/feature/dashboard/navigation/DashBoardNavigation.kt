@@ -12,9 +12,9 @@ import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.bankly.core.entity.Feature
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
-import com.bankly.core.entity.Feature
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
@@ -26,7 +26,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
     activity: Activity,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     navigation(
         route = dashBoardNavGraphRoute,
@@ -63,7 +63,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         onSupportOptionClick = onSupportOptionClick,
                         onLogOutClick = onLogOutClick,
                         activity = activity,
-                        onSessionExpired = onSessionExpired
+                        onSessionExpired = onSessionExpired,
                     )
                 },
                 currentTab = dashBoardState.currentTab,
@@ -88,7 +88,7 @@ fun DashBoardNavHost(
     onSupportOptionClick: (SupportOption) -> Unit,
     onLogOutClick: () -> Unit,
     activity: Activity,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -100,7 +100,7 @@ fun DashBoardNavHost(
             onFeatureClick = onFeatureClick,
             onContinueToPayWithCardClick = onContinueToPayWithCardClick,
             activity = activity,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         transactionsRoute(
             onBackPress = {
@@ -110,20 +110,20 @@ fun DashBoardNavHost(
                 onGoToTransactionDetailsScreen(transactionReceipt)
             },
             updateLoadingStatus = updateLoadingStatus,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         supportRoute(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onSupportOptionClick = onSupportOptionClick
+            onSupportOptionClick = onSupportOptionClick,
         )
         moreRoute(
             onFeatureClick = onFeatureClick,
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onLogOutClick = onLogOutClick
+            onLogOutClick = onLogOutClick,
         )
     }
 }

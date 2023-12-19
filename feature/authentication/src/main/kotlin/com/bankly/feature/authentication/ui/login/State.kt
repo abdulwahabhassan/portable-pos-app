@@ -13,7 +13,7 @@ data class LoginScreenState(
 ) {
     val isLoginButtonEnabled: Boolean
         get() = passCode.isNotEmpty() && passCode.all { digit: String -> digit.isNotEmpty() } &&
-                isPassCodeError.not() && isLoading.not()
+            isPassCodeError.not() && isLoading.not()
     val isUserInputEnabled: Boolean
         get() = isLoading.not()
 }

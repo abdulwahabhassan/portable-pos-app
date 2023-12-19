@@ -16,5 +16,5 @@ data class BillPaymentRequestBody(
     val clientRequestId: String,
     val deviceId: String,
     val paidForPhone: String,
-    val paidForName: String
+    val paidForName: String,
 )

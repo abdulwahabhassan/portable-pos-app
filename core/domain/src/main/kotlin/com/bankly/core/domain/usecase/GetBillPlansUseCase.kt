@@ -11,7 +11,7 @@ class GetBillPlansUseCase @Inject constructor(
     private val billsRepository: BillsRepository,
 ) {
     suspend operator fun invoke(token: String, billPlanType: BillsPlanType, billId: Long): Flow<Resource<List<BillPlan>>> =
-        when(billPlanType) {
+        when (billPlanType) {
             BillsPlanType.INTERNET_DATA -> billsRepository.getInternetDataPlans(token = token, billId)
             BillsPlanType.CABLE_TV -> billsRepository.getCableTvPlans(token = token, billId)
             BillsPlanType.ELECTRICITY -> billsRepository.getElectricityPlans(token = token, billId)

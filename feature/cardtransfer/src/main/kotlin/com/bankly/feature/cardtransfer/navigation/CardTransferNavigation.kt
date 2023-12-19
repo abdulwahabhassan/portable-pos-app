@@ -32,7 +32,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
             CardTransferNavHost(
                 navHostController = cardTransferState.navHostController,
                 onBackPress = onBackPress,
-                onSessionExpired = onSessionExpired
+                onSessionExpired = onSessionExpired,
             )
         }
     }
@@ -55,7 +55,7 @@ private fun CardTransferNavHost(
             onContinueClick = { transactionData: TransactionData ->
                 navHostController.navigateToSelectAccountTypeRoute(transactionData = transactionData)
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         selectAccountTypeRoute(
             onAccountSelected = { accountType: AccountType, transactionData: TransactionData ->
@@ -77,9 +77,9 @@ private fun CardTransferNavHost(
                         navHostController.navigateToProcessTransactionRoute(
                             transaction.copy(
                                 responseMessage = transactionResponse.responseMessage ?: "",
-                                responseCode = transactionResponse.responseCode ?: ""
+                                responseCode = transactionResponse.responseCode ?: "",
                             ),
-                            receipt
+                            receipt,
                         )
                     } else {
                         navHostController.navigateToTransactionFailedRoute(receipt.message, receipt)
@@ -89,7 +89,7 @@ private fun CardTransferNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCancelPress = onBackPress
+            onCancelPress = onBackPress,
         )
         processTransactionRoute(
             onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
@@ -98,7 +98,7 @@ private fun CardTransferNavHost(
             onFailedTransaction = { message: String, cardTransactionReceipt: TransactionReceipt? ->
                 navHostController.navigateToTransactionFailedRoute(message = message, cardTransactionReceipt)
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         transactionSuccessRoute(
             onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->

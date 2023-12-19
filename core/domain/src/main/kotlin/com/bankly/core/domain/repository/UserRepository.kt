@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun getToken(userName: String, password: String): Flow<Resource<Token>>
     suspend fun forgotPassCode(body: ForgotPassCodeData): Flow<Resource<Status>>
-    suspend fun forgotTerminalAccessPin(body: ForgotTerminalAccessPinData, ): Flow<Resource<Status>>
+    suspend fun forgotTerminalAccessPin(body: ForgotTerminalAccessPinData): Flow<Resource<Status>>
     suspend fun validateOtp(body: ValidateOtpData): Flow<Resource<Status>>
     suspend fun resetPassCode(body: ResetPassCodeData): Flow<Resource<Message>>
     suspend fun changePassCode(body: ChangePassCodeData): Flow<Resource<User>>

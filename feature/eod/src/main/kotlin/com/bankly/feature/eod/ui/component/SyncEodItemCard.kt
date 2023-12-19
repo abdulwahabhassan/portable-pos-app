@@ -32,30 +32,30 @@ internal fun SyncEodItemCard(
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        )
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
             Icon(
                 painter = painterResource(id = icon),
-                contentDescription = null
+                contentDescription = null,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                )
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                ),
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = Formatter.formatAmount(
                     value = amount,
                     includeNairaSymbol = true,
-                    addSpaceBetweenSymbolAndAmount = true
+                    addSpaceBetweenSymbolAndAmount = true,
                 ),
                 style = MaterialTheme.typography.titleMedium.copy(
-                    color = MaterialTheme.colorScheme.surfaceVariant
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                 ),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -72,7 +72,7 @@ private fun SyncEodItemCardPreview() {
             amount = 0.00,
             title = "Processed",
             backgroundColor = MaterialTheme.colorScheme.primary,
-            icon = BanklyIcons.SyncProcessed
+            icon = BanklyIcons.SyncProcessed,
         )
     }
 }

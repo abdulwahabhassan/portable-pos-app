@@ -2,7 +2,6 @@ package com.bankly.core.network.model.request
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class CardTransferRequestBody(
     val accountName: String,
@@ -14,5 +13,5 @@ data class CardTransferRequestBody(
     val sendersPhoneNumber: String,
     val clientRequestId: String,
     val responseCode: String,
-    val responseMessage: String
+    val responseMessage: String,
 )

@@ -7,8 +7,8 @@ import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asRecentFund
 import com.bankly.core.data.util.asRequestBody
-import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleApiResponse
+import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.PayWithTransferRepository
 import com.bankly.core.entity.RecentFund
 import com.bankly.core.network.model.result.RecentFundResult
@@ -31,7 +31,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
 ) : PayWithTransferRepository {
     override suspend fun syncRecentFunding(
         token: String,
-        body: SyncRecentFundingData
+        body: SyncRecentFundingData,
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (
@@ -57,7 +57,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
 
     override suspend fun getRecentFunding(
         token: String,
-        body: GetRecentFundingData
+        body: GetRecentFundingData,
     ): Flow<Resource<List<RecentFund>>> = flow {
         emit(Resource.Loading)
         when (
@@ -83,7 +83,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
 
     override suspend fun sendReceipt(
         token: String,
-        body: SendReceiptData
+        body: SendReceiptData,
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (

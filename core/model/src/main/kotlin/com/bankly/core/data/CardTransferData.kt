@@ -10,5 +10,5 @@ data class CardTransferData(
     val sendersPhoneNumber: String,
     val clientRequestId: String,
     val responseCode: String,
-    val responseMessage: String
+    val responseMessage: String,
 )

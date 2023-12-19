@@ -30,12 +30,12 @@ import kotlinx.coroutines.flow.onEach
 internal fun NetworkCheckerListRoute(
     viewModel: NetworkCheckerViewModel = hiltViewModel(),
     onBackPress: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     NetworkCheckerListScreen(
         onBackPress = onBackPress,
-        screenState = screenState
+        screenState = screenState,
     ) { uiEvent: NetworkCheckerScreenEvent ->
         viewModel.sendEvent(uiEvent)
     }
@@ -59,7 +59,7 @@ internal fun NetworkCheckerListRoute(
 private fun NetworkCheckerListScreen(
     onBackPress: () -> Unit,
     screenState: NetworkCheckerScreenState,
-    onUiEvent: (NetworkCheckerScreenEvent) -> Unit
+    onUiEvent: (NetworkCheckerScreenEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -95,10 +95,8 @@ private fun NetworkCheckerListScreen(
             }
 
             NetworkCheckerTab.WITHDRAWALS -> {
-
             }
         }
-
     }
 
     BanklyCenterDialog(
@@ -112,7 +110,7 @@ private fun NetworkCheckerListScreen(
         },
         onDismissDialog = {
             onUiEvent(NetworkCheckerScreenEvent.DismissErrorDialog)
-        }
+        },
     )
 }
 
@@ -122,7 +120,7 @@ private fun NetworkCheckerListScreenPreview() {
     BanklyTheme {
         NetworkCheckerListScreen(
             onBackPress = {},
-            screenState = NetworkCheckerScreenState()
+            screenState = NetworkCheckerScreenState(),
         ) {}
     }
 }

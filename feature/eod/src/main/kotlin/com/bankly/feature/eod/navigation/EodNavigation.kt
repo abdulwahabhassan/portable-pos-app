@@ -23,7 +23,7 @@ fun NavGraphBuilder.eodNavGraph(
             EodNavHost(
                 navHostController = eodState.navHostController,
                 onBackPress = onBackPress,
-                onSessionExpired = onSessionExpired
+                onSessionExpired = onSessionExpired,
             )
         }
     }
@@ -45,7 +45,7 @@ private fun EodNavHost(
             onExportFullEodClick = {
                 navHostController.navigateToExportSuccessfulRoute(
                     title = "Export Successful",
-                    message = "Kindly check your email to view EOD report"
+                    message = "Kindly check your email to view EOD report",
                 )
             },
             onSyncEodClick = {
@@ -53,7 +53,7 @@ private fun EodNavHost(
             },
             onViewEodTransactionsClick = {
                 navHostController.navigateToEodTransactionsRoute()
-            }
+            },
         )
         eodTransactionsRoute(
             onBackPress = {
@@ -61,7 +61,7 @@ private fun EodNavHost(
             },
             onViewTransactionDetailsClick = { receipt: TransactionReceipt ->
                 navHostController.navigateToTransactionDetailsRoute(receipt)
-            }
+            },
         )
         transactionDetailsRoute(
             onShareClick = { },
@@ -75,12 +75,12 @@ private fun EodNavHost(
             onGoToSuccessScreen = {
                 navHostController.navigateToReceiptSuccessfullySentRoute(
                     title = "Receipt Sent",
-                    message = "Your receipt has been sent"
+                    message = "Your receipt has been sent",
                 )
             },
             onBackPress = {
                 navHostController.popBackStack()
-            }
+            },
         )
         doneRoute(
             onDoneClick = {
@@ -91,7 +91,7 @@ private fun EodNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
     }
 }

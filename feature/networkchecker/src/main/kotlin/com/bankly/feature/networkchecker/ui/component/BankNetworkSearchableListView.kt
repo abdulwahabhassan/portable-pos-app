@@ -7,10 +7,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,8 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.ui.view.EmptyStateView
-import com.bankly.core.designsystem.component.BanklyExpandableList
-import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
@@ -80,8 +76,7 @@ internal fun BankNetworkSearchableListView(
         }
     } else if (banks.isEmpty()) {
         EmptyStateView()
-    }
-    else {
+    } else {
         LazyColumn(modifier = modifier.fillMaxSize(), content = {
             if (serviceDowntimeBanks.isNotEmpty()) {
                 stickyHeader {
@@ -91,7 +86,7 @@ internal fun BankNetworkSearchableListView(
                         onClickVisibilityIcon = {
                             isDowntimeBankListExpanded =
                                 !isDowntimeBankListExpanded
-                        }
+                        },
                     )
                 }
                 if (isDowntimeBankListExpanded) {
@@ -109,7 +104,7 @@ internal fun BankNetworkSearchableListView(
                         onClickVisibilityIcon = {
                             isOperationalBankListExpanded =
                                 !isOperationalBankListExpanded
-                        }
+                        },
                     )
                 }
                 if (isOperationalBankListExpanded) {
@@ -118,7 +113,6 @@ internal fun BankNetworkSearchableListView(
                     }
                 }
             }
-
         })
     }
 }
@@ -133,7 +127,7 @@ private fun BankNetworkSearchableListPreview() {
             bankList = listOf(
                 BankNetwork("GT Bank", "", 60.00, 100),
                 BankNetwork("First Bank", "", 100.00, 59),
-                BankNetwork("Access Bank", "", 50.00, 0)
+                BankNetwork("Access Bank", "", 50.00, 0),
             ),
         )
     }
@@ -143,7 +137,7 @@ private fun BankNetworkSearchableListPreview() {
 private fun ListHeader(
     isListExpanded: Boolean,
     title: String,
-    onClickVisibilityIcon: (Boolean) -> Unit
+    onClickVisibilityIcon: (Boolean) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -185,8 +179,7 @@ private fun ListHeaderPreview() {
         ListHeader(
             isListExpanded = true,
             title = stringResource(id = R.string.title_operational_banks),
-            onClickVisibilityIcon = {}
+            onClickVisibilityIcon = {},
         )
     }
 }
-

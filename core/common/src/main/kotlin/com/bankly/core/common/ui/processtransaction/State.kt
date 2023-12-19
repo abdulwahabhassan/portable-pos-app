@@ -12,5 +12,5 @@ sealed interface ProcessTransactionScreenOneShotState : OneShotState {
     data class GoToTransactionFailedScreen(val message: String) : ProcessTransactionScreenOneShotState
     data class GoToTransactionSuccessScreen(val transactionReceipt: TransactionReceipt) :
         ProcessTransactionScreenOneShotState
-    object OnSessionExpired: ProcessTransactionScreenOneShotState
+    object OnSessionExpired : ProcessTransactionScreenOneShotState
 }

@@ -12,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,12 +26,12 @@ import com.bankly.feature.settings.ui.component.FeatureToggleListItem
 @Composable
 internal fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel(),
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     SettingsScreen(
         onBackPress = onBackPress,
-        screenState = screenState
+        screenState = screenState,
     ) { uiEvent: SettingsScreenEvent ->
         viewModel.sendEvent(uiEvent)
     }
@@ -46,7 +45,7 @@ internal fun SettingsRoute(
 private fun SettingsScreen(
     onBackPress: () -> Unit,
     screenState: SettingsScreenState,
-    onUiEvent: (SettingsScreenEvent) -> Unit
+    onUiEvent: (SettingsScreenEvent) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -62,7 +61,7 @@ private fun SettingsScreen(
     ) { paddingValues: PaddingValues ->
         LazyColumn(
             modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(bottom = 16.dp),
         ) {
             items(screenState.features, Feature::title) { feature: Feature ->
                 FeatureToggleListItem(
@@ -71,10 +70,10 @@ private fun SettingsScreen(
                         onUiEvent(
                             SettingsScreenEvent.OnFeatureToggle(
                                 toggledFeature = feature,
-                                screenState.features
-                            )
+                                screenState.features,
+                            ),
                         )
-                    }
+                    },
                 )
             }
         }
@@ -90,10 +89,10 @@ private fun SettingsScreenPreview() {
             screenState = SettingsScreenState(
                 features = listOf(
                     Feature.SendMoney(),
-                    Feature.CardTransfer()
-                )
+                    Feature.CardTransfer(),
+                ),
             ),
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

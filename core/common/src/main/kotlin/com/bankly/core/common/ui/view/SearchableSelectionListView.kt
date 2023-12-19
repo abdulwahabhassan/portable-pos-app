@@ -63,7 +63,7 @@ fun <T> SearchableSelectionListView(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(id = BanklyIcons.Mtn),
                     contentDescription = null,
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
                 )
             },
         )
@@ -75,11 +75,13 @@ fun <T> SearchableSelectionListView(
     searchQuery: String = "",
     onSearchQueryChange: (String) -> Unit = {},
 ) {
-
-    val items = if (searchPredicate != null)
+    val items = if (searchPredicate != null) {
         remember(listItems, searchQuery) {
             mutableStateOf(listItems.filter(searchPredicate))
-        }.value else listItems
+        }.value
+    } else {
+        listItems
+    }
 
     if (isListLoading) {
         Column(
@@ -104,14 +106,14 @@ fun <T> SearchableSelectionListView(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(start = 16.dp, end = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             if (showCloseIcon) {
                 BanklyClickableIcon(
                     icon = BanklyIcons.Close,
                     onClick = onCloseIconClick,
-                    shape = CircleShape
+                    shape = CircleShape,
                 )
             }
         }
@@ -131,7 +133,7 @@ fun <T> SearchableSelectionListView(
                 stickyHeader {
                     if (searchPredicate != null) {
                         Surface(
-                            color = MaterialTheme.colorScheme.surfaceVariant
+                            color = MaterialTheme.colorScheme.surfaceVariant,
                         ) {
                             BanklySearchBar(
                                 modifier = Modifier,
@@ -181,11 +183,11 @@ fun SelectableListItem(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 16.dp),
 
-            ) {
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (startIcon != null) {
                     startIcon()
@@ -212,9 +214,9 @@ private fun SelectableListItemPreview() {
             Icon(
                 painter = painterResource(id = BanklyIcons.ChevronDown),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
-        }
+        },
     )
 }
 
@@ -235,6 +237,3 @@ private fun SearchableSelectionListPreview() {
         )
     }
 }
-
-
-

@@ -3,7 +3,7 @@ package com.bankly.core.network.model.result
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ProviderResult (
+data class ProviderResult(
     val id: Long?,
     val categoryId: Long?,
     val code: String?,
@@ -25,5 +25,5 @@ data class ProviderResult (
     val providerAmount: Double?,
     val providerId: Long?,
     val dateCreated: String?,
-    val minimumAmount: Double?
+    val minimumAmount: Double?,
 )

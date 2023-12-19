@@ -18,8 +18,6 @@ private const val DEFAULT_AMOUNT = 20.0
 fun NavGraphBuilder.checkCardBalanceNavGraph(
     onBackPress: () -> Unit,
 ) {
-
-
     navigation(
         route = checkCardBalanceNavGraphRoute,
         startDestination = checkCardBalanceRoute,
@@ -66,17 +64,17 @@ private fun CheckCardBalanceNavHost(
                     navHostController.navigateToCardBalanceRoute(
                         cardBalanceAmount = balance,
                         responseCode = transactionResponse.responseCode ?: "",
-                        responseMessage = transactionResponse.responseMessage ?: ""
+                        responseMessage = transactionResponse.responseMessage ?: "",
                     )
                 }
             },
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onCancelPress = onBackPress
+            onCancelPress = onBackPress,
         )
         cardBalanceRoute(
-            onGoToDashboardClick = onBackPress
+            onGoToDashboardClick = onBackPress,
         )
     }
 }

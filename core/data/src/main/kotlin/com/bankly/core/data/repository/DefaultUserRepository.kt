@@ -15,10 +15,10 @@ import com.bankly.core.data.util.asToken
 import com.bankly.core.data.util.asUser
 import com.bankly.core.data.util.asUserWallet
 import com.bankly.core.data.util.getUsernameFromAccessToken
-import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleApiResponse
-import com.bankly.core.data.util.handleTokenRequest
+import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleTokenApiResponse
+import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.domain.repository.UserRepository
 import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.Message
@@ -58,7 +58,7 @@ class DefaultUserRepository @Inject constructor(
                     apiRequest = {
                         identityService.getToken(
                             username = userName,
-                            password = password
+                            password = password,
                         )
                     },
                 ),

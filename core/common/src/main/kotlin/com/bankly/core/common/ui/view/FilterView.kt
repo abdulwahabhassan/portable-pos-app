@@ -1,6 +1,5 @@
 package com.bankly.core.common.ui.view
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,17 +36,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyClickableIcon
-import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDateInputField
 import com.bankly.core.designsystem.component.BanklyFilledButton
+import com.bankly.core.designsystem.component.BanklyFilterChip
 import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.entity.TransactionFilter
+import com.bankly.core.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -79,7 +77,7 @@ fun FilterView(
     cashFlows: List<CashFlow>,
     transactionFilterTypes: List<TransactionFilterType>,
     onApplyClick: (TransactionFilter) -> Unit,
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -88,11 +86,11 @@ fun FilterView(
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(start = 24.dp, end = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = R.string.title_filter),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         BanklyClickableIcon(icon = BanklyIcons.Close, onClick = onCloseClick, shape = CircleShape)
     }
@@ -148,7 +146,8 @@ fun FilterView(
                     BanklyFilterChip(
                         title = filter.title,
                         isSelected = filter.isSelected,
-                        onClick = { onCashFlowFilterChipClick(filter) })
+                        onClick = { onCashFlowFilterChipClick(filter) },
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(36.dp))
@@ -159,7 +158,7 @@ fun FilterView(
             )
             LazyHorizontalStaggeredGrid(
                 rows = StaggeredGridCells.Fixed(
-                    if (shouldShowAllTransactionFilterType.not()) 3 else 7
+                    if (shouldShowAllTransactionFilterType.not()) 3 else 7,
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -169,16 +168,18 @@ fun FilterView(
                 horizontalItemSpacing = 4.dp,
             ) {
                 items(
-                    if (shouldShowAllTransactionFilterType.not())
+                    if (shouldShowAllTransactionFilterType.not()) {
                         transactionFilterTypes.take(6)
-                    else
-                        transactionFilterTypes,
-                    key = TransactionFilterType::id
+                    } else {
+                        transactionFilterTypes
+                    },
+                    key = TransactionFilterType::id,
                 ) { type: TransactionFilterType ->
                     BanklyFilterChip(
                         title = type.name,
                         isSelected = type.isSelected,
-                        onClick = { onTransactionFilterTypeSelected(type) })
+                        onClick = { onTransactionFilterTypeSelected(type) },
+                    )
                 }
             }
             Box(modifier = Modifier.padding(horizontal = 12.dp)) {
@@ -186,32 +187,41 @@ fun FilterView(
                     text = buildAnnotatedString {
                         withStyle(
                             MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.primary
-                            ).toSpanStyle()
+                                color = MaterialTheme.colorScheme.primary,
+                            ).toSpanStyle(),
                         ) {
                             append(
                                 stringResource(
-                                    if (shouldShowAllTransactionFilterType) R.string.action_show_less
-                                    else R.string.action_show_more
-                                )
+                                    if (shouldShowAllTransactionFilterType) {
+                                        R.string.action_show_less
+                                    } else {
+                                        R.string.action_show_more
+                                    },
+                                ),
                             )
                         }
                     },
-                    onClick = if (shouldShowAllTransactionFilterType) onShowLessTypesClick
-                    else onShowMoreTypesClick,
+                    onClick = if (shouldShowAllTransactionFilterType) {
+                        onShowLessTypesClick
+                    } else {
+                        onShowMoreTypesClick
+                    },
                     trailingIcon = {
                         Icon(
                             painter = painterResource(
                                 id =
-                                if (shouldShowAllTransactionFilterType)
-                                    BanklyIcons.ChevronUp else BanklyIcons.ChevronDown
+                                if (shouldShowAllTransactionFilterType) {
+                                    BanklyIcons.ChevronUp
+                                } else {
+                                    BanklyIcons.ChevronDown
+                                },
                             ),
                             contentDescription = null,
                             tint = Color.Unspecified,
                         )
                     },
                     backgroundShape = MaterialTheme.shapes.small,
-                    indicationColor = Color.White
+                    indicationColor = Color.White,
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -220,12 +230,12 @@ fun FilterView(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(1f),
                 ) {
                     BanklyDateInputField(
                         date = startDateFilter,
@@ -239,13 +249,13 @@ fun FilterView(
                         feedBackText = startDateFilterFeedBack,
                         isEnabled = isUserInputEnabled,
                         horizontalPadding = 0.dp,
-                        textStyle = MaterialTheme.typography.bodySmall
+                        textStyle = MaterialTheme.typography.bodySmall,
                     )
                 }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(1f),
                 ) {
                     BanklyDateInputField(
                         date = endDateFilter,
@@ -259,7 +269,7 @@ fun FilterView(
                         feedBackText = endDateFilterFeedBack,
                         isEnabled = isUserInputEnabled,
                         horizontalPadding = 0.dp,
-                        textStyle = MaterialTheme.typography.bodySmall
+                        textStyle = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
@@ -276,10 +286,10 @@ fun FilterView(
                             cashFlows = cashFlows,
                             transactionTypes = transactionFilterTypes,
                             dateFrom = startDateFilter,
-                            dateTo = endDateFilter
-                        )
+                            dateTo = endDateFilter,
+                        ),
                     )
-                }
+                },
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
@@ -316,7 +326,7 @@ private fun FilterPreview() {
             transactionFilterTypes = emptyList(),
             onTransactionFilterTypeSelected = {},
             onApplyClick = {},
-            onCloseClick = {}
+            onCloseClick = {},
         )
     }
 }

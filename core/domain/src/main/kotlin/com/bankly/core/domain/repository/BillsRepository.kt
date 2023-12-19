@@ -3,10 +3,10 @@ package com.bankly.core.domain.repository
 import com.bankly.core.data.BillPaymentData
 import com.bankly.core.data.ValidateCableTvNumberData
 import com.bankly.core.data.ValidateElectricityMeterNumberData
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.entity.BillPlan
 import com.bankly.core.entity.BillProvider
+import com.bankly.core.entity.CableTvNameEnquiry
+import com.bankly.core.entity.MeterNameEnquiry
 import com.bankly.core.sealed.Resource
 import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
@@ -14,17 +14,17 @@ import kotlinx.coroutines.flow.Flow
 interface BillsRepository {
     suspend fun performBillPayment(
         token: String,
-        body: BillPaymentData
+        body: BillPaymentData,
     ): Flow<Resource<TransactionReceipt.BillPayment>>
 
     suspend fun performMeterNameEnquiry(
         token: String,
-        body: ValidateElectricityMeterNumberData
+        body: ValidateElectricityMeterNumberData,
     ): Flow<Resource<MeterNameEnquiry>>
 
     suspend fun performCableTvNameEnquiry(
         token: String,
-        body: ValidateCableTvNumberData
+        body: ValidateCableTvNumberData,
     ): Flow<Resource<CableTvNameEnquiry>>
 
     suspend fun getAirtimeProviders(token: String): Flow<Resource<List<BillProvider>>>

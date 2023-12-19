@@ -13,5 +13,5 @@ enum class AppTopLevelDestination {
     SETTINGS,
     FLOAT,
     PAY_WITH_USSD,
-    CHECK_BALANCE
+    CHECK_BALANCE,
 }

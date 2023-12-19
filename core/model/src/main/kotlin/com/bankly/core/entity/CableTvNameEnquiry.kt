@@ -1,6 +1,6 @@
 package com.bankly.core.entity
 
-data class CableTvNameEnquiry (
+data class CableTvNameEnquiry(
     val cardNumber: String,
     val customerName: String,
     val packageName: String,

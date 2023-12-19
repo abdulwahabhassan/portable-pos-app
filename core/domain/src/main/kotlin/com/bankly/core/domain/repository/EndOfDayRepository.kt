@@ -13,6 +13,6 @@ interface EndOfDayRepository {
 
     suspend fun syncEod(
         token: String,
-        eodTransactionListData: EodTransactionListData
+        eodTransactionListData: EodTransactionListData,
     ): Flow<Resource<SyncEod>>
 }

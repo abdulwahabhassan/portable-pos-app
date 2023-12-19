@@ -43,7 +43,7 @@ internal fun RecentFundSummaryView(
         BanklyClickableIcon(
             modifier = Modifier.align(Alignment.End).padding(16.dp),
             icon = BanklyIcons.Close,
-            onClick = onCloseIconClick
+            onClick = onCloseIconClick,
         )
         Column(
             modifier = Modifier
@@ -56,12 +56,12 @@ internal fun RecentFundSummaryView(
                 modifier = Modifier.size(70.dp),
                 painter = painterResource(id = BanklyIcons.Successful),
                 contentDescription = null,
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Transfer Alert",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
@@ -72,13 +72,13 @@ internal fun RecentFundSummaryView(
                     append(" ")
                     withStyle(
                         MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
-                            .toSpanStyle()
+                            .toSpanStyle(),
                     ) {
                         append(
                             Formatter.formatAmount(
                                 value = recentFund.amount,
-                                includeNairaSymbol = true
-                            )
+                                includeNairaSymbol = true,
+                            ),
                         )
                     }
                     append("\n")
@@ -86,27 +86,28 @@ internal fun RecentFundSummaryView(
                     append(" ")
                     withStyle(
                         MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
-                            .toSpanStyle()
+                            .toSpanStyle(),
                     ) {
                         append(recentFund.senderAccountName)
                     }
-                })
+                },
+            )
             Spacer(modifier = Modifier.height(24.dp))
             BanklyFilledButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "View Transaction Details",
                 onClick = {
                     onViewTransactionDetailsClick(recentFund.toTransactionReceipt())
-                })
+                },
+            )
             Spacer(modifier = Modifier.height(16.dp))
             BanklyOutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Go To Home",
-                onClick = onGoToHomeClick
+                onClick = onGoToHomeClick,
             )
         }
     }
-
 }
 
 @Preview(showBackground = true, backgroundColor = PreviewColor.white)
@@ -133,7 +134,7 @@ private fun RecentFundSummaryPreview() {
             ),
             onViewTransactionDetailsClick = {},
             onGoToHomeClick = {},
-            onCloseIconClick = {}
-            )
+            onCloseIconClick = {},
+        )
     }
 }

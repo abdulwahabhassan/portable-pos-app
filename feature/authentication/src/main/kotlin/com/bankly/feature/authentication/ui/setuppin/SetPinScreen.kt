@@ -38,7 +38,6 @@ internal fun SetPinRoute(
     onBackPress: () -> Unit,
     defaultPin: String,
 ) {
-
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SetPinScreen(
@@ -52,7 +51,7 @@ internal fun SetPinRoute(
             when (oneShotState) {
                 is SetPinScreenOneShotState.OnGoToConfirmPinScreen -> onGoToConfirmPinScreen(
                     oneShotState.defaultPin,
-                    oneShotState.newPin
+                    oneShotState.newPin,
                 )
             }
         }.launchIn(this)
@@ -69,7 +68,6 @@ private fun SetPinScreen(
     screenState: SetPinScreenState,
     onUiEvent: (SetPinScreenEvent) -> Unit,
 ) {
-
     BackHandler {
         onUiEvent(SetPinScreenEvent.OnBackPress)
     }
@@ -102,7 +100,7 @@ private fun SetPinScreen(
 
                 BanklyAccessPinInputField(
                     passCode = screenState.newPin,
-                    isError = screenState.isNewPinError
+                    isError = screenState.isNewPinError,
                 )
             }
 
@@ -146,7 +144,6 @@ private fun SetPinScreen(
         }
     }
 
-
     BanklyCenterDialog(
         title = stringResource(R.string.exit_warning),
         subtitle = stringResource(R.string.msg_are_you_sure_you_want_to_discontinue_setting_up_your_access_pin),
@@ -160,7 +157,7 @@ private fun SetPinScreen(
         negativeAction = onBackPress,
         onDismissDialog = {
             onUiEvent(SetPinScreenEvent.OnDismissOnBackPressWarningDialog)
-        }
+        },
     )
 }
 
@@ -171,7 +168,7 @@ private fun SetPinScreenPreview() {
         SetPinScreen(
             onBackPress = {},
             screenState = SetPinScreenState(),
-            onUiEvent = {}
+            onUiEvent = {},
         )
     }
 }

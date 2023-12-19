@@ -1,6 +1,6 @@
 package com.bankly.core.entity
 
-data class BillProvider (
+data class BillProvider(
     val id: Long,
     val categoryId: Long,
     val code: String,
@@ -22,5 +22,5 @@ data class BillProvider (
     val providerAmount: Double,
     val providerId: Long,
     val dateCreated: String,
-    val minimumAmount: Double
+    val minimumAmount: Double,
 )

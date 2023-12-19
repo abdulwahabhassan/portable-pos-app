@@ -37,7 +37,7 @@ fun <T> BanklyExpandableList(
     onItemSelected: (item: T) -> Unit,
     transformItemToString: (T) -> String = { it.toString() },
     drawItem: @Composable (item: T, onItemSelected: (T) -> Unit, transformItemToString: (T) -> String) -> Unit = { _, _, _ -> },
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -100,8 +100,6 @@ internal fun BanklyExpandableListPreview() {
             onClickExpand = {},
             onItemSelected = {},
 
-            )
+        )
     }
 }
-
-

@@ -69,7 +69,7 @@ data class BanklyAppState(
         when (destination) {
             AUTHENTICATION -> navHostController.navigateToAuthenticationNavGraph(
                 isValidatePassCode = false,
-                navOptions = navOption
+                navOptions = navOption,
             )
             DASHBOARD -> navHostController.navigateToDashBoardNavGraph(navOption)
             PAY_WITH_CARD -> navHostController.navigateToPayWithCardNavGraph(navOption)

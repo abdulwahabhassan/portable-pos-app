@@ -1,7 +1,6 @@
 package com.bankly.feature.paywithtransfer.navigation
 
 import android.net.Uri
-import android.util.Log
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.bankly.core.sealed.TransactionReceipt

@@ -37,7 +37,7 @@ sealed class TransactionData(
                         narration = narration,
                         amountToSend = amount.toString(),
                         otp = pin,
-                        clientRequestId = clientReqId
+                        clientRequestId = clientReqId,
                     )
                 }
 
@@ -46,7 +46,7 @@ sealed class TransactionData(
                         amount = amount.toString(),
                         recipientAccount = accountNumber,
                         otp = pin,
-                        clientRequestId = clientReqId
+                        clientRequestId = clientReqId,
                     )
                 }
             }
@@ -88,7 +88,7 @@ sealed class TransactionData(
                 clientRequestId = clientRequestId,
                 deviceId = terminalSerialNumber,
                 paidForPhone = phoneNumber,
-                paidForName = cableTvOwnerNameOrMeterOwnerName
+                paidForName = cableTvOwnerNameOrMeterOwnerName,
             )
         }
     }
@@ -104,7 +104,7 @@ sealed class TransactionData(
         val sendersPhoneNumber: String,
         val clientRequestId: String = clientReqId,
         val responseCode: String = "",
-        val responseMessage: String = ""
+        val responseMessage: String = "",
     ) : TransactionData(transactionAmount = amount, pin = "") {
         fun toCardTransferData() = CardTransferData(
             accountName = accountName,
@@ -116,7 +116,7 @@ sealed class TransactionData(
             sendersPhoneNumber = sendersPhoneNumber,
             clientRequestId = clientRequestId,
             responseCode = responseCode,
-            responseMessage = responseMessage
+            responseMessage = responseMessage,
         )
     }
 
@@ -183,7 +183,3 @@ sealed class TransactionData(
         }
     }
 }
-
-
-
-

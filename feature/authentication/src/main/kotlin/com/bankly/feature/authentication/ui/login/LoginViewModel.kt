@@ -69,7 +69,7 @@ class LoginViewModel @Inject constructor(
         loginTokenUseCase(
             userName = "P260300061091",
 //            userName = Tools.serialNumber,
-            password = passCode
+            password = passCode,
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -108,12 +108,12 @@ class LoginViewModel @Inject constructor(
                                     errorDialogMessage = failureMessage.replace(
                                         oldValue = PASSCODE,
                                         newValue = ACCESS_PIN,
-                                        ignoreCase = true
+                                        ignoreCase = true,
                                     ),
                                     isPassCodeError = failureMessage.contains(
                                         other = INVALID_PASSCODE,
-                                        ignoreCase = true
-                                    )
+                                        ignoreCase = true,
+                                    ),
                                 )
                             }
                         }
@@ -126,7 +126,7 @@ class LoginViewModel @Inject constructor(
                         isLoading = false,
                         showErrorDialog = true,
                         errorDialogMessage = it.localizedMessage ?: it.message
-                        ?: ""
+                            ?: "",
                     )
                 }
             }.launchIn(viewModelScope)

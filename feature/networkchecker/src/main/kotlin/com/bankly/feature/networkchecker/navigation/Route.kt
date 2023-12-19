@@ -11,13 +11,12 @@ internal const val networkCheckerListRoute =
 
 internal fun NavGraphBuilder.networkCheckerListRoute(
     onBackPress: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     composable(route = networkCheckerListRoute) {
         NetworkCheckerListRoute(
             onBackPress = onBackPress,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
     }
 }
-

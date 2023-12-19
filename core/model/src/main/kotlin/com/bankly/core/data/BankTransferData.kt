@@ -29,5 +29,5 @@ sealed class BankTransferData {
         val clientRequestId: String,
         val deviceId: String = "",
         val channel: String = "4",
-    ): BankTransferData()
+    ) : BankTransferData()
 }

@@ -16,5 +16,4 @@ object Validator {
     fun isAmountValid(amount: Double, minimumAmount: Double = 0.00): Boolean {
         return amount in minimumAmount..1_000_000.00
     }
-
 }

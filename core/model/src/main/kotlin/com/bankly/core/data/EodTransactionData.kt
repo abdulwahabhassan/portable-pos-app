@@ -2,7 +2,6 @@ package com.bankly.core.data
 
 import kotlinx.serialization.Serializable
 
-
 typealias EodTransactionListData = List<EodTransactionData>
 
 @Serializable
@@ -17,5 +16,5 @@ data class EodTransactionData(
     val maskedPan: String,
     val terminalId: String,
     val rrn: String,
-    val transType: String
+    val transType: String,
 )

@@ -37,7 +37,6 @@ import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiary
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBaseBeneficiaryViewModel
 import com.bankly.feature.sendmoney.ui.beneficiary.savedbeneficiary.SavedBeneficiaryView
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -50,7 +49,7 @@ internal fun BeneficiaryRoute(
     sendMoneyChannel: SendMoneyChannel,
     onContinueClick: (TransactionData) -> Unit,
     onCloseClick: () -> Unit,
-    onSessionExpired: () -> Unit
+    onSessionExpired: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val newBeneficiaryScreenState by newBeneficiaryViewModel.uiState.collectAsStateWithLifecycle()
@@ -80,7 +79,7 @@ internal fun BeneficiaryRoute(
                     narration = newBeneficiaryScreenState.narrationTFV.text,
                     accountNumberType = newBeneficiaryScreenState.accountNumberType,
 
-                    ),
+                ),
             )
         },
         onSavedBeneficiaryContinueButtonClick = {
@@ -194,7 +193,7 @@ private fun BeneficiaryScreen(
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.hide()
                     }
-                }
+                },
             )
         },
     ) { paddingValues ->

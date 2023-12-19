@@ -23,7 +23,7 @@ fun NavGraphBuilder.payWithTransferNavGraph(
             PayWithTransferNavHost(
                 navHostController = payWithTransferState.navHostController,
                 onBackPress = onBackPress,
-                onSessionExpired = onSessionExpired
+                onSessionExpired = onSessionExpired,
             )
         }
     }
@@ -46,7 +46,7 @@ private fun PayWithTransferNavHost(
                 navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
             },
             onGoToHomeClick = onBackPress,
-            onSessionExpired = onSessionExpired
+            onSessionExpired = onSessionExpired,
         )
         transactionDetailsRoute(
             onShareClick = { },
@@ -62,7 +62,7 @@ private fun PayWithTransferNavHost(
             },
             onBackPress = {
                 navHostController.popBackStack()
-            }
+            },
         )
         doneRoute(
             onDoneClick = {

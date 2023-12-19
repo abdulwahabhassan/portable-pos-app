@@ -65,7 +65,7 @@ class ProcessTransactionViewModel @Inject constructor(
                     is TransactionData.BillPayment -> {
                         payBillUseCase.invoke(
                             userPreferencesDataStore.data().token,
-                            event.transactionData.toBillPaymentData()
+                            event.transactionData.toBillPaymentData(),
                         ).onEach { resource ->
                             resource.onReady { billPayment: TransactionReceipt.BillPayment ->
                                 setOneShotState(

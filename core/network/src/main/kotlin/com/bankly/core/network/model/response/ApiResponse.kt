@@ -12,4 +12,3 @@ data class ApiResponse<T>(
     val validationMessages: List<String>? = null,
     val responseCode: String? = null,
 )
-

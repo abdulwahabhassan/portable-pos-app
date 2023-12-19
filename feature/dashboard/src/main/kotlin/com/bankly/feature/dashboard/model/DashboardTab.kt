@@ -4,4 +4,3 @@ enum class DashboardTab {
     Home,
     POS,
 }
-

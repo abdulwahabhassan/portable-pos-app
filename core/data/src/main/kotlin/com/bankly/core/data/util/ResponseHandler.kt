@@ -13,7 +13,7 @@ fun <T> handleApiResponse(
             Result.Success(data = requestResult.data.result!!)
         } else {
             Result.Error(
-                message =  requestResult.data.validationMessages?.joinToString(", \n")
+                message = requestResult.data.validationMessages?.joinToString(", \n")
                     ?: requestResult.data.message ?: "Request could not be completed",
             )
         }
@@ -43,7 +43,7 @@ fun handleTokenApiResponse(
         Result.Error(requestResult.message)
     }
 
-    else ->  Result.Error(message = "Request could not be completed",)
+    else -> Result.Error(message = "Request could not be completed")
 }
 
 fun <T> handleTransactionApiResponse(
@@ -54,7 +54,7 @@ fun <T> handleTransactionApiResponse(
             Result.Success(data = requestResult.data.items ?: emptyList())
         } else {
             Result.Error(
-                message =  requestResult.data.message ?: "Request could not be completed",
+                message = requestResult.data.message ?: "Request could not be completed",
             )
         }
     }

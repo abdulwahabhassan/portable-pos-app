@@ -8,4 +8,3 @@ data class ApiError(
     val validationMessages: List<String>? = null,
     val errorCode: Int? = null,
 )
-

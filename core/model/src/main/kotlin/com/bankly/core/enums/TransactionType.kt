@@ -27,5 +27,5 @@ enum class TransactionType(val id: Long, val title: String) {
     POS_OTHER_BANK_TRANSFER(101, "PosOtherBankTransfer"),
     POS_CASH_WITHDRAWAL(110, "PosCashWithdrawal"),
     AGGREAGTOR_POS_TRANSFER_COMMISSION(110, "AggregatorPosTransferCommission"),
-    AGGREGATOR_TERMINAL_ACTIVATION_FEE_COMMISSION(170, "AggregatorTerminalActivationFeeCommission")
+    AGGREGATOR_TERMINAL_ACTIVATION_FEE_COMMISSION(170, "AggregatorTerminalActivationFeeCommission"),
 }

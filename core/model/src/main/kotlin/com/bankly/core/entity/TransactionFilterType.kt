@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class TransactionFilterType(
     val name: String,
     val id: Long,
-    val isSelected: Boolean
+    val isSelected: Boolean,
 )

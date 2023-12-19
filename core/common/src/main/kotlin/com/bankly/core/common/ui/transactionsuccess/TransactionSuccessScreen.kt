@@ -1,6 +1,5 @@
 package com.bankly.core.common.ui.transactionsuccess
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
