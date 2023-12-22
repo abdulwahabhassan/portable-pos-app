@@ -47,6 +47,6 @@ internal data class EodTransactionsScreenState(
 }
 
 internal sealed interface EodTransactionsScreenOneShotState : OneShotState {
-    data class GoToTransactionDetailsScreenEod(val transaction: TransactionReceipt.TransactionHistory) :
+    data class GoToTransactionDetailsScreenEod(val transaction: TransactionReceipt.History) :
         EodTransactionsScreenOneShotState
 }

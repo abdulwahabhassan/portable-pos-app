@@ -1,11 +1,13 @@
 package com.bankly.feature.cardtransfer.navigation
 
 import ProcessPayment
-import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,9 +15,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
+import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransferScreenEvent
+import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransferViewModel
 import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransactionScreenOneShotState
 import com.bankly.feature.cardtransfer.util.toTransactionReceipt
-import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 private const val SUCCESSFUL_STATUS_NAME = "Successful"
 
@@ -40,11 +46,53 @@ fun NavGraphBuilder.cardTransferNavGraph(
 
 @Composable
 private fun CardTransferNavHost(
+    viewModel: CardTransferViewModel = hiltViewModel(),
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
 ) {
     val context = LocalContext.current
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.oneShotState.onEach {
+            when (it) {
+                is CardTransactionScreenOneShotState.GoToFailedTransactionRoute -> {
+                    navHostController.navigateToTransactionFailedRoute(
+                        message = it.message,
+                        transactionReceipt = it.cardTransferReceipt
+                    )
+                }
+
+                is CardTransactionScreenOneShotState.ProcessPayment -> {
+                    ProcessPayment(context) { transactionResponse, _ ->
+                        val cardPaymentReceipt = transactionResponse.toTransactionReceipt()
+                        if (cardPaymentReceipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
+                            navHostController.navigateToProcessTransactionRoute(
+                                transactionData = it.transactionData.copy(
+                                    responseMessage = transactionResponse.responseMessage ?: "",
+                                    responseCode = transactionResponse.responseCode ?: "",
+                                ),
+                                transactionReceipt = cardPaymentReceipt,
+                            )
+                        } else {
+                            viewModel.sendEvent(
+                                CardTransferScreenEvent.OnCardTransferFailed(
+                                    transactionData = it.transactionData,
+                                    cardPaymentReceipt = cardPaymentReceipt,
+                                    cardPaymentReceipt.message
+                                )
+                            )
+                        }
+                    }
+                }
+
+                is CardTransactionScreenOneShotState.GoToTransactionSuccessfulRoute -> {
+                    navHostController.navigateToTransactionSuccessRoute(transactionReceipt = it.cardTransferReceipt)
+                }
+            }
+        }.launchIn(this)
+    })
+
+
     NavHost(
         modifier = Modifier,
         navController = navHostController,
@@ -66,25 +114,12 @@ private fun CardTransferNavHost(
                     AccountType.CURRENT -> com.bankly.kozonpaymentlibrarymodule.posservices.AccountType.CURRENT
                 }
                 val transaction = transactionData as TransactionData.CardTransfer
-                Log.d("debug transaction data", "trans data: $transaction")
-                Tools.SetAccountType(acctType)
-                Tools.TransactionAmount = transaction.transactionAmount
-                Tools.transactionType =
-                    com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
-                ProcessPayment(context) { transactionResponse, _ ->
-                    val receipt = transactionResponse.toTransactionReceipt()
-                    if (receipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
-                        navHostController.navigateToProcessTransactionRoute(
-                            transaction.copy(
-                                responseMessage = transactionResponse.responseMessage ?: "",
-                                responseCode = transactionResponse.responseCode ?: "",
-                            ),
-                            receipt,
-                        )
-                    } else {
-                        navHostController.navigateToTransactionFailedRoute(receipt.message, receipt)
-                    }
-                }
+                viewModel.sendEvent(
+                    CardTransferScreenEvent.InitCardTransferData(
+                        transaction,
+                        acctType,
+                    )
+                )
             },
             onBackPress = {
                 navHostController.popBackStack()
@@ -92,11 +127,23 @@ private fun CardTransferNavHost(
             onCancelPress = onBackPress,
         )
         processTransactionRoute(
-            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
+            onSuccessfulTransaction = { transactionData, cardPaymentReceipt, cardTransferReceipt ->
+                viewModel.sendEvent(
+                    CardTransferScreenEvent.OnCardTransferSuccessful(
+                        transactionData as TransactionData.CardTransfer,
+                        cardPaymentReceipt as TransactionReceipt.CardPayment,
+                        cardTransferReceipt as TransactionReceipt.CardTransfer
+                    )
+                )
             },
-            onFailedTransaction = { message: String, cardTransactionReceipt: TransactionReceipt? ->
-                navHostController.navigateToTransactionFailedRoute(message = message, cardTransactionReceipt)
+            onFailedTransaction = { transactionData, cardPaymentReceipt, message: String ->
+                viewModel.sendEvent(
+                    CardTransferScreenEvent.OnCardTransferFailed(
+                        transactionData as TransactionData.CardTransfer,
+                        cardPaymentReceipt as TransactionReceipt.CardPayment,
+                        message = message
+                    )
+                )
             },
             onSessionExpired = onSessionExpired,
         )

@@ -175,6 +175,7 @@ internal class RecipientViewModel @Inject constructor(
                                 accountNumber = accountInquiry.accountNumber,
                                 amount = amount,
                                 sendersPhoneNumber = senderPhoneNumber,
+                                bankName = accountInquiry.bankName
                             ),
                         ),
                     )

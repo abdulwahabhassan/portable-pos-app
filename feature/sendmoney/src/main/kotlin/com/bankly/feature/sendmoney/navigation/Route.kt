@@ -96,8 +96,8 @@ internal fun NavGraphBuilder.confirmTransactionRoute(
 }
 
 internal fun NavGraphBuilder.processTransactionRoute(
-    onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String) -> Unit,
+    onSuccessfulTransaction: (TransactionData, TransactionReceipt.CardPayment?, TransactionReceipt) -> Unit,
+    onFailedTransaction: (TransactionData, TransactionReceipt.CardPayment?, String) -> Unit,
     onSessionExpired: () -> Unit,
 ) {
     composable(
@@ -111,9 +111,7 @@ internal fun NavGraphBuilder.processTransactionRoute(
             ProcessTransactionRoute(
                 transactionData = transactionData,
                 onTransactionSuccess = onSuccessfulTransaction,
-                onFailedTransaction = { message: String, _ ->
-                    onFailedTransaction(message)
-                },
+                onFailedTransaction = onFailedTransaction,
                 onSessionExpired = onSessionExpired,
             )
         }

@@ -49,10 +49,10 @@ internal class TransactionsViewModel @Inject constructor(
                 val userPrefData = userPreferencesDataStore.data()
                 loadUiData(
                     filter = TransactionFilterData(
-                        dateCreatedFrom = userPrefData.transactionFilter.dateFrom?.toString() ?: "",
-                        dateCreatedTo = userPrefData.transactionFilter.dateTo?.toString() ?: "",
-                        transactionType = if (userPrefData.transactionFilter.transactionTypes.size == 1) {
-                            userPrefData.transactionFilter.transactionTypes[0].id.toString()
+                        dateCreatedFrom = userPrefData.remoteTransactionFilter.dateFrom?.toString() ?: "",
+                        dateCreatedTo = userPrefData.remoteTransactionFilter.dateTo?.toString() ?: "",
+                        transactionType = if (userPrefData.remoteTransactionFilter.transactionTypes.size == 1) {
+                            userPrefData.remoteTransactionFilter.transactionTypes[0].id.toString()
                         } else {
                             ""
                         },
@@ -139,7 +139,7 @@ internal class TransactionsViewModel @Inject constructor(
                     filter.transactionTypes.filter { it.isSelected }.size == 1
 
                 userPreferencesDataStore.update {
-                    copy(transactionFilter = filter)
+                    copy(remoteTransactionFilter = filter)
                 }
                 loadUiData(
                     filter = TransactionFilterData(
@@ -153,8 +153,8 @@ internal class TransactionsViewModel @Inject constructor(
             is TransactionsScreenEvent.RemoveTransactionTypeFilterItem -> {
                 userPreferencesDataStore.update {
                     copy(
-                        transactionFilter = transactionFilter.copy(
-                            transactionTypes = transactionFilter.transactionTypes.map { type ->
+                        remoteTransactionFilter = remoteTransactionFilter.copy(
+                            transactionTypes = remoteTransactionFilter.transactionTypes.map { type ->
                                 if (type.id == event.item.id) {
                                     type.copy(
                                         isSelected = type.isSelected.not(),
@@ -170,7 +170,7 @@ internal class TransactionsViewModel @Inject constructor(
 
             TransactionsScreenEvent.OnClearAllFilters -> {
                 userPreferencesDataStore.update {
-                    copy(transactionFilter = TransactionFilter())
+                    copy(remoteTransactionFilter = TransactionFilter())
                 }
                 loadUiData()
             }
@@ -179,10 +179,10 @@ internal class TransactionsViewModel @Inject constructor(
                 val userPrefData = userPreferencesDataStore.data()
                 loadUiData(
                     filter = TransactionFilterData(
-                        dateCreatedFrom = userPrefData.transactionFilter.dateFrom?.toString() ?: "",
-                        dateCreatedTo = userPrefData.transactionFilter.dateTo?.toString() ?: "",
-                        transactionType = if (userPrefData.transactionFilter.transactionTypes.size == 1) {
-                            userPrefData.transactionFilter.transactionTypes[0].id.toString()
+                        dateCreatedFrom = userPrefData.remoteTransactionFilter.dateFrom?.toString() ?: "",
+                        dateCreatedTo = userPrefData.remoteTransactionFilter.dateTo?.toString() ?: "",
+                        transactionType = if (userPrefData.remoteTransactionFilter.transactionTypes.size == 1) {
+                            userPrefData.remoteTransactionFilter.transactionTypes[0].id.toString()
                         } else {
                             ""
                         },
@@ -193,7 +193,10 @@ internal class TransactionsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadUiData(filter: TransactionFilterData? = null, isTriggeredByRefresh: Boolean = false) {
+    private suspend fun loadUiData(
+        filter: TransactionFilterData? = null,
+        isTriggeredByRefresh: Boolean = false,
+    ) {
         combine(
             flow = getTransactionsUseCase.invoke(
                 token = userPreferencesDataStore.data().token,
@@ -209,7 +212,7 @@ internal class TransactionsViewModel @Inject constructor(
             Triple(transactions, transactionFilterTypes, userPreferences)
         }.onEach { triple: Triple<Resource<List<Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
             if (triple.first is Resource.Loading || triple.second is Resource.Loading) {
-                val transactionFilter = triple.third.transactionFilter
+                val transactionFilter = triple.third.remoteTransactionFilter
                 setUiState {
                     copy(
                         isTransactionsLoading = triple.first == Resource.Loading,
@@ -227,7 +230,7 @@ internal class TransactionsViewModel @Inject constructor(
             }
             if (triple.first is Resource.Ready && triple.second is Resource.Ready) {
                 val selectedTransactionFilterTypes =
-                    triple.third.transactionFilter.transactionTypes.filter { it.isSelected }
+                    triple.third.remoteTransactionFilter.transactionTypes.filter { it.isSelected }
                 val allTransactionFilterTypes =
                     (triple.second as Resource.Ready<List<TransactionFilterType>>).data.distinct()
                         .map { type ->
@@ -294,43 +297,78 @@ internal class TransactionsViewModel @Inject constructor(
     ): List<Transaction> {
         return transactions
             .filter { transaction: Transaction ->
-                val selectedTypeIDs = userPrefData.transactionFilter.transactionTypes
+                val selectedTypeIDs = userPrefData.remoteTransactionFilter.transactionTypes
                     .filter { type: TransactionFilterType -> type.isSelected }
                     .map { type: TransactionFilterType -> type.id }
                 if (selectedTypeIDs.isEmpty()) {
                     true
                 } else {
-                    selectedTypeIDs.any { id: Long -> id == transaction.transactionType }
+                    selectedTypeIDs.any { id: Long -> id == transaction.transactionTypeId }
                 }
             }
             .filter { transaction: Transaction ->
-                val selectedCashFlows = userPrefData.transactionFilter.cashFlows
+                val selectedCashFlows = userPrefData.remoteTransactionFilter.cashFlows
                     .filter { cashFlow: CashFlow -> cashFlow.isSelected }
                 if (selectedCashFlows.isEmpty()) {
                     true
                 } else {
                     selectedCashFlows.any { cashFlow: CashFlow ->
                         when (cashFlow) {
-                            is CashFlow.Credit -> transaction.isCredit
-                            is CashFlow.Debit -> transaction.isDebit
+                            is CashFlow.Credit -> transaction.isCreditTransaction
+                            is CashFlow.Debit -> transaction.isDebitTransaction
                         }
                     }
                 }
             }
             .filter { transaction: Transaction ->
-                transaction.reference.contains(
-                    userPrefData.transactionFilter.transactionReference,
+                transaction.transactionReference.contains(
+                    userPrefData.remoteTransactionFilter.transactionReference,
                     true,
                 )
             }
             .filter { transaction: Transaction ->
-                transaction.receiverName.contains(
-                    userPrefData.transactionFilter.accountName,
-                    true,
-                ) || transaction.senderName.contains(
-                    userPrefData.transactionFilter.accountName,
-                    true,
-                )
+                when (transaction) {
+                    is Transaction.Eod -> when (transaction) {
+                        is Transaction.Eod.BankTransfer -> transaction.beneficiaryAccountName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        )
+
+                        is Transaction.Eod.BillPayment -> transaction.paidByAccountName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        )
+
+                        is Transaction.Eod.CardPayment -> transaction.cardHolderName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        )
+
+                        is Transaction.Eod.CardTransfer -> transaction.beneficiaryName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        ) || transaction.senderName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        )
+
+                        is Transaction.Eod.PayWithTransfer -> transaction.receiverName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        ) || transaction.senderAccountName.contains(
+                            userPrefData.remoteTransactionFilter.accountName,
+                            true,
+                        )
+                    }
+
+                    is Transaction.History -> transaction.receiverName.contains(
+                        userPrefData.remoteTransactionFilter.accountName,
+                        true,
+                    ) || transaction.senderName.contains(
+                        userPrefData.remoteTransactionFilter.accountName,
+                        true,
+                    )
+                }
             }
     }
 }

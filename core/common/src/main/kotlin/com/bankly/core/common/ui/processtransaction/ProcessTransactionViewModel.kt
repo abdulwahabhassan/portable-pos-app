@@ -6,7 +6,9 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.BankTransferUseCase
 import com.bankly.core.domain.usecase.CardTransferUseCase
+import com.bankly.core.domain.usecase.GetEodTransactionsUseCase
 import com.bankly.core.domain.usecase.PayBillUseCase
+import com.bankly.core.domain.usecase.SaveToEodUseCase
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onReady
@@ -23,6 +25,7 @@ class ProcessTransactionViewModel @Inject constructor(
     private val payBillUseCase: PayBillUseCase,
     private val cardTransferUseCase: CardTransferUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
+    private val saveToEodUseCase: SaveToEodUseCase
 ) : BaseViewModel<ProcessTransactionScreenEvent, ProcessTransactionScreenState, ProcessTransactionScreenOneShotState>(
     ProcessTransactionScreenState(),
 ) {
@@ -36,6 +39,7 @@ class ProcessTransactionViewModel @Inject constructor(
                             event.transactionData.toBankTransferData(),
                         ).onEach { resource ->
                             resource.onReady { transactionReceipt: TransactionReceipt ->
+                                saveToEodUseCase.invoke(transactionReceipt)
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
                                         transactionReceipt = transactionReceipt,
@@ -68,6 +72,7 @@ class ProcessTransactionViewModel @Inject constructor(
                             event.transactionData.toBillPaymentData(),
                         ).onEach { resource ->
                             resource.onReady { billPayment: TransactionReceipt.BillPayment ->
+                                saveToEodUseCase.invoke(billPayment)
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
                                         transactionReceipt = billPayment,
@@ -100,6 +105,7 @@ class ProcessTransactionViewModel @Inject constructor(
                             event.transactionData.toCardTransferData(),
                         ).onEach { resource ->
                             resource.onReady { transactionReceipt: TransactionReceipt ->
+                                saveToEodUseCase.invoke(transactionReceipt)
                                 setOneShotState(
                                     ProcessTransactionScreenOneShotState.GoToTransactionSuccessScreen(
                                         transactionReceipt = transactionReceipt,

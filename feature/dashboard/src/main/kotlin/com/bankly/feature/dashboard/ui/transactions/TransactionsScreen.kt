@@ -61,9 +61,9 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilter
 import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.entity.Transaction
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.ui.component.TransactionListItem
@@ -127,12 +127,12 @@ private fun TransactionsScreen(
     ) {
         val resultList = when (screenState.selectedCategoryTab) {
             TransactionCategoryTab.ALL -> screenState.transactions
-            TransactionCategoryTab.CREDIT -> screenState.transactions.filter { it.isCredit }
-            TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebit }
+            TransactionCategoryTab.CREDIT -> screenState.transactions.filter { it.isCreditTransaction }
+            TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebitTransaction }
         }.filter {
-            it.amount.toString().contains(screenState.searchQuery, true) || it.reference.contains(
+            it.transactionAmount.toString().contains(screenState.searchQuery, true) || it.transactionReference.contains(
                 screenState.searchQuery, true,
-            ) || it.transactionTypeName.contains(screenState.searchQuery, true)
+            ) || it.transactionTypeLabel.contains(screenState.searchQuery, true)
         }
         mutableStateOf(resultList)
     }
@@ -163,6 +163,7 @@ private fun TransactionsScreen(
                                     sheetState.show()
                                 }
                             },
+                            enabled = screenState.isUserInputEnabled
                         )
                     },
                 )
@@ -398,7 +399,7 @@ private fun TransactionsScreenPreview() {
             onBackPress = { },
             screenState = TransactionsScreenState(
                 transactions = listOf(
-                    Transaction(
+                    Transaction.History(
                         creditAccountNo = "89900322",
                         debitAccountNo = "30003020",
                         transactionBy = "Al Eko",

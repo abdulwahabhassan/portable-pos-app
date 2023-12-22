@@ -9,6 +9,7 @@ android {
 dependencies {
     api(project(":core:network"))
     api(project(":core:domain"))
+    implementation(project(":core:database"))
     implementation(libs.retrofit.core)
     implementation(libs.androidx.dataStore.core)
     implementation(libs.moshi.kotlin)

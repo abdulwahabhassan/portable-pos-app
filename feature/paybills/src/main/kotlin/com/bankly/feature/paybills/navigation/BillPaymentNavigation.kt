@@ -75,10 +75,10 @@ private fun BillPaymentNavHost(
             onForgotPinClick = onForgotPinClick,
         )
         processTransactionRoute(
-            onSuccessfulTransaction = { transactionReceipt: TransactionReceipt ->
+            onSuccessfulTransaction = { _, _, transactionReceipt ->
                 navHostController.navigateToTransactionSuccessRoute(transactionReceipt = transactionReceipt)
             },
-            onFailedTransaction = { message: String ->
+            onFailedTransaction = { _, _, message ->
                 navHostController.navigateToTransactionFailedRoute(message = message)
             },
             onSessionExpired = onSessionExpired,

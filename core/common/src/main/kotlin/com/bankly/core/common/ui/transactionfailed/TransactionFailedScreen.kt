@@ -38,7 +38,8 @@ fun TransactionFailedRoute(
     TransactionFailedScreen(
         message = message,
         onGoToHome = onGoToHome,
-        onViewTransactionDetailsClick = { transactionReceipt?.let { onViewTransactionDetailsClick(it) } },
+        transactionReceipt = transactionReceipt,
+        onViewTransactionDetailsClick = onViewTransactionDetailsClick,
     )
 }
 
@@ -46,7 +47,8 @@ fun TransactionFailedRoute(
 fun TransactionFailedScreen(
     message: String,
     onGoToHome: () -> Unit,
-    onViewTransactionDetailsClick: () -> Unit,
+    transactionReceipt: TransactionReceipt?,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -89,15 +91,20 @@ fun TransactionFailedScreen(
                 .align(Alignment.BottomCenter),
             verticalArrangement = Arrangement.Bottom,
         ) {
-            BanklyFilledButton(
-                modifier = Modifier
-                    .padding(horizontal = 32.dp)
-                    .fillMaxWidth(),
-                text = stringResource(R.string.action_view_transaction_details),
-                onClick = onViewTransactionDetailsClick,
-                isEnabled = true,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
+            transactionReceipt?.let {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(R.string.action_view_transaction_details),
+                    onClick = {
+                        onViewTransactionDetailsClick(transactionReceipt)
+                    },
+                    isEnabled = true,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
             BanklyOutlinedButton(
                 modifier = Modifier
                     .padding(horizontal = 32.dp)
@@ -118,6 +125,7 @@ fun SuccessfulScreenPreview() {
         TransactionFailedScreen(
             message = stringResource(R.string.msg_transaction_failed),
             onGoToHome = {},
+            transactionReceipt = null,
             onViewTransactionDetailsClick = {},
         )
     }

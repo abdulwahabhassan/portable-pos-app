@@ -39,7 +39,8 @@ internal fun NavHostController.navigateToTransactionSuccessRoute(transactionRece
 }
 
 internal fun NavHostController.navigateToTransactionFailedRoute(message: String) {
-    val encodedMessage = Uri.encode(message)
+    val messageString = Json.encodeToString(message)
+    val encodedMessage = Uri.encode(messageString)
     val options = NavOptions.Builder()
         .setPopUpTo("$processTransactionRoute/{$transactionDataArg}", true)
         .build()

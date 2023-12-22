@@ -11,4 +11,5 @@ data class CardTransferData(
     val clientRequestId: String,
     val responseCode: String,
     val responseMessage: String,
+    val bankName: String
 )

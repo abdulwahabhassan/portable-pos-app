@@ -1,5 +1,6 @@
 package com.bankly.core.sealed
 
+import com.bankly.core.entity.Transaction
 import com.bankly.core.util.Formatter.formatServerDateTime
 import kotlinx.serialization.Serializable
 
@@ -33,14 +34,21 @@ sealed class TransactionReceipt(
 
     @Serializable
     data class CardTransfer(
-        val accountNumber: String,
-        val bankName: String,
+        val beneficiaryAccountNumber: String,
+        val beneficiaryBankName: String,
         val amount: Double,
         val reference: String,
         val message: String,
         val dateCreated: String,
         val statusName: String,
         val sessionId: String,
+        val terminalId: String,
+        val cardType: String,
+        val cardNumber: String,
+        val beneficiaryName: String,
+        val responseCode: String,
+        val rrn: String,
+        val stan: String
     ) : TransactionReceipt(
         transactionAmount = amount,
         transactionMessage = message,
@@ -113,7 +121,7 @@ sealed class TransactionReceipt(
     )
 
     @Serializable
-    data class TransactionHistory(
+    data class History(
         val statusName: String,
         val userType: Long,
         val senderName: String,
@@ -151,6 +159,7 @@ sealed class TransactionReceipt(
         transactionMessage = statusName,
     )
 
+
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
             is BankTransfer -> mapOf(
@@ -175,8 +184,8 @@ sealed class TransactionReceipt(
                 "Session ID" to this.sessionId,
                 "Transaction REF" to this.reference,
                 "Date/Time" to formatServerDateTime(this.dateCreated),
-                "Receiver Account" to this.accountNumber,
-                "Receiver Bank" to this.bankName,
+                "Receiver Account" to this.beneficiaryAccountNumber,
+                "Receiver Bank" to this.beneficiaryBankName,
             )
 
             is CardPayment -> mapOf(
@@ -217,7 +226,7 @@ sealed class TransactionReceipt(
                 "Token" to this.billToken,
             )
 
-            is TransactionHistory -> mapOf(
+            is History -> mapOf(
                 "Transaction Type" to this.transactionTypeName,
                 "Type" to when (true) {
                     this.isCredit -> "Credit"

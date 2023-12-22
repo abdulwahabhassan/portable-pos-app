@@ -109,12 +109,12 @@ private fun EodTransactionsScreen(
     ) {
         val resultList = when (screenState.selectedCategoryTab) {
             TransactionCategoryTab.ALL -> screenState.transactions
-            TransactionCategoryTab.CREDIT -> screenState.transactions.filter { it.isCredit }
-            TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebit }
+            TransactionCategoryTab.CREDIT -> screenState.transactions.filter { it.isCreditTransaction }
+            TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebitTransaction }
         }.filter {
-            it.amount.toString().contains(screenState.searchQuery, true) || it.reference.contains(
+            it.transactionAmount.toString().contains(screenState.searchQuery, true) || it.transactionReference.contains(
                 screenState.searchQuery, true,
-            ) || it.transactionTypeName.contains(screenState.searchQuery, true)
+            ) || it.transactionTypeLabel.contains(screenState.searchQuery, true)
         }
         mutableStateOf(resultList)
     }
@@ -150,6 +150,7 @@ private fun EodTransactionsScreen(
                                     sheetState.show()
                                 }
                             },
+                            enabled = screenState.isUserInputEnabled
                         )
                     },
                 )
@@ -259,7 +260,7 @@ private fun EodTransactionsScreen(
                 onDismissRequest = {
                     onUiEvent(EodTransactionsScreenEvent.LoadUiData)
                 },
-                windowInsets = WindowInsets(top = 24.dp),
+                windowInsets = WindowInsets(top = 24.dp, bottom = 50.dp),
             ) {
                 FilterView(
                     isTransactionReferenceError = screenState.isTransactionReferenceError,
@@ -373,7 +374,7 @@ private fun EodTransactionsScreenPreview() {
             onBackPress = { },
             screenState = EodTransactionsScreenState(
                 transactions = listOf(
-                    Transaction(
+                    Transaction.History(
                         creditAccountNo = "89900322",
                         debitAccountNo = "30003020",
                         transactionBy = "Al Eko",

@@ -65,8 +65,8 @@ internal fun NavGraphBuilder.selectAccountTypeRoute(
 }
 
 internal fun NavGraphBuilder.processTransactionRoute(
-    onSuccessfulTransaction: (TransactionReceipt) -> Unit,
-    onFailedTransaction: (String, TransactionReceipt?) -> Unit,
+    onSuccessfulTransaction: (TransactionData, TransactionReceipt.CardPayment?, TransactionReceipt) -> Unit,
+    onFailedTransaction: (TransactionData, TransactionReceipt.CardPayment?, String) -> Unit,
     onSessionExpired: () -> Unit,
 ) {
     composable(
@@ -85,7 +85,7 @@ internal fun NavGraphBuilder.processTransactionRoute(
                         Json.decodeFromString(transactionReceiptString)
                     ProcessTransactionRoute(
                         transactionData = transactionData,
-                        cardTransactionReceipt = transactionReceipt,
+                        cardPaymentReceipt = transactionReceipt as TransactionReceipt.CardPayment,
                         onTransactionSuccess = onSuccessfulTransaction,
                         onFailedTransaction = onFailedTransaction,
                         onSessionExpired = onSessionExpired,

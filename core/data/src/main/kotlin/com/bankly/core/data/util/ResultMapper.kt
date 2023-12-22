@@ -1,5 +1,6 @@
 package com.bankly.core.data.util
 
+import com.bankly.core.database.model.EodTransaction
 import com.bankly.core.entity.AccountNameEnquiry
 import com.bankly.core.entity.AgentAccountDetails
 import com.bankly.core.entity.Bank
@@ -15,8 +16,8 @@ import com.bankly.core.entity.RecentFund
 import com.bankly.core.entity.Status
 import com.bankly.core.entity.SyncEod
 import com.bankly.core.entity.Token
-import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.User
 import com.bankly.core.entity.UserWallet
 import com.bankly.core.network.model.response.TokenApiResponse
@@ -146,14 +147,21 @@ fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTrans
 )
 
 fun CardTransferTransactionResult.asCardTransfer() = TransactionReceipt.CardTransfer(
-    accountNumber = accountNumber ?: "",
-    bankName = bankName ?: "",
+    beneficiaryAccountNumber = accountNumber ?: "",
+    beneficiaryBankName = bankName ?: "",
     amount = amount ?: 0.00,
     reference = reference ?: "",
     message = message ?: "",
     dateCreated = dateCreated ?: "",
     statusName = statusName ?: "",
     sessionId = sessionId ?: "",
+    terminalId = "",
+    cardType = "",
+    cardNumber = "",
+    beneficiaryName = "",
+    responseCode = "",
+    rrn = "",
+    stan = ""
 )
 
 fun ProviderResult.asProvider() = BillProvider(
@@ -253,7 +261,7 @@ fun RecentFundResult.asRecentFund() = RecentFund(
     receiverAccountName = receiverAccountName ?: "",
 )
 
-fun TransactionResult.asTransaction() = Transaction(
+fun TransactionResult.asTransaction() = Transaction.History(
     creditAccountNo = creditAccountNo ?: "",
     debitAccountNo = debitAccountNo ?: "",
     transactionBy = transactionBy ?: "",
@@ -333,3 +341,99 @@ fun SyncEodResult.asSyncEod() = SyncEod(
     balance = balance ?: 0.00,
     amountAdded = amountAdded ?: 0.00,
 )
+
+
+fun TransactionReceipt.asEodTransaction(): EodTransaction? {
+    return when (this) {
+        is TransactionReceipt.BankTransfer -> EodTransaction.BankTransfer(
+            beneficiaryAccountName = accountName,
+            beneficiaryBankName = bankName,
+            amount = amount,
+            reference = reference,
+            senderPhoneNumber = phoneNumber,
+            message = message,
+            beneficiaryAccountNumber = accountNumber,
+            dateCreated = dateCreated,
+            statusName = statusName,
+            sessionId = sessionId
+        )
+
+        is TransactionReceipt.BillPayment -> EodTransaction.BillPayment(
+            id = id,
+            reference = reference,
+            narration = narration,
+            description = description,
+            amount = amount,
+            paymentType = paymentType,
+            paidFor = paidFor,
+            paidForName = paidForName,
+            paidByAccountId = paidByAccountId,
+            paidByAccountNo = paidByAccountNo,
+            paidByAccountName = paidByAccountName,
+            paidOn = paidOn,
+            polled = polled,
+            responseStatus = responseStatus,
+            transactionType = transactionType,
+            billName = billName,
+            billItemName = billItemName,
+            receiver = receiver,
+            commission = commission,
+            billToken = billToken,
+            isTokenType = isTokenType,
+            statusName = ""
+        )
+
+        is TransactionReceipt.CardPayment -> EodTransaction.CardPayment(
+            cardHolderName = cardHolderName,
+            cardNumber = cardNumber,
+            cardType = cardType,
+            amount = amount,
+            reference = reference,
+            statusName = statusName,
+            message = message,
+            dateTime = dateTime,
+            rrn = rrn,
+            stan = stan,
+            terminalId = terminalId,
+            responseCode = responseCode
+        )
+
+        is TransactionReceipt.CardTransfer -> EodTransaction.CardTransfer(
+            beneficiaryAccountNumber = beneficiaryAccountNumber,
+            beneficiaryBankName = beneficiaryBankName,
+            beneficiaryName = "",
+            senderAccountNumber = "",
+            senderBankName = "",
+            senderName = "",
+            amount = amount,
+            reference = reference,
+            message = message,
+            dateCreated = dateCreated,
+            statusName = statusName,
+            sessionId = sessionId,
+            terminalId = terminalId,
+            cardType = cardType,
+            cardNumber = cardNumber,
+            responseCode = responseCode,
+            rrn = rrn,
+            stan = stan
+        )
+
+        is TransactionReceipt.PayWithTransfer -> EodTransaction.PayWithTransfer(
+            senderAccountName = senderAccountName,
+            senderAccountNumber = senderAccountNumber,
+            senderBankName = senderBankName,
+            amount = amount,
+            reference = reference,
+            receiverAccountNumber = receiverAccountNumber,
+            message = message,
+            receiverName = receiverName,
+            receiverBankName = receiverBankName,
+            dateCreated = dateCreated,
+            statusName = statusName,
+            sessionId = sessionId
+        )
+
+        is TransactionReceipt.History -> null
+    }
+}

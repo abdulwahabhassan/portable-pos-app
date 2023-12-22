@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 internal fun NavHostController.navigateToLoginRoute(
     navOptions: NavOptions? = null,
@@ -16,15 +18,16 @@ internal fun NavHostController.navigateToRecoverPassCodeRoute() {
 }
 
 internal fun NavHostController.navigateToOtpValidationRoute(phoneNumber: String) {
-    val encodedPhoneNumber = Uri.encode(phoneNumber)
+    val phoneNumberString = Json.encodeToString(phoneNumber)
+    val encodedPhoneNumber = Uri.encode(phoneNumberString)
     this.navigate(
         route = "$otpValidationRoute/$encodedPhoneNumber",
     )
 }
 
 internal fun NavHostController.navigateToSetNewPassCodeRoute(phoneNumber: String, otp: String) {
-    val encodedPhoneNumber = Uri.encode(phoneNumber)
-    val encodedOtp = Uri.encode(otp)
+    val encodedPhoneNumber = Uri.encode(Json.encodeToString(phoneNumber))
+    val encodedOtp = Uri.encode( Json.encodeToString(otp))
     this.navigate(
         route = "$setNewPassCodeRoute/$encodedPhoneNumber/$encodedOtp",
         navOptions = popUpToStartDestinationNavOption(this),
@@ -32,7 +35,7 @@ internal fun NavHostController.navigateToSetNewPassCodeRoute(phoneNumber: String
 }
 
 internal fun NavHostController.navigateToSuccessfulRoute(message: String) {
-    val encodedSuccessMessage = Uri.encode(message)
+    val encodedSuccessMessage = Uri.encode(Json.encodeToString(message))
     this.navigate(
         route = "$successfulRoute/$encodedSuccessMessage",
         navOptions = popUpToStartDestinationNavOption(this),
@@ -43,13 +46,13 @@ internal fun NavHostController.navigateToUnassignedTerminalRoute() {
 }
 
 internal fun NavHostController.navigateToSetPinRoute(defaultPin: String) {
-    val encodedDefaultPin = Uri.encode(defaultPin)
+    val encodedDefaultPin = Uri.encode(Json.encodeToString(defaultPin))
     this.navigate("$setPinRoute/$encodedDefaultPin")
 }
 
 internal fun NavHostController.navigateToConfirmPinRoute(defaultPin: String, newPin: String) {
-    val encodedDefaultPin = Uri.encode(defaultPin)
-    val encodedNewPin = Uri.encode(newPin)
+    val encodedDefaultPin = Uri.encode(Json.encodeToString(defaultPin))
+    val encodedNewPin = Uri.encode(Json.encodeToString(newPin))
     this.navigate("$confirmPinRoute/$encodedDefaultPin/$encodedNewPin")
 }
 

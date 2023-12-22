@@ -4,6 +4,7 @@ import com.bankly.core.data.TransactionFilterData
 import com.bankly.core.entity.Transaction
 import com.bankly.core.entity.TransactionFilterType
 import com.bankly.core.sealed.Resource
+import com.bankly.core.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
@@ -15,11 +16,14 @@ interface TransactionRepository {
     ): Flow<Resource<List<Transaction>>>
 
     suspend fun getEodTransactions(
-        token: String,
         filter: TransactionFilterData,
     ): Flow<Resource<List<Transaction>>>
 
     suspend fun getTransactionsFilterTypes(
         token: String,
     ): Flow<Resource<List<TransactionFilterType>>>
+
+    suspend fun saveToEod(
+        transactionReceipt: TransactionReceipt
+    )
 }

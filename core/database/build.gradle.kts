@@ -1,18 +1,18 @@
 plugins {
     id("com.bankly.convention.core")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
-    namespace = "com.bankly.core.network"
+    namespace = "com.bankly.core.database"
 }
 
-secrets {
-    defaultPropertiesFileName = "secrets.defaults.properties"
-}
 
 dependencies {
-    implementation(libs.okhttp.logging)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
+    implementation(project(":core:model"))
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    implementation(libs.room.testing)
+    kapt(libs.room.compiler)
 }

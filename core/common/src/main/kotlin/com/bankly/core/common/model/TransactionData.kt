@@ -105,6 +105,7 @@ sealed class TransactionData(
         val clientRequestId: String = clientReqId,
         val responseCode: String = "",
         val responseMessage: String = "",
+        val bankName: String = ""
     ) : TransactionData(transactionAmount = amount, pin = "") {
         fun toCardTransferData() = CardTransferData(
             accountName = accountName,
@@ -117,6 +118,7 @@ sealed class TransactionData(
             clientRequestId = clientRequestId,
             responseCode = responseCode,
             responseMessage = responseMessage,
+            bankName = bankName
         )
     }
 

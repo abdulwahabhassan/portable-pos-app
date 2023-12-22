@@ -55,7 +55,7 @@ internal fun TransactionListItem(
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (transaction.isCredit) {
+                    id = if (transaction.isCreditTransaction) {
                         BanklyIcons.TransferInward
                     } else {
                         BanklyIcons.TransferOutward
@@ -67,13 +67,13 @@ internal fun TransactionListItem(
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = transaction.transactionTypeName,
+                    text = transaction.transactionTypeLabel,
                     style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.tertiary),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
                 Text(
-                    text = formatServerDateTime(transaction.transactionDate),
+                    text = formatServerDateTime(transaction.date),
                     style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
                 )
             }
@@ -81,11 +81,11 @@ internal fun TransactionListItem(
             Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                 Text(
                     text = stringResource(R.string.symbol_plus_sign) + Formatter.formatAmount(
-                        transaction.amount,
+                        transaction.transactionAmount,
                         true,
                     ),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = if (transaction.isCredit) {
+                        color = if (transaction.isCreditTransaction) {
                             BanklySuccessColor.successColor
                         } else {
                             MaterialTheme.colorScheme.error
@@ -109,7 +109,7 @@ internal fun TransactionListItem(
 private fun TransactionListItemPreview() {
     BanklyTheme {
         TransactionListItem(
-            transaction = Transaction(
+            transaction = Transaction.History(
                 creditAccountNo = "",
                 debitAccountNo = "",
                 transactionBy = "",
