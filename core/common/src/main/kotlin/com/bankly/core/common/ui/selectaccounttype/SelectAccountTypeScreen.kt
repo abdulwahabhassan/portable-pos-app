@@ -66,7 +66,6 @@ fun SelectAccountTypeScreen(
 ) {
     val context = LocalContext.current
     var selectedAccountType: AccountType? by remember { mutableStateOf(null) }
-    var isLoading: Boolean by remember { mutableStateOf(false) }
     var showActionDialog by rememberSaveable { mutableStateOf(false) }
     var actionTitle by rememberSaveable { mutableStateOf("") }
     var actionMessage by rememberSaveable { mutableStateOf("") }
@@ -88,13 +87,9 @@ fun SelectAccountTypeScreen(
     }
 
     fun triggerCancelDialog() {
-        if (isLoading) {
-            actionTitle = context.getString(R.string.title_cancel_transaction)
-            actionMessage = context.getString(R.string.msg_are_you_sure_you_want_to_cancel)
-            showActionDialog = true
-        } else {
-            onCancelPress()
-        }
+        actionTitle = context.getString(R.string.title_cancel_transaction)
+        actionMessage = context.getString(R.string.msg_are_you_sure_you_want_to_cancel)
+        showActionDialog = true
     }
 
     BackHandler {
@@ -105,62 +100,29 @@ fun SelectAccountTypeScreen(
         topBar = {
             BanklyTitleBar(
                 onBackPress = onBackPress,
-                title = if (isLoading) "" else stringResource(R.string.title_select_account_type),
+                title = stringResource(R.string.title_select_account_type),
                 onTrailingIconClick = {
                     triggerCancelDialog()
                 },
             )
         },
     ) { padding ->
-        if (isLoading) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .padding(50.dp)
-                            .size(100.dp),
-                        strokeWidth = 12.dp,
-                        trackColor = MaterialTheme.colorScheme.primaryContainer,
-                        strokeCap = StrokeCap.Round,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(24.dp),
-                        text = stringResource(R.string.msg_insert_card_and_do_not_remove_until_transaction_is_complete),
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                items(AccountType.values()) { item: AccountType ->
-                    BanklyRowCheckBox(
-                        isChecked = item == selectedAccountType,
-                        onCheckedChange = {
-                            selectedAccountType = item
-                            onAccountSelected(item)
-//                            isLoading = true
-                        },
-                        title = item.title,
-                    )
-                }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(padding),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            items(AccountType.values()) { item: AccountType ->
+                BanklyRowCheckBox(
+                    isChecked = item == selectedAccountType,
+                    onCheckedChange = {
+                        selectedAccountType = item
+                        onAccountSelected(item)
+                    },
+                    title = item.title,
+                )
             }
         }
     }
