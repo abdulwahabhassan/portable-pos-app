@@ -4,7 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.viewmodel.OneShotState
 
 data class ValidatePassCodeScreenState(
-    val passCodeTFV: TextFieldValue = TextFieldValue(text = "Gdz36Val"),
+    val passCodeTFV: TextFieldValue = TextFieldValue(text = ""),
     val isPassCodeError: Boolean = false,
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",

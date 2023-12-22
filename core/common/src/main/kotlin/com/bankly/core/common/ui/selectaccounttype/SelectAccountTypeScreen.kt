@@ -156,7 +156,7 @@ fun SelectAccountTypeScreen(
                         onCheckedChange = {
                             selectedAccountType = item
                             onAccountSelected(item)
-                            isLoading = true
+//                            isLoading = true
                         },
                         title = item.title,
                     )
