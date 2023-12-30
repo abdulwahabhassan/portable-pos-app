@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.ui.BanklyAppState
@@ -20,6 +21,7 @@ import com.bankly.feature.contactus.navigation.contactUsNavGraph
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraph
 import com.bankly.feature.eod.navigation.eodNavGraph
+import com.bankly.feature.faq.navigation.faqNavGraph
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
 import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
@@ -101,7 +103,10 @@ fun AppNavHost(
             },
             onSupportOptionClick = { supportOption ->
                 when (supportOption) {
-                    SupportOption.FAQ -> {}
+                    SupportOption.FAQ -> {
+                        appState.navHostController.navigateToFaqNavGraph()
+                    }
+
                     SupportOption.CONTACT_US -> {
                         appState.navHostController.navigateToContactUsNavGraph()
                     }
@@ -167,6 +172,11 @@ fun AppNavHost(
             },
             onSessionExpired = onSessionExpired,
         )
+        faqNavGraph(
+            onBackPress = {
+                appState.navHostController.popBackStack()
+            },
+        )
         contactUsNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
@@ -188,6 +198,7 @@ fun AppNavHost(
                 appState.navHostController.popBackStack()
             },
         )
+
     }
 
     BanklyCenterDialog(

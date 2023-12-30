@@ -61,4 +61,5 @@ dependencies {
     implementation(project(":feature:networkchecker"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:checkcardbalance"))
+    implementation(project(":feature:faq"))
 }

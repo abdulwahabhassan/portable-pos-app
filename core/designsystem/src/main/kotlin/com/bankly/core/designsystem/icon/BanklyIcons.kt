@@ -78,4 +78,5 @@ object BanklyIcons {
     val ErrorAlert = R.drawable.ic_error_alert
     val PassCodeDigitIndicator = R.drawable.ic_passcode_digit_indicator
     val WarningAlert = R.drawable.ic_warning_alert
+    val ComingSoon = R.drawable.ic_coming_soon
 }

@@ -24,12 +24,12 @@ internal class HomeScreenViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<HomeScreenEvent, HomeScreenState, HomeScreenOneShotState>(HomeScreenState()) {
 
-    init {
-        viewModelScope.launch {
-            Tools.serialNumber = "P260300061091"
-            Tools.terminalId = "2035144J"
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            Tools.serialNumber = "P260300061091"
+//            Tools.terminalId = "2035144J"
+//        }
+//    }
 
     override suspend fun handleUiEvents(event: HomeScreenEvent) {
         when (event) {

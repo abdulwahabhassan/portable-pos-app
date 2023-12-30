@@ -10,6 +10,7 @@ import com.bankly.feature.checkcardbalance.navigation.checkCardBalanceNavGraphRo
 import com.bankly.feature.contactus.navigation.contactUsNavGraphRoute
 import com.bankly.feature.dashboard.navigation.dashBoardNavGraphRoute
 import com.bankly.feature.eod.navigation.eodNavGraphRoute
+import com.bankly.feature.faq.navigation.faqNavGraphRoute
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraphRoute
 import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraphRoute
 import com.bankly.feature.paybills.navigation.billPaymentNavGraphRoute
@@ -109,6 +110,10 @@ internal fun NavHostController.navigateToSettingsNavGraph(navOptions: NavOptions
 
 internal fun NavHostController.navigateToCheckCardBalancedNavGraph(navOptions: NavOptions? = null) {
     this.navigate(checkCardBalanceNavGraphRoute, navOptions)
+}
+
+internal fun NavHostController.navigateToFaqNavGraph(navOptions: NavOptions? = null) {
+    this.navigate(faqNavGraphRoute, navOptions)
 }
 
 internal fun NavHostController.logOut() {
