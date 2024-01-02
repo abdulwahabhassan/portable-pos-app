@@ -3,6 +3,7 @@ package com.bankly.feature.dashboard.ui.more
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +49,28 @@ internal fun MoreRoute(
     onLogOutClick: () -> Unit,
 ) {
     val screenState = viewModel.uiState.collectAsStateWithLifecycle().value
+    var showComingSoonDialog by remember { mutableStateOf(false) }
+
+    BanklyCenterDialog(
+        title = stringResource(com.bankly.core.common.R.string.title_coming_soon),
+        subtitle = stringResource(id = com.bankly.core.common.R.string.msg_this_feature_is_not_yet_available),
+        icon = BanklyIcons.ComingSoon,
+        showDialog = showComingSoonDialog,
+        onDismissDialog = { showComingSoonDialog = false },
+        extraContent = {
+            Column {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
+                    text = "Okay",
+                    onClick = { showComingSoonDialog = false },
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+        }
+    )
 
     MoreScreen(
         screenState = screenState,
@@ -62,7 +87,14 @@ internal fun MoreRoute(
             viewModel.oneShotState.onEach { oneshotState: MoreScreenOneShotState ->
                 when (oneshotState) {
                     is MoreScreenOneShotState.GoToFeature -> {
-                        onFeatureCardClick(oneshotState.feature)
+                        when (oneshotState.feature) {
+                            is Feature.PayWithUssd, is Feature.Float -> {
+                                showComingSoonDialog = true
+                            }
+
+                            else -> onFeatureCardClick(oneshotState.feature)
+                        }
+
                     }
                 }
             }.launchIn(this)
