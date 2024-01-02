@@ -29,4 +29,6 @@
     <string name="title_access_denied">Access Denied</string>
     <string name="msg_enable_feature_in_settings">Enable feature in settings</string>
     <string name="msg_account_number_copied">Account number copied!</string>
+    <string name="action_okay">Okay</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

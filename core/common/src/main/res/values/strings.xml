@@ -56,4 +56,5 @@
     <string name="action_share">Share</string>
     <string name="action_sms">SMS</string>
     <string name="title_share_receipt">Share Receipt</string>
+    <string name="msg_go_to_agent_app_to_reset_pin">Please kindly log into your Bankly agent app to reset your PIN</string>
 </resources>

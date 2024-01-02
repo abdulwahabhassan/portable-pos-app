@@ -14,7 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,11 +31,14 @@ import com.bankly.core.common.R
 import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.designsystem.component.BanklyActionDialog
+import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyClickableText
 import com.bankly.core.designsystem.component.BanklyDetailRow
+import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyNumericKeyboard
 import com.bankly.core.designsystem.component.BanklyPassCodeInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.sealed.State
@@ -83,6 +89,8 @@ private fun ConfirmTransactionScreen(
     onForgotPinClick: () -> Unit,
     onUiEvent: (ConfirmTransactionScreenEvent) -> Unit,
 ) {
+    var showForgotPinDialog by remember { mutableStateOf(false) }
+
     if (screenState.shouldShowWarningDialog) {
         BanklyActionDialog(
             title = stringResource(id = R.string.title_cancel_transaction),
@@ -97,6 +105,27 @@ private fun ConfirmTransactionScreen(
             },
         )
     }
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.action_forgot_pin),
+        subtitle = stringResource(id = R.string.msg_go_to_agent_app_to_reset_pin),
+        icon = BanklyIcons.Info,
+        showDialog = showForgotPinDialog,
+        onDismissDialog = { showForgotPinDialog = false },
+        extraContent = {
+            Column {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
+                    text = stringResource(R.string.action_okay),
+                    onClick = { showForgotPinDialog = false },
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -174,7 +203,9 @@ private fun ConfirmTransactionScreen(
                                 }
                             },
                             backgroundColor = MaterialTheme.colorScheme.inversePrimary,
-                            onClick = onForgotPinClick,
+                            onClick = {
+                                showForgotPinDialog = true
+                            },
                         )
                     }
 

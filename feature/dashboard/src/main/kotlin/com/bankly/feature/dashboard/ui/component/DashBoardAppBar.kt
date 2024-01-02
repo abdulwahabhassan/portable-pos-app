@@ -21,6 +21,7 @@ import com.bankly.feature.dashboard.model.DashboardTab
 fun DashBoardAppBar(
     selectedTab: DashboardTab,
     onTabChange: (selectedTab: DashboardTab) -> Unit,
+    onNotificationIconClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -42,7 +43,7 @@ fun DashBoardAppBar(
         BanklyClickableIcon(
             modifier = Modifier,
             icon = BanklyIcons.NotificationBell_01,
-            onClick = {},
+            onClick = onNotificationIconClick,
         )
     }
 }
@@ -51,6 +52,6 @@ fun DashBoardAppBar(
 @Preview(showBackground = true)
 private fun DashboardAppBarPreview() {
     BanklyTheme {
-        DashBoardAppBar(selectedTab = DashboardTab.POS, onTabChange = {})
+        DashBoardAppBar(selectedTab = DashboardTab.POS, onTabChange = {}, onNotificationIconClick = {})
     }
 }

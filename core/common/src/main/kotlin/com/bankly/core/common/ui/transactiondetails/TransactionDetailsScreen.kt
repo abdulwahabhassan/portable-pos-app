@@ -91,7 +91,7 @@ fun TransactionDetailsScreen(
     var showComingSoonDialog by remember { mutableStateOf(false) }
 
     BanklyCenterDialog(
-        title = stringResource(R.string.title_share_receipt),
+        title = stringResource(R.string.title_coming_soon),
         subtitle = stringResource(id = R.string.msg_this_feature_is_not_yet_available),
         icon = BanklyIcons.ComingSoon,
         showDialog = showComingSoonDialog,
