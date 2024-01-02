@@ -1,5 +1,6 @@
 package com.bankly.feature.eod.ui.dashboard
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,14 +18,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyTitleBar
+import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyErrorColor
 import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
@@ -75,6 +81,28 @@ private fun EodScreen(
         },
     )
     val coroutineScope = rememberCoroutineScope()
+    var showComingSoonDialog by remember { mutableStateOf(false) }
+
+    BanklyCenterDialog(
+        title = stringResource(com.bankly.core.common.R.string.title_coming_soon),
+        subtitle = stringResource(id = com.bankly.core.common.R.string.msg_this_feature_is_not_yet_available),
+        icon = BanklyIcons.ComingSoon,
+        showDialog = showComingSoonDialog,
+        onDismissDialog = { showComingSoonDialog = false },
+        extraContent = {
+            Column {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
+                    text = "Okay",
+                    onClick = { showComingSoonDialog = false },
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -116,9 +144,10 @@ private fun EodScreen(
                             EodAction.SYNC_EOD -> onSyncEodClick()
                             EodAction.VIEW_EOD_TRANSACTIONS -> onViewEodTransactionsClick()
                             EodAction.EXPORT_FULL_EOD -> {
-                                coroutineScope.launch {
-                                    sheetState.show()
-                                }
+                                showComingSoonDialog = true
+//                                coroutineScope.launch {
+//                                    sheetState.show()
+//                                }
                             }
                         }
                     },
