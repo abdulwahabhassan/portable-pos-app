@@ -16,6 +16,7 @@ fun NavGraphBuilder.sendMoneyNavGraph(
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     navigation(
         route = sendMoneyNavGraphRoute,
@@ -28,6 +29,7 @@ fun NavGraphBuilder.sendMoneyNavGraph(
                 onBackPress = onBackPress,
                 onForgotPinClick = onForgotPinClick,
                 onSessionExpired = onSessionExpired,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick
             )
         }
     }
@@ -39,6 +41,7 @@ private fun SendMoneyNavHost(
     onBackPress: () -> Unit,
     onForgotPinClick: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -83,19 +86,11 @@ private fun SendMoneyNavHost(
             onSessionExpired = onSessionExpired,
         )
         transactionSuccessRoute(
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
             onGoHomeClick = onBackPress,
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
         )
     }
 }

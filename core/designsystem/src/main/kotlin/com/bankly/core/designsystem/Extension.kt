@@ -1,5 +1,9 @@
 package com.bankly.core.designsystem
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +26,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Dp
+import androidx.core.content.ContextCompat
 
 fun Modifier.dashedBorder(border: BorderStroke, shape: Shape = RectangleShape, on: Dp, off: Dp) =
     dashedBorder(width = border.width, brush = border.brush, shape = shape, on, off)
@@ -208,3 +213,11 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier =
             onClick = { onClick() },
         )
     }
+
+internal fun Context.copyToClipboard(text: CharSequence, toastMessage: String) {
+    val clipboard =
+        ContextCompat.getSystemService(this, ClipboardManager::class.java)
+    val clip = ClipData.newPlainText("label", text)
+    clipboard?.setPrimaryClip(clip)
+    Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show()
+}

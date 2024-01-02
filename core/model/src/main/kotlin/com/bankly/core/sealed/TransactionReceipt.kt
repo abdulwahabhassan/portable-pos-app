@@ -178,14 +178,20 @@ sealed class TransactionReceipt(
 
             is CardTransfer -> mapOf(
                 "Transaction Type" to "Card Transfer",
-                "Type" to "Debit",
                 "Status" to this.statusName,
-                "Description" to this.message,
-                "Session ID" to this.sessionId,
+                "Status Description" to this.message,
+                "Terminal ID" to this.terminalId,
+                "Card Type" to this.cardType,
                 "Transaction REF" to this.reference,
+                "Card Number" to this.cardNumber,
                 "Date/Time" to formatServerDateTime(this.dateCreated),
-                "Receiver Account" to this.beneficiaryAccountNumber,
-                "Receiver Bank" to this.beneficiaryBankName,
+                "Beneficiary Bank" to this.beneficiaryBankName,
+                "Account Number" to this.beneficiaryAccountNumber,
+                "Beneficiary Name" to this.beneficiaryName,
+                "Session ID" to this.sessionId,
+                "Response Code" to this.responseCode,
+                "RRN" to this.rrn,
+                "Stan" to this.stan,
             )
 
             is CardPayment -> mapOf(
@@ -234,11 +240,7 @@ sealed class TransactionReceipt(
                     else -> ""
                 },
                 "Date/Time" to formatServerDateTime(this.transactionDate),
-                "Status" to this.statusName,
-                "Sender Name" to this.senderName,
-                "Sender Account" to this.sender,
-                "Receiver Name" to this.receiverName,
-                "Receiver Account" to this.receiver,
+                "Account Name" to this.receiverName,
                 "Reference" to this.reference,
                 "Narration" to this.narration,
             )
@@ -268,5 +270,6 @@ sealed class TransactionReceipt(
         "approved",
         "Approved",
         "Transfer Completed Successfully",
+        "Transfer has been scheduled. Expect response after some minutes"
     ).any { keyword -> transactionMessage == keyword }
 }

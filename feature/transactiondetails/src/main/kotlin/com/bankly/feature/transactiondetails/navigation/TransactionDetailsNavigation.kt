@@ -20,6 +20,7 @@ import kotlinx.serialization.json.Json
 fun NavGraphBuilder.transactionDetailsNavGraph(
     appNavController: NavHostController,
     onBackPress: () -> Unit,
+    onLogComplaintClick: () -> Unit,
 ) {
     navigation(
         route = "$transactionDetailsNavGraphRoute/{$transactionReceiptArg}",
@@ -41,6 +42,7 @@ fun NavGraphBuilder.transactionDetailsNavGraph(
                     transactionReceipt = decodedTransactionReceipt,
                     navHostController = transactionDetailsState.navHostController,
                     onBackPress = onBackPress,
+                    onLogComplaintClick = onLogComplaintClick,
                 )
             }
         }
@@ -52,6 +54,7 @@ private fun TransactionDetailsNavHost(
     transactionReceipt: TransactionReceipt,
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onLogComplaintClick: () -> Unit,
 ) {
     NavHost(
         modifier = Modifier,
@@ -64,7 +67,7 @@ private fun TransactionDetailsNavHost(
             onSmsClick = { transactionReceipt ->
                 navHostController.navigateToSendReceiptRoute(transactionReceipt = transactionReceipt)
             },
-            onLogComplaintClick = { },
+            onLogComplaintClick = onLogComplaintClick,
             onBackPress = onBackPress,
         )
         sendReceiptRoute(

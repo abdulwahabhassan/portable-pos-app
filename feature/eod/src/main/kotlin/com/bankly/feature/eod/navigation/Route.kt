@@ -18,8 +18,6 @@ const val eodNavGraphRoute = "eod_graph"
 internal const val eodRoute = eodNavGraphRoute.plus("/eod_route")
 internal const val eodTransactionsRoute = eodRoute.plus("/eod_transactions_screen")
 internal const val syncEodRoute = eodRoute.plus("/sync_eod_screen")
-internal const val eodTransactionDetailsRoute = eodRoute.plus("/eod_transaction_details_screen")
-internal const val sendReceiptRoute = eodRoute.plus("/send_receipt_screen")
 internal const val doneRoute = eodRoute.plus("/success_screen")
 
 internal fun NavGraphBuilder.eodRoute(
@@ -59,54 +57,6 @@ internal fun NavGraphBuilder.eodTransactionsRoute(
             onBackPress = onBackPress,
             onGoToTransactionDetailsScreen = onViewTransactionDetailsClick,
         )
-    }
-}
-
-internal fun NavGraphBuilder.transactionDetailsRoute(
-    onShareClick: () -> Unit,
-    onSmsClick: (TransactionReceipt) -> Unit,
-    onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$eodTransactionDetailsRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
-            val transactionReceipt: TransactionReceipt = Json.decodeFromString(transactionReceiptString)
-            TransactionDetailsRoute(
-                transactionReceipt = transactionReceipt,
-                isSuccess = transactionReceipt.isSuccessfulTransaction(),
-                onShareClick = onShareClick,
-                onSmsClick = onSmsClick,
-                onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick,
-            )
-        }
-    }
-}
-
-internal fun NavGraphBuilder.sendReceiptRoute(
-    onGoToSuccessScreen: (String) -> Unit,
-    onBackPress: () -> Unit,
-) {
-    composable(
-        route = "$sendReceiptRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
-            val transactionReceipt: TransactionReceipt =
-                Json.decodeFromString(transactionReceiptString)
-            SendReceiptRoute(
-                transactionReceipt = transactionReceipt,
-                onGoToSuccessScreen = onGoToSuccessScreen,
-                onBackPress = onBackPress,
-            )
-        }
     }
 }
 

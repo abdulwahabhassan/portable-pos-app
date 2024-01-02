@@ -1,8 +1,11 @@
 package com.bankly.feature.faq.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.bankly.core.common.ui.view.ComingSoonView
@@ -35,8 +38,9 @@ private fun FaqScreen(
                 title = stringResource(R.string.title_faq),
             )
         },
-    ) { _ ->
+    ) { paddingValues: PaddingValues ->
         ComingSoonView(
+            modifier = Modifier.padding(paddingValues),
             onOkayButtonClick = onBackPress
         )
     }

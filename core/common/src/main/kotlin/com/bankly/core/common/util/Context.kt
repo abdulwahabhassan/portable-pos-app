@@ -6,10 +6,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 
-fun Context.copyToClipboard(text: CharSequence) {
+fun Context.copyToClipboard(text: CharSequence, toastMessage: String) {
     val clipboard =
         ContextCompat.getSystemService(this, ClipboardManager::class.java)
     val clip = ClipData.newPlainText("label", text)
     clipboard?.setPrimaryClip(clip)
-    Toast.makeText(this, "Account number copied", Toast.LENGTH_LONG).show()
+    Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show()
 }

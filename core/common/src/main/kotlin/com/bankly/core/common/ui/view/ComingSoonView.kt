@@ -28,17 +28,18 @@ import com.bankly.core.designsystem.theme.PreviewColor
 
 @Composable
 fun ComingSoonView(
+    modifier: Modifier,
     onOkayButtonClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             modifier = Modifier
-                .size(100.dp),
+                .size(80.dp),
             painter = painterResource(id = BanklyIcons.ComingSoon),
             contentDescription = null,
             tint = Color.Unspecified,
@@ -71,6 +72,7 @@ fun ComingSoonView(
 private fun ComingSoonPreview() {
     BanklyTheme {
         ComingSoonView(
+            modifier = Modifier,
             onOkayButtonClick = {}
         )
     }

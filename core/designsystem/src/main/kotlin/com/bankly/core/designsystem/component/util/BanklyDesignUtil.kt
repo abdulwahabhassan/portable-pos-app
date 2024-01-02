@@ -29,6 +29,7 @@ object BanklyDesignUtil {
                     animation = tween(800),
                     repeatMode = RepeatMode.Reverse,
                 ),
+                label = "",
             )
             Brush.linearGradient(
                 colors = shimmerColors,

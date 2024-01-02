@@ -120,7 +120,8 @@ internal fun LoggedComplaintScreen(
                                     .padding(4.dp),
                                 icon = BanklyIcons.Copy,
                                 onClick = {
-                                    context.copyToClipboard(complaintId)
+                                    context.copyToClipboard(complaintId,
+                                        context.getString(R.string.msg_complaint_id_copied))
                                 },
                                 color = MaterialTheme.colorScheme.primary,
                             )

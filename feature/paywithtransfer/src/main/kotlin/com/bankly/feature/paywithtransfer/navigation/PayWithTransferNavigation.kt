@@ -13,6 +13,7 @@ import com.bankly.core.sealed.TransactionReceipt
 fun NavGraphBuilder.payWithTransferNavGraph(
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     navigation(
         route = payWithTransferNavGraphRoute,
@@ -24,6 +25,7 @@ fun NavGraphBuilder.payWithTransferNavGraph(
                 navHostController = payWithTransferState.navHostController,
                 onBackPress = onBackPress,
                 onSessionExpired = onSessionExpired,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick
             )
         }
     }
@@ -34,6 +36,7 @@ private fun PayWithTransferNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -42,32 +45,9 @@ private fun PayWithTransferNavHost(
     ) {
         payWithTransferRoute(
             onBackPress = onBackPress,
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             onGoToHomeClick = onBackPress,
             onSessionExpired = onSessionExpired,
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { transactionReceipt ->
-                navHostController.navigateToSendReceiptRoute(transactionReceipt = transactionReceipt)
-            },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
-        )
-        sendReceiptRoute(
-            onGoToSuccessScreen = {
-                navHostController.navigateToDoneRoute(title = "Receipt Sent", message = "Your receipt has been sent")
-            },
-            onBackPress = {
-                navHostController.popBackStack()
-            },
-        )
-        doneRoute(
-            onDoneClick = {
-                navHostController.popBackStack()
-            },
         )
     }
 }

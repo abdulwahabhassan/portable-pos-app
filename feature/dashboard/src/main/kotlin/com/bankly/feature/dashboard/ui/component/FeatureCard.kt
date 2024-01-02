@@ -38,7 +38,7 @@ fun FeatureCard(
 ) {
     Card(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(horizontal = 8.dp)
             .clip(MaterialTheme.shapes.medium)
             .clickable(
                 onClick = onClick,

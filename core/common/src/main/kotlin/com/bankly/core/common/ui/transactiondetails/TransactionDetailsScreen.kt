@@ -21,11 +21,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bankly.core.common.R
 import com.bankly.core.common.util.Formatter
+import com.bankly.core.common.util.copyToClipboard
+import com.bankly.core.designsystem.component.BanklyCenterDialog
+import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklyDetailRow
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyOutlinedButton
@@ -41,6 +49,7 @@ import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.sealed.TransactionReceipt
+
 
 @Composable
 fun TransactionDetailsRoute(
@@ -78,6 +87,29 @@ fun TransactionDetailsScreen(
             onBackPress()
         }
     }
+
+    var showComingSoonDialog by remember { mutableStateOf(false) }
+
+    BanklyCenterDialog(
+        title = stringResource(R.string.title_share_receipt),
+        subtitle = stringResource(id = R.string.msg_this_feature_is_not_yet_available),
+        icon = BanklyIcons.ComingSoon,
+        showDialog = showComingSoonDialog,
+        onDismissDialog = { showComingSoonDialog = false },
+        extraContent = {
+            Column {
+                BanklyFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 16.dp, start = 8.dp, end = 8.dp),
+                    text = "Okay",
+                    onClick = { showComingSoonDialog = false },
+                    backgroundColor = MaterialTheme.colorScheme.primary,
+                    textColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -119,7 +151,10 @@ fun TransactionDetailsScreen(
                             ),
                         )
                         Text(
-                            text = Formatter.formatAmount(transactionReceipt.transactionAmount, true),
+                            text = Formatter.formatAmount(
+                                transactionReceipt.transactionAmount,
+                                true
+                            ),
                             style = MaterialTheme.typography.titleLarge,
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -139,18 +174,28 @@ fun TransactionDetailsScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                         transactionReceipt.toDetailsMap().filter { it.value.isNotEmpty() }
                             .forEach { (label, value) ->
-                                BanklyDetailRow(
-                                    label = label,
-                                    value = value,
-                                    labelStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary, letterSpacing = 0.25.sp),
-                                    valueStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.25.sp),
-                                )
+                                Row {
+                                    BanklyDetailRow(
+                                        label = label,
+                                        value = value,
+                                        labelStyle = MaterialTheme.typography.bodySmall.copy(
+                                            color = MaterialTheme.colorScheme.tertiary,
+                                            letterSpacing = 0.25.sp
+                                        ),
+                                        valueStyle = MaterialTheme.typography.bodySmall.copy(
+                                            fontWeight = FontWeight.Medium,
+                                            letterSpacing = 0.25.sp
+                                        ),
+                                    )
+                                }
                             }
                     }
 
                     Icon(
                         modifier = Modifier.size(60.dp),
-                        painter = if (isSuccess) painterResource(id = BanklyIcons.Successful) else painterResource(id = BanklyIcons.Failed),
+                        painter = if (isSuccess) painterResource(id = BanklyIcons.Successful) else painterResource(
+                            id = BanklyIcons.Failed
+                        ),
                         contentDescription = null,
                         tint = Color.Unspecified,
                     )
@@ -181,13 +226,15 @@ fun TransactionDetailsScreen(
                 ) {
                     BanklyOutlinedButton(
                         modifier = Modifier.weight(1f),
-                        text = "Share",
-                        onClick = onShareClick,
+                        text = stringResource(R.string.action_share),
+                        onClick = {
+                            showComingSoonDialog = true
+                        },
                         backgroundColor = MaterialTheme.colorScheme.background,
                     )
                     BanklyOutlinedButton(
                         modifier = Modifier.weight(1f),
-                        text = "SMS",
+                        text = stringResource(R.string.action_sms),
                         onClick = {
                             onSmsClick(transactionReceipt)
                         },

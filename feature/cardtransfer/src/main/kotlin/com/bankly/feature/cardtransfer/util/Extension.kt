@@ -2,6 +2,7 @@ package com.bankly.feature.cardtransfer.util
 
 import com.bankly.core.sealed.TransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.model.TransactionData
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import java.time.LocalDateTime
 
 internal fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPayment {
@@ -24,7 +25,7 @@ internal fun TransactionData.toTransactionReceipt(): TransactionReceipt.CardPaym
         dateTime = LocalDateTime.now().toString(),
         rrn = this.rrn ?: "",
         stan = this.stan ?: "",
-        terminalId = "",
+        terminalId = Tools.terminalId,
         responseCode = this.responseCode ?: "",
     )
 }

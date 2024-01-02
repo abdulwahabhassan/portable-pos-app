@@ -13,6 +13,7 @@ import com.bankly.core.sealed.TransactionReceipt
 fun NavGraphBuilder.eodNavGraph(
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     navigation(
         route = eodNavGraphRoute,
@@ -24,6 +25,7 @@ fun NavGraphBuilder.eodNavGraph(
                 navHostController = eodState.navHostController,
                 onBackPress = onBackPress,
                 onSessionExpired = onSessionExpired,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick
             )
         }
     }
@@ -34,6 +36,7 @@ private fun EodNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     NavHost(
         modifier = Modifier,
@@ -59,28 +62,7 @@ private fun EodNavHost(
             onBackPress = {
                 navHostController.popBackStack()
             },
-            onViewTransactionDetailsClick = { receipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(receipt)
-            },
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { transactionReceipt ->
-                navHostController.navigateToSendReceiptRoute(transactionReceipt = transactionReceipt)
-            },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
-        )
-        sendReceiptRoute(
-            onGoToSuccessScreen = {
-                navHostController.navigateToReceiptSuccessfullySentRoute(
-                    title = "Receipt Sent",
-                    message = "Your receipt has been sent",
-                )
-            },
-            onBackPress = {
-                navHostController.popBackStack()
-            },
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
         )
         doneRoute(
             onDoneClick = {

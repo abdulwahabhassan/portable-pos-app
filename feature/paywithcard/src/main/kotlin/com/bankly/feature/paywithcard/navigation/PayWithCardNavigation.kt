@@ -1,7 +1,6 @@
 package com.bankly.feature.paywithcard.navigation
 
 import ProcessPayment
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -33,6 +31,7 @@ private const val SUCCESSFUL_STATUS_NAME = "Successful"
 fun NavGraphBuilder.payWithCardNavGraph(
     onBackPress: () -> Unit,
     appNavController: NavHostController,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     navigation(
         route = "$payWithCardNavGraphRoute/{$amountArg}",
@@ -53,6 +52,7 @@ fun NavGraphBuilder.payWithCardNavGraph(
             PayWithCardNavHost(
                 navHostController = payWithCardState.navHostController,
                 onBackPress = onBackPress,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick
             )
         }
     }
@@ -63,6 +63,7 @@ private fun PayWithCardNavHost(
     viewModel: PayWithCardViewModel = hiltViewModel(),
     navHostController: NavHostController,
     onBackPress: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -117,22 +118,12 @@ private fun PayWithCardNavHost(
             onCancelPress = onBackPress,
         )
         transactionSuccessRoute(
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
             onGoHomeClick = onBackPress,
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
         )
     }
 }

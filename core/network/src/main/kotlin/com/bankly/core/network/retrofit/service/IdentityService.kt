@@ -39,7 +39,7 @@ interface IdentityService {
         @Field("grant_type") grantType: String = GRANT_TYPE,
         @Field("username") username: String,
         @Field("password") password: String,
-        @Field("auth_mode") authMode: String = AUTH_MODE,
+        @Field("auth_mode") authMode: String? = AUTH_MODE,
     ): TokenApiResponse
 
     @PUT(value = "put/TerminalPasscode/Change")

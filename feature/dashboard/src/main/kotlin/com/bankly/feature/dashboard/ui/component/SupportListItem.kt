@@ -37,7 +37,7 @@ internal fun SupportListItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 2.dp, horizontal = 16.dp),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(1.dp),
     ) {

@@ -1,5 +1,6 @@
 package com.bankly.core.common.ui.transactionfailed
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,6 +51,10 @@ fun TransactionFailedScreen(
     transactionReceipt: TransactionReceipt?,
     onViewTransactionDetailsClick: (TransactionReceipt) -> Unit,
 ) {
+    BackHandler {
+        onGoToHome()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize(),

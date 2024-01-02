@@ -9,6 +9,7 @@ data class CardTransferTransactionResult(
     val amount: Double?,
     val reference: String?,
     val message: String?,
+    val accountName: String?,
     val dateCreated: String?,
     val statusName: String?,
     val sessionId: String?,

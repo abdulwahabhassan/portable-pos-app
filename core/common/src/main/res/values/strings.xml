@@ -53,4 +53,7 @@
     <string name="msg_just_a_second_we_are_processing_your_transaction">Just a second, we are processing your transaction</string>
     <string name="title_coming_soon">Coming Soon</string>
     <string name="msg_this_feature_is_not_yet_available">This feature is not yet available\nCheck back soon</string>
+    <string name="action_share">Share</string>
+    <string name="action_sms">SMS</string>
+    <string name="title_share_receipt">Share Receipt</string>
 </resources>

@@ -32,7 +32,7 @@ internal fun NavHostController.navigateToTransactionSuccessRoute(transactionRece
     val transactionReceiptString = Json.encodeToString(transactionReceipt)
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     val options = NavOptions.Builder()
-        .setPopUpTo(graph.startDestinationRoute, true)
+        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}/{$transactionReceiptArg}", true)
         .build()
     this.navigate("$transactionSuccessRoute/$encodedTransactionReceipt", options)
 }
@@ -43,13 +43,7 @@ internal fun NavHostController.navigateToTransactionFailedRoute(message: String,
     val transactionReceiptString = Json.encodeToString(transactionReceipt)
     val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
     val options = NavOptions.Builder()
-        .setPopUpTo(graph.startDestinationRoute, true)
+        .setPopUpTo("$processTransactionRoute/{$transactionDataArg}/{$transactionReceiptArg}", true)
         .build()
     this.navigate("$transactionFailedRoute/$encodedMessage/$encodedTransactionReceipt", options)
-}
-
-internal fun NavHostController.navigateToTransactionDetailsRoute(transactionReceipt: TransactionReceipt) {
-    val transactionReceiptString = Json.encodeToString(transactionReceipt)
-    val encodedTransactionReceipt = Uri.encode(transactionReceiptString)
-    this.navigate("$transactionDetailsRoute/$encodedTransactionReceipt")
 }

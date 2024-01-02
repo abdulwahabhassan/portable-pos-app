@@ -25,7 +25,6 @@ internal const val confirmTransactionRoute = billPaymentRoute.plus("/confirm_tra
 internal const val processTransactionRoute = billPaymentRoute.plus("/process_transaction_screen")
 internal const val transactionSuccessRoute = billPaymentRoute.plus("/transaction_success_screen")
 internal const val transactionFailedRoute = billPaymentRoute.plus("/transaction_failed_screen")
-internal const val transactionDetailsRoute = billPaymentRoute.plus("/transaction_details_screen")
 
 internal fun NavGraphBuilder.selectBillTypeRoute(
     onBillTypeSelected: (BillType) -> Unit,
@@ -163,29 +162,3 @@ internal fun NavGraphBuilder.transactionFailedRoute(
     }
 }
 
-internal fun NavGraphBuilder.transactionDetailsRoute(
-    onShareClick: () -> Unit,
-    onSmsClick: (TransactionReceipt) -> Unit,
-    onLogComplaintClick: () -> Unit,
-    onGoToHomeClick: () -> Unit,
-) {
-    composable(
-        route = "$transactionDetailsRoute/{$transactionReceiptArg}",
-        arguments = listOf(
-            navArgument(transactionReceiptArg) { type = NavType.StringType },
-        ),
-    ) {
-        it.arguments?.getString(transactionReceiptArg)?.let { transactionReceiptString: String ->
-            val transactionReceipt: TransactionReceipt =
-                Json.decodeFromString(transactionReceiptString)
-            TransactionDetailsRoute(
-                transactionReceipt = transactionReceipt,
-                isSuccess = transactionReceipt.isSuccessfulTransaction(),
-                onShareClick = onShareClick,
-                onSmsClick = onSmsClick,
-                onLogComplaintClick = onLogComplaintClick,
-                onGoToHomeClick = onGoToHomeClick,
-            )
-        }
-    }
-}

@@ -13,4 +13,6 @@
     <string name="title_new_complaint">New Complaint</string>
     <string name="msg_complaint_logged_successfully">Your recent message has been logged successfully, and you will receive feedback from our support team shortly.</string>
     <string name="msg_complaint_logged">Complaint Logged</string>
+    <string name="title_log_complaint">Log Complaint</string>
+    <string name="msg_complaint_id_copied">Complaint ID copied!</string>
 </resources>

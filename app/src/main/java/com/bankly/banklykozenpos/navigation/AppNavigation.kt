@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.ui.BanklyAppState
@@ -127,18 +126,27 @@ fun AppNavHost(
                 appState.navHostController.popBackStack()
             },
             appNavController = appState.navHostController,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         cardTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onSessionExpired = onSessionExpired,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         payWithTransferNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onSessionExpired = onSessionExpired,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         sendMoneyNavGraph(
             onBackPress = {
@@ -146,6 +154,9 @@ fun AppNavHost(
             },
             onForgotPinClick = {},
             onSessionExpired = onSessionExpired,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         networkCheckerNavGraph(
             onBackPress = {
@@ -159,18 +170,27 @@ fun AppNavHost(
             },
             onForgotPinClick = {},
             onSessionExpired = onSessionExpired,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         transactionDetailsNavGraph(
             appNavController = appState.navHostController,
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
+            onLogComplaintClick = {
+                appState.navHostController.navigateToLogComplaintNavGraph()
+            }
         )
         eodNavGraph(
             onBackPress = {
                 appState.navHostController.popBackStack()
             },
             onSessionExpired = onSessionExpired,
+            onViewTransactionDetailsClick = { transactionReceipt ->
+                appState.navHostController.navigateToTransactionDetailsNavGraph(transactionReceipt)
+            },
         )
         faqNavGraph(
             onBackPress = {

@@ -49,7 +49,7 @@ internal class SettingsViewModel @Inject constructor(
 
             SettingsScreenEvent.LoadUiData -> {
                 userPreferencesDataStore.flow().onEach { userPreference: UserPreferences ->
-                    setUiState { copy(features = userPreference.featureToggleList) }
+                    setUiState { copy(features = userPreference.featureToggleList.filterNot { it is Feature.Settings }) }
                 }.launchIn(viewModelScope)
             }
         }

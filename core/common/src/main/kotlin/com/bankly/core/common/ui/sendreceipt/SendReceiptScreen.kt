@@ -2,6 +2,7 @@ package com.bankly.core.common.ui.sendreceipt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.common.R
+import com.bankly.core.common.ui.view.ComingSoonView
 import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.component.BanklyInfoText
 import com.bankly.core.designsystem.component.BanklyInputField
@@ -77,50 +79,54 @@ private fun SendReceiptScreen(
                 isLoading = screenState.isLoading,
             )
         },
-    ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            item {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    BanklyInputField(
-                        textFieldValue = screenState.phoneNumberTFV,
-                        onTextFieldValueChange = { textFieldValue ->
-                            onUiEvent(SendReceiptScreenEvent.OnEnterPhoneNumber(textFieldValue))
-                        },
-                        isEnabled = screenState.isUserInputEnabled,
-                        placeholderText = stringResource(R.string.msg_enter_phone_number),
-                        labelText = "Phone Number",
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Number,
-                        ),
-                        isError = screenState.isPhoneNumberError,
-                        feedbackText = screenState.phoneNumberFeedBack,
-                    )
-                    BanklyInfoText(text = stringResource(R.string.msg_send_receipt_fee_charge_warning))
-                }
-            }
-
-            item {
-                BanklyFilledButton(
-                    modifier = Modifier
-                        .padding(32.dp)
-                        .fillMaxWidth(),
-                    text = stringResource(R.string.action_continue),
-                    onClick = {
-                        onUiEvent(SendReceiptScreenEvent.OnContinueClick(screenState.phoneNumberTFV.text))
-                    },
-                    isEnabled = screenState.isContinueButtonEnabled,
-                )
-            }
-        }
+    ) { paddingValues: PaddingValues ->
+        ComingSoonView(
+            modifier = Modifier.padding(paddingValues),
+            onOkayButtonClick = onBackPress
+        )
+//        LazyColumn(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(padding),
+//            verticalArrangement = Arrangement.SpaceBetween,
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//        ) {
+//            item {
+//                Column(
+//                    modifier = Modifier.fillMaxSize(),
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                ) {
+//                    BanklyInputField(
+//                        textFieldValue = screenState.phoneNumberTFV,
+//                        onTextFieldValueChange = { textFieldValue ->
+//                            onUiEvent(SendReceiptScreenEvent.OnEnterPhoneNumber(textFieldValue))
+//                        },
+//                        isEnabled = screenState.isUserInputEnabled,
+//                        placeholderText = stringResource(R.string.msg_enter_phone_number),
+//                        labelText = "Phone Number",
+//                        keyboardOptions = KeyboardOptions.Default.copy(
+//                            keyboardType = KeyboardType.Number,
+//                        ),
+//                        isError = screenState.isPhoneNumberError,
+//                        feedbackText = screenState.phoneNumberFeedBack,
+//                    )
+//                    BanklyInfoText(text = stringResource(R.string.msg_send_receipt_fee_charge_warning))
+//                }
+//            }
+//
+//            item {
+//                BanklyFilledButton(
+//                    modifier = Modifier
+//                        .padding(32.dp)
+//                        .fillMaxWidth(),
+//                    text = stringResource(R.string.action_continue),
+//                    onClick = {
+//                        onUiEvent(SendReceiptScreenEvent.OnContinueClick(screenState.phoneNumberTFV.text))
+//                    },
+//                    isEnabled = screenState.isContinueButtonEnabled,
+//                )
+//            }
+//        }
     }
 }
 

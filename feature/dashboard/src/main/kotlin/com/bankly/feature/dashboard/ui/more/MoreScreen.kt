@@ -1,6 +1,7 @@
 package com.bankly.feature.dashboard.ui.more
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -108,6 +109,7 @@ internal fun MoreScreen(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(Feature.values().filter { it.isQuickAction.not() }.chunked(2)) {
             Row {

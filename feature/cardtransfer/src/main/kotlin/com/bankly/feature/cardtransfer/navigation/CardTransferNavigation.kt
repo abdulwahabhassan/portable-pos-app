@@ -1,13 +1,13 @@
 package com.bankly.feature.cardtransfer.navigation
 
 import ProcessPayment
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,6 +28,7 @@ private const val SUCCESSFUL_STATUS_NAME = "Successful"
 fun NavGraphBuilder.cardTransferNavGraph(
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     navigation(
         route = cardTransferNavGraphRoute,
@@ -39,6 +40,7 @@ fun NavGraphBuilder.cardTransferNavGraph(
                 navHostController = cardTransferState.navHostController,
                 onBackPress = onBackPress,
                 onSessionExpired = onSessionExpired,
+                onViewTransactionDetailsClick = onViewTransactionDetailsClick
             )
         }
     }
@@ -50,6 +52,7 @@ private fun CardTransferNavHost(
     navHostController: NavHostController,
     onBackPress: () -> Unit,
     onSessionExpired: () -> Unit,
+    onViewTransactionDetailsClick: (TransactionReceipt) -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit, block = {
@@ -65,6 +68,7 @@ private fun CardTransferNavHost(
                 is CardTransactionScreenOneShotState.ProcessPayment -> {
                     ProcessPayment(context) { transactionResponse, _ ->
                         val cardPaymentReceipt = transactionResponse.toTransactionReceipt()
+                        Log.d("onCardPaymentSuccess", "onCardPaymentSuccess -> $cardPaymentReceipt")
                         if (cardPaymentReceipt.statusName.equals(SUCCESSFUL_STATUS_NAME, true)) {
                             navHostController.navigateToProcessTransactionRoute(
                                 transactionData = it.transactionData.copy(
@@ -148,22 +152,12 @@ private fun CardTransferNavHost(
             onSessionExpired = onSessionExpired,
         )
         transactionSuccessRoute(
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
             onGoHomeClick = onBackPress,
         )
         transactionFailedRoute(
             onGoHomeClick = onBackPress,
-            onViewTransactionDetailsClick = { transactionReceipt: TransactionReceipt ->
-                navHostController.navigateToTransactionDetailsRoute(transactionReceipt = transactionReceipt)
-            },
-        )
-        transactionDetailsRoute(
-            onShareClick = { },
-            onSmsClick = { },
-            onLogComplaintClick = { },
-            onGoToHomeClick = onBackPress,
+            onViewTransactionDetailsClick = onViewTransactionDetailsClick,
         )
     }
 }

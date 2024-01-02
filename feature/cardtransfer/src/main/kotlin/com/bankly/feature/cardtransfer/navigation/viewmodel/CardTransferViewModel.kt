@@ -1,5 +1,6 @@
 package com.bankly.feature.cardtransfer.navigation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.domain.usecase.SaveToEodUseCase
@@ -20,7 +21,8 @@ class CardTransferViewModel @Inject constructor(
             is CardTransferScreenEvent.InitCardTransferData -> {
                 Tools.SetAccountType(event.acctType)
                 Tools.TransactionAmount = event.transactionData.transactionAmount
-                Tools.transactionType = com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
+                Tools.transactionType =
+                    com.bankly.kozonpaymentlibrarymodule.posservices.TransactionType.CASHOUT
                 setOneShotState(CardTransactionScreenOneShotState.ProcessPayment(event.transactionData))
             }
 
@@ -43,20 +45,30 @@ class CardTransferViewModel @Inject constructor(
                     stan = event.cardPaymentReceipt.stan
                 )
                 saveToEod(cardTransferReceipt)
-                setOneShotState(CardTransactionScreenOneShotState.GoToFailedTransactionRoute(cardTransferReceipt, event.message))
+                setOneShotState(
+                    CardTransactionScreenOneShotState.GoToFailedTransactionRoute(
+                        cardTransferReceipt,
+                        event.message
+                    )
+                )
             }
 
             is CardTransferScreenEvent.OnCardTransferSuccessful -> {
                 val cardTransferReceipt = event.cardTransferReceipt.copy(
-                    terminalId = event.cardPaymentReceipt.terminalId,
+                    terminalId = Tools.terminalId,
                     cardType = event.cardPaymentReceipt.cardType,
                     cardNumber = event.cardPaymentReceipt.cardNumber,
                     responseCode = event.cardPaymentReceipt.responseCode,
                     rrn = event.cardPaymentReceipt.rrn,
-                    stan = event.cardPaymentReceipt.stan
+                    stan = event.cardPaymentReceipt.stan,
+                    beneficiaryName = event.transactionData.accountName
                 )
                 saveToEod(cardTransferReceipt)
-                setOneShotState(CardTransactionScreenOneShotState.GoToTransactionSuccessfulRoute(cardTransferReceipt))
+                setOneShotState(
+                    CardTransactionScreenOneShotState.GoToTransactionSuccessfulRoute(
+                        cardTransferReceipt
+                    )
+                )
             }
         }
     }

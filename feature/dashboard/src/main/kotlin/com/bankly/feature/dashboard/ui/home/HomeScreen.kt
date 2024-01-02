@@ -1,6 +1,7 @@
 package com.bankly.feature.dashboard.ui.home
 
 import android.app.Activity
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -85,13 +86,13 @@ internal fun HomeScreen(
         }
         Text(
             modifier = Modifier
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
                 .align(Alignment.Start),
             text = stringResource(R.string.title_quick_action),
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
         )
-        LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp)) {
+        LazyVerticalGrid(columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(Feature.values().filter { it.isQuickAction }) { feature: Feature ->
                 FeatureCard(
                     feature = feature,

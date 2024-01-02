@@ -103,7 +103,9 @@ fun WalletCard(
                 }
                 if (shouldShowVisibilityIcon) {
                     BanklyClickableIcon(
-                        modifier = Modifier.size(32.dp).padding(4.dp),
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(4.dp),
                         icon = if (shouldShowWalletBalance) BanklyIcons.VisibilityOff else BanklyIcons.VisibilityOn,
                         onClick = {
                             onToggleWalletBalanceVisibility(!shouldShowWalletBalance)
@@ -143,10 +145,15 @@ fun WalletCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     BanklyClickableIcon(
-                        modifier = Modifier.size(32.dp).padding(4.dp),
+                        modifier = Modifier
+                            .size(32.dp)
+                            .padding(4.dp),
                         icon = BanklyIcons.Copy,
                         onClick = {
-                            context.copyToClipboard(accountNumber)
+                            context.copyToClipboard(
+                                accountNumber,
+                                context.getString(R.string.msg_account_number_copied)
+                            )
                         },
                     )
                 } else {

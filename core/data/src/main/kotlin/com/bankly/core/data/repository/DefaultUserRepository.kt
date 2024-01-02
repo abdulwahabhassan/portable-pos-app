@@ -222,7 +222,7 @@ class DefaultUserRepository @Inject constructor(
                             dispatcher = ioDispatcher,
                             networkMonitor = networkMonitor,
                             json = json,
-                            apiRequest = { identityService.getToken(username = userName, password = password) },
+                            apiRequest = { identityService.getToken(username = userName, password = password, authMode = null) },
                         ),
                     )
                 ) {

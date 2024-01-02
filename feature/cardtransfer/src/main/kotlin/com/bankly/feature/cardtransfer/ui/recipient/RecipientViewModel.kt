@@ -193,6 +193,7 @@ internal class RecipientViewModel @Inject constructor(
                 Log.d("debug account inquiry", "account inquiry error message: $message")
                 setUiState {
                     copy(
+                        isAccountValidationLoading = false,
                         showErrorDialog = true,
                         errorDialogMessage = message,
                     )
@@ -205,6 +206,7 @@ internal class RecipientViewModel @Inject constructor(
             it.printStackTrace()
             setUiState {
                 copy(
+                    isAccountValidationLoading = false,
                     showErrorDialog = true,
                     errorDialogMessage = it.message ?: "An unexpected error occurred",
                 )

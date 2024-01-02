@@ -8,4 +8,5 @@
     <string name="action_no">No</string>
     <string name="msg_incorrect_passcode">Incorrect Passcode</string>
     <string name="msg_incorrect_access_pin">Incorrect Access PIN</string>
+    <string name="msg_reference_copied">Reference copied!</string>
 </resources>

@@ -99,7 +99,9 @@ fun SelectAccountTypeScreen(
     Scaffold(
         topBar = {
             BanklyTitleBar(
-                onBackPress = onBackPress,
+                onBackPress = {
+                    triggerCancelDialog()
+                },
                 title = stringResource(R.string.title_select_account_type),
                 onTrailingIconClick = {
                     triggerCancelDialog()
