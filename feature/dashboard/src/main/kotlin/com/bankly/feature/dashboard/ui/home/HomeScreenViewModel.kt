@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetWalletUseCase
+import com.bankly.core.entity.Feature
 import com.bankly.core.entity.UserWallet
 import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
@@ -24,18 +25,35 @@ internal class HomeScreenViewModel @Inject constructor(
     private val userPreferencesDataStore: UserPreferencesDataStore,
 ) : BaseViewModel<HomeScreenEvent, HomeScreenState, HomeScreenOneShotState>(HomeScreenState()) {
 
-//    init {
-//        viewModelScope.launch {
-//            Tools.serialNumber = "P260300061091"
-//            Tools.terminalId = "2035144J"
-//        }
-//    }
+    init {
+        viewModelScope.launch {
+            Tools.serialNumber = "P260300061091"
+            Tools.terminalId = "2035144J"
+        }
+    }
 
     override suspend fun handleUiEvents(event: HomeScreenEvent) {
         when (event) {
             is HomeScreenEvent.ToggleWalletBalanceVisibility -> toggleWalletBalanceVisibility(event.shouldShowWalletBalance)
             HomeScreenEvent.OnDismissErrorDialog -> dismissErrorDialog()
-            HomeScreenEvent.FetchWalletBalance -> { getWallet() }
+            HomeScreenEvent.FetchWalletBalance -> {
+                getWallet()
+            }
+
+            is HomeScreenEvent.OnFeatureCardClick -> {
+                val feature = userPreferencesDataStore.data().featureToggleList.find {
+                    it.title == event.feature.title
+                }
+                if (event.feature is Feature.Settings || feature?.isEnabled == true) {
+                    setOneShotState(HomeScreenOneShotState.GoToFeature(event.feature))
+                } else {
+                    setUiState { copy(showFeatureAccessDeniedDialog = true) }
+                }
+            }
+
+            HomeScreenEvent.OnDismissFeatureAccessDeniedDialog -> {
+                setUiState { copy(showFeatureAccessDeniedDialog = false) }
+            }
         }
     }
 

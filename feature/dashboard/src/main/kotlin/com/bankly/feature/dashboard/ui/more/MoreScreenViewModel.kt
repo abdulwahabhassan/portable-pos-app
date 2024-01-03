@@ -2,6 +2,7 @@ package com.bankly.feature.dashboard.ui.more
 
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
+import com.bankly.core.entity.Feature
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ internal class MoreScreenViewModel @Inject constructor(
                 val feature = userPreferencesDataStore.data().featureToggleList.find {
                     it.title == event.feature.title
                 }
-                if (feature?.isEnabled == true) {
+                if (event.feature is Feature.Settings || feature?.isEnabled == true ) {
                     setOneShotState(MoreScreenOneShotState.GoToFeature(event.feature))
                 } else {
                     setUiState { copy(showFeatureAccessDeniedDialog = true) }

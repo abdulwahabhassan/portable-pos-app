@@ -15,5 +15,6 @@ data class UserPreferences(
         dateFrom = LocalDate.now().toKotlinLocalDate(),
         dateTo = LocalDate.now().toKotlinLocalDate()
     ),
-    val featureToggleList: List<Feature> = Feature.values().toList(),
+    val featureToggleList: List<Feature> = Feature.values().toList()
+        .filterNot { it is Feature.Settings },
 )

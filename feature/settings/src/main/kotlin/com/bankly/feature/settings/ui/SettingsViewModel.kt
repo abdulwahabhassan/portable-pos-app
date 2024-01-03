@@ -21,35 +21,36 @@ internal class SettingsViewModel @Inject constructor(
     override suspend fun handleUiEvents(event: SettingsScreenEvent) {
         when (event) {
             is SettingsScreenEvent.OnFeatureToggle -> {
+                val updatedToggleFeatureList = event.features.map { feature ->
+                    if (event.toggledFeature.title == feature.title) {
+                        val inverse = event.toggledFeature.isEnabled.not()
+                        when (feature) {
+                            is Feature.CardTransfer -> feature.copy(enabled = inverse)
+                            is Feature.CheckBalance -> feature.copy(enabled = inverse)
+                            is Feature.EndOfDay -> feature.copy(enabled = inverse)
+                            is Feature.Float -> feature.copy(enabled = inverse)
+                            is Feature.NetworkChecker -> feature.copy(enabled = inverse)
+                            is Feature.PayBills -> feature.copy(enabled = inverse)
+                            is Feature.PayWithCard -> feature.copy(enabled = inverse)
+                            is Feature.PayWithTransfer -> feature.copy(enabled = inverse)
+                            is Feature.PayWithUssd -> feature.copy(enabled = inverse)
+                            is Feature.SendMoney -> feature.copy(enabled = inverse)
+                            is Feature.Settings -> feature
+                        }
+                    } else {
+                        feature
+                    }
+                }
                 userPreferencesDataStore.update {
                     copy(
-                        featureToggleList = event.features.map { feature ->
-                            if (event.toggledFeature.title == feature.title) {
-                                val inverse = event.toggledFeature.isEnabled.not()
-                                when (feature) {
-                                    is Feature.CardTransfer -> feature.copy(enabled = inverse)
-                                    is Feature.CheckBalance -> feature.copy(enabled = inverse)
-                                    is Feature.EndOfDay -> feature.copy(enabled = inverse)
-                                    is Feature.Float -> feature.copy(enabled = inverse)
-                                    is Feature.NetworkChecker -> feature.copy(enabled = inverse)
-                                    is Feature.PayBills -> feature.copy(enabled = inverse)
-                                    is Feature.PayWithCard -> feature.copy(enabled = inverse)
-                                    is Feature.PayWithTransfer -> feature.copy(enabled = inverse)
-                                    is Feature.PayWithUssd -> feature.copy(enabled = inverse)
-                                    is Feature.SendMoney -> feature.copy(enabled = inverse)
-                                    is Feature.Settings -> feature.copy(enabled = inverse)
-                                }
-                            } else {
-                                feature
-                            }
-                        },
+                        featureToggleList = updatedToggleFeatureList,
                     )
                 }
             }
 
             SettingsScreenEvent.LoadUiData -> {
                 userPreferencesDataStore.flow().onEach { userPreference: UserPreferences ->
-                    setUiState { copy(features = userPreference.featureToggleList.filterNot { it is Feature.Settings }) }
+                    setUiState { copy(features = userPreference.featureToggleList) }
                 }.launchIn(viewModelScope)
             }
         }

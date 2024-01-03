@@ -94,7 +94,6 @@ internal fun MoreRoute(
 
                             else -> onFeatureCardClick(oneshotState.feature)
                         }
-
                     }
                 }
             }.launchIn(this)

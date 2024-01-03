@@ -2,7 +2,6 @@ package com.bankly.feature.settings.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,8 +53,6 @@ private fun SettingsScreen(
                     onBackPress = onBackPress,
                     title = stringResource(R.string.title_settings),
                 )
-                Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 2.dp)) {
-                }
             }
         },
     ) { paddingValues: PaddingValues ->
@@ -70,7 +67,7 @@ private fun SettingsScreen(
                         onUiEvent(
                             SettingsScreenEvent.OnFeatureToggle(
                                 toggledFeature = feature,
-                                screenState.features,
+                                features = screenState.features,
                             ),
                         )
                     },
