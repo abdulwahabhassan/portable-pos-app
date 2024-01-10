@@ -8,6 +8,8 @@ import androidx.navigation.navArgument
 import com.bankly.core.common.ui.view.ComingSoonView
 import com.bankly.feature.logcomplaints.ui.LoggedComplaintRoute
 import com.bankly.feature.logcomplaints.ui.NewComplaintRoute
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 const val logComplaintNavGraphRoute = "log_complaint_graph"
 internal const val logComplaintRoute = logComplaintNavGraphRoute.plus("/log_complaint_route")
@@ -36,7 +38,8 @@ internal fun NavGraphBuilder.complaintLoggedRoute(
             navArgument(complaintIdArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(complaintIdArg)?.let { complaintId: String ->
+        it.arguments?.getString(complaintIdArg)?.let { complaintIdString: String ->
+            val complaintId: String = Json.decodeFromString(complaintIdString)
             LoggedComplaintRoute(
                 onBackPress = onBackPress,
                 onGoToHome = onGoToHomeClick,

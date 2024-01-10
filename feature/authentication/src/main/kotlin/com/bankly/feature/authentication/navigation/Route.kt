@@ -16,6 +16,8 @@ import com.bankly.feature.authentication.ui.success.SuccessRoute
 import com.bankly.feature.authentication.ui.unassignedterminal.UnassignedTerminalRoute
 import com.bankly.feature.authentication.ui.validateotp.OtpValidationRoute
 import com.bankly.feature.authentication.ui.validatepasscode.ValidatePassCodeRoute
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 const val authenticationNavGraphRoute = "authentication_nav_graph"
 internal const val authenticationRoute = authenticationNavGraphRoute.plus("/auth_route")
@@ -70,7 +72,8 @@ internal fun NavGraphBuilder.otpValidationRoute(
             navArgument(phoneNumberArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(phoneNumberArg)?.let { phoneNumber: String ->
+        it.arguments?.getString(phoneNumberArg)?.let { phoneNumberString: String ->
+            val phoneNumber: String = Json.decodeFromString(phoneNumberString)
             OtpValidationRoute(
                 phoneNumber = phoneNumber,
                 onOtpValidationSuccess = onOtpValidationSuccess,
@@ -91,8 +94,10 @@ internal fun NavGraphBuilder.setNewPassCodeRoute(
             navArgument(otpArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(phoneNumberArg)?.let { phoneNumber: String ->
-            it.arguments?.getString(otpArg)?.let { otp: String ->
+        it.arguments?.getString(phoneNumberArg)?.let { phoneNumberString: String ->
+            it.arguments?.getString(otpArg)?.let { otpString: String ->
+                val phoneNumber: String = Json.decodeFromString(phoneNumberString)
+                val otp: String = Json.decodeFromString(otpString)
                 SetNewPassCodeRoute(
                     phoneNumber = phoneNumber,
                     otp = otp,
@@ -114,13 +119,15 @@ internal fun NavGraphBuilder.successfulRoute(
         ),
     ) {
         val context = LocalContext.current
-        val message = it.arguments?.getString(successMessageArg)
-        SuccessRoute(
-            message = message ?: context.getString(R.string.msg_passcode_reset_successfully),
-            subMessage = context.getString(R.string.msg_you_have_successfully_reset_your_account_passcode_login_to_continue),
-            buttonText = context.getString(R.string.sction_back_to_login),
-            onBackToLoginClick = onBackToLoginClick,
-        )
+        it.arguments?.getString(successMessageArg)?.let { messageString: String ->
+            val message: String = Json.decodeFromString(messageString)
+            SuccessRoute(
+                message = message ?: context.getString(R.string.msg_passcode_reset_successfully),
+                subMessage = context.getString(R.string.msg_you_have_successfully_reset_your_account_passcode_login_to_continue),
+                buttonText = context.getString(R.string.sction_back_to_login),
+                onBackToLoginClick = onBackToLoginClick,
+            )
+        }
     }
 }
 
@@ -142,7 +149,8 @@ internal fun NavGraphBuilder.setPinRoute(
             navArgument(defaultPinArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(defaultPinArg)?.let { defaultPin: String ->
+        it.arguments?.getString(defaultPinArg)?.let { defaultPinString: String ->
+            val defaultPin: String = Json.decodeFromString(defaultPinString)
             SetPinRoute(
                 onBackPress = onBackPress,
                 onGoToConfirmPinScreen = onGoToConfirmPinScreen,
@@ -164,8 +172,10 @@ internal fun NavGraphBuilder.confirmPinRoute(
             navArgument(newPinArg) { type = NavType.StringType },
         ),
     ) {
-        it.arguments?.getString(defaultPinArg)?.let { defaultPin: String ->
-            it.arguments?.getString(newPinArg)?.let { newPin: String ->
+        it.arguments?.getString(defaultPinArg)?.let { defaultPinString: String ->
+            it.arguments?.getString(newPinArg)?.let { newPinString: String ->
+                val defaultPin: String = Json.decodeFromString(defaultPinString)
+                val newPin: String = Json.decodeFromString(newPinString)
                 ConfirmPinRoute(
                     onBackPress = onBackPress,
                     onPinChangeSuccess = onPinChangeSuccess,

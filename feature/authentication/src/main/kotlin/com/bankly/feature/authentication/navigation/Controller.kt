@@ -27,7 +27,7 @@ internal fun NavHostController.navigateToOtpValidationRoute(phoneNumber: String)
 
 internal fun NavHostController.navigateToSetNewPassCodeRoute(phoneNumber: String, otp: String) {
     val encodedPhoneNumber = Uri.encode(Json.encodeToString(phoneNumber))
-    val encodedOtp = Uri.encode( Json.encodeToString(otp))
+    val encodedOtp = Uri.encode(Json.encodeToString(otp))
     this.navigate(
         route = "$setNewPassCodeRoute/$encodedPhoneNumber/$encodedOtp",
         navOptions = popUpToStartDestinationNavOption(this),
