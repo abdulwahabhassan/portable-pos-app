@@ -117,6 +117,7 @@ fun DashBoardRoute(
                             isLoading = showLoadingIndicator,
                             title = currentBottomNavDestination.title ?: "",
                             onTrailingIconClick = {
+                                showComingSoonDialog = true
                             },
                             trailingIcon = { onClick: () -> Unit ->
                                 Text(

@@ -11,9 +11,10 @@ data class HomeScreenState(
     val shouldShowWalletBalance: Boolean = false,
     val message: String = "",
     val shouldShowErrorDialog: Boolean = false,
-    val shouldShowLoadingIcon: Boolean = true,
+    val isWalletBalanceLoading: Boolean = true,
     val shouldShowVisibilityIcon: Boolean = false,
-    val showFeatureAccessDeniedDialog: Boolean = false
+    val showFeatureAccessDeniedDialog: Boolean = false,
+    val isRefreshingWalletBalance: Boolean = false
 )
 
 sealed interface HomeScreenOneShotState : OneShotState {

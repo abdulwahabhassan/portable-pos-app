@@ -34,6 +34,8 @@ sealed class EodTransaction {
         val statusName: String,
         @ColumnInfo(name = "session_id")
         val sessionId: String,
+        @ColumnInfo(name = "is_intra")
+        val isIntra: Boolean,
         @ColumnInfo(name = "local_date")
         val localDate: String = formatServerDateTimeToLocalDate(dateCreated),
     ) : EodTransaction()
@@ -194,7 +196,8 @@ sealed class EodTransaction {
                 statName = statusName,
                 sessionId = sessionId,
                 transType = 4,
-                transTypeName = "Transfer"
+                transTypeName = if (isIntra) "Bankly Transfer" else "Transfer",
+                isIntra = isIntra
             )
 
             is BillPayment -> Transaction.Eod.BillPayment(

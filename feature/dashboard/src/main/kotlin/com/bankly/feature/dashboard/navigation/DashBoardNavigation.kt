@@ -1,14 +1,16 @@
 package com.bankly.feature.dashboard.navigation
 
 import android.app.Activity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -35,6 +37,9 @@ fun NavGraphBuilder.dashBoardNavGraph(
         composable(dashBoardRoute) {
             var dashBoardState by rememberDashBoardState()
 
+            //Detect keyboard
+            val isKeyboardVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+
             DashBoardRoute(
                 showLoadingIndicator = dashBoardState.showLoadingIndicator,
                 showTopAppBar = dashBoardState.shouldShowTopAppBar,
@@ -42,7 +47,7 @@ fun NavGraphBuilder.dashBoardNavGraph(
                 onNavigateToBottomNavDestination = { destination ->
                     dashBoardState.navigateTo(destination)
                 },
-                showBottomNavBar = dashBoardState.shouldShowBottomNavBar,
+                showBottomNavBar = if (isKeyboardVisible) false else dashBoardState.shouldShowBottomNavBar,
                 content = { padding ->
                     DashBoardNavHost(
                         currentHomeTab = dashBoardState.currentTab,

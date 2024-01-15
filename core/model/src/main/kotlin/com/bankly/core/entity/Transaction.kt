@@ -102,6 +102,7 @@ sealed class Transaction(
             val sessionId: String,
             val transType: Long,
             val transTypeName: String,
+            val isIntra: Boolean,
         ) : Eod(
             statusName = statName,
             reference = ref,
@@ -296,7 +297,8 @@ sealed class Transaction(
                     sourceWalletName = "",
                     dateCreated = dateCreated,
                     statusName = statName,
-                    sessionId = sessionId
+                    sessionId = sessionId,
+                    isIntra = isIntra
                 )
 
                 is Eod.BillPayment -> TransactionReceipt.BillPayment(

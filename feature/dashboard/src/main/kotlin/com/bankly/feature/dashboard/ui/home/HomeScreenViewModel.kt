@@ -11,12 +11,10 @@ import com.bankly.core.sealed.onFailure
 import com.bankly.core.sealed.onLoading
 import com.bankly.core.sealed.onReady
 import com.bankly.core.sealed.onSessionExpired
-import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,15 +52,26 @@ internal class HomeScreenViewModel @Inject constructor(
             HomeScreenEvent.OnDismissFeatureAccessDeniedDialog -> {
                 setUiState { copy(showFeatureAccessDeniedDialog = false) }
             }
+
+            HomeScreenEvent.OnRefresh -> {
+                getWallet(isTriggeredByRefresh = true)
+            }
         }
     }
 
-    private suspend fun getWallet() {
+    private suspend fun getWallet(
+        isTriggeredByRefresh: Boolean = false,
+    ) {
         getWalletUseCase(token = userPreferencesDataStore.data().token)
             .onEach { resource ->
                 resource.onLoading {
                     Log.d("debug", "loading wallet ..")
-                    setUiState { copy(shouldShowLoadingIcon = true) }
+                    setUiState {
+                        copy(
+                            isWalletBalanceLoading = true,
+                            isRefreshingWalletBalance = isTriggeredByRefresh
+                        )
+                    }
                 }
                 resource.onReady { userWallet: UserWallet ->
                     Log.d("debug", "ready wallet .. $resource")
@@ -76,18 +85,27 @@ internal class HomeScreenViewModel @Inject constructor(
                             accountName = userWallet.accountName,
                             shouldShowWalletBalance = shouldShowWalletBalance,
                             shouldShowVisibilityIcon = true,
-                            shouldShowLoadingIcon = false,
+                            isWalletBalanceLoading = false,
+                            isRefreshingWalletBalance = false
                         )
                     }
                 }
                 resource.onFailure { message ->
                     Log.d("debug", "failure wallet .. $resource")
                     setUiState {
-                        copy(message = message, shouldShowErrorDialog = true)
+                        copy(
+                            message = message,
+                            shouldShowErrorDialog = true,
+                            isWalletBalanceLoading = false,
+                            isRefreshingWalletBalance = false
+                        )
                     }
                 }
                 resource.onSessionExpired {
                     setOneShotState(HomeScreenOneShotState.OnSessionExpired)
+                    setUiState {
+                        copy(isWalletBalanceLoading = false, isRefreshingWalletBalance = false)
+                    }
                 }
             }.catch {
                 it.printStackTrace()
@@ -95,6 +113,8 @@ internal class HomeScreenViewModel @Inject constructor(
                     copy(
                         shouldShowErrorDialog = true,
                         message = it.message ?: "An expected event occurred!",
+                        isWalletBalanceLoading = false,
+                        isRefreshingWalletBalance = false
                     )
                 }
             }.launchIn(viewModelScope)

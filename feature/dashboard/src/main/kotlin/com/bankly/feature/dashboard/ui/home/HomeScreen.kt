@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,17 +71,24 @@ internal fun HomeTab(
     })
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun HomeScreen(
     screenState: HomeScreenState,
     onUiEvent: (HomeScreenEvent) -> Unit,
 ) {
-    Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    val pullRefreshState =
+        rememberPullRefreshState(refreshing = screenState.isRefreshingWalletBalance, onRefresh = {
+            onUiEvent(HomeScreenEvent.OnRefresh)
+        })
+    Column(
+        modifier = Modifier.pullRefresh(pullRefreshState),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Box(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp),
-
-            ) {
+        ) {
             WalletCard(
                 shouldShowWalletBalance = screenState.shouldShowWalletBalance,
                 onToggleWalletBalanceVisibility = { toggleState ->
@@ -87,7 +98,13 @@ internal fun HomeScreen(
                 bankName = screenState.bankName,
                 currentBalance = screenState.accountBalance,
                 shouldShowVisibilityIcon = screenState.shouldShowVisibilityIcon,
-                isWalletBalanceLoading = screenState.shouldShowLoadingIcon,
+                isWalletBalanceLoading = screenState.isWalletBalanceLoading,
+            )
+            PullRefreshIndicator(
+                refreshing = screenState.isRefreshingWalletBalance,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter),
+                contentColor = MaterialTheme.colorScheme.primary,
             )
         }
         Text(

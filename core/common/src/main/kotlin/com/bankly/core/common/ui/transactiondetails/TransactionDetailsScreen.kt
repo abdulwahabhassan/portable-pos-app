@@ -281,7 +281,9 @@ fun TransactionDetailsScreenPreview() {
                 "0428094437",
                 "Main",
                 "2023-08-15T21:14:40.5225813Z",
-                "", "Successful",
+                "",
+                "Successful",
+                false
             ),
             onShareClick = {},
             onSmsClick = {},

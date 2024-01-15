@@ -27,6 +27,7 @@ sealed class TransactionReceipt(
         val dateCreated: String,
         val statusName: String,
         val sessionId: String,
+        val isIntra: Boolean,
     ) : TransactionReceipt(
         transactionAmount = amount,
         transactionMessage = message,
@@ -48,7 +49,7 @@ sealed class TransactionReceipt(
         val beneficiaryName: String,
         val responseCode: String,
         val rrn: String,
-        val stan: String
+        val stan: String,
     ) : TransactionReceipt(
         transactionAmount = amount,
         transactionMessage = message,
@@ -163,7 +164,7 @@ sealed class TransactionReceipt(
     fun toDetailsMap(): Map<String, String> {
         return when (this) {
             is BankTransfer -> mapOf(
-                "Transaction Type" to "Bank Transfer",
+                "Transaction Type" to if (isIntra) "Bankly Transfer" else "Bank Transfer",
                 "Type" to "Debit",
                 "Status" to this.statusName,
                 "Description" to this.message,
@@ -264,7 +265,7 @@ sealed class TransactionReceipt(
     fun isSuccessfulTransaction() = transactionMessage.contains(
         "transaction approved",
         true,
-    ) || listOf(
+    ) || transactionMessage.contains("Transfer of") || listOf(
         "successful",
         "Successful",
         "approved",

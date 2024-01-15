@@ -127,6 +127,7 @@ fun AccountNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTra
     dateCreated = dateCreated ?: "",
     statusName = statusName ?: "",
     sessionId = sessionId ?: "",
+    isIntra = false
 )
 
 fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTransfer(
@@ -144,6 +145,7 @@ fun PhoneNumberTransactionResult.asBankTransfer() = TransactionReceipt.BankTrans
     dateCreated = transferredOn ?: "",
     statusName = "",
     sessionId = "",
+    isIntra = transferType == "Intra"
 )
 
 fun CardTransferTransactionResult.asCardTransfer() = TransactionReceipt.CardTransfer(
@@ -355,7 +357,8 @@ fun TransactionReceipt.asEodTransaction(): EodTransaction? {
             beneficiaryAccountNumber = accountNumber,
             dateCreated = dateCreated,
             statusName = statusName,
-            sessionId = sessionId
+            sessionId = sessionId,
+            isIntra = isIntra
         )
 
         is TransactionReceipt.BillPayment -> EodTransaction.BillPayment(

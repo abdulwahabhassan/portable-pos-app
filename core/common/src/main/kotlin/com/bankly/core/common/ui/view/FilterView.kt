@@ -1,5 +1,7 @@
 package com.bankly.core.common.ui.view
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.ScrollableDefaults
@@ -26,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.getSystemService
 import com.bankly.core.common.R
 import com.bankly.core.designsystem.component.BanklyClickableIcon
 import com.bankly.core.designsystem.component.BanklyClickableText
@@ -109,7 +113,7 @@ fun FilterView(
                 placeholderText = stringResource(R.string.msg_enter_reference_number),
                 labelText = stringResource(R.string.label_transaction_reference),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Phone,
+                    keyboardType = KeyboardType.Text,
                 ),
                 isError = isTransactionReferenceError,
                 feedbackText = transactionReferenceFeedback,
@@ -124,7 +128,7 @@ fun FilterView(
                 placeholderText = stringResource(R.string.msg_enter_accout_name),
                 labelText = stringResource(R.string.label_account_name),
                 keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Phone,
+                    keyboardType = KeyboardType.Text,
                 ),
                 isError = isAccountNameFeedbackError,
                 feedbackText = accountNameFeedback,

@@ -8,4 +8,5 @@ internal sealed interface HomeScreenEvent {
     object FetchWalletBalance : HomeScreenEvent
     data class OnFeatureCardClick(val feature: Feature) : HomeScreenEvent
     object OnDismissFeatureAccessDeniedDialog : HomeScreenEvent
+    object OnRefresh : HomeScreenEvent
 }
