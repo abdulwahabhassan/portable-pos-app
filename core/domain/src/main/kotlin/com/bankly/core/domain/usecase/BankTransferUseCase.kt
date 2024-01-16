@@ -12,14 +12,14 @@ class BankTransferUseCase @Inject constructor(
 ) {
     suspend fun invoke(
         token: String,
-        body: com.bankly.core.model.data.BankTransferData,
+        body: BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> =
         when (body) {
-            is com.bankly.core.model.data.BankTransferData.AccountNumber -> {
+            is BankTransferData.AccountNumber -> {
                 transferRepository.performTransferToAccountNumber(token = token, body = body)
             }
 
-            is com.bankly.core.model.data.BankTransferData.PhoneNumber -> {
+            is BankTransferData.PhoneNumber -> {
                 transferRepository.performPhoneNumberTransfer(token = token, body = body)
             }
         }

@@ -12,6 +12,6 @@ class GetRecentFundingUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         token: String,
-        body: com.bankly.core.model.data.GetRecentFundingData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.RecentFund>>> = payWithTransferRepository.getRecentFunding(token, body)
+        body: GetRecentFundingData,
+    ): Flow<Resource<List<RecentFund>>> = payWithTransferRepository.getRecentFunding(token, body)
 }

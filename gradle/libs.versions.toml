@@ -59,6 +59,7 @@ moshiConverter = "2.4.0"
 gson = "2.9.0"
 playServicesBasement = "18.2.0"
 kotlinParcelize = "1.8.20"
+firebaseMessaging = "23.4.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -113,7 +114,7 @@ coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshiConverter" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging"}
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx" }

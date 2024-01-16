@@ -30,7 +30,7 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.model.entity.Transaction
-import com.bankly.core.util.Formatter.formatServerDateTime
+import com.bankly.core.model.util.Formatter.formatServerDateTime
 
 @Composable
 internal fun TransactionListItem(

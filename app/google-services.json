@@ -44,6 +44,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:1d56e023c2b0e14510e6df",
+        "android_client_info": {
+          "package_name": "com.bankly.banklykozenpos.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:134867281806:android:7968a0021a48fb1d10e6df",
         "android_client_info": {
           "package_name": "com.bankly.pos"

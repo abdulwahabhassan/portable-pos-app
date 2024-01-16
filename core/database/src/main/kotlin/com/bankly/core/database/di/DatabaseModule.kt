@@ -4,6 +4,7 @@ import android.content.Context
 import com.bankly.core.database.AppRoomDatabase
 import com.bankly.core.database.dao.EodDao
 import com.bankly.core.database.dao.NotificationMessageDao
+import com.bankly.core.database.dao.RecentFundDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun providesAppDatabase(
-        @ApplicationContext appContext: Context
+        @ApplicationContext appContext: Context,
     ): AppRoomDatabase {
         return AppRoomDatabase.getDatabase(appContext)
     }
@@ -33,5 +34,11 @@ object DatabaseModule {
     @Singleton
     fun provideNotificationMessageDao(appDatabase: AppRoomDatabase): NotificationMessageDao {
         return appDatabase.getNotificationMessageDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecentFundDao(appDatabase: AppRoomDatabase): RecentFundDao {
+        return appDatabase.getRecentFundDao()
     }
 }

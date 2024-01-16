@@ -12,7 +12,7 @@ class AddDeviceToFirebaseUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         token: String,
-        body: com.bankly.core.model.data.AddDeviceTokenData,
-    ): Flow<Resource<com.bankly.core.model.entity.AddDeviceToken>> =
+        body: AddDeviceTokenData,
+    ): Flow<Resource<AddDeviceToken>> =
         pushNotificationRepository.addDeviceToFirebase(token, body)
 }

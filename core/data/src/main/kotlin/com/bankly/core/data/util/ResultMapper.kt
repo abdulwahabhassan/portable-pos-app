@@ -9,15 +9,11 @@ import com.bankly.core.model.entity.Bank
 import com.bankly.core.model.entity.BankNetwork
 import com.bankly.core.model.entity.BillPlan
 import com.bankly.core.model.entity.BillProvider
-import com.bankly.core.model.entity.CableTvNameEnquiry
-import com.bankly.core.model.entity.CardTransferAccountInquiry
-import com.bankly.core.model.entity.EodInfo
 import com.bankly.core.model.entity.Message
 import com.bankly.core.model.entity.MeterNameEnquiry
 import com.bankly.core.model.entity.NotificationMessage
 import com.bankly.core.model.entity.RecentFund
 import com.bankly.core.model.entity.Status
-import com.bankly.core.model.entity.SyncEod
 import com.bankly.core.model.entity.Token
 import com.bankly.core.model.entity.TransactionFilterType
 import com.bankly.core.model.entity.Transaction
@@ -57,17 +53,17 @@ fun AuthenticatedUserResult.asUser() = User(
     message = message ?: "",
 )
 
-fun TokenApiResponse.asToken() = com.bankly.core.model.entity.Token(
+fun TokenApiResponse.asToken() = Token(
     token = accessToken ?: "",
     expiresIn = expiresIn ?: 0L,
     tokenType = tokenType ?: "",
 )
 
-fun StatusResult.asStatus() = com.bankly.core.model.entity.Status(
+fun StatusResult.asStatus() = Status(
     status = status ?: false,
 )
 
-fun MessageResult.asMessage() = com.bankly.core.model.entity.Message(
+fun MessageResult.asMessage() = Message(
     message = message ?: "",
 )
 
@@ -78,20 +74,20 @@ fun AgentAccountResult.asUserWallet() = UserWallet(
     accountName = name,
 )
 
-fun AgentAccountResult.asAgentAccountDetails() = com.bankly.core.model.entity.AgentAccountDetails(
+fun AgentAccountResult.asAgentAccountDetails() = AgentAccountDetails(
     fundingAccountNumber = fundingAccountNumber,
     name = name,
     fundingSourceName = fundingSourceName,
 )
 
-fun BankResult.asBank() = com.bankly.core.model.entity.Bank(
+fun BankResult.asBank() = Bank(
     name = name,
     id = id,
     categoryId = categoryId ?: -1,
     categoryName = categoryName ?: "",
 )
 
-fun AccountNameEnquiryResult.asNameEnquiry() = com.bankly.core.model.entity.AccountNameEnquiry(
+fun AccountNameEnquiryResult.asNameEnquiry() = AccountNameEnquiry(
     accountName = accountName ?: "",
     accountNumber = accountNumber ?: "",
     bankCode = bankCode ?: "",
@@ -110,7 +106,7 @@ fun CardTransferAccountInquiryResult.asAccountInquiry() =
         bankName = bankName ?: "",
     )
 
-fun AgentResult.asNameEnquiry() = com.bankly.core.model.entity.AccountNameEnquiry(
+fun AgentResult.asNameEnquiry() = AccountNameEnquiry(
     accountName = name ?: "",
     accountNumber = accountNumber ?: "",
     bankCode = "",
@@ -171,7 +167,7 @@ fun CardTransferTransactionResult.asCardTransfer() = TransactionReceipt.CardTran
     stan = ""
 )
 
-fun ProviderResult.asProvider() = com.bankly.core.model.entity.BillProvider(
+fun ProviderResult.asProvider() = BillProvider(
     id = id ?: 0,
     categoryId = categoryId ?: 0,
     code = code ?: "",
@@ -196,7 +192,7 @@ fun ProviderResult.asProvider() = com.bankly.core.model.entity.BillProvider(
     minimumAmount = minimumAmount ?: 0.00,
 )
 
-fun PlanResult.asPlan() = com.bankly.core.model.entity.BillPlan(
+fun PlanResult.asPlan() = BillPlan(
     id ?: 0,
     billId ?: 0,
     code ?: "",
@@ -217,7 +213,7 @@ fun CableTvNameEnquiryResult.asCableTvNameEnquiry() =
         packageName = packageName,
     )
 
-fun MeterNameEnquiryResult.asMeterNameEnquiry() = com.bankly.core.model.entity.MeterNameEnquiry(
+fun MeterNameEnquiryResult.asMeterNameEnquiry() = MeterNameEnquiry(
     meterNumber = meterNumber,
     amount = amount,
     customerName = customerName,
@@ -251,7 +247,7 @@ fun BillPaymentResult.asBillPayment() = TransactionReceipt.BillPayment(
     isTokenType = isTokenType ?: false,
 )
 
-fun RecentFundResult.asRecentFund() = com.bankly.core.model.entity.RecentFund(
+fun RecentFundResult.asRecentFund() = RecentFund(
     transactionReference = transactionReference ?: "",
     amount = amount ?: 0.00,
     accountReference = accountReference ?: "",
@@ -267,9 +263,10 @@ fun RecentFundResult.asRecentFund() = com.bankly.core.model.entity.RecentFund(
     receiverBankName = receiverBankName ?: "",
     receiverAccountNumber = receiverAccountNumber ?: "",
     receiverAccountName = receiverAccountName ?: "",
+    seen = false
 )
 
-fun TransactionResult.asTransaction() = com.bankly.core.model.entity.Transaction.History(
+fun TransactionResult.asTransaction() = Transaction.History(
     creditAccountNo = creditAccountNo ?: "",
     debitAccountNo = debitAccountNo ?: "",
     transactionBy = transactionBy ?: "",
@@ -323,7 +320,7 @@ fun TransactionFilterTypeResult.asTransactionFilterType() = TransactionFilterTyp
     isSelected = false,
 )
 
-fun BankNetworkResult.asBankNetwork() = com.bankly.core.model.entity.BankNetwork(
+fun BankNetworkResult.asBankNetwork() = BankNetwork(
     bankName = bankName ?: "",
     bankIcon = "",
     networkPercentage = countPercentage ?: 0.00,
@@ -447,14 +444,14 @@ fun TransactionReceipt.asEodTransaction(): EodTransaction? {
     }
 }
 
-fun com.bankly.core.model.entity.NotificationMessage.toNotification(): Notification {
+fun NotificationMessage.asNotification(): Notification {
     return Notification(
         title = title, dateTime = dateTime, message = message, seen = seen
     )
 }
 
-fun Notification.toNotificationMessage(): com.bankly.core.model.entity.NotificationMessage {
-    return com.bankly.core.model.entity.NotificationMessage(
+fun Notification.asNotificationMessage(): NotificationMessage {
+    return NotificationMessage(
         title = this.title,
         message = this.message,
         dateTime = this.dateTime,
@@ -462,5 +459,47 @@ fun Notification.toNotificationMessage(): com.bankly.core.model.entity.Notificat
     )
 }
 
-fun AddDeviceTokenResult.asDeviceToken(): com.bankly.core.model.entity.AddDeviceToken =
-    com.bankly.core.model.entity.AddDeviceToken(id, userId, deviceId, provider)
+fun AddDeviceTokenResult.asDeviceToken(): AddDeviceToken =
+    AddDeviceToken(id, userId, deviceId, provider)
+
+fun com.bankly.core.database.model.LocalRecentFund.asRecentFund(): RecentFund {
+    return RecentFund(
+        transactionReference = this.transactionReference,
+        amount = this.amount,
+        accountReference = this.accountReference,
+        paymentDescription = this.paymentDescription,
+        senderAccountNumber = this.senderAccountNumber,
+        senderAccountName = this.senderAccountName,
+        sessionId = this.sessionId,
+        phoneNumber = this.phoneNumber,
+        userId = this.userId,
+        transactionDate = this.transactionDate,
+        seen = this.seen,
+        senderBankName = this.senderBankName,
+        receiverBankName = this.receiverBankName,
+        receiverAccountNumber = this.receiverAccountNumber,
+        receiverAccountName = this.receiverAccountName,
+        transactionHash = this.transactionHash
+    )
+}
+
+fun RecentFund.asRecentFund(): com.bankly.core.database.model.LocalRecentFund {
+    return com.bankly.core.database.model.LocalRecentFund(
+        transactionReference = transactionReference,
+        amount = amount,
+        accountReference = accountReference,
+        paymentDescription = paymentDescription,
+        senderAccountNumber = senderAccountNumber,
+        senderAccountName = senderAccountName,
+        sessionId = sessionId,
+        phoneNumber = phoneNumber,
+        userId = userId,
+        transactionDate = transactionDate,
+        transactionHash = transactionHash,
+        seen = seen,
+        senderBankName = senderBankName,
+        receiverBankName = receiverBankName,
+        receiverAccountNumber = receiverAccountNumber,
+        receiverAccountName = receiverAccountName
+    )
+}

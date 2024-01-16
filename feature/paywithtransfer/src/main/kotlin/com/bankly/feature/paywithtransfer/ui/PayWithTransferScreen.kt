@@ -100,7 +100,7 @@ private fun PayWithTransferScreen(
                 }
             }
             if (screenState.isAccountDetailsExpanded.not()) {
-                items(screenState.recentFunds) { item: com.bankly.core.model.entity.RecentFund ->
+                items(screenState.recentFunds) { item: RecentFund ->
                     RecentFundListItem(
                         recentFund = item,
                         onClick = {
@@ -150,7 +150,7 @@ private fun PayWithTransferScreenPreview() {
             onBackPress = { },
             screenState = PayWithTransferScreenState(
                 showRecentFundDialog = false,
-                selectedRecentFund = com.bankly.core.model.entity.RecentFund(
+                selectedRecentFund = RecentFund(
                     transactionReference = "389030022838200",
                     amount = 20.00,
                     accountReference = "73783899",
@@ -166,6 +166,7 @@ private fun PayWithTransferScreenPreview() {
                     receiverBankName = "Bankly MFB",
                     receiverAccountNumber = "3000291002",
                     receiverAccountName = "John Doe",
+                    seen = false,
                 ),
             ),
             onUiEvent = {},

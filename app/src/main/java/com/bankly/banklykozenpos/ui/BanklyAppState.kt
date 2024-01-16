@@ -35,25 +35,30 @@ import com.bankly.banklykozenpos.navigation.navigateToSendMoneyNavGraph
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberBanklyAppState(
+internal fun rememberBanklyAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navHostController: NavHostController = rememberNavController(),
+    mainActivityState: MainActivityState,
+
 ): BanklyAppState {
     return remember(
         navHostController,
         coroutineScope,
+        mainActivityState,
     ) {
         BanklyAppState(
             navHostController,
             coroutineScope,
+            mainActivityState,
         )
     }
 }
 
 @Stable
-data class BanklyAppState(
+internal data class BanklyAppState(
     val navHostController: NavHostController,
     private val coroutineScope: CoroutineScope,
+    val mainActivityState: MainActivityState,
 ) {
 
     fun navigateTo(destination: AppTopLevelDestination) {

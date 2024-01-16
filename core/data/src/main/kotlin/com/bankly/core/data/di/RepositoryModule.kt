@@ -4,6 +4,7 @@ import com.bankly.core.data.repository.DefaultBillsRepository
 import com.bankly.core.data.repository.DefaultEndOfDayRepository
 import com.bankly.core.data.repository.DefaultNetworkCheckerRepository
 import com.bankly.core.data.repository.DefaultPayWithTransferRepository
+import com.bankly.core.data.repository.DefaultPushNotificationRepository
 import com.bankly.core.data.repository.DefaultTransactionRepository
 import com.bankly.core.data.repository.DefaultTransferRepository
 import com.bankly.core.data.repository.DefaultUserRepository
@@ -11,6 +12,7 @@ import com.bankly.core.domain.repository.BillsRepository
 import com.bankly.core.domain.repository.EndOfDayRepository
 import com.bankly.core.domain.repository.NetworkCheckerRepository
 import com.bankly.core.domain.repository.PayWithTransferRepository
+import com.bankly.core.domain.repository.PushNotificationRepository
 import com.bankly.core.domain.repository.TransactionRepository
 import com.bankly.core.domain.repository.TransferRepository
 import com.bankly.core.domain.repository.UserRepository
@@ -57,4 +59,9 @@ interface RepositoryModule {
     fun bindsEndOfDayRepository(
         repository: DefaultEndOfDayRepository,
     ): EndOfDayRepository
+
+    @Binds
+    fun bindsPushNotificationRepository(
+        repository: DefaultPushNotificationRepository,
+    ): PushNotificationRepository
 }

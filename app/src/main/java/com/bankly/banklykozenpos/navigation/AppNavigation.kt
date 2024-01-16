@@ -8,9 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.ui.BanklyAppState
+import com.bankly.core.common.ui.notification.NotificationMessageView
+import com.bankly.core.common.ui.notification.TransactionAlertView
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.model.entity.Feature
+import com.bankly.core.model.entity.NotificationMessage
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.authentication.navigation.isValidatePassCodeArg
@@ -23,6 +26,7 @@ import com.bankly.feature.eod.navigation.eodNavGraph
 import com.bankly.feature.faq.navigation.faqNavGraph
 import com.bankly.feature.logcomplaints.navigation.logComplaintNavGraph
 import com.bankly.feature.networkchecker.navigation.networkCheckerNavGraph
+import com.bankly.feature.notification.model.TransactionPayload
 import com.bankly.feature.paybills.navigation.billPaymentNavGraph
 import com.bankly.feature.paywithcard.navigation.payWithCardNavGraph
 import com.bankly.feature.paywithtransfer.navigation.payWithTransferNavGraph
@@ -31,7 +35,7 @@ import com.bankly.feature.settings.navigation.settingsNavGraph
 import com.bankly.feature.transactiondetails.navigation.transactionDetailsNavGraph
 
 @Composable
-fun AppNavHost(
+internal fun AppNavHost(
     appState: BanklyAppState,
     modifier: Modifier = Modifier,
     startDestination: String = "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
@@ -40,6 +44,8 @@ fun AppNavHost(
     isSessionExpired: Boolean,
     onSessionExpired: () -> Unit,
     onSessionRenewed: () -> Unit,
+    onClosNotificationMessageDialog: (NotificationMessage) -> Unit,
+    onCloseTransactionAlertDialog: (TransactionPayload) -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -71,20 +77,20 @@ fun AppNavHost(
         )
         dashBoardNavGraph(
             onExitApp = onExitApp,
-            onFeatureClick = { feature: com.bankly.core.model.entity.Feature ->
+            onFeatureClick = { feature: Feature ->
                 appState.navigateTo(
                     when (feature) {
-                        is com.bankly.core.model.entity.Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
-                        is com.bankly.core.model.entity.Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
-                        is com.bankly.core.model.entity.Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
-                        is com.bankly.core.model.entity.Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
-                        is com.bankly.core.model.entity.Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
-                        is com.bankly.core.model.entity.Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
-                        is com.bankly.core.model.entity.Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
-                        is com.bankly.core.model.entity.Feature.Float -> AppTopLevelDestination.FLOAT
-                        is com.bankly.core.model.entity.Feature.EndOfDay -> AppTopLevelDestination.EOD
-                        is com.bankly.core.model.entity.Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
-                        is com.bankly.core.model.entity.Feature.Settings -> AppTopLevelDestination.SETTINGS
+                        is Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
+                        is Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
+                        is Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
+                        is Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
+                        is Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
+                        is Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
+                        is Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
+                        is Feature.Float -> AppTopLevelDestination.FLOAT
+                        is Feature.EndOfDay -> AppTopLevelDestination.EOD
+                        is Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
+                        is Feature.Settings -> AppTopLevelDestination.SETTINGS
                     },
                 )
             },
@@ -235,5 +241,53 @@ fun AppNavHost(
             appState.navHostController.logOut()
             onSessionRenewed()
         },
+    )
+
+    BanklyCenterDialog(
+        title = appState.mainActivityState.transactionAlert?.title
+            ?: stringResource(R.string.title_transaction_alert),
+        icon = BanklyIcons.Successful,
+        showDialog = appState.mainActivityState.showTransactionAlertDialog,
+        onDismissDialog = {
+            appState.mainActivityState.transactionAlert?.let { onCloseTransactionAlertDialog(it) }
+        },
+        extraContent = {
+            TransactionAlertView(
+                amount = appState.mainActivityState.transactionAlert?.amount ?: 0.00,
+                senderAccountName = appState.mainActivityState.transactionAlert?.senderAccountName
+                    ?: "",
+                onCloseClick = {
+                    appState.mainActivityState.transactionAlert?.let { transactionPayload: TransactionPayload ->
+                        onCloseTransactionAlertDialog(
+                            transactionPayload
+                        )
+                    }
+                },
+                onViewTransactionDetailsClick = {
+                    appState.mainActivityState.transactionAlert?.let { transactionPayload: TransactionPayload ->
+                        onCloseTransactionAlertDialog(transactionPayload)
+                        appState.navHostController.navigateToTransactionDetailsNavGraph(
+                            transactionPayload.toTransactionReceipt()
+                        )
+                    }
+                }
+            )
+        },
+    )
+
+    BanklyCenterDialog(
+        title = appState.mainActivityState.notificationMessage?.title
+            ?: stringResource(R.string.title_notification),
+        subtitle = appState.mainActivityState.notificationMessage?.message,
+        showDialog = appState.mainActivityState.showNotificationMessageDialog,
+        onDismissDialog = {
+            appState.mainActivityState.notificationMessage?.let { onClosNotificationMessageDialog(it) }
+        },
+        extraContent = {
+            NotificationMessageView(
+                message = appState.mainActivityState.notificationMessage?.message ?: "",
+            )
+        },
+        showCloseIcon = true
     )
 }

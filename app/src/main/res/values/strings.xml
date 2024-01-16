@@ -4,4 +4,7 @@
     <string name="title_session_expired">Session Expired!</string>
     <string name="action_okay">Okay</string>
     <string name="msg_token_fmt">Token: %s</string>
+    <string name="title_notification">Notification</string>
+    <string name="title_transaction_alert">Transaction Alert</string>
+
 </resources>

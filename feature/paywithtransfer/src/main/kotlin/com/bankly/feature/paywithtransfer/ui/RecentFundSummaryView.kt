@@ -34,7 +34,7 @@ import com.bankly.core.model.sealed.TransactionReceipt
 
 @Composable
 internal fun RecentFundSummaryView(
-    recentFund: com.bankly.core.model.entity.RecentFund,
+    recentFund: RecentFund,
     onViewTransactionDetailsClick: (TransactionReceipt.PayWithTransfer) -> Unit,
     onGoToHomeClick: () -> Unit,
     onCloseIconClick: () -> Unit,
@@ -115,7 +115,7 @@ internal fun RecentFundSummaryView(
 private fun RecentFundSummaryPreview() {
     BanklyTheme {
         RecentFundSummaryView(
-            com.bankly.core.model.entity.RecentFund(
+            RecentFund(
                 transactionReference = "389030022838200",
                 amount = 20.00,
                 accountReference = "73783899",
@@ -131,6 +131,7 @@ private fun RecentFundSummaryPreview() {
                 receiverBankName = "Bankly MFB",
                 receiverAccountNumber = "3000291002",
                 receiverAccountName = "John Doe",
+                seen = false
             ),
             onViewTransactionDetailsClick = {},
             onGoToHomeClick = {},

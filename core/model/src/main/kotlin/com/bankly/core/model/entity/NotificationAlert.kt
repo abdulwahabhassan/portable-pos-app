@@ -1,4 +1,4 @@
-package com.bankly.pos.notification.model
+package com.bankly.core.model.entity
 
 data class NotificationAlert(
     val transactionReference: String,

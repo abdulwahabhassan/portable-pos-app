@@ -1,18 +1,15 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.model.data.AddDeviceTokenData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asDeviceToken
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleRequest
-import com.bankly.core.data.util.toNotification
-import com.bankly.core.data.util.toNotificationMessage
+import com.bankly.core.data.util.asNotification
+import com.bankly.core.data.util.asNotificationMessage
 import com.bankly.core.database.dao.NotificationMessageDao
 import com.bankly.core.domain.repository.PushNotificationRepository
-import com.bankly.core.model.entity.AddDeviceToken
-import com.bankly.core.model.entity.NotificationMessage
 import com.bankly.core.network.retrofit.service.PushNotificationService
 import com.bankly.core.model.sealed.Resource
 import com.bankly.core.model.sealed.Result
@@ -62,14 +59,14 @@ class DefaultPushNotificationRepository @Inject constructor(
 
     override fun getNotificationMessages(): Flow<List<com.bankly.core.model.entity.NotificationMessage>> {
         return notificationMessageDao.getNotificationMessages()
-            .map { list -> list.map { it.toNotificationMessage() } }
+            .map { list -> list.map { it.asNotificationMessage() } }
     }
 
     override suspend fun insertNotificationMessage(notificationMessage: com.bankly.core.model.entity.NotificationMessage) {
-        notificationMessageDao.insertNotificationMessage(notificationMessage.toNotification())
+        notificationMessageDao.insertNotificationMessage(notificationMessage.asNotification())
     }
 
     override suspend fun getNotificationMessage(dateTime: String): com.bankly.core.model.entity.NotificationMessage? {
-        return notificationMessageDao.getNotificationMessage(dateTime)?.toNotificationMessage()
+        return notificationMessageDao.getNotificationMessage(dateTime)?.asNotificationMessage()
     }
 }

@@ -59,13 +59,13 @@ fun com.bankly.core.model.data.ResetPassCodeData.asRequestBody() = ResetPassCode
     code = code,
 )
 
-fun com.bankly.core.model.data.ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
+fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
     otp = otp,
     phoneNumber = phoneNumber,
 )
 
-fun com.bankly.core.model.data.BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
-    is com.bankly.core.model.data.BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
+fun BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
+    is BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
         accountName = accountName,
         accountNumber = accountNumber,
         bankId = bankId,
@@ -83,7 +83,7 @@ fun com.bankly.core.model.data.BankTransferData.asRequestBody(): BankTransferReq
         senderName = senderName,
     )
 
-    is com.bankly.core.model.data.BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
+    is BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
         amount = amount,
         recipientAccount = recipientAccount,
         pin = pin,
@@ -96,7 +96,7 @@ fun com.bankly.core.model.data.BankTransferData.asRequestBody(): BankTransferReq
     )
 }
 
-fun com.bankly.core.model.data.BillPaymentData.asRequestBody() = BillPaymentRequestBody(
+fun BillPaymentData.asRequestBody() = BillPaymentRequestBody(
     billItemId = billItemId,
     billId = billId,
     amount = amount,
@@ -112,38 +112,38 @@ fun com.bankly.core.model.data.BillPaymentData.asRequestBody() = BillPaymentRequ
     paidForName = paidForName,
 )
 
-fun com.bankly.core.model.data.ValidateCableTvNumberData.asRequestBody() = ValidateCableTvNumberRequestBody(
+fun ValidateCableTvNumberData.asRequestBody() = ValidateCableTvNumberRequestBody(
     cardNumber = cardNumber,
     billId = billId,
 )
 
-fun com.bankly.core.model.data.ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMeterNumberRequestBody(
+fun ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMeterNumberRequestBody(
     meterNumber = meterNumber,
     billId = billId,
     billItemId = billItemId,
 )
 
-fun com.bankly.core.model.data.GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
+fun GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
     updateOnFetch = updateOnFetch,
     serialNumber = serialNumber,
     location = location,
 )
 
-fun com.bankly.core.model.data.SendReceiptData.asRequestBody() = SendReceiptRequestBody(
+fun SendReceiptData.asRequestBody() = SendReceiptRequestBody(
     sessionId = sessionId,
     beneficiary = beneficiary,
     routeType = routeType,
 )
 
-fun com.bankly.core.model.data.SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
+fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
     sessionId = sessionId,
     serialNumber = serialNumber,
     location = location,
 )
 
-fun com.bankly.core.model.data.TransactionFilterData.asRequestParam() = Json.encodeToString(this)
+fun TransactionFilterData.asRequestParam() = Json.encodeToString(this)
 
-fun com.bankly.core.model.data.EodTransactionListData.asRequestBody() = SyncEodRequestBody(
+fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
     transactions = this.map {
         SyncEodTransactionData(
             it.serialNumber,
@@ -161,7 +161,7 @@ fun com.bankly.core.model.data.EodTransactionListData.asRequestBody() = SyncEodR
     },
 )
 
-fun com.bankly.core.model.data.CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
+fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
     bankId = bankId,
     accountNumber = accountNumber,
     amount = amount,
@@ -172,7 +172,7 @@ fun com.bankly.core.model.data.CardTransferAccountInquiryData.asRequestBody() = 
     deviceType = deviceType,
 )
 
-fun com.bankly.core.model.data.CardTransferData.asRequestBody() = CardTransferRequestBody(
+fun CardTransferData.asRequestBody() = CardTransferRequestBody(
     accountName = accountName,
     inquiryReference = inquiryReference,
     accountNumber = accountNumber,
@@ -185,4 +185,4 @@ fun com.bankly.core.model.data.CardTransferData.asRequestBody() = CardTransferRe
     responseMessage = responseMessage,
 )
 
-fun com.bankly.core.model.data.AddDeviceTokenData.asRequestBody() = AddDeviceTokenRequestBody(userId, deviceId)
+fun AddDeviceTokenData.asRequestBody() = AddDeviceTokenRequestBody(userId, deviceId)

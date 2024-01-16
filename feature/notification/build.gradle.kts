@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.bankly.feature.notification"
 }
+dependencies {
+    api(libs.firebase.cloud.messaging)
+}
+

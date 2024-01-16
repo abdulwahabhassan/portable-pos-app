@@ -1,13 +1,19 @@
 package com.bankly.feature.notification.service
 
 import android.content.Intent
+import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.bankly.pos.common.Utils
-import com.bankly.pos.database.RecentFundDao
-import com.bankly.pos.database.entity.RecentFundEntity
-import com.bankly.pos.notification.NotificationBuilder
-import com.bankly.pos.notification.NotificationMessage
-import com.bankly.pos.notification.model.TransactionPayload
+import com.bankly.core.common.util.playSuccessSound
+import com.bankly.core.data.di.IODispatcher
+import com.bankly.core.domain.usecase.AddDeviceToFirebaseUseCase
+import com.bankly.core.domain.usecase.InsertRecentFundUseCase
+import com.bankly.core.model.data.AddDeviceTokenData
+import com.bankly.core.model.entity.NotificationMessage
+import com.bankly.core.model.entity.RecentFund
+import com.bankly.feature.notification.builder.NotificationBuilder
+import com.bankly.feature.notification.model.PushNotificationMessage
+import com.bankly.feature.notification.model.TransactionPayload
+import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.reflect.TypeToken
@@ -19,62 +25,67 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 
 @AndroidEntryPoint
 class BanklyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
+    @IODispatcher
     lateinit var dispatcher: CoroutineDispatcher
 
     @Inject
-    lateinit var recentFundDao: RecentFundDao
+    lateinit var insertRecentFundUseCase: InsertRecentFundUseCase
 
     @Inject
-    lateinit var moshi: Moshi
+    lateinit var addDeviceToFirebaseUseCase: AddDeviceToFirebaseUseCase
+
+    @Inject
+    lateinit var json: Json
 
 
     override fun onCreate() {
         super.onCreate()
-        Timber.d("FCM Notification service created")
+        Log.d("debug fcm", "FCM Notification service created")
     }
 
     override fun onNewToken(token: String) {
-
-        Timber.d("onNewToken -> FCM token: $token")
-        //No need to send token to server again here since we are already doing so on every login
-        //into the app in the main activity
+        Log.d("debug fcm", "onNewToken -> FCM token: $token")
+        CoroutineScope(dispatcher).launch {
+            addDeviceToFirebaseUseCase.invoke(token, AddDeviceTokenData(token, Tools.serialNumber))
+        }
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
-        Timber.d("on FCM message received called")
+        Log.d("debug fcm", "on FCM message received called")
         super.onMessageReceived(p0)
         handleMessage(p0)
     }
 
     private fun handleMessage(remoteMessage: RemoteMessage) {
-        Timber.d("handle FCM message called")
-        Timber.d("remote FCM message data: ${remoteMessage.data}")
+        Log.d("debug fcm", "handle FCM message called")
+        Log.d("debug fcm", "remote FCM message data: ${remoteMessage.data}")
         remoteMessage.data.entries.forEach {
-            Timber.d("remote FCM message data entry: ${it}\n")
+            Log.d("debug fcm", "remote FCM message data entry: ${it}\n")
         }
         val payload = remoteMessage.data[DATA_PAYLOAD_KEY]
         val title = remoteMessage.data[DATA_TITLE_KEY]
         val body = remoteMessage.data[DATA_BODY_KEY]
 
-        Timber.d("FCM Resolved payload: $payload")
-        Timber.d("FCM Resolved tile: $title")
-        Timber.d("FCM Resolved body: $body")
+        Log.d("debug fcm", "FCM Resolved payload: $payload")
+        Log.d("debug fcm", "FCM Resolved tile: $title")
+        Log.d("debug fcm", "FCM Resolved body: $body")
 
-        val transactionPayload = resolvePayload(payload, moshi)
-        Timber.d("FCM Notification Transaction Payload -> $transactionPayload")
+        val transactionPayload = resolvePayload(payload = payload, json = json)
+        Log.d("debug fcm", "FCM Notification Transaction Payload -> $transactionPayload")
 
         if (transactionPayload?.transactionTypeName == "Wallet Top Up") {
             CoroutineScope(dispatcher).launch {
                 transactionPayload.let {
-                    recentFundDao.insertRecentFund(
-                        RecentFundEntity(
+                    insertRecentFundUseCase.invoke(
+                        RecentFund(
                             transactionReference = it.transactionReference ?: "",
                             amount = it.amount ?: 0.00,
                             accountReference = it.accountReference ?: "",
@@ -89,7 +100,8 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
                             receiverBankName = it.receiverBankName ?: "",
                             receiverAccountNumber = it.receiverAccountNumber ?: "",
                             receiverAccountName = it.receiverAccountName ?: "",
-                            sessionId = it.sessionID ?: ""
+                            sessionId = it.sessionID ?: "",
+                            transactionHash = it.transactionHash ?: ""
                         )
                     )
                 }
@@ -102,28 +114,39 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun displayNotificationBanner(title: String, body: String) {
-        Utils.playSuccessSound(this)
-        NotificationBuilder(context = this, messageBody = body, messageTitle = title).postNotification()
+        playSuccessSound(this)
+        NotificationBuilder(
+            context = this,
+            messageBody = body,
+            messageTitle = title
+        ).postNotification()
     }
 
     private fun broadcastCreditAlert(transactionPayload: TransactionPayload) {
-        Timber.d("Notification transaction payload -> $transactionPayload")
-        Timber.d(
+        Log.d("debug fcm", "Notification transaction payload -> $transactionPayload")
+        Log.d(
+            "debug fcm",
             "Broadcasting alert message, sender -> " +
                     "${transactionPayload.senderAccountName}, " +
                     "amount -> ${transactionPayload.amount}"
         )
         val intent = Intent(PAY_WITH_TRANSFER_CREDIT_ALERT_EVENT)
         intent.putExtra(DATA_PAYLOAD_KEY, transactionPayload)
-        Utils.playSuccessSound(this)
+        playSuccessSound(this)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     private fun broadcastNotificationMessage(title: String, body: String) {
-        Timber.d("Broadcasting notification message: title -> $title, body -> $body")
+        Log.d(
+            "debug notification message",
+            "Broadcasting notification message: title -> $title, body -> $body"
+        )
         val intent = Intent(NOTIFICATION_MESSAGE_EVENT)
-        intent.putExtra(DATA_MESSAGE_KEY, NotificationMessage(title, body, LocalDateTime.now().toString()))
-        Utils.playSuccessSound(this)
+        intent.putExtra(
+            DATA_MESSAGE_KEY,
+            PushNotificationMessage(title, body, LocalDateTime.now().toString(), seen = false)
+        )
+        playSuccessSound(this)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -138,11 +161,11 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
         const val DATA_TITLE_KEY = "title"
         const val DATA_BODY_KEY = "body"
 
-        fun resolvePayload(payload: String?, moshi: Moshi): TransactionPayload? {
-            val transactionPayloadType = object : TypeToken<TransactionPayload>() {}.type
-            val transactionPayloadAdapter: JsonAdapter<TransactionPayload>? =
-                moshi.adapter(transactionPayloadType)
-            return payload?.let { transactionPayloadAdapter?.fromJson(it) }
+        fun resolvePayload(payload: String?, json: Json): TransactionPayload? {
+//            val transactionPayload: TransactionPayload? =
+//            val transactionPayloadType = object : TypeToken<TransactionPayload>() {}.type
+//            val transactionPayloadAdapter: JsonAdapter<TransactionPayload>? = moshi.adapter(transactionPayloadType)
+            return payload?.let { json.decodeFromString(it) }
         }
     }
 

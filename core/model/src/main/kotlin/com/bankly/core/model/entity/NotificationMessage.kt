@@ -1,5 +1,6 @@
 package com.bankly.core.model.entity
 
+
 data class NotificationMessage(
     val title: String,
     val message: String,

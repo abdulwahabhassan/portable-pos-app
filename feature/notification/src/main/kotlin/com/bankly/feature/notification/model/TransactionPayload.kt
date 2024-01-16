@@ -1,11 +1,13 @@
 package com.bankly.feature.notification.model
 
 import android.os.Parcelable
+import com.bankly.core.model.sealed.TransactionReceipt
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
-
 @Parcelize
 data class TransactionPayload(
     @SerialName("TransactionTypeName")
@@ -19,6 +21,9 @@ data class TransactionPayload(
 
     @SerialName("ReceiverAccountName")
     val receiverAccountName: String?,
+
+    @SerialName("transactionHash")
+    val transactionHash: String? = null,
 
     @SerialName("Amount")
     val amount: Double?,
@@ -57,8 +62,28 @@ data class TransactionPayload(
     var sessionID: String?,
 
     @SerialName("Title")
-    var title: String?,
+    var title: String? = null,
 
     @SerialName("Body")
-    var body: String?,
-) : Parcelable
+    var body: String? = null,
+) : Parcelable {
+
+    fun toTransactionReceipt(): TransactionReceipt.PayWithTransfer {
+        return TransactionReceipt.PayWithTransfer(
+            senderAccountName = this.senderAccountName ?: "",
+            senderAccountNumber = this.senderAccountNumber ?: "",
+            senderBankName = this.senderBankName ?: "",
+            amount = this.amount ?: 0.00,
+            reference = this.transactionReference ?: "",
+            receiverAccountNumber = this.receiverAccountNumber ?: "",
+            message = this.paymentDescription ?: this.body ?: "",
+            receiverName = this.receiverAccountName ?: "",
+            receiverBankName = this.receiverBankName ?: "",
+            dateCreated = this.transactionDate ?: "",
+            statusName = "Successful",
+            sessionId = this.sessionID ?: ""
+        )
+    }
+}
+
+

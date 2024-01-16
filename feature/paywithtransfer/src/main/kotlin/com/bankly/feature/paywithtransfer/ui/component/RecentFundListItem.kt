@@ -29,7 +29,7 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.model.entity.RecentFund
-import com.bankly.core.util.Formatter.formatServerDateTime
+import com.bankly.core.model.util.Formatter.formatServerDateTime
 import com.bankly.feature.paywithtransfer.R
 
 @Composable
@@ -113,6 +113,7 @@ private fun RecentFundListItemPreview() {
                 receiverBankName = "Bankly MFB",
                 receiverAccountNumber = "3000291002",
                 receiverAccountName = "John Doe",
+                seen = false
             ),
             onClick = {},
         )

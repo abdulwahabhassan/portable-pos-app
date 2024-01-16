@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_name">FCM Channel</string>
+    <string name="channel_description">push notification channel</string>
+</resources>

@@ -4,5 +4,5 @@ class AddDeviceToken(
     val id: Long,
     val userId: String,
     val deviceId: String,
-    val provider: String
+    val provider: Long
 )

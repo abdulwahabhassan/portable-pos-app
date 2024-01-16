@@ -14,6 +14,7 @@ data class RecentFund(
     val phoneNumber: String,
     val userId: String,
     val transactionDate: String,
+    val seen: Boolean,
     val senderBankName: String,
     val receiverBankName: String,
     val receiverAccountNumber: String,

@@ -21,6 +21,7 @@ internal fun Project.configureKotlinAndroid(
         apply("org.jetbrains.kotlin.kapt")
         apply("dagger.hilt.android.plugin")
         apply("kotlinx-serialization")
+        apply("kotlin-parcelize")
     }
     commonExtension.apply {
         compileSdk = 34
@@ -80,5 +81,8 @@ internal fun Project.configureKotlinAndroid(
         add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())
         add("testImplementation", kotlin("test"))
         add("androidTestImplementation", kotlin("test"))
+        add("implementation", libs.findLibrary("moshi.kotlin").get())
+        add("implementation", libs.findLibrary("gson").get())
+
     }
 }

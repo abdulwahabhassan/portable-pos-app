@@ -11,16 +11,21 @@ interface PayWithTransferRepository {
 
     suspend fun syncRecentFunding(
         token: String,
-        body: com.bankly.core.model.data.SyncRecentFundingData,
+        body: SyncRecentFundingData,
     ): Flow<Resource<String>>
 
     suspend fun getRecentFunding(
         token: String,
-        body: com.bankly.core.model.data.GetRecentFundingData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.RecentFund>>>
+        body: GetRecentFundingData,
+    ): Flow<Resource<List<RecentFund>>>
 
     suspend fun sendReceipt(
         token: String,
-        body: com.bankly.core.model.data.SendReceiptData,
+        body: SendReceiptData,
     ): Flow<Resource<String>>
+
+    suspend fun insertRecentFund(recentFund: RecentFund)
+
+    suspend fun getRecentFund(transactionRef: String, sessionId: String): RecentFund?
 }
+

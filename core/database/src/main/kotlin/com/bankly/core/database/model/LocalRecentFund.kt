@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recent_fund")
-data class RecentFund(
+data class LocalRecentFund(
     @PrimaryKey
     @ColumnInfo(name = "transaction_reference")
     val transactionReference: String,
@@ -27,6 +27,8 @@ data class RecentFund(
     val userId: String,
     @ColumnInfo(name = "transaction_date")
     val transactionDate: String,
+    @ColumnInfo(name = "transaction_hash")
+    val transactionHash: String,
     @ColumnInfo(name = "seen")
     val seen: Boolean = false,
     @ColumnInfo(name = "senderBankName")
@@ -38,24 +40,4 @@ data class RecentFund(
     @ColumnInfo(name = "receiverAccountName")
     val receiverAccountName: String
 
-) {
-    fun mapToRecentFund(): RecentFund {
-        return RecentFund(
-            transactionReference = this.transactionReference,
-            amount = this.amount,
-            accountReference = this.accountReference,
-            paymentDescription = this.paymentDescription,
-            senderAccountNumber = this.senderAccountNumber,
-            senderAccountName = this.senderAccountName,
-            sessionId = this.sessionId,
-            phoneNumber = this.phoneNumber,
-            userId = this.userId,
-            transactionDate = this.transactionDate,
-            seen = this.seen,
-            senderBankName = this.senderBankName,
-            receiverBankName = this.receiverBankName,
-            receiverAccountNumber = this.receiverAccountNumber,
-            receiverAccountName = this.receiverAccountName
-        )
-    }
-}
+)

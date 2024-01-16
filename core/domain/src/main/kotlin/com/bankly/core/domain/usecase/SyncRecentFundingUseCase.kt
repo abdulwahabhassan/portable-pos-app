@@ -11,6 +11,6 @@ class SyncRecentFundingUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         token: String,
-        body: com.bankly.core.model.data.SyncRecentFundingData,
+        body: SyncRecentFundingData,
     ): Flow<Resource<String>> = payWithTransferRepository.syncRecentFunding(token, body)
 }

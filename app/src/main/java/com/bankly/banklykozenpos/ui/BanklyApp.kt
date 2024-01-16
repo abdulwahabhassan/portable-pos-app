@@ -7,12 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.bankly.banklykozenpos.navigation.AppNavHost
+import com.bankly.core.model.entity.NotificationMessage
+import com.bankly.feature.notification.model.TransactionPayload
 
 @Composable
-fun BanklyApp(
-    appState: BanklyAppState = rememberBanklyAppState(),
+internal fun BanklyApp(
+    appState: BanklyAppState,
     onCloseApp: () -> Unit,
     activity: Activity,
+    onClosNotificationMessageDialog: (NotificationMessage) -> Unit,
+    onCloseTransactionAlertDialog: (TransactionPayload) -> Unit,
 ) {
     var isSessionExpired: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -27,5 +31,9 @@ fun BanklyApp(
         onSessionRenewed = {
             isSessionExpired = false
         },
+        onClosNotificationMessageDialog = onClosNotificationMessageDialog,
+        onCloseTransactionAlertDialog = onCloseTransactionAlertDialog,
     )
+
+
 }

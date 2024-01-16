@@ -30,11 +30,11 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.model.entity.Transaction
-import com.bankly.core.util.Formatter.formatServerDateTime
+import com.bankly.core.model.util.Formatter.formatServerDateTime
 
 @Composable
 internal fun EodTransactionListItem(
-    transaction: com.bankly.core.model.entity.Transaction,
+    transaction: Transaction,
     onClick: () -> Unit,
 ) {
     Column {
@@ -109,7 +109,7 @@ internal fun EodTransactionListItem(
 private fun EodTransactionListItemPreview() {
     BanklyTheme {
         EodTransactionListItem(
-            transaction = com.bankly.core.model.entity.Transaction.History(
+            transaction = Transaction.History(
                 creditAccountNo = "",
                 debitAccountNo = "",
                 transactionBy = "",

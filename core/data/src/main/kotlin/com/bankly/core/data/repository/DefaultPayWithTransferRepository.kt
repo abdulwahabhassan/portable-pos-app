@@ -1,21 +1,19 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.model.data.GetRecentFundingData
-import com.bankly.core.model.data.SendReceiptData
-import com.bankly.core.model.data.SyncRecentFundingData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asRecentFund
 import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleRequest
+import com.bankly.core.database.dao.RecentFundDao
 import com.bankly.core.domain.repository.PayWithTransferRepository
 import com.bankly.core.model.entity.RecentFund
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.retrofit.service.PayWithTransferService
 import com.bankly.core.network.retrofit.service.WalletService
-import com.bankly.core.model.sealed.Resource
-import com.bankly.core.model.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,7 +25,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
     private val networkMonitor: NetworkMonitor,
     private val json: Json,
     private val payWithTransferService: PayWithTransferService,
-    private val walletService: WalletService,
+    private val recentFundDao: RecentFundDao,
 ) : PayWithTransferRepository {
     override suspend fun syncRecentFunding(
         token: String,
@@ -58,7 +56,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
     override suspend fun getRecentFunding(
         token: String,
         body: com.bankly.core.model.data.GetRecentFundingData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.RecentFund>>> = flow {
+    ): Flow<Resource<List<RecentFund>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -93,7 +91,10 @@ class DefaultPayWithTransferRepository @Inject constructor(
                     networkMonitor = networkMonitor,
                     json = json,
                     apiRequest = {
-                        payWithTransferService.sendReceipt(token = token, body = body.asRequestBody())
+                        payWithTransferService.sendReceipt(
+                            token = token,
+                            body = body.asRequestBody()
+                        )
                     },
                 ),
             )
@@ -103,4 +104,13 @@ class DefaultPayWithTransferRepository @Inject constructor(
             Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
+
+    override suspend fun insertRecentFund(recentFund: RecentFund) {
+        recentFundDao.insertRecentFund(recentFund.asRecentFund())
+    }
+
+    override suspend fun getRecentFund(transactionRef: String, sessionId: String): RecentFund? {
+        return recentFundDao.getRecentFund(transactionRef, sessionId)?.asRecentFund()
+    }
+
 }
