@@ -25,12 +25,12 @@ import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.BanklyWarningColor
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.BankNetwork
+import com.bankly.core.model.entity.BankNetwork
 import kotlin.math.roundToInt
 
 @Composable
 internal fun BankNetworkListItem(
-    bankNetwork: BankNetwork,
+    bankNetwork: com.bankly.core.model.entity.BankNetwork,
 ) {
     val statusColor = when (bankNetwork.networkPercentage) {
         in 1.00..50.00 -> BanklyErrorColor.errorColor
@@ -103,7 +103,7 @@ internal fun BankNetworkListItem(
 private fun SavedBeneficiaryItemPreview() {
     BanklyTheme {
         BankNetworkListItem(
-            bankNetwork = BankNetwork(
+            bankNetwork = com.bankly.core.model.entity.BankNetwork(
                 bankName = "Hassan Abdulwahab",
                 bankIcon = "",
                 networkPercentage = 100.00,

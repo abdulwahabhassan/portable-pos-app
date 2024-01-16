@@ -4,12 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBankNetworksUseCase
-import com.bankly.core.entity.BankNetwork
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.entity.BankNetwork
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -37,7 +37,7 @@ internal class NetworkCheckerViewModel @Inject constructor(
 
             NetworkCheckerScreenEvent.LoadUiData -> {
                 getNetworkCheckerUseCase.invoke(userPreferencesDataStore.data().token)
-                    .onEach { resource: Resource<List<BankNetwork>> ->
+                    .onEach { resource: Resource<List<com.bankly.core.model.entity.BankNetwork>> ->
                         resource.onLoading {
                             setUiState { copy(isBankListLoading = true) }
                         }
@@ -50,7 +50,7 @@ internal class NetworkCheckerViewModel @Inject constructor(
                                 )
                             }
                         }
-                        resource.onReady { bankNetworks: List<BankNetwork> ->
+                        resource.onReady { bankNetworks: List<com.bankly.core.model.entity.BankNetwork> ->
                             setUiState {
                                 copy(
                                     isBankListLoading = false,

@@ -21,8 +21,8 @@ import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.RecentFund
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.RecentFund
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.paywithtransfer.R
 import com.bankly.feature.paywithtransfer.ui.component.RecentFundListItem
 import kotlinx.coroutines.flow.launchIn
@@ -100,7 +100,7 @@ private fun PayWithTransferScreen(
                 }
             }
             if (screenState.isAccountDetailsExpanded.not()) {
-                items(screenState.recentFunds) { item: RecentFund ->
+                items(screenState.recentFunds) { item: com.bankly.core.model.entity.RecentFund ->
                     RecentFundListItem(
                         recentFund = item,
                         onClick = {
@@ -150,7 +150,7 @@ private fun PayWithTransferScreenPreview() {
             onBackPress = { },
             screenState = PayWithTransferScreenState(
                 showRecentFundDialog = false,
-                selectedRecentFund = RecentFund(
+                selectedRecentFund = com.bankly.core.model.entity.RecentFund(
                     transactionReference = "389030022838200",
                     amount = 20.00,
                     accountReference = "73783899",

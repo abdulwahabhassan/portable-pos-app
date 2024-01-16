@@ -10,7 +10,7 @@ import com.bankly.banklykozenpos.R
 import com.bankly.banklykozenpos.ui.BanklyAppState
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.entity.Feature
+import com.bankly.core.model.entity.Feature
 import com.bankly.feature.authentication.navigation.authenticationNavGraph
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.authentication.navigation.isValidatePassCodeArg
@@ -71,20 +71,20 @@ fun AppNavHost(
         )
         dashBoardNavGraph(
             onExitApp = onExitApp,
-            onFeatureClick = { feature: Feature ->
+            onFeatureClick = { feature: com.bankly.core.model.entity.Feature ->
                 appState.navigateTo(
                     when (feature) {
-                        is Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
-                        is Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
-                        is Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
-                        is Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
-                        is Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
-                        is Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
-                        is Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
-                        is Feature.Float -> AppTopLevelDestination.FLOAT
-                        is Feature.EndOfDay -> AppTopLevelDestination.EOD
-                        is Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
-                        is Feature.Settings -> AppTopLevelDestination.SETTINGS
+                        is com.bankly.core.model.entity.Feature.PayWithCard -> AppTopLevelDestination.PAY_WITH_CARD
+                        is com.bankly.core.model.entity.Feature.PayWithTransfer -> AppTopLevelDestination.PAY_WITH_TRANSFER
+                        is com.bankly.core.model.entity.Feature.CardTransfer -> AppTopLevelDestination.CARD_TRANSFER
+                        is com.bankly.core.model.entity.Feature.SendMoney -> AppTopLevelDestination.SEND_MONEY
+                        is com.bankly.core.model.entity.Feature.PayBills -> AppTopLevelDestination.PAY_BILLS
+                        is com.bankly.core.model.entity.Feature.CheckBalance -> AppTopLevelDestination.CHECK_BALANCE
+                        is com.bankly.core.model.entity.Feature.PayWithUssd -> AppTopLevelDestination.PAY_WITH_USSD
+                        is com.bankly.core.model.entity.Feature.Float -> AppTopLevelDestination.FLOAT
+                        is com.bankly.core.model.entity.Feature.EndOfDay -> AppTopLevelDestination.EOD
+                        is com.bankly.core.model.entity.Feature.NetworkChecker -> AppTopLevelDestination.NETWORK_CHECKER
+                        is com.bankly.core.model.entity.Feature.Settings -> AppTopLevelDestination.SETTINGS
                     },
                 )
             },

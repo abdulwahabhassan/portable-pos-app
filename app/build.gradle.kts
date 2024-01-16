@@ -46,20 +46,3 @@ kapt {
     correctErrorTypes = true
 }
 
-dependencies {
-    implementation(project(":feature:authentication"))
-    implementation(project(":feature:dashboard"))
-    implementation(project(":feature:paywithcard"))
-    implementation(project(":feature:cardtransfer"))
-    implementation(project(":feature:sendmoney"))
-    implementation(project(":feature:paywithtransfer"))
-    implementation(project(":feature:paybills"))
-    implementation(project(":feature:transactiondetails"))
-    implementation(project(":feature:eod"))
-    implementation(project(":feature:contactus"))
-    implementation(project(":feature:logcomplaint"))
-    implementation(project(":feature:networkchecker"))
-    implementation(project(":feature:settings"))
-    implementation(project(":feature:checkcardbalance"))
-    implementation(project(":feature:faq"))
-}

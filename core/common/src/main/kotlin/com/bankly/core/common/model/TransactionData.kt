@@ -2,10 +2,10 @@ package com.bankly.core.common.model
 
 import com.bankly.core.common.util.Formatter
 import com.bankly.core.common.util.clientReqId
-import com.bankly.core.data.BankTransferData
-import com.bankly.core.data.BillPaymentData
-import com.bankly.core.data.CardTransferData
-import com.bankly.core.enums.BillsProviderType
+import com.bankly.core.model.data.BankTransferData
+import com.bankly.core.model.data.BillPaymentData
+import com.bankly.core.model.data.CardTransferData
+import com.bankly.core.model.enums.BillsProviderType
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -26,10 +26,10 @@ sealed class TransactionData(
         val vat: Double = 0.00,
         val fee: Double = 0.00,
     ) : TransactionData(transactionAmount = amount, pin = transactionPin) {
-        fun toBankTransferData(): BankTransferData {
+        fun toBankTransferData(): com.bankly.core.model.data.BankTransferData {
             return when (accountNumberType) {
                 AccountNumberType.ACCOUNT_NUMBER -> {
-                    BankTransferData.AccountNumber(
+                    com.bankly.core.model.data.BankTransferData.AccountNumber(
                         accountName = accountName,
                         accountNumber = accountNumber,
                         bankId = bankId,
@@ -42,7 +42,7 @@ sealed class TransactionData(
                 }
 
                 AccountNumberType.PHONE_NUMBER -> {
-                    BankTransferData.PhoneNumber(
+                    com.bankly.core.model.data.BankTransferData.PhoneNumber(
                         amount = amount.toString(),
                         recipientAccount = accountNumber,
                         otp = pin,
@@ -71,8 +71,8 @@ sealed class TransactionData(
         val cableTvNumberOrMeterNumber: String,
         val cableTvOwnerNameOrMeterOwnerName: String,
     ) : TransactionData(transactionAmount = amount, pin = transactionPin) {
-        fun toBillPaymentData(): BillPaymentData {
-            return BillPaymentData(
+        fun toBillPaymentData(): com.bankly.core.model.data.BillPaymentData {
+            return com.bankly.core.model.data.BillPaymentData(
                 billItemId = billItemId,
                 billId = billId,
                 amount = amount.toString(),
@@ -107,7 +107,7 @@ sealed class TransactionData(
         val responseMessage: String = "",
         val bankName: String = ""
     ) : TransactionData(transactionAmount = amount, pin = "") {
-        fun toCardTransferData() = CardTransferData(
+        fun toCardTransferData() = com.bankly.core.model.data.CardTransferData(
             accountName = accountName,
             inquiryReference = inquiryReference,
             accountNumber = accountNumber,

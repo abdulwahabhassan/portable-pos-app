@@ -1,8 +1,8 @@
 package com.bankly.core.domain.usecase
 
 import com.bankly.core.domain.repository.UserRepository
-import com.bankly.core.entity.UserWallet
-import com.bankly.core.sealed.Resource
+import com.bankly.core.model.entity.UserWallet
+import com.bankly.core.model.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

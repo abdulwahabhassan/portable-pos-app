@@ -37,7 +37,7 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.entity.Bank
+import com.bankly.core.model.entity.Bank
 import com.bankly.feature.cardtransfer.R
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -108,7 +108,7 @@ private fun RecipientScreen(
             BankSearchView(
                 isBankListLoading = screenState.isBankListLoading,
                 bankList = screenState.banks,
-                onSelectBank = { bank: Bank ->
+                onSelectBank = { bank: com.bankly.core.model.entity.Bank ->
                     onUiEvent(
                         RecipientScreenEvent.OnSelectBank(
                             bank,

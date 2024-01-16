@@ -1,10 +1,10 @@
 package com.bankly.core.domain.repository
 
-import com.bankly.core.data.TransactionFilterData
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilterType
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.data.TransactionFilterData
+import com.bankly.core.model.entity.Transaction
+import com.bankly.core.model.entity.TransactionFilterType
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
@@ -12,12 +12,12 @@ interface TransactionRepository {
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: TransactionFilterData,
-    ): Flow<Resource<List<Transaction>>>
+        filter: com.bankly.core.model.data.TransactionFilterData,
+    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>>
 
     suspend fun getEodTransactions(
-        filter: TransactionFilterData,
-    ): Flow<Resource<List<Transaction>>>
+        filter: com.bankly.core.model.data.TransactionFilterData,
+    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>>
 
     suspend fun getTransactionsFilterTypes(
         token: String,

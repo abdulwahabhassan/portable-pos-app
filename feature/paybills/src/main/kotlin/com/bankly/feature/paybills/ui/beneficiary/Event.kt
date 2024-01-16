@@ -1,15 +1,15 @@
 package com.bankly.feature.paybills.ui.beneficiary
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.bankly.core.entity.BillPlan
-import com.bankly.core.entity.BillProvider
+import com.bankly.core.model.entity.BillPlan
+import com.bankly.core.model.entity.BillProvider
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
 import com.bankly.feature.paybills.model.SavedBeneficiary
 
 internal sealed interface BeneficiaryScreenEvent {
     data class FetchProviders(val billType: BillType) : BeneficiaryScreenEvent
-    data class OnSelectProvider(val billProvider: BillProvider, val billType: BillType) : BeneficiaryScreenEvent
+    data class OnSelectProvider(val billProvider: com.bankly.core.model.entity.BillProvider, val billType: BillType) : BeneficiaryScreenEvent
     data class OnInputAmount(val amountTFV: TextFieldValue, val minimumAmount: Double?) : BeneficiaryScreenEvent
     class OnInputMeterNumber(val meterNumberTFV: TextFieldValue, val providerId: Long, val planId: Long) : BeneficiaryScreenEvent
     class OnInputCableTvNumber(val cableTvNumber: TextFieldValue, val providerId: Long) : BeneficiaryScreenEvent
@@ -23,8 +23,8 @@ internal sealed interface BeneficiaryScreenEvent {
         val billType: BillType,
         val phoneNumber: String,
         val amount: String,
-        val billProvider: BillProvider?,
-        val billPlan: BillPlan?,
+        val billProvider: com.bankly.core.model.entity.BillProvider?,
+        val billPlan: com.bankly.core.model.entity.BillPlan?,
         val cableTvNumberOrMeterNumber: String?,
         val cableTvOwnerNameOrMeterOwnerName: String,
     ) : BeneficiaryScreenEvent
@@ -34,7 +34,7 @@ internal sealed interface BeneficiaryScreenEvent {
         val billType: BillType,
     ) : BeneficiaryScreenEvent
 
-    class OnSelectPlan(val billType: BillType, val billPlan: BillPlan) :
+    class OnSelectPlan(val billType: BillType, val billPlan: com.bankly.core.model.entity.BillPlan) :
         BeneficiaryScreenEvent
 
     class UpdateBillType(val billType: BillType) :

@@ -6,18 +6,18 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.CardTransferAccountInquiryData
+import com.bankly.core.model.data.CardTransferAccountInquiryData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.core.entity.AccountNameEnquiry
-import com.bankly.core.entity.Bank
-import com.bankly.core.entity.CardTransferAccountInquiry
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.entity.AccountNameEnquiry
+import com.bankly.core.model.entity.Bank
+import com.bankly.core.model.entity.CardTransferAccountInquiry
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -125,7 +125,7 @@ internal class RecipientViewModel @Inject constructor(
                 val amount = AmountFormatter().polish(event.amount).replace(",", "")
                     .toDouble()
                 performAccountInquiry(
-                    CardTransferAccountInquiryData(
+                    com.bankly.core.model.data.CardTransferAccountInquiryData(
                         event.selectedBankId ?: 0L,
                         event.accountNumber,
                         AmountFormatter().polish(event.amount).replace(",", "")
@@ -148,7 +148,7 @@ internal class RecipientViewModel @Inject constructor(
     }
 
     private suspend fun performAccountInquiry(
-        cardTransferAccountInquiryData: CardTransferAccountInquiryData,
+        cardTransferAccountInquiryData: com.bankly.core.model.data.CardTransferAccountInquiryData,
         senderPhoneNumber: String,
         amount: Double,
     ) {
@@ -161,7 +161,7 @@ internal class RecipientViewModel @Inject constructor(
                     copy(isAccountValidationLoading = true)
                 }
             }
-            resource.onReady { accountInquiry: CardTransferAccountInquiry ->
+            resource.onReady { accountInquiry: com.bankly.core.model.entity.CardTransferAccountInquiry ->
                 Log.d("debug account inquiry", "account inquiry: $accountInquiry")
                 if (accountInquiry.balance > cardTransferAccountInquiryData.amount) {
                     setUiState {
@@ -222,7 +222,7 @@ internal class RecipientViewModel @Inject constructor(
                         copy(isBankListLoading = true)
                     }
                 }
-                resource.onReady { banks: List<Bank> ->
+                resource.onReady { banks: List<com.bankly.core.model.entity.Bank> ->
                     setUiState {
                         copy(isBankListLoading = false, banks = banks)
                     }
@@ -274,7 +274,7 @@ internal class RecipientViewModel @Inject constructor(
                         )
                     }
                 }
-                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
+                resource.onReady { accountNameEnquiry: com.bankly.core.model.entity.AccountNameEnquiry ->
                     setUiState {
                         copy(
                             isNameInquiryLoading = false,

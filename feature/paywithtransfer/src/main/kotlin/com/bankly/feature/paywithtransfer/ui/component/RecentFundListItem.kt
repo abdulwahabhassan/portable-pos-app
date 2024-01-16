@@ -28,13 +28,13 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.RecentFund
+import com.bankly.core.model.entity.RecentFund
 import com.bankly.core.util.Formatter.formatServerDateTime
 import com.bankly.feature.paywithtransfer.R
 
 @Composable
 internal fun RecentFundListItem(
-    recentFund: RecentFund,
+    recentFund: com.bankly.core.model.entity.RecentFund,
     onClick: () -> Unit,
 ) {
     Column {
@@ -97,7 +97,7 @@ internal fun RecentFundListItem(
 private fun RecentFundListItemPreview() {
     BanklyTheme {
         RecentFundListItem(
-            recentFund = RecentFund(
+            recentFund = com.bankly.core.model.entity.RecentFund(
                 transactionReference = "389030022838200",
                 amount = 20.00,
                 accountReference = "73783899",

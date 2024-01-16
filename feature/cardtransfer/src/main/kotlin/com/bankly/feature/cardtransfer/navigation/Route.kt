@@ -11,7 +11,7 @@ import com.bankly.core.common.ui.selectaccounttype.SelectAccountTypeRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
 import com.bankly.core.common.ui.transactionfailed.TransactionFailedRoute
 import com.bankly.core.common.ui.transactionsuccess.TransactionSuccessRoute
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.cardtransfer.ui.recipient.RecipientRoute
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

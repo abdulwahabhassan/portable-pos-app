@@ -25,7 +25,7 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.sealed.State
+import com.bankly.core.model.sealed.State
 import com.bankly.feature.authentication.R
 
 @Composable

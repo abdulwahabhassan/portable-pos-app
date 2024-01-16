@@ -1,6 +1,6 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.data.EodTransactionListData
+import com.bankly.core.model.data.EodTransactionListData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asEodInfo
@@ -8,11 +8,11 @@ import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.asSyncEod
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.EndOfDayRepository
-import com.bankly.core.entity.EodInfo
-import com.bankly.core.entity.SyncEod
+import com.bankly.core.model.entity.EodInfo
+import com.bankly.core.model.entity.SyncEod
 import com.bankly.core.network.retrofit.service.PosNotificationService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -25,7 +25,7 @@ class DefaultEndOfDayRepository @Inject constructor(
     private val json: Json,
     private val posNotificationService: PosNotificationService,
 ) : EndOfDayRepository {
-    override suspend fun getEodInfo(token: String): Flow<Resource<EodInfo>> = flow {
+    override suspend fun getEodInfo(token: String): Flow<Resource<com.bankly.core.model.entity.EodInfo>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleRequest(
@@ -47,8 +47,8 @@ class DefaultEndOfDayRepository @Inject constructor(
 
     override suspend fun syncEod(
         token: String,
-        eodTransactionListData: EodTransactionListData,
-    ): Flow<Resource<SyncEod>> = flow {
+        eodTransactionListData: com.bankly.core.model.data.EodTransactionListData,
+    ): Flow<Resource<com.bankly.core.model.entity.SyncEod>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleRequest(

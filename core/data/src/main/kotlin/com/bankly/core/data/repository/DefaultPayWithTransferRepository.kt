@@ -1,8 +1,8 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.data.GetRecentFundingData
-import com.bankly.core.data.SendReceiptData
-import com.bankly.core.data.SyncRecentFundingData
+import com.bankly.core.model.data.GetRecentFundingData
+import com.bankly.core.model.data.SendReceiptData
+import com.bankly.core.model.data.SyncRecentFundingData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asRecentFund
@@ -10,12 +10,12 @@ import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.PayWithTransferRepository
-import com.bankly.core.entity.RecentFund
+import com.bankly.core.model.entity.RecentFund
 import com.bankly.core.network.model.result.RecentFundResult
 import com.bankly.core.network.retrofit.service.PayWithTransferService
 import com.bankly.core.network.retrofit.service.WalletService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,7 +31,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
 ) : PayWithTransferRepository {
     override suspend fun syncRecentFunding(
         token: String,
-        body: SyncRecentFundingData,
+        body: com.bankly.core.model.data.SyncRecentFundingData,
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (
@@ -57,8 +57,8 @@ class DefaultPayWithTransferRepository @Inject constructor(
 
     override suspend fun getRecentFunding(
         token: String,
-        body: GetRecentFundingData,
-    ): Flow<Resource<List<RecentFund>>> = flow {
+        body: com.bankly.core.model.data.GetRecentFundingData,
+    ): Flow<Resource<List<com.bankly.core.model.entity.RecentFund>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -83,7 +83,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
 
     override suspend fun sendReceipt(
         token: String,
-        body: SendReceiptData,
+        body: com.bankly.core.model.data.SendReceiptData,
     ): Flow<Resource<String>> = flow {
         emit(Resource.Loading)
         when (

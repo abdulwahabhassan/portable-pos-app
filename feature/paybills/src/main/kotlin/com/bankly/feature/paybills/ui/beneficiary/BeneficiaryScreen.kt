@@ -37,8 +37,8 @@ import com.bankly.core.designsystem.component.BanklyActionDialog
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.entity.BillPlan
-import com.bankly.core.entity.BillProvider
+import com.bankly.core.model.entity.BillPlan
+import com.bankly.core.model.entity.BillProvider
 import com.bankly.feature.paybills.R
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
@@ -247,8 +247,8 @@ private fun BeneficiaryScreen(
                 },
                 itemToString = { item ->
                     when (bottomSheetType) {
-                        BottomSheetType.PROVIDER -> (item as BillProvider).name
-                        BottomSheetType.PLAN -> (item as BillPlan).name
+                        BottomSheetType.PROVIDER -> (item as com.bankly.core.model.entity.BillProvider).name
+                        BottomSheetType.PLAN -> (item as com.bankly.core.model.entity.BillPlan).name
                         null -> ""
                     }
                 },
@@ -260,12 +260,12 @@ private fun BeneficiaryScreen(
                                     when (type) {
                                         BottomSheetType.PROVIDER -> BeneficiaryScreenEvent.OnSelectProvider(
                                             billType = billType,
-                                            billProvider = item as BillProvider,
+                                            billProvider = item as com.bankly.core.model.entity.BillProvider,
                                         )
 
                                         BottomSheetType.PLAN -> BeneficiaryScreenEvent.OnSelectPlan(
                                             billType = billType,
-                                            billPlan = item as BillPlan,
+                                            billPlan = item as com.bankly.core.model.entity.BillPlan,
                                         )
                                     },
                                 )
@@ -278,12 +278,12 @@ private fun BeneficiaryScreen(
                                     when (type) {
                                         BottomSheetType.PROVIDER -> BeneficiaryScreenEvent.OnSelectProvider(
                                             billType = billType,
-                                            billProvider = item as BillProvider,
+                                            billProvider = item as com.bankly.core.model.entity.BillProvider,
                                         )
 
                                         BottomSheetType.PLAN -> BeneficiaryScreenEvent.OnSelectPlan(
                                             billType = billType,
-                                            billPlan = item as BillPlan,
+                                            billPlan = item as com.bankly.core.model.entity.BillPlan,
                                         )
                                     },
                                 )
@@ -320,10 +320,10 @@ private fun BeneficiaryScreen(
                 drawItem = { item, selected, itemEnabled, onClick ->
                     SelectableListItem(
                         text = when (bottomSheetType) {
-                            BottomSheetType.PROVIDER -> (item as BillProvider).name
+                            BottomSheetType.PROVIDER -> (item as com.bankly.core.model.entity.BillProvider).name
                             BottomSheetType.PLAN -> when (billType) {
-                                BillType.CABLE_TV, BillType.INTERNET_DATA -> (item as BillPlan).description
-                                BillType.ELECTRICITY -> (item as BillPlan).name
+                                BillType.CABLE_TV, BillType.INTERNET_DATA -> (item as com.bankly.core.model.entity.BillPlan).description
+                                BillType.ELECTRICITY -> (item as com.bankly.core.model.entity.BillPlan).name
                                 BillType.AIRTIME -> ""
                             }
                             null -> ""
@@ -336,7 +336,7 @@ private fun BeneficiaryScreen(
                                 {
                                     AsyncImage(
                                         model = when (bottomSheetType) {
-                                            BottomSheetType.PROVIDER -> (item as BillProvider).billImageUrl
+                                            BottomSheetType.PROVIDER -> (item as com.bankly.core.model.entity.BillProvider).billImageUrl
                                             BottomSheetType.PLAN -> ""
                                             null -> ""
                                         },
@@ -352,7 +352,7 @@ private fun BeneficiaryScreen(
                     )
                 },
                 searchPredicate = if (bottomSheetType == BottomSheetType.PLAN && (billType == BillType.CABLE_TV || billType == BillType.INTERNET_DATA)) {
-                    { item -> (item as BillPlan).description.contains(searchQuery, true) }
+                    { item -> (item as com.bankly.core.model.entity.BillPlan).description.contains(searchQuery, true) }
                 } else {
                     null
                 },

@@ -2,7 +2,7 @@ package com.bankly.feature.cardtransfer.navigation.viewmodel
 
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 
 data class CardTransferScreenState(
     val cardTransferData: TransactionData.CardTransfer? = null,

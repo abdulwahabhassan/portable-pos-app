@@ -12,8 +12,8 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply {
                 apply("com.android.application")
-//                apply("com.google.gms.google-services")
-//                apply("com.google.firebase.crashlytics")
+                apply("com.google.gms.google-services")
+                apply("com.google.firebase.crashlytics")
             }
             extensions.configure<ApplicationExtension> {
                 defaultConfig.targetSdk = 33
@@ -22,6 +22,23 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
             }
             dependencies {
                 add("implementation", project(":core:common"))
+                add("implementation", project(":feature:authentication"))
+                add("implementation", project(":feature:dashboard"))
+                add("implementation", project(":feature:paywithcard"))
+                add("implementation", project(":feature:cardtransfer"))
+                add("implementation", project(":feature:sendmoney"))
+                add("implementation", project(":feature:paywithtransfer"))
+                add("implementation", project(":feature:paybills"))
+                add("implementation", project(":feature:transactiondetails"))
+                add("implementation", project(":feature:eod"))
+                add("implementation", project(":feature:contactus"))
+                add("implementation", project(":feature:logcomplaint"))
+                add("implementation", project(":feature:networkchecker"))
+                add("implementation", project(":feature:settings"))
+                add("implementation", project(":feature:checkcardbalance"))
+                add("implementation", project(":feature:faq"))
+                add("implementation", project(":feature:notification"))
+
             }
         }
     }

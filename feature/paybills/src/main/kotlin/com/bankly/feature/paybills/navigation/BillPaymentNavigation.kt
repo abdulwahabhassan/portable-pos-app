@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.bankly.core.common.model.TransactionData
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.paybills.model.BillType
 
 fun NavGraphBuilder.billPaymentNavGraph(

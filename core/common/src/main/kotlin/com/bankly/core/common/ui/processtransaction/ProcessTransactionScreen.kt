@@ -27,7 +27,7 @@ import com.bankly.core.common.R
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

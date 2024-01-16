@@ -74,6 +74,7 @@ internal fun Project.configureKotlinAndroid(
         add("implementation", libs.findLibrary("kotlinx.coroutines.android").get())
         add("implementation", libs.findLibrary("kotlinx.datetime").get())
         add("implementation", libs.findLibrary("kotlinx.serialization.json").get())
+        add("implementation", libs.findLibrary("kotlin.parcelize").get())
         add("implementation", libs.findLibrary("hilt.android").get())
         add("kapt", libs.findLibrary("hilt.compiler").get())
         add("kaptAndroidTest", libs.findLibrary("hilt.compiler").get())

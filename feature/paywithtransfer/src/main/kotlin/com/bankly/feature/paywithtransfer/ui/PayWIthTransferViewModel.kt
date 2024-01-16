@@ -3,16 +3,16 @@ package com.bankly.feature.paywithtransfer.ui
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.GetRecentFundingData
+import com.bankly.core.model.data.GetRecentFundingData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetAgentAccountDetailsUseCase
 import com.bankly.core.domain.usecase.GetRecentFundingUseCase
 import com.bankly.core.domain.usecase.SendReceiptUseCase
 import com.bankly.core.domain.usecase.SyncRecentFundingUseCase
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -86,7 +86,7 @@ internal class PayWithTransferViewModel @Inject constructor(
     private suspend fun getRecentFunding() {
         getRecentFundingUseCase.invoke(
             userPreferencesDataStore.data().token,
-            GetRecentFundingData(false, Tools.serialNumber),
+            com.bankly.core.model.data.GetRecentFundingData(false, Tools.serialNumber),
         )
             .onEach { resource ->
                 resource.onLoading {

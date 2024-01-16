@@ -3,9 +3,9 @@ package com.bankly.feature.eod.ui.eodtransactions
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.model.TransactionCategoryTab
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.TransactionFilter
-import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.TransactionFilter
+import com.bankly.core.model.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 internal sealed interface EodTransactionsScreenEvent {
@@ -20,7 +20,7 @@ internal sealed interface EodTransactionsScreenEvent {
         EodTransactionsScreenEvent
 
     class OnInputAccountName(val accountNameTFV: TextFieldValue) : EodTransactionsScreenEvent
-    class OnCashFlowFilterChipClick(val cashFlow: CashFlow, val cashFlows: List<CashFlow>) :
+    class OnCashFlowFilterChipClick(val cashFlow: com.bankly.core.model.entity.CashFlow, val cashFlows: List<com.bankly.core.model.entity.CashFlow>) :
         EodTransactionsScreenEvent
 
     class DateFilterClick(val dateRange: DateRange) : EodTransactionsScreenEvent

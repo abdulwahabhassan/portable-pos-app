@@ -29,12 +29,12 @@ import com.bankly.core.designsystem.component.BanklyOutlinedButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.RecentFund
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.RecentFund
+import com.bankly.core.model.sealed.TransactionReceipt
 
 @Composable
 internal fun RecentFundSummaryView(
-    recentFund: RecentFund,
+    recentFund: com.bankly.core.model.entity.RecentFund,
     onViewTransactionDetailsClick: (TransactionReceipt.PayWithTransfer) -> Unit,
     onGoToHomeClick: () -> Unit,
     onCloseIconClick: () -> Unit,
@@ -115,7 +115,7 @@ internal fun RecentFundSummaryView(
 private fun RecentFundSummaryPreview() {
     BanklyTheme {
         RecentFundSummaryView(
-            RecentFund(
+            com.bankly.core.model.entity.RecentFund(
                 transactionReference = "389030022838200",
                 amount = 20.00,
                 accountReference = "73783899",

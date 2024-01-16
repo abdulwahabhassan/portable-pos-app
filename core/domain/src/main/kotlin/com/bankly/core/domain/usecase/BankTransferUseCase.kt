@@ -1,9 +1,9 @@
 package com.bankly.core.domain.usecase
 
-import com.bankly.core.data.BankTransferData
+import com.bankly.core.model.data.BankTransferData
 import com.bankly.core.domain.repository.TransferRepository
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -12,14 +12,14 @@ class BankTransferUseCase @Inject constructor(
 ) {
     suspend fun invoke(
         token: String,
-        body: BankTransferData,
+        body: com.bankly.core.model.data.BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> =
         when (body) {
-            is BankTransferData.AccountNumber -> {
+            is com.bankly.core.model.data.BankTransferData.AccountNumber -> {
                 transferRepository.performTransferToAccountNumber(token = token, body = body)
             }
 
-            is BankTransferData.PhoneNumber -> {
+            is com.bankly.core.model.data.BankTransferData.PhoneNumber -> {
                 transferRepository.performPhoneNumberTransfer(token = token, body = body)
             }
         }

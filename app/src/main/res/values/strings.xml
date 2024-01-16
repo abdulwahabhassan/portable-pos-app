@@ -3,4 +3,5 @@
     <string name="msg_session_expired_log_in_to_continue">Session Expired! Log in to continue</string>
     <string name="title_session_expired">Session Expired!</string>
     <string name="action_okay">Okay</string>
+    <string name="msg_token_fmt">Token: %s</string>
 </resources>

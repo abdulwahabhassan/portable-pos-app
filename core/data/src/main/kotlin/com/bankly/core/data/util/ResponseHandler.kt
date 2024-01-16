@@ -3,7 +3,7 @@ package com.bankly.core.data.util
 import com.bankly.core.network.model.response.ApiResponse
 import com.bankly.core.network.model.response.TokenApiResponse
 import com.bankly.core.network.model.response.TransactionApiResponse
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Result
 
 fun <T> handleApiResponse(
     requestResult: Result<ApiResponse<T>>,

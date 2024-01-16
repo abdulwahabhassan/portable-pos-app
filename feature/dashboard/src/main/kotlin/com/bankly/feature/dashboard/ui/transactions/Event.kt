@@ -3,9 +3,9 @@ package com.bankly.feature.dashboard.ui.transactions
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.model.TransactionCategoryTab
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.TransactionFilter
-import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.TransactionFilter
+import com.bankly.core.model.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 internal sealed interface TransactionsScreenEvent {
@@ -19,7 +19,7 @@ internal sealed interface TransactionsScreenEvent {
         TransactionsScreenEvent
 
     class OnInputAccountName(val accountNameTFV: TextFieldValue) : TransactionsScreenEvent
-    class OnCashFlowFilterChipClick(val cashFlow: CashFlow, val cashFlows: List<CashFlow>) :
+    class OnCashFlowFilterChipClick(val cashFlow: com.bankly.core.model.entity.CashFlow, val cashFlows: List<com.bankly.core.model.entity.CashFlow>) :
         TransactionsScreenEvent
 
     class DateFilterClick(val dateRange: DateRange) : TransactionsScreenEvent

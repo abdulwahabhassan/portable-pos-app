@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.bankly.core.database.util.Formatter.formatServerDateTimeToLocalDate
-import com.bankly.core.entity.Transaction
+import com.bankly.core.model.entity.Transaction
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
@@ -182,9 +182,9 @@ sealed class EodTransaction {
         val localDate: String = formatServerDateTimeToLocalDate(paidOn),
     ) : EodTransaction()
 
-    fun toTransaction(): Transaction.Eod {
+    fun toTransaction(): com.bankly.core.model.entity.Transaction.Eod {
         return when (this) {
-            is BankTransfer -> Transaction.Eod.BankTransfer(
+            is BankTransfer -> com.bankly.core.model.entity.Transaction.Eod.BankTransfer(
                 beneficiaryAccountName = beneficiaryAccountName,
                 beneficiaryBankName = beneficiaryBankName,
                 transAmount = amount,
@@ -200,7 +200,7 @@ sealed class EodTransaction {
                 isIntra = isIntra
             )
 
-            is BillPayment -> Transaction.Eod.BillPayment(
+            is BillPayment -> com.bankly.core.model.entity.Transaction.Eod.BillPayment(
                 id = id,
                 ref = reference,
                 narrationText = narration,
@@ -226,7 +226,7 @@ sealed class EodTransaction {
                 isTokenType = isTokenType
             )
 
-            is CardPayment -> Transaction.Eod.CardPayment(
+            is CardPayment -> com.bankly.core.model.entity.Transaction.Eod.CardPayment(
                 cardHolderName = cardHolderName,
                 cardNumber = cardNumber,
                 cardType = cardType,
@@ -243,7 +243,7 @@ sealed class EodTransaction {
                 transTypeName = "Pos Cash Withdrawals"
             )
 
-            is CardTransfer -> Transaction.Eod.CardTransfer(
+            is CardTransfer -> com.bankly.core.model.entity.Transaction.Eod.CardTransfer(
                 beneficiaryAccountNumber = beneficiaryAccountNumber,
                 beneficiaryBankName = beneficiaryBankName,
                 beneficiaryName = beneficiaryName,
@@ -266,7 +266,7 @@ sealed class EodTransaction {
                 stan = stan
             )
 
-            is PayWithTransfer -> Transaction.Eod.PayWithTransfer(
+            is PayWithTransfer -> com.bankly.core.model.entity.Transaction.Eod.PayWithTransfer(
                 senderAccountName = senderAccountName,
                 senderAccountNumber = senderAccountNumber,
                 senderBankName = senderBankName,

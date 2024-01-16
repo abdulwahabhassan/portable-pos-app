@@ -1,6 +1,6 @@
 package com.bankly.feature.paywithcard.navigation.viewmodel
 
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.kozonpaymentlibrarymodule.posservices.AccountType
 
 sealed interface PayWithCardScreenEvent {

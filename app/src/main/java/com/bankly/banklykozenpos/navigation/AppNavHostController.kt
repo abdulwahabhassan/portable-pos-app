@@ -3,7 +3,7 @@ package com.bankly.banklykozenpos.navigation
 import android.net.Uri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.authentication.navigation.authenticationNavGraphRoute
 import com.bankly.feature.cardtransfer.navigation.cardTransferNavGraphRoute
 import com.bankly.feature.checkcardbalance.navigation.checkCardBalanceNavGraphRoute

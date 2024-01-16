@@ -3,10 +3,10 @@ package com.bankly.feature.cardtransfer.ui.recipient
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.entity.Bank
+import com.bankly.core.model.entity.Bank
 
 internal data class RecipientScreenState(
-    val selectedBank: Bank? = null,
+    val selectedBank: com.bankly.core.model.entity.Bank? = null,
     val accountNumberTFV: TextFieldValue = TextFieldValue(text = ""),
     val amountTFV: TextFieldValue = TextFieldValue(text = ""),
     val senderPhoneNumberTFV: TextFieldValue = TextFieldValue(text = ""),
@@ -24,7 +24,7 @@ internal data class RecipientScreenState(
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
     val validationIcon: Int? = null,
-    val banks: List<Bank> = emptyList(),
+    val banks: List<com.bankly.core.model.entity.Bank> = emptyList(),
 ) {
     val isContinueButtonEnabled: Boolean
         get() = accountNumberTFV.text.isNotEmpty() && isAccountNumberError.not() &&

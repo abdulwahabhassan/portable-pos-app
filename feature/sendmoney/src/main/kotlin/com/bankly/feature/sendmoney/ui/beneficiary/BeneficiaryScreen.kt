@@ -29,7 +29,7 @@ import com.bankly.core.common.ui.view.BankSearchView
 import com.bankly.core.designsystem.component.BanklyTabBar
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.entity.Bank
+import com.bankly.core.model.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 import com.bankly.feature.sendmoney.ui.beneficiary.newbeneficiary.NewBeneficiaryView
@@ -117,7 +117,10 @@ internal fun BeneficiaryRoute(
         if (sendMoneyChannel == SendMoneyChannel.BANKLY_TO_BANKLY) {
             newBeneficiaryViewModel.sendEvent(
                 BeneficiaryScreenEvent.OnSelectBank(
-                    bank = Bank(id = BANKLY_BANK_ID, name = BANKLY_BANK_NAME),
+                    bank = com.bankly.core.model.entity.Bank(
+                        id = BANKLY_BANK_ID,
+                        name = BANKLY_BANK_NAME
+                    ),
                     accountOrPhoneNumber = newBeneficiaryScreenState.accountOrPhoneTFV.text,
                 ),
             )
@@ -165,7 +168,7 @@ private fun BeneficiaryScreen(
             BankSearchView(
                 isBankListLoading = newBeneficiaryScreenState.isBankListLoading,
                 bankList = newBeneficiaryScreenState.banks,
-                onSelectBank = { bank: Bank ->
+                onSelectBank = { bank: com.bankly.core.model.entity.Bank ->
                     when (newBeneficiaryScreenState.selectedTab) {
                         BeneficiaryTab.NEW_BENEFICIARY -> {
                             onNewBeneficiaryUiEvent(

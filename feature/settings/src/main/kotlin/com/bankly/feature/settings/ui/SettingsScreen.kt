@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.Feature
+import com.bankly.core.model.entity.Feature
 import com.bankly.feature.settings.R
 import com.bankly.feature.settings.ui.component.FeatureToggleListItem
 
@@ -60,7 +60,7 @@ private fun SettingsScreen(
             modifier = Modifier.padding(paddingValues),
             contentPadding = PaddingValues(bottom = 16.dp),
         ) {
-            items(screenState.features, Feature::title) { feature: Feature ->
+            items(screenState.features, com.bankly.core.model.entity.Feature::title) { feature: com.bankly.core.model.entity.Feature ->
                 FeatureToggleListItem(
                     feature = feature,
                     onToggle = {
@@ -85,8 +85,8 @@ private fun SettingsScreenPreview() {
             onBackPress = {},
             screenState = SettingsScreenState(
                 features = listOf(
-                    Feature.SendMoney(),
-                    Feature.CardTransfer(),
+                    com.bankly.core.model.entity.Feature.SendMoney(),
+                    com.bankly.core.model.entity.Feature.CardTransfer(),
                 ),
             ),
             onUiEvent = {},

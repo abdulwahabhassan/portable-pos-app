@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.bankly.core.common.model.AccountType
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.paywithcard.navigation.viewmodel.PayWithCardScreenEvent
 import com.bankly.feature.paywithcard.navigation.viewmodel.PayWithCardScreenOneShotState
 import com.bankly.feature.paywithcard.navigation.viewmodel.PayWithCardViewModel

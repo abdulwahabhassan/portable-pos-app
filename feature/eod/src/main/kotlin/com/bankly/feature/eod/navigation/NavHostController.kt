@@ -3,7 +3,7 @@ package com.bankly.feature.eod.navigation
 import android.net.Uri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

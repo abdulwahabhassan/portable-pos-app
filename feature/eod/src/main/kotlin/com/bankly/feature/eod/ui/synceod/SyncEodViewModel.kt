@@ -5,13 +5,13 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetEodInfoUseCase
 import com.bankly.core.domain.usecase.SyncEodUseCase
-import com.bankly.core.entity.EodInfo
-import com.bankly.core.entity.SyncEod
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.entity.EodInfo
+import com.bankly.core.model.entity.SyncEod
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -53,7 +53,7 @@ internal class SyncEodViewModel @Inject constructor(
 
     private suspend fun syncEod() {
         syncEodInfoUseCase.invoke(userPreferencesDataStore.data().token, emptyList())
-            .onEach { resource: Resource<SyncEod> ->
+            .onEach { resource: Resource<com.bankly.core.model.entity.SyncEod> ->
                 resource.onLoading {
                     setUiState { copy(isEodSyncLoading = true) }
                 }
@@ -93,11 +93,11 @@ internal class SyncEodViewModel @Inject constructor(
 
     private suspend fun fetchEodInfo() {
         getEodInfoUseCase.invoke(userPreferencesDataStore.data().token)
-            .onEach { resource: Resource<EodInfo> ->
+            .onEach { resource: Resource<com.bankly.core.model.entity.EodInfo> ->
                 resource.onLoading {
                     setUiState { copy(isEodInfoLoading = true) }
                 }
-                resource.onReady { eodInfo: EodInfo ->
+                resource.onReady { eodInfo: com.bankly.core.model.entity.EodInfo ->
                     setUiState {
                         copy(
                             isEodInfoLoading = false,

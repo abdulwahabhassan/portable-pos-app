@@ -4,10 +4,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.entity.BillPlan
-import com.bankly.core.entity.BillProvider
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.MeterNameEnquiry
+import com.bankly.core.model.entity.BillPlan
+import com.bankly.core.model.entity.BillProvider
+import com.bankly.core.model.entity.CableTvNameEnquiry
+import com.bankly.core.model.entity.MeterNameEnquiry
 import com.bankly.feature.paybills.model.BeneficiaryTab
 import com.bankly.feature.paybills.model.BillType
 import com.bankly.feature.paybills.model.SavedBeneficiary
@@ -16,10 +16,10 @@ internal data class BeneficiaryScreenState(
     val billType: BillType? = null,
     val isTypeError: Boolean = false,
     val typeFeedBack: String = "",
-    val selectedBillProvider: BillProvider? = null,
+    val selectedBillProvider: com.bankly.core.model.entity.BillProvider? = null,
     val isProviderError: Boolean = false,
     val providerFeedBack: String = "",
-    val selectedBillPlan: BillPlan? = null,
+    val selectedBillPlan: com.bankly.core.model.entity.BillPlan? = null,
     val isPlanError: Boolean = false,
     val planFeedBack: String = "",
     val phoneNumberTFV: TextFieldValue = TextFieldValue(text = ""),
@@ -35,10 +35,10 @@ internal data class BeneficiaryScreenState(
     val isAmountError: Boolean = false,
     val amountFeedBack: String = "",
     val saveAsBeneficiary: Boolean = false,
-    val meterNameEnquiry: MeterNameEnquiry? = null,
-    val cableTvNameEnquiry: CableTvNameEnquiry? = null,
-    val billProviderList: List<BillProvider> = emptyList(),
-    val billPlanList: List<BillPlan> = emptyList(),
+    val meterNameEnquiry: com.bankly.core.model.entity.MeterNameEnquiry? = null,
+    val cableTvNameEnquiry: com.bankly.core.model.entity.CableTvNameEnquiry? = null,
+    val billProviderList: List<com.bankly.core.model.entity.BillProvider> = emptyList(),
+    val billPlanList: List<com.bankly.core.model.entity.BillPlan> = emptyList(),
     val selectedTab: BeneficiaryTab = BeneficiaryTab.NEW_BENEFICIARY,
     val shouldShowSavedBeneficiaryList: Boolean = true,
     val savedBeneficiaries: List<SavedBeneficiary> = SavedBeneficiary.mockOtherBanks(),

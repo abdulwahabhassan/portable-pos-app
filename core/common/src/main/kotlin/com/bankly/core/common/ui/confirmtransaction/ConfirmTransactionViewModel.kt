@@ -1,7 +1,7 @@
 package com.bankly.core.common.ui.confirmtransaction
 
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.sealed.State
+import com.bankly.core.model.sealed.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

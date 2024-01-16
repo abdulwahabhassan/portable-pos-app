@@ -1,21 +1,23 @@
 package com.bankly.core.data.util
 
-import com.bankly.core.data.BankTransferData
-import com.bankly.core.data.BillPaymentData
-import com.bankly.core.data.CardTransferAccountInquiryData
-import com.bankly.core.data.CardTransferData
-import com.bankly.core.data.ChangePassCodeData
-import com.bankly.core.data.EodTransactionListData
-import com.bankly.core.data.ForgotPassCodeData
-import com.bankly.core.data.ForgotTerminalAccessPinData
-import com.bankly.core.data.GetRecentFundingData
-import com.bankly.core.data.ResetPassCodeData
-import com.bankly.core.data.SendReceiptData
-import com.bankly.core.data.SyncRecentFundingData
-import com.bankly.core.data.TransactionFilterData
-import com.bankly.core.data.ValidateCableTvNumberData
-import com.bankly.core.data.ValidateElectricityMeterNumberData
-import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.model.data.AddDeviceTokenData
+import com.bankly.core.model.data.BankTransferData
+import com.bankly.core.model.data.BillPaymentData
+import com.bankly.core.model.data.CardTransferAccountInquiryData
+import com.bankly.core.model.data.CardTransferData
+import com.bankly.core.model.data.ChangePassCodeData
+import com.bankly.core.model.data.EodTransactionListData
+import com.bankly.core.model.data.ForgotPassCodeData
+import com.bankly.core.model.data.ForgotTerminalAccessPinData
+import com.bankly.core.model.data.GetRecentFundingData
+import com.bankly.core.model.data.ResetPassCodeData
+import com.bankly.core.model.data.SendReceiptData
+import com.bankly.core.model.data.SyncRecentFundingData
+import com.bankly.core.model.data.TransactionFilterData
+import com.bankly.core.model.data.ValidateCableTvNumberData
+import com.bankly.core.model.data.ValidateElectricityMeterNumberData
+import com.bankly.core.model.data.ValidateOtpData
+import com.bankly.core.network.model.request.AddDeviceTokenRequestBody
 import com.bankly.core.network.model.request.BankTransferRequestBody
 import com.bankly.core.network.model.request.BillPaymentRequestBody
 import com.bankly.core.network.model.request.CardTransferAccountInquiryRequestBody
@@ -35,35 +37,35 @@ import com.bankly.core.network.model.request.ValidateOtpRequestBody
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
+fun com.bankly.core.model.data.ChangePassCodeData.asRequestBody() = ChangePassCodeRequestBody(
     serialNumber = serialNumber,
     oldPasscode = oldPasscode,
     newPasscode = newPasscode,
     confirmPasscode = confirmPasscode,
 )
 
-fun ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
+fun com.bankly.core.model.data.ForgotPassCodeData.asRequestBody() = ForgotPassCodeRequestBody(
     phoneNumber = phoneNumber,
 )
 
-fun ForgotTerminalAccessPinData.asRequestBody() = ForgotTerminalAccessPinRequestBody(
+fun com.bankly.core.model.data.ForgotTerminalAccessPinData.asRequestBody() = ForgotTerminalAccessPinRequestBody(
     serialNumber = serialNumber,
 )
 
-fun ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
+fun com.bankly.core.model.data.ResetPassCodeData.asRequestBody() = ResetPassCodeRequestBody(
     username = username,
     password = password,
     confirmPassword = confirmPassword,
     code = code,
 )
 
-fun ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
+fun com.bankly.core.model.data.ValidateOtpData.asRequestBody() = ValidateOtpRequestBody(
     otp = otp,
     phoneNumber = phoneNumber,
 )
 
-fun BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
-    is BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
+fun com.bankly.core.model.data.BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
+    is com.bankly.core.model.data.BankTransferData.AccountNumber -> BankTransferRequestBody.AccountNumber(
         accountName = accountName,
         accountNumber = accountNumber,
         bankId = bankId,
@@ -81,7 +83,7 @@ fun BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
         senderName = senderName,
     )
 
-    is BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
+    is com.bankly.core.model.data.BankTransferData.PhoneNumber -> BankTransferRequestBody.PhoneNumber(
         amount = amount,
         recipientAccount = recipientAccount,
         pin = pin,
@@ -94,7 +96,7 @@ fun BankTransferData.asRequestBody(): BankTransferRequestBody = when (this) {
     )
 }
 
-fun BillPaymentData.asRequestBody() = BillPaymentRequestBody(
+fun com.bankly.core.model.data.BillPaymentData.asRequestBody() = BillPaymentRequestBody(
     billItemId = billItemId,
     billId = billId,
     amount = amount,
@@ -110,38 +112,38 @@ fun BillPaymentData.asRequestBody() = BillPaymentRequestBody(
     paidForName = paidForName,
 )
 
-fun ValidateCableTvNumberData.asRequestBody() = ValidateCableTvNumberRequestBody(
+fun com.bankly.core.model.data.ValidateCableTvNumberData.asRequestBody() = ValidateCableTvNumberRequestBody(
     cardNumber = cardNumber,
     billId = billId,
 )
 
-fun ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMeterNumberRequestBody(
+fun com.bankly.core.model.data.ValidateElectricityMeterNumberData.asRequestBody() = ValidateElectricityMeterNumberRequestBody(
     meterNumber = meterNumber,
     billId = billId,
     billItemId = billItemId,
 )
 
-fun GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
+fun com.bankly.core.model.data.GetRecentFundingData.asRequestBody() = GetRecentFundingRequestBody(
     updateOnFetch = updateOnFetch,
     serialNumber = serialNumber,
     location = location,
 )
 
-fun SendReceiptData.asRequestBody() = SendReceiptRequestBody(
+fun com.bankly.core.model.data.SendReceiptData.asRequestBody() = SendReceiptRequestBody(
     sessionId = sessionId,
     beneficiary = beneficiary,
     routeType = routeType,
 )
 
-fun SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
+fun com.bankly.core.model.data.SyncRecentFundingData.asRequestBody() = SyncRecentFundingRequestBody(
     sessionId = sessionId,
     serialNumber = serialNumber,
     location = location,
 )
 
-fun TransactionFilterData.asRequestParam() = Json.encodeToString(this)
+fun com.bankly.core.model.data.TransactionFilterData.asRequestParam() = Json.encodeToString(this)
 
-fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
+fun com.bankly.core.model.data.EodTransactionListData.asRequestBody() = SyncEodRequestBody(
     transactions = this.map {
         SyncEodTransactionData(
             it.serialNumber,
@@ -159,7 +161,7 @@ fun EodTransactionListData.asRequestBody() = SyncEodRequestBody(
     },
 )
 
-fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
+fun com.bankly.core.model.data.CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryRequestBody(
     bankId = bankId,
     accountNumber = accountNumber,
     amount = amount,
@@ -170,7 +172,7 @@ fun CardTransferAccountInquiryData.asRequestBody() = CardTransferAccountInquiryR
     deviceType = deviceType,
 )
 
-fun CardTransferData.asRequestBody() = CardTransferRequestBody(
+fun com.bankly.core.model.data.CardTransferData.asRequestBody() = CardTransferRequestBody(
     accountName = accountName,
     inquiryReference = inquiryReference,
     accountNumber = accountNumber,
@@ -182,3 +184,5 @@ fun CardTransferData.asRequestBody() = CardTransferRequestBody(
     responseCode = responseCode,
     responseMessage = responseMessage,
 )
+
+fun com.bankly.core.model.data.AddDeviceTokenData.asRequestBody() = AddDeviceTokenRequestBody(userId, deviceId)

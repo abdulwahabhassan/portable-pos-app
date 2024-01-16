@@ -7,22 +7,17 @@ import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.util.AmountFormatter
 import com.bankly.core.common.util.Validator
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.ValidateCableTvNumberData
-import com.bankly.core.data.ValidateElectricityMeterNumberData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.domain.usecase.GetBillPlansUseCase
 import com.bankly.core.domain.usecase.GetBillProvidersUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.core.entity.BillPlan
-import com.bankly.core.entity.BillProvider
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.enums.BillsPlanType
-import com.bankly.core.enums.BillsProviderType
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.enums.BillsPlanType
+import com.bankly.core.model.enums.BillsProviderType
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import com.bankly.feature.paybills.model.BillType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -40,9 +35,9 @@ internal abstract class BaseBeneficiaryViewModel constructor(
 ) : BaseViewModel<BeneficiaryScreenEvent, BeneficiaryScreenState, BeneficiaryScreenOneShotState>(
     BeneficiaryScreenState(),
 ) {
-    private val cableTvNameEnquiryIdentifierFlow: MutableStateFlow<ValidateCableTvNumberData?> =
+    private val cableTvNameEnquiryIdentifierFlow: MutableStateFlow<com.bankly.core.model.data.ValidateCableTvNumberData?> =
         MutableStateFlow(null)
-    private val meterNameEnquiryIdentifierFlow: MutableStateFlow<ValidateElectricityMeterNumberData?> =
+    private val meterNameEnquiryIdentifierFlow: MutableStateFlow<com.bankly.core.model.data.ValidateElectricityMeterNumberData?> =
         MutableStateFlow(null)
 
     init {
@@ -186,7 +181,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     )
                 }
                 cableTvNameEnquiryIdentifierFlow.value =
-                    ValidateCableTvNumberData(
+                    com.bankly.core.model.data.ValidateCableTvNumberData(
                         cardNumber = event.cableTvNumber.text,
                         billId = event.providerId,
                     )
@@ -202,11 +197,12 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         validationStatusIcon = null,
                     )
                 }
-                meterNameEnquiryIdentifierFlow.value = ValidateElectricityMeterNumberData(
-                    meterNumber = event.meterNumberTFV.text,
-                    billId = event.providerId,
-                    billItemId = event.planId,
-                )
+                meterNameEnquiryIdentifierFlow.value =
+                    com.bankly.core.model.data.ValidateElectricityMeterNumberData(
+                        meterNumber = event.meterNumberTFV.text,
+                        billId = event.providerId,
+                        billItemId = event.planId,
+                    )
             }
 
             is BeneficiaryScreenEvent.OnSelectPlan -> {
@@ -248,7 +244,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(isProviderListLoading = true)
                     }
                 }
-                resource.onReady { billProviders: List<BillProvider> ->
+                resource.onReady { billProviders: List<com.bankly.core.model.entity.BillProvider> ->
                     setUiState {
                         copy(billProviderList = billProviders, isProviderListLoading = false)
                     }
@@ -294,7 +290,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                             copy(isPlanListLoading = true)
                         }
                     }
-                    resource.onReady { billPlans: List<BillPlan> ->
+                    resource.onReady { billPlans: List<com.bankly.core.model.entity.BillPlan> ->
                         setUiState {
                             copy(billPlanList = billPlans, isPlanListLoading = false)
                         }
@@ -327,7 +323,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
     }
 
     private suspend fun validateMeterNumber(
-        data: ValidateElectricityMeterNumberData,
+        data: com.bankly.core.model.data.ValidateElectricityMeterNumberData,
     ) {
         nameEnquiryUseCase.performElectricMeterNameEnquiry(
             token = userPreferencesDataStore.data().token,
@@ -375,7 +371,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun validateCableTvNumber(data: ValidateCableTvNumberData) {
+    private suspend fun validateCableTvNumber(data: com.bankly.core.model.data.ValidateCableTvNumberData) {
         nameEnquiryUseCase.performCableTvNameEnquiry(
             token = userPreferencesDataStore.data().token,
             body = data,
@@ -387,7 +383,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     )
                 }
             }
-            resource.onReady { cableTvNameEnquiry: CableTvNameEnquiry ->
+            resource.onReady { cableTvNameEnquiry: com.bankly.core.model.entity.CableTvNameEnquiry ->
                 setUiState {
                     copy(
                         validationStatusIcon = BanklyIcons.ValidationPassed,

@@ -1,8 +1,8 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.data.BankTransferData
-import com.bankly.core.data.CardTransferAccountInquiryData
-import com.bankly.core.data.CardTransferData
+import com.bankly.core.model.data.BankTransferData
+import com.bankly.core.model.data.CardTransferAccountInquiryData
+import com.bankly.core.model.data.CardTransferData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asAccountInquiry
@@ -14,16 +14,16 @@ import com.bankly.core.data.util.asRequestBody
 import com.bankly.core.data.util.handleApiResponse
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.domain.repository.TransferRepository
-import com.bankly.core.entity.AccountNameEnquiry
-import com.bankly.core.entity.Bank
-import com.bankly.core.entity.CardTransferAccountInquiry
+import com.bankly.core.model.entity.AccountNameEnquiry
+import com.bankly.core.model.entity.Bank
+import com.bankly.core.model.entity.CardTransferAccountInquiry
 import com.bankly.core.network.model.result.BankResult
 import com.bankly.core.network.retrofit.service.AgentService
 import com.bankly.core.network.retrofit.service.FundTransferService
 import com.bankly.core.network.retrofit.service.TransferService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -40,7 +40,7 @@ class DefaultTransferRepository @Inject constructor(
 ) : TransferRepository {
     override suspend fun performTransferToAccountNumber(
         token: String,
-        body: BankTransferData,
+        body: com.bankly.core.model.data.BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (
@@ -66,7 +66,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performPhoneNumberTransfer(
         token: String,
-        body: BankTransferData,
+        body: com.bankly.core.model.data.BankTransferData,
     ): Flow<Resource<TransactionReceipt.BankTransfer>> = flow {
         emit(Resource.Loading)
         when (
@@ -94,7 +94,7 @@ class DefaultTransferRepository @Inject constructor(
         token: String,
         accountNumber: String,
         bankId: String,
-    ): Flow<Resource<AccountNameEnquiry>> = flow {
+    ): Flow<Resource<com.bankly.core.model.entity.AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -121,7 +121,7 @@ class DefaultTransferRepository @Inject constructor(
     override suspend fun performBankAccountNameEnquiry(
         token: String,
         phoneNumber: String,
-    ): Flow<Resource<AccountNameEnquiry>> = flow {
+    ): Flow<Resource<com.bankly.core.model.entity.AccountNameEnquiry>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -146,7 +146,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun getBanks(
         token: String,
-    ): Flow<Resource<List<Bank>>> = flow {
+    ): Flow<Resource<List<com.bankly.core.model.entity.Bank>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -166,8 +166,8 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performCardTransferAccountInquiry(
         token: String,
-        body: CardTransferAccountInquiryData,
-    ): Flow<Resource<CardTransferAccountInquiry>> = flow {
+        body: com.bankly.core.model.data.CardTransferAccountInquiryData,
+    ): Flow<Resource<com.bankly.core.model.entity.CardTransferAccountInquiry>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -192,7 +192,7 @@ class DefaultTransferRepository @Inject constructor(
 
     override suspend fun performCardTransfer(
         token: String,
-        body: CardTransferData,
+        body: com.bankly.core.model.data.CardTransferData,
     ): Flow<Resource<TransactionReceipt.CardTransfer>> = flow {
         emit(Resource.Loading)
         when (

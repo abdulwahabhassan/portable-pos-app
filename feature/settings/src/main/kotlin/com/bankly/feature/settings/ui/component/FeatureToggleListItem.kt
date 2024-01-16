@@ -26,11 +26,11 @@ import com.bankly.core.designsystem.component.BanklySwitchButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.Feature
+import com.bankly.core.model.entity.Feature
 
 @Composable
 internal fun FeatureToggleListItem(
-    feature: Feature,
+    feature: com.bankly.core.model.entity.Feature,
     onToggle: (Boolean) -> Unit,
 ) {
     Card(
@@ -68,17 +68,17 @@ internal fun FeatureToggleListItem(
                         .clip(CircleShape),
                     painter = painterResource(
                         id = when (feature) {
-                            is Feature.PayWithCard -> BanklyIcons.PayWithCard
-                            is Feature.PayWithTransfer -> BanklyIcons.PayWithTransfer
-                            is Feature.CardTransfer -> BanklyIcons.CardTransfer
-                            is Feature.SendMoney -> BanklyIcons.SendMoney
-                            is Feature.PayBills -> BanklyIcons.PayBills
-                            is Feature.CheckBalance -> BanklyIcons.CheckBalance
-                            is Feature.PayWithUssd -> BanklyIcons.PayWithUssd
-                            is Feature.Float -> BanklyIcons.Float
-                            is Feature.EndOfDay -> BanklyIcons.EndOfDay
-                            is Feature.NetworkChecker -> BanklyIcons.NetworkChecker
-                            is Feature.Settings -> BanklyIcons.Settings
+                            is com.bankly.core.model.entity.Feature.PayWithCard -> BanklyIcons.PayWithCard
+                            is com.bankly.core.model.entity.Feature.PayWithTransfer -> BanklyIcons.PayWithTransfer
+                            is com.bankly.core.model.entity.Feature.CardTransfer -> BanklyIcons.CardTransfer
+                            is com.bankly.core.model.entity.Feature.SendMoney -> BanklyIcons.SendMoney
+                            is com.bankly.core.model.entity.Feature.PayBills -> BanklyIcons.PayBills
+                            is com.bankly.core.model.entity.Feature.CheckBalance -> BanklyIcons.CheckBalance
+                            is com.bankly.core.model.entity.Feature.PayWithUssd -> BanklyIcons.PayWithUssd
+                            is com.bankly.core.model.entity.Feature.Float -> BanklyIcons.Float
+                            is com.bankly.core.model.entity.Feature.EndOfDay -> BanklyIcons.EndOfDay
+                            is com.bankly.core.model.entity.Feature.NetworkChecker -> BanklyIcons.NetworkChecker
+                            is com.bankly.core.model.entity.Feature.Settings -> BanklyIcons.Settings
                         },
                     ),
                     contentDescription = null,
@@ -110,7 +110,7 @@ internal fun FeatureToggleListItem(
 private fun SavedBeneficiaryItemPreview() {
     BanklyTheme {
         FeatureToggleListItem(
-            feature = Feature.SendMoney(),
+            feature = com.bankly.core.model.entity.Feature.SendMoney(),
             onToggle = {},
         )
     }

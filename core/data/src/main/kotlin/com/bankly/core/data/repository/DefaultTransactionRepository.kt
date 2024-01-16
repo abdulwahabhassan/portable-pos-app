@@ -1,7 +1,7 @@
 package com.bankly.core.data.repository
 
 import android.util.Log
-import com.bankly.core.data.TransactionFilterData
+import com.bankly.core.model.data.TransactionFilterData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asEodTransaction
@@ -10,15 +10,15 @@ import com.bankly.core.data.util.asTransaction
 import com.bankly.core.data.util.asTransactionFilterType
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleTransactionApiResponse
-import com.bankly.core.database.EodDao
+import com.bankly.core.database.dao.EodDao
 import com.bankly.core.database.model.EodTransaction
 import com.bankly.core.domain.repository.TransactionRepository
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.model.entity.Transaction
+import com.bankly.core.model.entity.TransactionFilterType
 import com.bankly.core.network.retrofit.service.TransactionService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,8 +36,8 @@ class DefaultTransactionRepository @Inject constructor(
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: TransactionFilterData,
-    ): Flow<Resource<List<Transaction>>> = flow {
+        filter: com.bankly.core.model.data.TransactionFilterData,
+    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleTransactionApiResponse(
@@ -63,8 +63,8 @@ class DefaultTransactionRepository @Inject constructor(
     }
 
     override suspend fun getEodTransactions(
-        filter: TransactionFilterData,
-    ): Flow<Resource<List<Transaction>>> = flow {
+        filter: com.bankly.core.model.data.TransactionFilterData,
+    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> = flow {
         emit(Resource.Loading)
         try {
             Log.d("debug filer", "date from: ${filter.dateCreatedFrom}")

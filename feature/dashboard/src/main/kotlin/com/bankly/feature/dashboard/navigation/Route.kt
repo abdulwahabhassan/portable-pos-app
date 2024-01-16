@@ -3,8 +3,8 @@ package com.bankly.feature.dashboard.navigation
 import android.app.Activity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bankly.core.entity.Feature
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.Feature
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.home.HomeTab
@@ -23,7 +23,7 @@ internal const val moreRoute = dashBoardRoute.plus("/more_screen")
 
 internal fun NavGraphBuilder.homeRoute(
     currentHomeTab: DashboardTab,
-    onFeatureClick: (Feature) -> Unit,
+    onFeatureClick: (com.bankly.core.model.entity.Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
     activity: Activity,
     onSessionExpired: () -> Unit,
@@ -76,7 +76,7 @@ internal fun NavGraphBuilder.supportRoute(
 }
 
 internal fun NavGraphBuilder.moreRoute(
-    onFeatureClick: (Feature) -> Unit,
+    onFeatureClick: (com.bankly.core.model.entity.Feature) -> Unit,
     onBackPress: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {

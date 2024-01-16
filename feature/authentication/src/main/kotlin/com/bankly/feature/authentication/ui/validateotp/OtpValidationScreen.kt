@@ -27,7 +27,7 @@ import com.bankly.core.designsystem.component.BanklyPassCodeInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.sealed.State
+import com.bankly.core.model.sealed.State
 import com.bankly.feature.authentication.R
 
 @Composable

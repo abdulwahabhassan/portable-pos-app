@@ -2,7 +2,8 @@ package com.bankly.core.database.di
 
 import android.content.Context
 import com.bankly.core.database.AppRoomDatabase
-import com.bankly.core.database.EodDao
+import com.bankly.core.database.dao.EodDao
+import com.bankly.core.database.dao.NotificationMessageDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,9 @@ object DatabaseModule {
         return appDatabase.getEodDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideNotificationMessageDao(appDatabase: AppRoomDatabase): NotificationMessageDao {
+        return appDatabase.getNotificationMessageDao()
+    }
 }

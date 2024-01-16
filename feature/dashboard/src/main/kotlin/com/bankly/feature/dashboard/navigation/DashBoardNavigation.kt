@@ -14,15 +14,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bankly.core.entity.Feature
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.Feature
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.model.DashboardTab
 import com.bankly.feature.dashboard.model.SupportOption
 import com.bankly.feature.dashboard.ui.dashboard.DashBoardRoute
 
 fun NavGraphBuilder.dashBoardNavGraph(
     onExitApp: () -> Unit,
-    onFeatureClick: (Feature) -> Unit,
+    onFeatureClick: (com.bankly.core.model.entity.Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,
     onSupportOptionClick: (SupportOption) -> Unit,
@@ -53,8 +53,8 @@ fun NavGraphBuilder.dashBoardNavGraph(
                         currentHomeTab = dashBoardState.currentTab,
                         modifier = Modifier.padding(padding),
                         navHostController = dashBoardState.navHostController,
-                        onFeatureClick = { feature: Feature ->
-                            if (feature is Feature.PayWithCard) {
+                        onFeatureClick = { feature: com.bankly.core.model.entity.Feature ->
+                            if (feature is com.bankly.core.model.entity.Feature.PayWithCard) {
                                 dashBoardState = dashBoardState.copy(currentTab = DashboardTab.POS)
                             } else {
                                 onFeatureClick(feature)
@@ -86,7 +86,7 @@ fun DashBoardNavHost(
     currentHomeTab: DashboardTab,
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    onFeatureClick: (Feature) -> Unit,
+    onFeatureClick: (com.bankly.core.model.entity.Feature) -> Unit,
     onContinueToPayWithCardClick: (Double) -> Unit,
     updateLoadingStatus: (Boolean) -> Unit,
     onGoToTransactionDetailsScreen: (TransactionReceipt) -> Unit,

@@ -3,14 +3,14 @@ package com.bankly.feature.authentication.ui.confirmpin
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.ChangePassCodeData
+import com.bankly.core.model.data.ChangePassCodeData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.ChangePassCodeUseCase
-import com.bankly.core.entity.User
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.entity.User
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -65,7 +65,7 @@ class ConfirmPinViewModel @Inject constructor(
         confirmPin: String,
     ) {
         changePassCodeUseCase(
-            body = ChangePassCodeData(
+            body = com.bankly.core.model.data.ChangePassCodeData(
                 serialNumber = Tools.serialNumber,
                 oldPasscode = defaultPin,
                 newPasscode = newPin,

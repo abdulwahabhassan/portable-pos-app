@@ -4,17 +4,17 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.TransactionFilterData
+import com.bankly.core.model.data.TransactionFilterData
 import com.bankly.core.data.datastore.UserPreferences
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetEodTransactionsUseCase
 import com.bankly.core.domain.usecase.GetTransactionFilterTypesUseCase
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilter
-import com.bankly.core.entity.TransactionFilterType
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.onFailure
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.Transaction
+import com.bankly.core.model.entity.TransactionFilter
+import com.bankly.core.model.entity.TransactionFilterType
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.onFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -48,8 +48,9 @@ internal class EodTransactionsViewModel @Inject constructor(
             EodTransactionsScreenEvent.LoadUiData -> {
                 val userPrefData = userPreferencesDataStore.data()
                 loadUiData(
-                    filter = TransactionFilterData(
-                        dateCreatedFrom = userPrefData.eodTransactionFilter.dateFrom?.toString() ?: "",
+                    filter = com.bankly.core.model.data.TransactionFilterData(
+                        dateCreatedFrom = userPrefData.eodTransactionFilter.dateFrom?.toString()
+                            ?: "",
                         dateCreatedTo = userPrefData.eodTransactionFilter.dateTo?.toString() ?: "",
                         transactionType = if (userPrefData.eodTransactionFilter.transactionTypes.size == 1) {
                             userPrefData.eodTransactionFilter.transactionTypes[0].id.toString()
@@ -66,8 +67,8 @@ internal class EodTransactionsViewModel @Inject constructor(
                         cashFlows = event.cashFlows.map { cashFlowFilter ->
                             if (cashFlowFilter.title == event.cashFlow.title) {
                                 when (val filter = event.cashFlow) {
-                                    is CashFlow.Credit -> filter.copy(state = filter.state.not())
-                                    is CashFlow.Debit -> filter.copy(state = filter.state.not())
+                                    is com.bankly.core.model.entity.CashFlow.Credit -> filter.copy(state = filter.state.not())
+                                    is com.bankly.core.model.entity.CashFlow.Debit -> filter.copy(state = filter.state.not())
                                 }
                             } else {
                                 cashFlowFilter
@@ -142,7 +143,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                     copy(eodTransactionFilter = filter)
                 }
                 loadUiData(
-                    filter = TransactionFilterData(
+                    filter = com.bankly.core.model.data.TransactionFilterData(
                         dateCreatedFrom = filter.dateFrom?.toString() ?: "",
                         filter.dateTo?.toString() ?: "",
                         if (isOneTransactionTypeSelected) filter.transactionTypes.find { it.isSelected }?.id.toString() else "",
@@ -177,10 +178,10 @@ internal class EodTransactionsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadUiData(filter: TransactionFilterData? = null) {
+    private suspend fun loadUiData(filter: com.bankly.core.model.data.TransactionFilterData? = null) {
         combine(
             flow = getEodTransactionsUseCase.invoke(
-                filter = filter ?: TransactionFilterData(),
+                filter = filter ?: com.bankly.core.model.data.TransactionFilterData(),
             ),
             flow2 = getTransactionFilterTypesUseCase.invoke(
                 token = userPreferencesDataStore.data().token,
@@ -188,7 +189,7 @@ internal class EodTransactionsViewModel @Inject constructor(
             flow3 = userPreferencesDataStore.flow(),
         ) { transactions, transactionFilterTypes, userPreferences ->
             Triple(transactions, transactionFilterTypes, userPreferences)
-        }.onEach { triple: Triple<Resource<List<Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
+        }.onEach { triple: Triple<Resource<List<com.bankly.core.model.entity.Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
             if (triple.first is Resource.Loading || triple.second is Resource.Loading) {
                 val eodTransactionFilter = triple.third.eodTransactionFilter
                 setUiState {
@@ -222,7 +223,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                         selectedTransactionFilterTypes = selectedTransactionFilterTypes,
                         isTransactionsLoading = false,
                         transactions = filterTransactions(
-                            transactions = (triple.first as Resource.Ready<List<Transaction>>).data,
+                            transactions = (triple.first as Resource.Ready<List<com.bankly.core.model.entity.Transaction>>).data,
                             userPrefData = triple.third,
                         ),
                     )
@@ -261,11 +262,11 @@ internal class EodTransactionsViewModel @Inject constructor(
     }
 
     private fun filterTransactions(
-        transactions: List<Transaction>,
+        transactions: List<com.bankly.core.model.entity.Transaction>,
         userPrefData: UserPreferences,
-    ): List<Transaction> {
+    ): List<com.bankly.core.model.entity.Transaction> {
         return transactions
-            .filter { transaction: Transaction ->
+            .filter { transaction: com.bankly.core.model.entity.Transaction ->
                 val selectedTypeIDs = userPrefData.eodTransactionFilter.transactionTypes
                     .filter { type: TransactionFilterType -> type.isSelected }
                     .map { type: TransactionFilterType -> type.id }
@@ -275,45 +276,45 @@ internal class EodTransactionsViewModel @Inject constructor(
                     selectedTypeIDs.any { id: Long -> id == transaction.transactionTypeId }
                 }
             }
-            .filter { transaction: Transaction ->
+            .filter { transaction: com.bankly.core.model.entity.Transaction ->
                 val selectedCashFlows = userPrefData.eodTransactionFilter.cashFlows
-                    .filter { cashFlow: CashFlow -> cashFlow.isSelected }
+                    .filter { cashFlow: com.bankly.core.model.entity.CashFlow -> cashFlow.isSelected }
                 if (selectedCashFlows.isEmpty()) {
                     true
                 } else {
-                    selectedCashFlows.any { cashFlow: CashFlow ->
+                    selectedCashFlows.any { cashFlow: com.bankly.core.model.entity.CashFlow ->
                         when (cashFlow) {
-                            is CashFlow.Credit -> transaction.isCreditTransaction
-                            is CashFlow.Debit -> transaction.isDebitTransaction
+                            is com.bankly.core.model.entity.CashFlow.Credit -> transaction.isCreditTransaction
+                            is com.bankly.core.model.entity.CashFlow.Debit -> transaction.isDebitTransaction
                         }
                     }
                 }
             }
-            .filter { transaction: Transaction ->
+            .filter { transaction: com.bankly.core.model.entity.Transaction ->
                 transaction.transactionReference.contains(
                     userPrefData.eodTransactionFilter.transactionReference,
                     true,
                 )
             }
-            .filter { transaction: Transaction ->
+            .filter { transaction: com.bankly.core.model.entity.Transaction ->
                 when (transaction) {
-                    is Transaction.Eod -> when (transaction) {
-                        is Transaction.Eod.BankTransfer -> transaction.beneficiaryAccountName.contains(
+                    is com.bankly.core.model.entity.Transaction.Eod -> when (transaction) {
+                        is com.bankly.core.model.entity.Transaction.Eod.BankTransfer -> transaction.beneficiaryAccountName.contains(
                             userPrefData.eodTransactionFilter.accountName,
                             true,
                         )
 
-                        is Transaction.Eod.BillPayment -> transaction.paidByAccountName.contains(
+                        is com.bankly.core.model.entity.Transaction.Eod.BillPayment -> transaction.paidByAccountName.contains(
                             userPrefData.eodTransactionFilter.accountName,
                             true,
                         )
 
-                        is Transaction.Eod.CardPayment -> transaction.cardHolderName.contains(
+                        is com.bankly.core.model.entity.Transaction.Eod.CardPayment -> transaction.cardHolderName.contains(
                             userPrefData.eodTransactionFilter.accountName,
                             true,
                         )
 
-                        is Transaction.Eod.CardTransfer -> transaction.beneficiaryName.contains(
+                        is com.bankly.core.model.entity.Transaction.Eod.CardTransfer -> transaction.beneficiaryName.contains(
                             userPrefData.eodTransactionFilter.accountName,
                             true,
                         ) || transaction.senderName.contains(
@@ -321,7 +322,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                             true,
                         )
 
-                        is Transaction.Eod.PayWithTransfer -> transaction.receiverName.contains(
+                        is com.bankly.core.model.entity.Transaction.Eod.PayWithTransfer -> transaction.receiverName.contains(
                             userPrefData.eodTransactionFilter.accountName,
                             true,
                         ) || transaction.senderAccountName.contains(
@@ -330,7 +331,7 @@ internal class EodTransactionsViewModel @Inject constructor(
                         )
                     }
 
-                    is Transaction.History -> transaction.receiverName.contains(
+                    is com.bankly.core.model.entity.Transaction.History -> transaction.receiverName.contains(
                         userPrefData.eodTransactionFilter.accountName,
                         true,
                     ) || transaction.senderName.contains(

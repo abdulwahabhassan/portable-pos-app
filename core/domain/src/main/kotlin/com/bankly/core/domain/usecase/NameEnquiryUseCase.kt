@@ -1,15 +1,15 @@
 package com.bankly.core.domain.usecase
 
-import com.bankly.core.data.CardTransferAccountInquiryData
-import com.bankly.core.data.ValidateCableTvNumberData
-import com.bankly.core.data.ValidateElectricityMeterNumberData
+import com.bankly.core.model.data.CardTransferAccountInquiryData
+import com.bankly.core.model.data.ValidateCableTvNumberData
+import com.bankly.core.model.data.ValidateElectricityMeterNumberData
 import com.bankly.core.domain.repository.BillsRepository
 import com.bankly.core.domain.repository.TransferRepository
-import com.bankly.core.entity.AccountNameEnquiry
-import com.bankly.core.entity.CableTvNameEnquiry
-import com.bankly.core.entity.CardTransferAccountInquiry
-import com.bankly.core.entity.MeterNameEnquiry
-import com.bankly.core.sealed.Resource
+import com.bankly.core.model.entity.AccountNameEnquiry
+import com.bankly.core.model.entity.CableTvNameEnquiry
+import com.bankly.core.model.entity.CardTransferAccountInquiry
+import com.bankly.core.model.entity.MeterNameEnquiry
+import com.bankly.core.model.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -20,14 +20,14 @@ class NameEnquiryUseCase @Inject constructor(
     suspend fun performBankAccountNameEnquiry(
         token: String,
         phoneNumber: String,
-    ): Flow<Resource<AccountNameEnquiry>> =
+    ): Flow<Resource<com.bankly.core.model.entity.AccountNameEnquiry>> =
         transferRepository.performBankAccountNameEnquiry(token = token, phoneNumber = phoneNumber)
 
     suspend fun performBankAccountNameEnquiry(
         token: String,
         accountNumber: String,
         bankId: String,
-    ): Flow<Resource<AccountNameEnquiry>> =
+    ): Flow<Resource<com.bankly.core.model.entity.AccountNameEnquiry>> =
         transferRepository.performBankAccountNameEnquiry(
             token = token,
             accountNumber = accountNumber,
@@ -36,16 +36,16 @@ class NameEnquiryUseCase @Inject constructor(
 
     suspend fun performElectricMeterNameEnquiry(
         token: String,
-        body: ValidateElectricityMeterNumberData,
-    ): Flow<Resource<MeterNameEnquiry>> = billsRepository.performMeterNameEnquiry(
+        body: com.bankly.core.model.data.ValidateElectricityMeterNumberData,
+    ): Flow<Resource<com.bankly.core.model.entity.MeterNameEnquiry>> = billsRepository.performMeterNameEnquiry(
         token = token,
         body = body,
     )
 
     suspend fun performCableTvNameEnquiry(
         token: String,
-        body: ValidateCableTvNumberData,
-    ): Flow<Resource<CableTvNameEnquiry>> =
+        body: com.bankly.core.model.data.ValidateCableTvNumberData,
+    ): Flow<Resource<com.bankly.core.model.entity.CableTvNameEnquiry>> =
         billsRepository.performCableTvNameEnquiry(
             token = token,
             body = body,
@@ -53,8 +53,8 @@ class NameEnquiryUseCase @Inject constructor(
 
     suspend fun performCardTransferAccountInquiry(
         token: String,
-        body: CardTransferAccountInquiryData,
-    ): Flow<Resource<CardTransferAccountInquiry>> = transferRepository.performCardTransferAccountInquiry(
+        body: com.bankly.core.model.data.CardTransferAccountInquiryData,
+    ): Flow<Resource<com.bankly.core.model.entity.CardTransferAccountInquiry>> = transferRepository.performCardTransferAccountInquiry(
         token = token,
         body = body,
     )

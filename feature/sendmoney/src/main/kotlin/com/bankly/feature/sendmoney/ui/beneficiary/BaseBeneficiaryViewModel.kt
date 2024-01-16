@@ -11,13 +11,13 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetBanksUseCase
 import com.bankly.core.domain.usecase.NameEnquiryUseCase
-import com.bankly.core.entity.AccountNameEnquiry
-import com.bankly.core.entity.Bank
-import com.bankly.core.sealed.State
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.entity.AccountNameEnquiry
+import com.bankly.core.model.entity.Bank
+import com.bankly.core.model.sealed.State
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -139,7 +139,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                     copy(
                         accountOrPhoneTFV = accountOrPhoneTFV.copy(text = event.savedBeneficiary.accountNumber),
                         shouldShowSavedBeneficiaryList = false,
-                        selectedBank = Bank(
+                        selectedBank = com.bankly.core.model.entity.Bank(
                             event.savedBeneficiary.bankName,
                             event.savedBeneficiary.bankId,
                         ),
@@ -183,7 +183,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(bankListState = State.Loading)
                     }
                 }
-                resource.onReady { banks: List<Bank> ->
+                resource.onReady { banks: List<com.bankly.core.model.entity.Bank> ->
                     setUiState {
                         copy(bankListState = State.Success(banks))
                     }
@@ -243,7 +243,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
-                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
+                resource.onReady { accountNameEnquiry: com.bankly.core.model.entity.AccountNameEnquiry ->
                     setUiState {
                         copy(
                             accountOrPhoneValidationState = State.Success(accountNameEnquiry),
@@ -289,7 +289,7 @@ internal abstract class BaseBeneficiaryViewModel constructor(
                         copy(accountOrPhoneValidationState = State.Loading)
                     }
                 }
-                resource.onReady { accountNameEnquiry: AccountNameEnquiry ->
+                resource.onReady { accountNameEnquiry: com.bankly.core.model.entity.AccountNameEnquiry ->
                     setUiState {
                         copy(
                             accountOrPhoneValidationState = State.Success(accountNameEnquiry),

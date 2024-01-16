@@ -7,7 +7,7 @@ import androidx.navigation.navArgument
 import com.bankly.core.common.ui.done.DoneRoute
 import com.bankly.core.common.ui.sendreceipt.SendReceiptRoute
 import com.bankly.core.common.ui.transactiondetails.TransactionDetailsRoute
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.eod.ui.dashboard.EodRoute
 import com.bankly.feature.eod.ui.eodtransactions.EodTransactionsRoute
 import com.bankly.feature.eod.ui.synceod.SyncEodRoute

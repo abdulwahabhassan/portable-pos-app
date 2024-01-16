@@ -17,7 +17,7 @@ import com.bankly.core.common.model.AccountType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransferScreenEvent
 import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransferViewModel
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.cardtransfer.navigation.viewmodel.CardTransactionScreenOneShotState
 import com.bankly.feature.cardtransfer.util.toTransactionReceipt
 import kotlinx.coroutines.flow.launchIn

@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.bankly.core.database.dao.EodDao
+import com.bankly.core.database.dao.NotificationMessageDao
 import com.bankly.core.database.model.EodTransaction
 
 @Database(
@@ -14,6 +16,7 @@ import com.bankly.core.database.model.EodTransaction
 abstract class AppRoomDatabase : RoomDatabase() {
 
     abstract fun getEodDao(): EodDao
+    abstract fun getNotificationMessageDao(): NotificationMessageDao
 
     companion object {
         @Volatile

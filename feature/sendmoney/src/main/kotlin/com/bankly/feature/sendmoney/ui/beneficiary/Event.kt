@@ -3,12 +3,12 @@ package com.bankly.feature.sendmoney.ui.beneficiary
 import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.SendMoneyChannel
-import com.bankly.core.entity.Bank
+import com.bankly.core.model.entity.Bank
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 
 internal sealed interface BeneficiaryScreenEvent {
-    data class OnSelectBank(val bank: Bank, val accountOrPhoneNumber: String) : BeneficiaryScreenEvent
+    data class OnSelectBank(val bank: com.bankly.core.model.entity.Bank, val accountOrPhoneNumber: String) : BeneficiaryScreenEvent
     data class OnInputAmount(val amountTFV: TextFieldValue) : BeneficiaryScreenEvent
     data class OnTypeSelected(val accountOrPhoneNumber: String, val bankId: Long?, val accountNumberType: AccountNumberType) : BeneficiaryScreenEvent
     data class OnToggleSaveAsBeneficiary(val toggleState: Boolean) : BeneficiaryScreenEvent

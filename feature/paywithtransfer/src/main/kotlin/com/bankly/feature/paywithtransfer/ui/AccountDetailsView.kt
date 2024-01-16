@@ -25,7 +25,7 @@ import com.bankly.core.designsystem.component.BanklyInfoText
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.AgentAccountDetails
+import com.bankly.core.model.entity.AgentAccountDetails
 import com.bankly.feature.paywithtransfer.R
 
 @Composable
@@ -33,7 +33,7 @@ internal fun AccountDetailsView(
     isExpanded: Boolean,
     onExpandIconClick: (Boolean) -> Unit,
     isLoading: Boolean,
-    accountDetails: AgentAccountDetails,
+    accountDetails: com.bankly.core.model.entity.AgentAccountDetails,
 ) {
     Column(
         modifier = Modifier
@@ -140,7 +140,7 @@ private fun AccountDetailsPreview() {
             isExpanded = true,
             onExpandIconClick = {},
             isLoading = false,
-            accountDetails = AgentAccountDetails(
+            accountDetails = com.bankly.core.model.entity.AgentAccountDetails(
                 fundingAccountNumber = "5010000017",
                 name = "Josh Osazuwa",
                 fundingSourceName = "Bankly MFB",

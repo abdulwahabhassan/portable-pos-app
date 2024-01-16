@@ -35,7 +35,7 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.Feature
+import com.bankly.core.model.entity.Feature
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.ui.component.FeatureCard
 import kotlinx.coroutines.flow.launchIn
@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun MoreRoute(
     viewModel: MoreScreenViewModel = hiltViewModel(),
-    onFeatureCardClick: (Feature) -> Unit,
+    onFeatureCardClick: (com.bankly.core.model.entity.Feature) -> Unit,
     onBackPress: () -> Unit,
     onLogOutClick: () -> Unit,
 ) {
@@ -88,7 +88,7 @@ internal fun MoreRoute(
                 when (oneshotState) {
                     is MoreScreenOneShotState.GoToFeature -> {
                         when (oneshotState.feature) {
-                            is Feature.PayWithUssd, is Feature.Float -> {
+                            is com.bankly.core.model.entity.Feature.PayWithUssd, is com.bankly.core.model.entity.Feature.Float -> {
                                 showComingSoonDialog = true
                             }
 
@@ -117,7 +117,7 @@ internal fun MoreRoute(
                 text = stringResource(id = R.string.action_go_to_settings),
                 onClick = {
                     viewModel.sendEvent(MoreScreenEvent.OnDismissFeatureAccessDeniedDialog)
-                    viewModel.sendEvent(MoreScreenEvent.OnFeatureCardClick(Feature.Settings()))
+                    viewModel.sendEvent(MoreScreenEvent.OnFeatureCardClick(com.bankly.core.model.entity.Feature.Settings()))
                 },
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onPrimary,
@@ -142,7 +142,7 @@ internal fun MoreScreen(
         contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(Feature.values().filter { it.isQuickAction.not() }.chunked(2)) {
+        items(com.bankly.core.model.entity.Feature.values().filter { it.isQuickAction.not() }.chunked(2)) {
             Row {
                 if (it.firstOrNull() != null) {
                     Box(

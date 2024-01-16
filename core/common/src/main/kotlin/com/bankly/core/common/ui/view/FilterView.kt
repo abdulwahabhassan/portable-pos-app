@@ -48,9 +48,9 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.TransactionFilter
-import com.bankly.core.entity.TransactionFilterType
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.TransactionFilter
+import com.bankly.core.model.entity.TransactionFilterType
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -65,7 +65,7 @@ fun FilterView(
     onEnterTransactionReference: (TextFieldValue) -> Unit,
     isTransactionReferenceError: Boolean,
     transactionReferenceFeedback: String,
-    onCashFlowFilterChipClick: (CashFlow) -> Unit,
+    onCashFlowFilterChipClick: (com.bankly.core.model.entity.CashFlow) -> Unit,
     onTransactionFilterTypeSelected: (TransactionFilterType) -> Unit,
     onShowMoreTypesClick: () -> Unit,
     onShowLessTypesClick: () -> Unit,
@@ -78,7 +78,7 @@ fun FilterView(
     onEndDateFilterClick: (LocalDate?) -> Unit,
     isEndDateFilterError: Boolean,
     endDateFilterFeedBack: String,
-    cashFlows: List<CashFlow>,
+    cashFlows: List<com.bankly.core.model.entity.CashFlow>,
     transactionFilterTypes: List<TransactionFilterType>,
     onApplyClick: (TransactionFilter) -> Unit,
     onCloseClick: () -> Unit,
@@ -146,7 +146,7 @@ fun FilterView(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(cashFlows, key = CashFlow::title) { filter: CashFlow ->
+                items(cashFlows, key = com.bankly.core.model.entity.CashFlow::title) { filter: com.bankly.core.model.entity.CashFlow ->
                     BanklyFilterChip(
                         title = filter.title,
                         isSelected = filter.isSelected,
@@ -326,7 +326,7 @@ private fun FilterPreview() {
             onEndDateFilterClick = {},
             isEndDateFilterError = false,
             endDateFilterFeedBack = "",
-            cashFlows = listOf(CashFlow.Debit(false), CashFlow.Credit(false)),
+            cashFlows = listOf(com.bankly.core.model.entity.CashFlow.Debit(false), com.bankly.core.model.entity.CashFlow.Credit(false)),
             transactionFilterTypes = emptyList(),
             onTransactionFilterTypeSelected = {},
             onApplyClick = {},

@@ -36,15 +36,15 @@ import com.bankly.core.designsystem.component.BanklyExpandableList
 import com.bankly.core.designsystem.component.BanklySearchBar
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
-import com.bankly.core.entity.Bank
+import com.bankly.core.model.entity.Bank
 
 const val COMMERCIAL_BANKS = "Commercial Banks"
 
 @Composable
 fun BankSearchView(
     isBankListLoading: Boolean,
-    bankList: List<Bank>,
-    onSelectBank: (Bank) -> Unit,
+    bankList: List<com.bankly.core.model.entity.Bank>,
+    onSelectBank: (com.bankly.core.model.entity.Bank) -> Unit,
     onCloseIconClick: () -> Unit,
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -108,7 +108,7 @@ fun BankSearchView(
                     isCommercialBankListExpanded = !isCommercialBankListExpanded
                 },
                 onItemSelected = onSelectBank,
-                transformItemToString = { bank: Bank -> bank.name },
+                transformItemToString = { bank: com.bankly.core.model.entity.Bank -> bank.name },
                 drawItem = { item, onItemSelected, transformItemToString ->
                     Row(
                         modifier = Modifier
@@ -138,7 +138,7 @@ fun BankSearchView(
                     isMFBBankListExpanded = !isMFBBankListExpanded
                 },
                 onItemSelected = onSelectBank,
-                transformItemToString = { bank: Bank -> bank.name },
+                transformItemToString = { bank: com.bankly.core.model.entity.Bank -> bank.name },
                 drawItem = { item, onItemSelected, transformItemToString ->
                     Row(
                         modifier = Modifier

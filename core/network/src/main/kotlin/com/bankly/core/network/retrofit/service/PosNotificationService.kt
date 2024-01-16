@@ -19,4 +19,5 @@ interface PosNotificationService {
         @Header("Authorization") token: String,
         @Body body: SyncEodRequestBody,
     ): SyncEodResult
+
 }

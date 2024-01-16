@@ -31,7 +31,7 @@ import com.bankly.core.designsystem.component.BanklyFilledButton
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.Feature
+import com.bankly.core.model.entity.Feature
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.ui.component.FeatureCard
 import com.bankly.feature.dashboard.ui.component.WalletCard
@@ -42,7 +42,7 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun HomeTab(
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    onFeatureCardClick: (Feature) -> Unit,
+    onFeatureCardClick: (com.bankly.core.model.entity.Feature) -> Unit,
     activity: Activity,
     onSessionExpired: () -> Unit,
 ) {
@@ -120,7 +120,7 @@ internal fun HomeScreen(
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(Feature.values().filter { it.isQuickAction }) { feature: Feature ->
+            items(com.bankly.core.model.entity.Feature.values().filter { it.isQuickAction }) { feature: com.bankly.core.model.entity.Feature ->
                 FeatureCard(
                     feature = feature,
                     onClick = {
@@ -158,7 +158,7 @@ internal fun HomeScreen(
                 text = stringResource(id = R.string.action_go_to_settings),
                 onClick = {
                     onUiEvent(HomeScreenEvent.OnDismissFeatureAccessDeniedDialog)
-                    onUiEvent(HomeScreenEvent.OnFeatureCardClick(Feature.Settings()))
+                    onUiEvent(HomeScreenEvent.OnFeatureCardClick(com.bankly.core.model.entity.Feature.Settings()))
                 },
                 backgroundColor = MaterialTheme.colorScheme.primary,
                 textColor = MaterialTheme.colorScheme.onPrimary,

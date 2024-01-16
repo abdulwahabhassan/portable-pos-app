@@ -1,0 +1,227 @@
+{
+  "project_info": {
+    "project_number": "134867281806",
+    "firebase_url": "https://bankly-agent.firebaseio.com",
+    "project_id": "bankly-agent",
+    "storage_bucket": "bankly-agent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:4943f14241185de910e6df",
+        "android_client_info": {
+          "package_name": "com.bankly.banklykozenpos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:7968a0021a48fb1d10e6df",
+        "android_client_info": {
+          "package_name": "com.bankly.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:f664b8a372408c4d10e6df",
+        "android_client_info": {
+          "package_name": "com.bankly.pos.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:60a715f291caf5e110e6df",
+        "android_client_info": {
+          "package_name": "com.moneypal.pos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:c0d4b012b7364b6910e6df",
+        "android_client_info": {
+          "package_name": "com.moneypal.pos.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134867281806:android:aa58d730b2d94f0610e6df",
+        "android_client_info": {
+          "package_name": "ng.bankly.bankly.agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOrSuVr2JcdbYYMM95vPVoNhcceK8NC2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134867281806-po2ev4m9tut15ppbb64q7stk00gqnpk7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134867281806-cs9pf0jg7q6r4if5afs5tnjea5pqaa7o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ng.bankly.agent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

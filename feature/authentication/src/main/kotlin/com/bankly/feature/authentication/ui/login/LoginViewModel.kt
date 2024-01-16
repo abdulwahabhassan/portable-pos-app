@@ -2,13 +2,13 @@ package com.bankly.feature.authentication.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.ForgotTerminalAccessPinData
+import com.bankly.core.model.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.ForgotTerminalAccessPinUseCase
 import com.bankly.core.domain.usecase.GetTokenUseCase
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -133,7 +133,10 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun resetAccessPin() {
-        forgotTerminalAccessPinUseCase(body = ForgotTerminalAccessPinData(serialNumber = Tools.serialNumber))
+        forgotTerminalAccessPinUseCase(body = com.bankly.core.model.data.ForgotTerminalAccessPinData(
+            serialNumber = Tools.serialNumber
+        )
+        )
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(isLoading = true) }

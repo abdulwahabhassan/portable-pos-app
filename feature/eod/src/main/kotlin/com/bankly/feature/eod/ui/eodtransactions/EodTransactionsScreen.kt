@@ -57,11 +57,11 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklySuccessColor
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilter
-import com.bankly.core.entity.TransactionFilterType
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.Transaction
+import com.bankly.core.model.entity.TransactionFilter
+import com.bankly.core.model.entity.TransactionFilterType
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.eod.R
 import com.bankly.feature.eod.ui.component.EodTransactionListItem
 import kotlinx.coroutines.launch
@@ -280,7 +280,7 @@ private fun EodTransactionsScreen(
                     onEnterAccountName = { textFieldValue: TextFieldValue ->
                         onUiEvent(EodTransactionsScreenEvent.OnInputAccountName(textFieldValue))
                     },
-                    onCashFlowFilterChipClick = { cashFlow: CashFlow ->
+                    onCashFlowFilterChipClick = { cashFlow: com.bankly.core.model.entity.CashFlow ->
                         onUiEvent(
                             EodTransactionsScreenEvent.OnCashFlowFilterChipClick(
                                 cashFlow,
@@ -374,7 +374,7 @@ private fun EodTransactionsScreenPreview() {
             onBackPress = { },
             screenState = EodTransactionsScreenState(
                 transactions = listOf(
-                    Transaction.History(
+                    com.bankly.core.model.entity.Transaction.History(
                         creditAccountNo = "89900322",
                         debitAccountNo = "30003020",
                         transactionBy = "Al Eko",

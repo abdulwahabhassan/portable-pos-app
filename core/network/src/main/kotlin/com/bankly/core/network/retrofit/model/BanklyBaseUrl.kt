@@ -29,6 +29,7 @@ import com.bankly.core.network.BuildConfig.BANKLY_WALLET_TEST_BASE_URL
 import com.bankly.core.network.BuildConfig.BUILD_TYPE
 
 private const val DEBUG = "debug"
+
 enum class BanklyBaseUrl(val value: String) {
     Identity(if (BUILD_TYPE == DEBUG) BANKLY_IDENTITY_TEST_BASE_URL else BANKLY_IDENTITY_PROD_BASE_URL),
     Pos(if (BUILD_TYPE == DEBUG) BANKLY_POS_TEST_BASE_URL else BANKLY_POS_PROD_BASE_URL),
@@ -43,4 +44,5 @@ enum class BanklyBaseUrl(val value: String) {
     Transaction(if (BUILD_TYPE == DEBUG) BANKLY_TRANSACTION_TEST_BASE_URL else BANKLY_TRANSACTION_PROD_BASE_URL),
     NetworkChecker(if (BUILD_TYPE == DEBUG) BANKLY_NETWORK_CHECKER_TEST_BASE_URL else BANKLY_NETWORK_CHECKER_PROD_BASE_URL),
     PosNotification(if (BUILD_TYPE == DEBUG) BANKLY_POS_NOTIFICATION_TEST_BASE_URL else BANKLY_POS_NOTIFICATION_PROD_BASE_URL),
+    PushNotification(if (BUILD_TYPE == DEBUG) BANKLY_NOTIFICATION_TEST_BASE_URL else BANKLY_NOTIFICATION_PROD_BASE_URL),
 }

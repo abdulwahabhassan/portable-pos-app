@@ -29,7 +29,7 @@ import com.bankly.core.designsystem.component.BanklyInputField
 import com.bankly.core.designsystem.component.BanklyTitleBar
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenEvent
 import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenOneShotState
 import com.bankly.feature.paywithtransfer.ui.sendreceipt.SendReceiptScreenState

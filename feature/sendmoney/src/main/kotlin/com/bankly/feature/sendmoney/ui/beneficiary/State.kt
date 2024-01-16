@@ -5,9 +5,9 @@ import com.bankly.core.common.model.AccountNumberType
 import com.bankly.core.common.model.TransactionData
 import com.bankly.core.common.viewmodel.OneShotState
 import com.bankly.core.designsystem.icon.BanklyIcons
-import com.bankly.core.entity.AccountNameEnquiry
-import com.bankly.core.entity.Bank
-import com.bankly.core.sealed.State
+import com.bankly.core.model.entity.AccountNameEnquiry
+import com.bankly.core.model.entity.Bank
+import com.bankly.core.model.sealed.State
 import com.bankly.feature.sendmoney.model.BeneficiaryTab
 import com.bankly.feature.sendmoney.model.SavedBeneficiary
 
@@ -15,7 +15,7 @@ internal data class BeneficiaryScreenState(
     val accountNumberType: AccountNumberType = AccountNumberType.ACCOUNT_NUMBER,
     val isTypeError: Boolean = false,
     val typeFeedBack: String = "",
-    val selectedBank: Bank? = null,
+    val selectedBank: com.bankly.core.model.entity.Bank? = null,
     val isBankNameError: Boolean = false,
     val bankNameFeedBack: String = "",
     val accountOrPhoneTFV: TextFieldValue = TextFieldValue(text = ""),
@@ -28,8 +28,8 @@ internal data class BeneficiaryScreenState(
     val isNarrationError: Boolean = false,
     val narrationFeedBack: String = "",
     val saveAsBeneficiary: Boolean = false,
-    val accountOrPhoneValidationState: State<AccountNameEnquiry> = State.Initial,
-    val bankListState: State<List<Bank>> = State.Initial,
+    val accountOrPhoneValidationState: State<com.bankly.core.model.entity.AccountNameEnquiry> = State.Initial,
+    val bankListState: State<List<com.bankly.core.model.entity.Bank>> = State.Initial,
     val selectedTab: BeneficiaryTab = BeneficiaryTab.NEW_BENEFICIARY,
     val shouldShowSavedBeneficiaryList: Boolean = true,
     val savedBeneficiaries: List<SavedBeneficiary> = SavedBeneficiary.mockOtherBanks(),
@@ -62,7 +62,7 @@ internal data class BeneficiaryScreenState(
             is State.Error -> BanklyIcons.ValidationFailed
             is State.Success -> BanklyIcons.ValidationPassed
         }
-    val banks: List<Bank>
+    val banks: List<com.bankly.core.model.entity.Bank>
         get() = when (bankListState) {
             is State.Success -> bankListState.data
             else -> emptyList()

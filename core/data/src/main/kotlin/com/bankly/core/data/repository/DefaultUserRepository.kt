@@ -1,10 +1,10 @@
 package com.bankly.core.data.repository
 
-import com.bankly.core.data.ChangePassCodeData
-import com.bankly.core.data.ForgotPassCodeData
-import com.bankly.core.data.ForgotTerminalAccessPinData
-import com.bankly.core.data.ResetPassCodeData
-import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.model.data.ChangePassCodeData
+import com.bankly.core.model.data.ForgotPassCodeData
+import com.bankly.core.model.data.ForgotTerminalAccessPinData
+import com.bankly.core.model.data.ResetPassCodeData
+import com.bankly.core.model.data.ValidateOtpData
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.data.util.NetworkMonitor
 import com.bankly.core.data.util.asAgentAccountDetails
@@ -20,16 +20,16 @@ import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.handleTokenApiResponse
 import com.bankly.core.data.util.handleTokenRequest
 import com.bankly.core.domain.repository.UserRepository
-import com.bankly.core.entity.AgentAccountDetails
-import com.bankly.core.entity.Message
-import com.bankly.core.entity.Status
-import com.bankly.core.entity.Token
-import com.bankly.core.entity.User
-import com.bankly.core.entity.UserWallet
+import com.bankly.core.model.entity.AgentAccountDetails
+import com.bankly.core.model.entity.Message
+import com.bankly.core.model.entity.Status
+import com.bankly.core.model.entity.Token
+import com.bankly.core.model.entity.User
+import com.bankly.core.model.entity.UserWallet
 import com.bankly.core.network.retrofit.service.IdentityService
 import com.bankly.core.network.retrofit.service.WalletService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -47,7 +47,7 @@ class DefaultUserRepository @Inject constructor(
     override suspend fun getToken(
         userName: String,
         password: String,
-    ): Flow<Resource<Token>> = flow {
+    ): Flow<Resource<com.bankly.core.model.entity.Token>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleTokenApiResponse(
@@ -71,8 +71,8 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun forgotPassCode(
-        body: ForgotPassCodeData,
-    ): Flow<Resource<Status>> = flow {
+        body: com.bankly.core.model.data.ForgotPassCodeData,
+    ): Flow<Resource<com.bankly.core.model.entity.Status>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -91,8 +91,8 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun forgotTerminalAccessPin(
-        body: ForgotTerminalAccessPinData,
-    ): Flow<Resource<Status>> = flow {
+        body: com.bankly.core.model.data.ForgotTerminalAccessPinData,
+    ): Flow<Resource<com.bankly.core.model.entity.Status>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -110,7 +110,7 @@ class DefaultUserRepository @Inject constructor(
         }
     }
 
-    override suspend fun validateOtp(body: ValidateOtpData): Flow<Resource<Status>> = flow {
+    override suspend fun validateOtp(body: com.bankly.core.model.data.ValidateOtpData): Flow<Resource<com.bankly.core.model.entity.Status>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -129,8 +129,8 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun resetPassCode(
-        body: ResetPassCodeData,
-    ): Flow<Resource<Message>> = flow {
+        body: com.bankly.core.model.data.ResetPassCodeData,
+    ): Flow<Resource<com.bankly.core.model.entity.Message>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleApiResponse(
@@ -149,7 +149,7 @@ class DefaultUserRepository @Inject constructor(
     }
 
     override suspend fun changePassCode(
-        body: ChangePassCodeData,
+        body: com.bankly.core.model.data.ChangePassCodeData,
     ): Flow<Resource<User>> = flow {
         emit(Resource.Loading)
         when (
@@ -188,7 +188,7 @@ class DefaultUserRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAgentAccountDetails(token: String): Flow<Resource<AgentAccountDetails>> =
+    override suspend fun getAgentAccountDetails(token: String): Flow<Resource<com.bankly.core.model.entity.AgentAccountDetails>> =
         flow {
             emit(Resource.Loading)
             when (
@@ -209,7 +209,7 @@ class DefaultUserRepository @Inject constructor(
             }
         }
 
-    override suspend fun validatePassCode(password: String, token: String): Flow<Resource<Token>> =
+    override suspend fun validatePassCode(password: String, token: String): Flow<Resource<com.bankly.core.model.entity.Token>> =
         flow {
             emit(Resource.Loading)
             val userName = getUsernameFromAccessToken(token)

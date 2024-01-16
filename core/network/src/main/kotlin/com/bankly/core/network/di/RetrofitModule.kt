@@ -8,6 +8,7 @@ import com.bankly.core.network.retrofit.service.IdentityService
 import com.bankly.core.network.retrofit.service.NetworkCheckerService
 import com.bankly.core.network.retrofit.service.PayWithTransferService
 import com.bankly.core.network.retrofit.service.PosNotificationService
+import com.bankly.core.network.retrofit.service.PushNotificationService
 import com.bankly.core.network.retrofit.service.TransactionService
 import com.bankly.core.network.retrofit.service.TransferService
 import com.bankly.core.network.retrofit.service.WalletService
@@ -182,4 +183,22 @@ object RetrofitModule {
             .build()
             .create(PosNotificationService::class.java)
     }
+
+    @Provides
+    fun providesPushNotificationService(
+        client: OkHttpClient,
+        json: Json,
+    ): PushNotificationService {
+        return Retrofit.Builder()
+            .baseUrl(BanklyBaseUrl.PushNotification.value)
+            .client(client)
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType()),
+            )
+            .build()
+            .create(PushNotificationService::class.java)
+    }
+
+
 }
+

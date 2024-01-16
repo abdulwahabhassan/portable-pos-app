@@ -2,15 +2,15 @@ package com.bankly.feature.authentication.ui.validateotp
 
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.data.ForgotPassCodeData
-import com.bankly.core.data.ValidateOtpData
+import com.bankly.core.model.data.ForgotPassCodeData
+import com.bankly.core.model.data.ValidateOtpData
 import com.bankly.core.domain.usecase.ForgotPassCodeUseCase
 import com.bankly.core.domain.usecase.ValidateOtpUseCase
-import com.bankly.core.entity.Status
-import com.bankly.core.sealed.State
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
+import com.bankly.core.model.entity.Status
+import com.bankly.core.model.sealed.State
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -64,12 +64,16 @@ class OtpValidationViewModel @Inject constructor(
     }
 
     private suspend fun validateOtp(otp: String, phoneNumber: String) {
-        validateOtpUseCase(body = ValidateOtpData(otp = otp, phoneNumber = phoneNumber))
+        validateOtpUseCase(body = com.bankly.core.model.data.ValidateOtpData(
+            otp = otp,
+            phoneNumber = phoneNumber
+        )
+        )
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(otpValidationState = State.Loading) }
                 }
-                resource.onReady { status: Status ->
+                resource.onReady { status: com.bankly.core.model.entity.Status ->
                     setUiState { copy(otpValidationState = State.Success(status)) }
                 }
                 resource.onFailure { message: String ->
@@ -88,12 +92,12 @@ class OtpValidationViewModel @Inject constructor(
     }
 
     private suspend fun resendOtp(phoneNumber: String) {
-        forgotPassCodeUseCase(body = ForgotPassCodeData(phoneNumber = phoneNumber))
+        forgotPassCodeUseCase(body = com.bankly.core.model.data.ForgotPassCodeData(phoneNumber = phoneNumber))
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(resendOtpState = State.Loading) }
                 }
-                resource.onReady { status: Status ->
+                resource.onReady { status: com.bankly.core.model.entity.Status ->
                     setUiState { copy(resendOtpState = State.Success(status), ticks = 60) }
                     startResendCodeTimer()
                 }

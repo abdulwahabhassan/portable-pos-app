@@ -1,7 +1,7 @@
 package com.bankly.core.data.util
 
 import com.bankly.core.network.model.response.TokenApiResponse
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

@@ -4,10 +4,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.bankly.core.common.model.DateRange
 import com.bankly.core.common.model.TransactionCategoryTab
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.entity.CashFlow
-import com.bankly.core.entity.Transaction
-import com.bankly.core.entity.TransactionFilterType
-import com.bankly.core.sealed.TransactionReceipt
+import com.bankly.core.model.entity.CashFlow
+import com.bankly.core.model.entity.Transaction
+import com.bankly.core.model.entity.TransactionFilterType
+import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.datetime.LocalDate
 
 internal data class EodTransactionsScreenState(
@@ -17,7 +17,7 @@ internal data class EodTransactionsScreenState(
     private val isTransactionFilterTypesLoading: Boolean = false,
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
-    val transactions: List<Transaction> = emptyList(),
+    val transactions: List<com.bankly.core.model.entity.Transaction> = emptyList(),
     val allTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
     val isTransactionReferenceError: Boolean = false,
     val isAccountNameError: Boolean = false,
@@ -35,7 +35,7 @@ internal data class EodTransactionsScreenState(
     val isStartDateFilterError: Boolean = false,
     val isEndDateFilterError: Boolean = false,
     val showAllTransactionFilterType: Boolean = false,
-    val cashFlows: List<CashFlow> = emptyList(),
+    val cashFlows: List<com.bankly.core.model.entity.CashFlow> = emptyList(),
     val selectedTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
 ) {
 

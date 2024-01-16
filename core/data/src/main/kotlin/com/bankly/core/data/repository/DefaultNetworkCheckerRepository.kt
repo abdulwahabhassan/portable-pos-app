@@ -8,12 +8,12 @@ import com.bankly.core.data.util.handleNetworkCheckerApiResponse
 import com.bankly.core.data.util.handleRequest
 import com.bankly.core.data.util.loadJsonFromAsset
 import com.bankly.core.domain.repository.NetworkCheckerRepository
-import com.bankly.core.entity.BankLogo
-import com.bankly.core.entity.BankNetwork
+import com.bankly.core.model.entity.BankLogo
+import com.bankly.core.model.entity.BankNetwork
 import com.bankly.core.network.model.result.BankNetworkResult
 import com.bankly.core.network.retrofit.service.NetworkCheckerService
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.Result
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.Result
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +29,7 @@ class DefaultNetworkCheckerRepository @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : NetworkCheckerRepository {
 
-    override suspend fun getBankNetworks(token: String): Flow<Resource<List<BankNetwork>>> = flow {
+    override suspend fun getBankNetworks(token: String): Flow<Resource<List<com.bankly.core.model.entity.BankNetwork>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleNetworkCheckerApiResponse(
@@ -47,7 +47,7 @@ class DefaultNetworkCheckerRepository @Inject constructor(
         ) {
             is Result.Error -> emit(Resource.Failed(responseResult.message))
             is Result.Success -> {
-                val bankLogos = loadJsonFromAsset<List<BankLogo>>(
+                val bankLogos = loadJsonFromAsset<List<com.bankly.core.model.entity.BankLogo>>(
                     context,
                     "bank-logos.json",
                     json,

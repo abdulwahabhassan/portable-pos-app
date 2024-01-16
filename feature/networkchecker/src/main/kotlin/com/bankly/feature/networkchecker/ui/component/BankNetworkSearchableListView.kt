@@ -36,7 +36,7 @@ import com.bankly.core.common.ui.view.EmptyStateView
 import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.core.designsystem.theme.PreviewColor
-import com.bankly.core.entity.BankNetwork
+import com.bankly.core.model.entity.BankNetwork
 import com.bankly.feature.networkchecker.R
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -44,7 +44,7 @@ import com.bankly.feature.networkchecker.R
 internal fun BankNetworkSearchableListView(
     modifier: Modifier,
     isBankListLoading: Boolean,
-    bankList: List<BankNetwork>,
+    bankList: List<com.bankly.core.model.entity.BankNetwork>,
 ) {
     val searchQuery by remember { mutableStateOf("") }
     val banks by remember(bankList, searchQuery) {
@@ -125,9 +125,9 @@ private fun BankNetworkSearchableListPreview() {
             modifier = Modifier,
             isBankListLoading = false,
             bankList = listOf(
-                BankNetwork("GT Bank", "", 60.00, 100),
-                BankNetwork("First Bank", "", 100.00, 59),
-                BankNetwork("Access Bank", "", 50.00, 0),
+                com.bankly.core.model.entity.BankNetwork("GT Bank", "", 60.00, 100),
+                com.bankly.core.model.entity.BankNetwork("First Bank", "", 100.00, 59),
+                com.bankly.core.model.entity.BankNetwork("Access Bank", "", 50.00, 0),
             ),
         )
     }

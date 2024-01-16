@@ -9,10 +9,10 @@ import com.bankly.core.domain.usecase.CardTransferUseCase
 import com.bankly.core.domain.usecase.GetEodTransactionsUseCase
 import com.bankly.core.domain.usecase.PayBillUseCase
 import com.bankly.core.domain.usecase.SaveToEodUseCase
-import com.bankly.core.sealed.TransactionReceipt
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onReady
-import com.bankly.core.sealed.onSessionExpired
+import com.bankly.core.model.sealed.TransactionReceipt
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onReady
+import com.bankly.core.model.sealed.onSessionExpired
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn

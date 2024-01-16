@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.ValidatePassCodeUseCase
-import com.bankly.core.entity.Token
-import com.bankly.core.sealed.Resource
-import com.bankly.core.sealed.onFailure
-import com.bankly.core.sealed.onLoading
-import com.bankly.core.sealed.onReady
+import com.bankly.core.model.entity.Token
+import com.bankly.core.model.sealed.Resource
+import com.bankly.core.model.sealed.onFailure
+import com.bankly.core.model.sealed.onLoading
+import com.bankly.core.model.sealed.onReady
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -54,7 +54,7 @@ class ValidatePassCodeViewModel @Inject constructor(
             password,
             userPreferencesDataStore.data().token.substringAfter(" "),
         )
-            .onEach { resource: Resource<Token> ->
+            .onEach { resource: Resource<com.bankly.core.model.entity.Token> ->
                 Log.d("debug token", "token ${userPreferencesDataStore.data().token}")
                 resource.onLoading {
                     setUiState { copy(isLoading = true) }

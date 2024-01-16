@@ -1,14 +1,14 @@
 package com.bankly.feature.authentication.ui.validateotp
 
 import com.bankly.core.common.viewmodel.OneShotState
-import com.bankly.core.entity.Status
-import com.bankly.core.sealed.State
+import com.bankly.core.model.entity.Status
+import com.bankly.core.model.sealed.State
 
 data class OtpValidationScreenState(
     val otp: List<String> = List(6) { "" },
     val ticks: Int = 60,
-    val otpValidationState: State<Status> = State.Initial,
-    val resendOtpState: State<Status> = State.Initial,
+    val otpValidationState: State<com.bankly.core.model.entity.Status> = State.Initial,
+    val resendOtpState: State<com.bankly.core.model.entity.Status> = State.Initial,
 ) {
     val isDoneButtonEnabled: Boolean
         get() = otp.all { digit: String -> digit.isNotEmpty() } && otpValidationState !is State.Loading && resendOtpState !is State.Loading
