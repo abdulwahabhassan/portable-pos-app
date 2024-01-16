@@ -151,24 +151,13 @@ internal fun BeneficiaryRoute(
             }
         }.launchIn(this)
 
-//        newBeneficiaryViewModel.oneShotState.onEach { oneShotUiState ->
-//            when (oneShotUiState) {
-//                is BeneficiaryScreenOneShotState.GoToConfirmTransactionScreen -> {
-//                    onContinueClick(oneShotUiState.transactionData)
-//                }
-//
-//                BeneficiaryScreenOneShotState.Logout -> onLogOut()
-//            }
-//        }.launchIn(this)
 
         this.launch {
             newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.UpdateBillType(billType))
             savedBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.UpdateBillType(billType))
             newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.FetchProviders(billType))
         }
-//        this.launch {
-//            newBeneficiaryViewModel.sendEvent(BeneficiaryScreenEvent.FetchProviders(billType))
-//        }
+
     }
 
     if (newBeneficiaryScreenState.showErrorDialog) {
@@ -297,7 +286,12 @@ private fun BeneficiaryScreen(
                 },
                 title = when (bottomSheetType) {
                     BottomSheetType.PROVIDER -> {
-                        stringResource(R.string.title_select_network_provider)
+                        when (billType) {
+                            BillType.INTERNET_DATA -> stringResource(R.string.title_select_network_provider)
+                            BillType.CABLE_TV -> stringResource(R.string.title_select_cable_tv_provider)
+                            BillType.ELECTRICITY -> stringResource(R.string.title_select_electricity_provider)
+                            BillType.AIRTIME -> stringResource(R.string.title_select_network_provider)
+                        }
                     }
 
                     BottomSheetType.PLAN -> {
