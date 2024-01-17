@@ -6,9 +6,12 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.model.data.GetRecentFundingData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetAgentAccountDetailsUseCase
+import com.bankly.core.domain.usecase.GetRecentFundUseCase
 import com.bankly.core.domain.usecase.GetRecentFundingUseCase
+import com.bankly.core.domain.usecase.InsertRecentFundUseCase
 import com.bankly.core.domain.usecase.SendReceiptUseCase
 import com.bankly.core.domain.usecase.SyncRecentFundingUseCase
+import com.bankly.core.model.data.SyncRecentFundingData
 import com.bankly.core.model.sealed.onFailure
 import com.bankly.core.model.sealed.onLoading
 import com.bankly.core.model.sealed.onReady
@@ -25,6 +28,8 @@ import javax.inject.Inject
 internal class PayWithTransferViewModel @Inject constructor(
     private val getRecentFundingUseCase: GetRecentFundingUseCase,
     private val syncRecentFundingUseCase: SyncRecentFundingUseCase,
+    private val getRecentFundUseCase: GetRecentFundUseCase,
+    private val insertRecentFundUseCase: InsertRecentFundUseCase,
     private val sendReceiptUseCase: SendReceiptUseCase,
     private val getAgentAccountDetailsUseCase: GetAgentAccountDetailsUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
@@ -32,10 +37,38 @@ internal class PayWithTransferViewModel @Inject constructor(
     BaseViewModel<PayWithTransferScreenEvent, PayWithTransferScreenState, PayWithTransferScreenOneShotState>(
         PayWithTransferScreenState(),
     ) {
-    init {
-        viewModelScope.launch {
-            getAgentAccountDetails()
-            getRecentFunding()
+
+    override suspend fun handleUiEvents(event: PayWithTransferScreenEvent) {
+        when (event) {
+            is PayWithTransferScreenEvent.OnAccountDetailsExpandButtonClick -> {
+                setUiState { copy(isAccountDetailsExpanded = !event.isExpanded) }
+            }
+
+            is PayWithTransferScreenEvent.OnRecentFundSelected -> {
+                setUiState {
+                    copy(
+                        showRecentFundDialog = true,
+                        selectedRecentFund = event.recentFund,
+                    )
+                }
+                markRecentFundAsSeen(
+                    transactionRef = event.recentFund.transactionReference,
+                    sessionId = event.recentFund.sessionId
+                )
+            }
+
+            PayWithTransferScreenEvent.CloseRecentFundSummaryDialog -> {
+                setUiState { copy(showRecentFundDialog = false) }
+            }
+
+            PayWithTransferScreenEvent.DismissErrorDialog -> {
+                setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
+            }
+
+            PayWithTransferScreenEvent.LoadUiData -> {
+                getAgentAccountDetails()
+                getRecentFunding()
+            }
         }
     }
 
@@ -50,13 +83,22 @@ internal class PayWithTransferViewModel @Inject constructor(
                     }
                 }
                 resource.onReady { agentAccountDetails ->
-                    Log.d("debug agent account details", "onReady agent account details: $agentAccountDetails")
+                    Log.d(
+                        "debug agent account details",
+                        "onReady agent account details: $agentAccountDetails"
+                    )
                     setUiState {
-                        copy(agentAccountDetails = agentAccountDetails, isAgentAccountDetailsLoading = false)
+                        copy(
+                            agentAccountDetails = agentAccountDetails,
+                            isAgentAccountDetailsLoading = false
+                        )
                     }
                 }
                 resource.onFailure { message ->
-                    Log.d("debug agent account details", "onFailure agent account details: $message")
+                    Log.d(
+                        "debug agent account details",
+                        "onFailure agent account details: $message"
+                    )
                     setUiState {
                         copy(
                             isAgentAccountDetailsLoading = false,
@@ -85,8 +127,8 @@ internal class PayWithTransferViewModel @Inject constructor(
 
     private suspend fun getRecentFunding() {
         getRecentFundingUseCase.invoke(
-            userPreferencesDataStore.data().token,
-            com.bankly.core.model.data.GetRecentFundingData(false, Tools.serialNumber),
+            token = userPreferencesDataStore.data().token,
+            body = GetRecentFundingData(true, Tools.serialNumber),
         )
             .onEach { resource ->
                 resource.onLoading {
@@ -125,28 +167,22 @@ internal class PayWithTransferViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    override suspend fun handleUiEvents(event: PayWithTransferScreenEvent) {
-        when (event) {
-            is PayWithTransferScreenEvent.OnAccountDetailsExpandButtonClick -> {
-                setUiState { copy(isAccountDetailsExpanded = !event.isExpanded) }
-            }
-
-            is PayWithTransferScreenEvent.OnRecentFundSelected -> {
-                setUiState {
-                    copy(
-                        showRecentFundDialog = true,
-                        selectedRecentFund = event.recentFund,
-                    )
-                }
-            }
-
-            PayWithTransferScreenEvent.CloseRecentFundSummaryDialog -> {
-                setUiState { copy(showRecentFundDialog = false) }
-            }
-
-            PayWithTransferScreenEvent.DismissErrorDialog -> {
-                setUiState { copy(showErrorDialog = false, errorDialogMessage = "") }
+    private fun markRecentFundAsSeen(transactionRef: String, sessionId: String) {
+        viewModelScope.launch {
+            Log.d("debug", "Transaction Ref to be marked -> $transactionRef")
+            val recentFund = getRecentFundUseCase.invoke(transactionRef, sessionId)
+            Log.d("debug", "recent fund -> $recentFund")
+            if (recentFund != null && !recentFund.seen) {
+                Log.d("debug", "Update as synced called")
+                //this notifies the server that this transaction has been seen by the user
+                syncRecentFundingUseCase.invoke(
+                    userPreferencesDataStore.data().token,
+                    SyncRecentFundingData(sessionId, Tools.serialNumber)
+                )
+                //update the app's local database as well
+                insertRecentFundUseCase.invoke(recentFund.copy(seen = true))
             }
         }
     }
+
 }

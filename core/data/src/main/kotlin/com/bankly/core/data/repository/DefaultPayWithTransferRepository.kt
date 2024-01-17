@@ -17,6 +17,7 @@ import com.bankly.core.network.retrofit.service.WalletService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
@@ -53,7 +54,7 @@ class DefaultPayWithTransferRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRecentFunding(
+    override suspend fun getRemoteRecentFunds(
         token: String,
         body: com.bankly.core.model.data.GetRecentFundingData,
     ): Flow<Resource<List<RecentFund>>> = flow {
@@ -78,6 +79,10 @@ class DefaultPayWithTransferRepository @Inject constructor(
             Result.SessionExpired -> emit(Resource.SessionExpired)
         }
     }
+
+    override suspend fun getLocalRecentFunds(): Flow<List<RecentFund>> =
+        recentFundDao.getRecentFunds()
+            .map { recentFundList -> recentFundList.map { it.asRecentFund() } }
 
     override suspend fun sendReceipt(
         token: String,

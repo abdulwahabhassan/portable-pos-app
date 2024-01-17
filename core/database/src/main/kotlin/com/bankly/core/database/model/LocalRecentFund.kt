@@ -30,7 +30,7 @@ data class LocalRecentFund(
     @ColumnInfo(name = "transaction_hash")
     val transactionHash: String,
     @ColumnInfo(name = "seen")
-    val seen: Boolean = false,
+    val seen: Boolean,
     @ColumnInfo(name = "senderBankName")
     val senderBankName: String,
     @ColumnInfo(name = "receiverBankName")

@@ -1,6 +1,7 @@
 package com.bankly.feature.notification.model
 
 import android.os.Parcelable
+import com.bankly.core.model.entity.RecentFund
 import com.bankly.core.model.sealed.TransactionReceipt
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
@@ -84,6 +85,29 @@ data class TransactionPayload(
             sessionId = this.sessionID ?: ""
         )
     }
+
+    fun toRecentFund(): RecentFund {
+        return RecentFund(
+            transactionReference = this.transactionReference ?: "",
+            amount = this.amount ?: 0.00,
+            accountReference = this.accountReference ?: "",
+            paymentDescription = this.paymentDescription ?: "",
+            transactionHash = this.transactionHash ?: "",
+            senderAccountNumber = this.senderAccountNumber ?: "",
+            senderAccountName = this.senderAccountName ?: "",
+            sessionId = this.sessionID ?: "",
+            phoneNumber = this.phoneNumber ?: "",
+            userId = this.userId ?: "",
+            transactionDate = this.transactionDate ?: "",
+            seen = false,
+            senderBankName = this.senderBankName ?: "",
+            receiverBankName = this.receiverBankName ?: "",
+            receiverAccountNumber = this.receiverAccountNumber ?: "",
+            receiverAccountName = this.receiverAccountName ?: ""
+        )
+    }
+
 }
+
 
 

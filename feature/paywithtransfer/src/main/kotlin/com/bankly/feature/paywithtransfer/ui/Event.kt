@@ -7,4 +7,5 @@ internal sealed interface PayWithTransferScreenEvent {
     data class OnRecentFundSelected(val recentFund: com.bankly.core.model.entity.RecentFund) : PayWithTransferScreenEvent
     data class OnAccountDetailsExpandButtonClick(val isExpanded: Boolean) : PayWithTransferScreenEvent
     object DismissErrorDialog : PayWithTransferScreenEvent
+    object LoadUiData : PayWithTransferScreenEvent
 }

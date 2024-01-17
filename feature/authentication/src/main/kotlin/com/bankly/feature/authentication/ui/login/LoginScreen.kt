@@ -30,6 +30,7 @@ import com.bankly.core.designsystem.icon.BanklyIcons
 import com.bankly.core.designsystem.model.PassCodeKey
 import com.bankly.core.designsystem.theme.BanklyTheme
 import com.bankly.feature.authentication.R
+import com.bankly.feature.authentication.ui.validateotp.OtpValidationScreenEvent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -144,6 +145,36 @@ internal fun LoginScreen(
                         },
                         isEnabled = screenState.isUserInputEnabled,
                         backgroundShape = MaterialTheme.shapes.medium,
+                    )
+                } else {
+                    BanklyClickableText(
+                        text = if (screenState.ticks == 0) {
+                            buildAnnotatedString {
+                                withStyle(
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = MaterialTheme.colorScheme.primary,
+                                    ).toSpanStyle(),
+                                ) { append(stringResource(R.string.action_resend_code)) }
+                            }
+                        } else {
+                            buildAnnotatedString {
+                                withStyle(
+                                    style = MaterialTheme.typography.bodyMedium.toSpanStyle(),
+                                ) {
+                                    append(stringResource(R.string.msg_resend_code_in))
+                                }
+                                append(" ")
+                                withStyle(
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = MaterialTheme.colorScheme.primary,
+                                    ).toSpanStyle(),
+                                ) { append("${screenState.ticks}s") }
+                            }
+                        },
+                        onClick = {
+                            onUiEvent(LoginScreenEvent.OnResendAccessCodeClick)
+                        },
+                        isEnabled = screenState.isResendCodeTextButtonEnabled,
                     )
                 }
             }

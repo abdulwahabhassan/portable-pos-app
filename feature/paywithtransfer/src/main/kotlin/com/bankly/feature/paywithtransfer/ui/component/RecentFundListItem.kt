@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -34,7 +35,7 @@ import com.bankly.feature.paywithtransfer.R
 
 @Composable
 internal fun RecentFundListItem(
-    recentFund: com.bankly.core.model.entity.RecentFund,
+    recentFund: RecentFund,
     onClick: () -> Unit,
 ) {
     Column {
@@ -66,10 +67,21 @@ internal fun RecentFundListItem(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
-                Text(
-                    text = formatServerDateTime(recentFund.transactionDate),
-                    style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = formatServerDateTime(recentFund.transactionDate),
+                        style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.tertiary),
+                    )
+                    if (recentFund.seen.not()) {
+                        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                        Icon(
+                            modifier = Modifier.size(6.dp),
+                            painter = painterResource(id = BanklyIcons.Dot),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
@@ -97,7 +109,7 @@ internal fun RecentFundListItem(
 private fun RecentFundListItemPreview() {
     BanklyTheme {
         RecentFundListItem(
-            recentFund = com.bankly.core.model.entity.RecentFund(
+            recentFund = RecentFund(
                 transactionReference = "389030022838200",
                 amount = 20.00,
                 accountReference = "73783899",

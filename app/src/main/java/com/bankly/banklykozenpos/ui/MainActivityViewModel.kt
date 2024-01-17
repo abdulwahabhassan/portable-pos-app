@@ -50,6 +50,7 @@ internal class MainActivityViewModel @Inject constructor(
                         notificationMessage = event.notificationMessage
                     )
                 }
+                insertNotificationMessageUseCase.invoke(event.notificationMessage)
             }
 
             is MainActivityEvent.OnReceiveTransactionPayload -> {
@@ -59,6 +60,7 @@ internal class MainActivityViewModel @Inject constructor(
                         transactionAlert = event.transactionPayload
                     )
                 }
+                insertRecentFundUseCase.invoke(event.transactionPayload.toRecentFund())
             }
 
             is MainActivityEvent.OnDismissNotificationMessageDialog -> {
@@ -145,7 +147,7 @@ internal class MainActivityViewModel @Inject constructor(
                     SyncRecentFundingData(sessionId, Tools.serialNumber)
                 )
                 //update the app's local database as well
-                insertRecentFundUseCase.invoke(recentFund)
+                insertRecentFundUseCase.invoke(recentFund.copy(seen = true))
             }
         }
     }

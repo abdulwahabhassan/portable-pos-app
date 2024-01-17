@@ -56,6 +56,10 @@ internal fun PayWithTransferRoute(
             }
         }.launchIn(this)
     })
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.sendEvent(PayWithTransferScreenEvent.LoadUiData)
+    })
 }
 
 @OptIn(ExperimentalFoundationApi::class)

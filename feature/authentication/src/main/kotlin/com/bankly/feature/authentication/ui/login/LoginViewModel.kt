@@ -1,8 +1,8 @@
 package com.bankly.feature.authentication.ui.login
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bankly.core.common.viewmodel.BaseViewModel
-import com.bankly.core.model.data.ForgotTerminalAccessPinData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.ForgotTerminalAccessPinUseCase
 import com.bankly.core.domain.usecase.GetTokenUseCase
@@ -11,10 +11,13 @@ import com.bankly.core.model.sealed.onLoading
 import com.bankly.core.model.sealed.onReady
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 private const val THREE = "3"
 private const val FOUR = "4"
@@ -61,6 +64,10 @@ class LoginViewModel @Inject constructor(
 
             LoginScreenEvent.OnDismissExitResetPinWarningDialog -> {
                 setUiState { copy(showExitResetPinDialog = false) }
+            }
+
+            LoginScreenEvent.OnResendAccessCodeClick -> {
+                resetAccessPin()
             }
         }
     }
@@ -126,30 +133,56 @@ class LoginViewModel @Inject constructor(
                         isLoading = false,
                         showErrorDialog = true,
                         errorDialogMessage = it.localizedMessage ?: it.message
-                            ?: "",
+                        ?: "",
                     )
                 }
             }.launchIn(viewModelScope)
     }
 
+    private fun startResendCodeTimer() {
+        Log.d("debug", "startResendCodeTimer called")
+        viewModelScope.launch {
+            while (uiState.value.ticks > 0) {
+                delay(1.seconds)
+                setUiState {
+                    copy(ticks = uiState.value.ticks - 1)
+                }
+            }
+        }
+    }
+
     private suspend fun resetAccessPin() {
-        forgotTerminalAccessPinUseCase(body = com.bankly.core.model.data.ForgotTerminalAccessPinData(
-            serialNumber = Tools.serialNumber
-        )
+        forgotTerminalAccessPinUseCase(
+            body = com.bankly.core.model.data.ForgotTerminalAccessPinData(
+                serialNumber = Tools.serialNumber
+            )
         )
             .onEach { resource ->
                 resource.onLoading {
                     setUiState { copy(isLoading = true) }
                 }
                 resource.onReady { _ ->
-                    setUiState { copy(isLoading = false, isResetAccessPin = true) }
+                    setUiState { copy(isLoading = false, isResetAccessPin = true, ticks = 60) }
+                    startResendCodeTimer()
                 }
                 resource.onFailure { message ->
-                    setUiState { copy(showErrorDialog = true, errorDialogMessage = message) }
+                    setUiState {
+                        copy(
+                            showErrorDialog = true,
+                            errorDialogMessage = message,
+                            isLoading = false,
+                        )
+                    }
                 }
             }.catch {
                 it.printStackTrace()
-                setUiState { copy(showErrorDialog = true, errorDialogMessage = it.message ?: "") }
+                setUiState {
+                    copy(
+                        showErrorDialog = true,
+                        errorDialogMessage = it.message ?: "",
+                        isLoading = false,
+                    )
+                }
             }.launchIn(viewModelScope)
     }
 }

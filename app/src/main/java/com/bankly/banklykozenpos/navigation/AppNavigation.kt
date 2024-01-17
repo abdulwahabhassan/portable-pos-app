@@ -1,6 +1,7 @@
 package com.bankly.banklykozenpos.navigation
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -242,12 +243,13 @@ internal fun AppNavHost(
             onSessionRenewed()
         },
     )
-
+    Log.d("debug", "current destination: ${appState.navHostController.currentDestination?.route}")
     BanklyCenterDialog(
         title = appState.mainActivityState.transactionAlert?.title
             ?: stringResource(R.string.title_transaction_alert),
         icon = BanklyIcons.Successful,
-        showDialog = appState.mainActivityState.showTransactionAlertDialog,
+        showDialog = appState.mainActivityState.showTransactionAlertDialog &&
+                appState.navHostController.currentDestination?.route != "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
         onDismissDialog = {
             appState.mainActivityState.transactionAlert?.let { onCloseTransactionAlertDialog(it) }
         },
@@ -279,7 +281,8 @@ internal fun AppNavHost(
         title = appState.mainActivityState.notificationMessage?.title
             ?: stringResource(R.string.title_notification),
         subtitle = appState.mainActivityState.notificationMessage?.message,
-        showDialog = appState.mainActivityState.showNotificationMessageDialog,
+        showDialog = appState.mainActivityState.showNotificationMessageDialog &&
+                appState.navHostController.currentDestination?.route != "$authenticationNavGraphRoute/{$isValidatePassCodeArg}",
         onDismissDialog = {
             appState.mainActivityState.notificationMessage?.let { onClosNotificationMessageDialog(it) }
         },

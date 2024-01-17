@@ -32,8 +32,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private var transactionPayload: TransactionPayload? = null
-    private var notificationMessage: NotificationMessage? = null
     private val viewModel by viewModels<MainActivityViewModel>()
 
     @Inject
@@ -135,37 +133,41 @@ class MainActivity : ComponentActivity() {
                     intent.extras!!.getString(BanklyFirebaseMessagingService.DATA_TITLE_KEY)
                 val body =
                     intent.extras!!.getString(BanklyFirebaseMessagingService.DATA_BODY_KEY)
-                val preTransactionPayload =
+                val transactionPayload =
                     BanklyFirebaseMessagingService.resolvePayload(payload, json)
-                if (preTransactionPayload?.transactionReference != null && preTransactionPayload.amount != null) {
-                    transactionPayload = preTransactionPayload
-                } else if (preTransactionPayload?.title != null && preTransactionPayload.body != null) {
-                    notificationMessage = NotificationMessage(
-                        preTransactionPayload.title!!,
-                        preTransactionPayload.body!!,
-                        LocalDateTime.now().toString(),
-                        seen = false
+                if (transactionPayload?.transactionReference != null && transactionPayload.amount != null) {
+                    Log.d(
+                        "",
+                        "Resolve intent called -> "
+                                + "notification transaction payload: " + transactionPayload
                     )
-                } else if (title != null && body != null) {
-                    notificationMessage =
-                        NotificationMessage(
-                            title = title,
-                            message = body,
-                            dateTime = LocalDateTime.now().toString(),
+                    handleTransactionPayload(transactionPayload)
+                } else {
+                    var notificationMessage: NotificationMessage? = null
+                    if (transactionPayload?.title != null && transactionPayload.body != null) {
+                        notificationMessage = NotificationMessage(
+                            transactionPayload.title!!,
+                            transactionPayload.body!!,
+                            LocalDateTime.now().toString(),
                             seen = false
                         )
-                }
-                Log.d(
-                    "",
-                    "Resolve intent called -> "
-                            + "notification transaction payload: " + transactionPayload
-                )
-                Log.d(
-                    "",
-                    "Resolve intent called -> "
-                            + "notification message: " + notificationMessage
-                )
+                    } else if (title != null && body != null) {
+                        notificationMessage =
+                            NotificationMessage(
+                                title = title,
+                                message = body,
+                                dateTime = LocalDateTime.now().toString(),
+                                seen = false
+                            )
+                    }
 
+                    Log.d(
+                        "",
+                        "Resolve intent called -> "
+                                + "notification message: " + notificationMessage
+                    )
+                    notificationMessage?.let { handleNotificationMessage(it) }
+                }
             }
         }
     }

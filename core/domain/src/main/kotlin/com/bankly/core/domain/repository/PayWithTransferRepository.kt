@@ -14,10 +14,12 @@ interface PayWithTransferRepository {
         body: SyncRecentFundingData,
     ): Flow<Resource<String>>
 
-    suspend fun getRecentFunding(
+    suspend fun getRemoteRecentFunds(
         token: String,
         body: GetRecentFundingData,
     ): Flow<Resource<List<RecentFund>>>
+
+    suspend fun getLocalRecentFunds(): Flow<List<RecentFund>>
 
     suspend fun sendReceipt(
         token: String,

@@ -162,9 +162,6 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
         const val DATA_BODY_KEY = "body"
 
         fun resolvePayload(payload: String?, json: Json): TransactionPayload? {
-//            val transactionPayload: TransactionPayload? =
-//            val transactionPayloadType = object : TypeToken<TransactionPayload>() {}.type
-//            val transactionPayloadAdapter: JsonAdapter<TransactionPayload>? = moshi.adapter(transactionPayloadType)
             return payload?.let { json.decodeFromString(it) }
         }
     }

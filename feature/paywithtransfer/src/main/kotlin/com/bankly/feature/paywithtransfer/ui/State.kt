@@ -7,11 +7,11 @@ import com.bankly.core.model.entity.RecentFund
 internal data class PayWithTransferScreenState(
     val isRecentFundsLoading: Boolean = false,
     val isAgentAccountDetailsLoading: Boolean = false,
-    val agentAccountDetails: com.bankly.core.model.entity.AgentAccountDetails? = null,
+    val agentAccountDetails: AgentAccountDetails? = null,
     val isAccountDetailsExpanded: Boolean = true,
-    val recentFunds: List<com.bankly.core.model.entity.RecentFund> = emptyList(),
+    val recentFunds: List<RecentFund> = emptyList(),
     val showRecentFundDialog: Boolean = false,
-    val selectedRecentFund: com.bankly.core.model.entity.RecentFund? = null,
+    val selectedRecentFund: RecentFund? = null,
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
 ) {

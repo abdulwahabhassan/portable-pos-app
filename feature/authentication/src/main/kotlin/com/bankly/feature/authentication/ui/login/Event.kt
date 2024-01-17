@@ -9,4 +9,5 @@ sealed interface LoginScreenEvent {
     object OnResetAccessPinClick : LoginScreenEvent
     object ShowExitResetPinWarningDialog : LoginScreenEvent
     object OnDismissExitResetPinWarningDialog : LoginScreenEvent
+    object OnResendAccessCodeClick: LoginScreenEvent
 }
