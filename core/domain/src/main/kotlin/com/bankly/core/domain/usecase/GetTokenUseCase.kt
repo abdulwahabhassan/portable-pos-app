@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetTokenUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
-    suspend operator fun invoke(userName: String, password: String): Flow<Resource<com.bankly.core.model.entity.Token>> =
+    suspend operator fun invoke(userName: String, password: String): Flow<Resource<Token>> =
         userRepository.getToken(userName, password)
 }

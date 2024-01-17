@@ -7,7 +7,6 @@ import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.AddDeviceToFirebaseUseCase
 import com.bankly.core.domain.usecase.GetNotificationMessageUseCase
 import com.bankly.core.domain.usecase.GetRecentFundUseCase
-import com.bankly.core.domain.usecase.GetRecentFundingUseCase
 import com.bankly.core.domain.usecase.InsertNotificationMessageUseCase
 import com.bankly.core.domain.usecase.InsertRecentFundUseCase
 import com.bankly.core.domain.usecase.SyncRecentFundingUseCase

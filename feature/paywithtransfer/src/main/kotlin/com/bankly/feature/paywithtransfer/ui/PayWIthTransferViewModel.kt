@@ -6,12 +6,14 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.model.data.GetRecentFundingData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetAgentAccountDetailsUseCase
+import com.bankly.core.domain.usecase.GetLocalRecentFundsUseCase
 import com.bankly.core.domain.usecase.GetRecentFundUseCase
-import com.bankly.core.domain.usecase.GetRecentFundingUseCase
+import com.bankly.core.domain.usecase.GetRemoteRecentFundsUseCase
 import com.bankly.core.domain.usecase.InsertRecentFundUseCase
 import com.bankly.core.domain.usecase.SendReceiptUseCase
 import com.bankly.core.domain.usecase.SyncRecentFundingUseCase
 import com.bankly.core.model.data.SyncRecentFundingData
+import com.bankly.core.model.entity.RecentFund
 import com.bankly.core.model.sealed.onFailure
 import com.bankly.core.model.sealed.onLoading
 import com.bankly.core.model.sealed.onReady
@@ -19,6 +21,7 @@ import com.bankly.core.model.sealed.onSessionExpired
 import com.bankly.kozonpaymentlibrarymodule.posservices.Tools
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -26,7 +29,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class PayWithTransferViewModel @Inject constructor(
-    private val getRecentFundingUseCase: GetRecentFundingUseCase,
+    private val getRemoteRecentFundsUseCase: GetRemoteRecentFundsUseCase,
+    private val getLocalRecentFundsUseCase: GetLocalRecentFundsUseCase,
     private val syncRecentFundingUseCase: SyncRecentFundingUseCase,
     private val getRecentFundUseCase: GetRecentFundUseCase,
     private val insertRecentFundUseCase: InsertRecentFundUseCase,
@@ -67,7 +71,8 @@ internal class PayWithTransferViewModel @Inject constructor(
 
             PayWithTransferScreenEvent.LoadUiData -> {
                 getAgentAccountDetails()
-                getRecentFunding()
+                getLocalRecentFunds()
+                getRemoteRecentFunding()
             }
         }
     }
@@ -125,46 +130,49 @@ internal class PayWithTransferViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private suspend fun getRecentFunding() {
-        getRecentFundingUseCase.invoke(
+    private suspend fun getLocalRecentFunds() {
+        getLocalRecentFundsUseCase.invoke().onEach {
+            setUiState { copy(recentFunds = it) }
+        }.launchIn(viewModelScope)
+    }
+
+    private suspend fun getRemoteRecentFunding() {
+        getRemoteRecentFundsUseCase.invoke(
             token = userPreferencesDataStore.data().token,
             body = GetRecentFundingData(true, Tools.serialNumber),
-        )
-            .onEach { resource ->
-                resource.onLoading {
-                    setUiState {
-                        copy(isRecentFundsLoading = true)
-                    }
-                }
-                resource.onReady { recentFunds ->
-                    setUiState {
-                        copy(recentFunds = recentFunds, isRecentFundsLoading = false)
-                    }
-                }
-                resource.onFailure { message ->
-                    setUiState {
-                        copy(
-                            isRecentFundsLoading = false,
-                            showErrorDialog = true,
-                            errorDialogMessage = message,
-                        )
-                    }
-                }
-                resource.onSessionExpired {
-                    setOneShotState(PayWithTransferScreenOneShotState.OnSessionExpired)
+        ).onEach { remoteResource ->
+            remoteResource.onReady {
+                setUiState { copy(isRecentFundsLoading = false) }
+                it.forEach { recentFund: RecentFund ->
+                    insertRecentFundUseCase.invoke(recentFund)
                 }
             }
-            .catch {
-                it.printStackTrace()
+            remoteResource.onLoading {
+                setUiState { copy(isRecentFundsLoading = true) }
+            }
+            remoteResource.onFailure { message: String ->
                 setUiState {
                     copy(
                         isRecentFundsLoading = false,
                         showErrorDialog = true,
-                        errorDialogMessage = it.message ?: "Request could not be completed",
+                        errorDialogMessage = message,
                     )
                 }
             }
-            .launchIn(viewModelScope)
+            remoteResource.onSessionExpired {
+                setUiState { copy(isRecentFundsLoading = false) }
+                setOneShotState(PayWithTransferScreenOneShotState.OnSessionExpired)
+            }
+        }.catch {
+            it.printStackTrace()
+            setUiState {
+                copy(
+                    isRecentFundsLoading = false,
+                    showErrorDialog = true,
+                    errorDialogMessage = it.message ?: "Request could not be completed",
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun markRecentFundAsSeen(transactionRef: String, sessionId: String) {
