@@ -140,7 +140,6 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun startResendCodeTimer() {
-        Log.d("debug", "startResendCodeTimer called")
         viewModelScope.launch {
             while (uiState.value.ticks > 0) {
                 delay(1.seconds)
