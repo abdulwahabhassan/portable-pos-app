@@ -6,7 +6,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bankly.core.common.util.playSuccessSound
 import com.bankly.core.data.di.IODispatcher
 import com.bankly.core.domain.usecase.AddDeviceToFirebaseUseCase
+import com.bankly.core.domain.usecase.GetEodTransactionsUseCase
 import com.bankly.core.domain.usecase.InsertRecentFundUseCase
+import com.bankly.core.domain.usecase.SaveToEodUseCase
 import com.bankly.core.model.data.AddDeviceTokenData
 import com.bankly.core.model.entity.NotificationMessage
 import com.bankly.core.model.entity.RecentFund
@@ -35,9 +37,6 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     @IODispatcher
     lateinit var dispatcher: CoroutineDispatcher
-
-    @Inject
-    lateinit var insertRecentFundUseCase: InsertRecentFundUseCase
 
     @Inject
     lateinit var addDeviceToFirebaseUseCase: AddDeviceToFirebaseUseCase
@@ -82,30 +81,6 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d("debug fcm", "FCM Notification Transaction Payload -> $transactionPayload")
 
         if (transactionPayload?.transactionTypeName == "Wallet Top Up") {
-            CoroutineScope(dispatcher).launch {
-                transactionPayload.let {
-                    insertRecentFundUseCase.invoke(
-                        RecentFund(
-                            transactionReference = it.transactionReference ?: "",
-                            amount = it.amount ?: 0.00,
-                            accountReference = it.accountReference ?: "",
-                            paymentDescription = it.paymentDescription ?: "",
-                            senderAccountNumber = it.senderAccountNumber ?: "",
-                            senderAccountName = it.senderAccountName ?: "",
-                            phoneNumber = it.phoneNumber ?: "",
-                            userId = it.userId ?: "",
-                            transactionDate = it.transactionDate ?: "",
-                            seen = false,
-                            senderBankName = it.senderBankName ?: "",
-                            receiverBankName = it.receiverBankName ?: "",
-                            receiverAccountNumber = it.receiverAccountNumber ?: "",
-                            receiverAccountName = it.receiverAccountName ?: "",
-                            sessionId = it.sessionID ?: "",
-                            transactionHash = it.transactionHash ?: ""
-                        )
-                    )
-                }
-            }
             broadcastCreditAlert(transactionPayload)
         } else if (title?.isNotEmpty() == true && body?.isNotEmpty() == true) {
             broadcastNotificationMessage(title, body)

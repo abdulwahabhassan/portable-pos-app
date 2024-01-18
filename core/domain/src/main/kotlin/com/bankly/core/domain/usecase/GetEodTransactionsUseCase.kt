@@ -11,7 +11,7 @@ class GetEodTransactionsUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository,
 ) {
     suspend operator fun invoke(
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> =
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>> =
         transactionRepository.getEodTransactions(filter)
 }

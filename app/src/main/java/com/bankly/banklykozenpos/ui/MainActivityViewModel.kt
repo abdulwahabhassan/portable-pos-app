@@ -9,6 +9,7 @@ import com.bankly.core.domain.usecase.GetNotificationMessageUseCase
 import com.bankly.core.domain.usecase.GetRecentFundUseCase
 import com.bankly.core.domain.usecase.InsertNotificationMessageUseCase
 import com.bankly.core.domain.usecase.InsertRecentFundUseCase
+import com.bankly.core.domain.usecase.SaveToEodUseCase
 import com.bankly.core.domain.usecase.SyncRecentFundingUseCase
 import com.bankly.core.model.data.AddDeviceTokenData
 import com.bankly.core.model.data.SyncRecentFundingData
@@ -28,6 +29,7 @@ internal class MainActivityViewModel @Inject constructor(
     private val addDeviceToFirebaseUseCase: AddDeviceToFirebaseUseCase,
     private val getNotificationMessageUseCase: GetNotificationMessageUseCase,
     private val insertNotificationMessageUseCase: InsertNotificationMessageUseCase,
+    private val saveToEodUseCase: SaveToEodUseCase,
     private val insertRecentFundUseCase: InsertRecentFundUseCase,
     private val getRecentFundUseCase: GetRecentFundUseCase,
     private val userPreferencesDataStore: UserPreferencesDataStore,
@@ -60,6 +62,7 @@ internal class MainActivityViewModel @Inject constructor(
                     )
                 }
                 insertRecentFundUseCase.invoke(event.transactionPayload.toRecentFund())
+                saveToEodUseCase.invoke(event.transactionPayload.toTransactionReceipt())
             }
 
             is MainActivityEvent.OnDismissNotificationMessageDialog -> {

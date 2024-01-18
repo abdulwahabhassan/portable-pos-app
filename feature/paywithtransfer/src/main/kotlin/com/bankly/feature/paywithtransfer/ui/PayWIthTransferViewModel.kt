@@ -6,6 +6,7 @@ import com.bankly.core.common.viewmodel.BaseViewModel
 import com.bankly.core.model.data.GetRecentFundingData
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetAgentAccountDetailsUseCase
+import com.bankly.core.domain.usecase.GetEodTransactionsUseCase
 import com.bankly.core.domain.usecase.GetLocalRecentFundsUseCase
 import com.bankly.core.domain.usecase.GetRecentFundUseCase
 import com.bankly.core.domain.usecase.GetRemoteRecentFundsUseCase
