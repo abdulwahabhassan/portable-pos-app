@@ -80,7 +80,8 @@ internal fun EodTransactionListItem(
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                 Text(
-                    text = stringResource(R.string.symbol_plus_sign) + Formatter.formatAmount(
+                    text = (if (transaction.isCreditTransaction) stringResource(R.string.symbol_plus_sign)
+                    else stringResource(com.bankly.feature.eod.R.string.symbol_minus_sign)) + Formatter.formatAmount(
                         transaction.transactionAmount,
                         true,
                     ),

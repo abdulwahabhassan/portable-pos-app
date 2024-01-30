@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class TransactionFilter(
     val transactionReference: String = "",
     val accountName: String = "",
-    val cashFlows: List<com.bankly.core.model.entity.CashFlow> = listOf(com.bankly.core.model.entity.CashFlow.Debit(false), com.bankly.core.model.entity.CashFlow.Credit(false)),
+    val cashFlows: List<com.bankly.core.model.entity.CashFlow> = listOf(CashFlow.Debit(false), CashFlow.Credit(false)),
     val transactionTypes: List<TransactionFilterType> = emptyList(),
     val dateFrom: LocalDate? = null,
     val dateTo: LocalDate? = null,

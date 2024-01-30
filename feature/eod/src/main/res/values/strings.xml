@@ -20,4 +20,5 @@
     <string name="title_cash_flow">Cash-flow: %1$s</string>
     <string name="title_start_date">Start-date: %1$s</string>
     <string name="title_end_date">End-date: %1$s</string>
+    <string name="symbol_minus_sign">-</string>
 </resources>
