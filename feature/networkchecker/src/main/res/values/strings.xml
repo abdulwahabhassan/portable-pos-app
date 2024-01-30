@@ -6,4 +6,5 @@
     <string name="title_service_downtime_banks">Service downtime Banks</string>
     <string name="title_operational_banks">Operational Banks</string>
     <string name="bank_network_perecentage">%1$s%</string>
+    <string name="msg_search_bank">Search bank</string>
 </resources>

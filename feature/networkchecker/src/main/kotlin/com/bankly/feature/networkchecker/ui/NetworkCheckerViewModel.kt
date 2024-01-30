@@ -10,6 +10,7 @@ import com.bankly.core.model.sealed.onFailure
 import com.bankly.core.model.sealed.onLoading
 import com.bankly.core.model.sealed.onReady
 import com.bankly.core.model.sealed.onSessionExpired
+import com.bankly.feature.networkchecker.model.NetworkCheckerTab
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -37,24 +38,24 @@ internal class NetworkCheckerViewModel @Inject constructor(
 
             NetworkCheckerScreenEvent.LoadUiData -> {
                 getNetworkCheckerUseCase.invoke(userPreferencesDataStore.data().token)
-                    .onEach { resource: Resource<List<com.bankly.core.model.entity.BankNetwork>> ->
+                    .onEach { resource: Resource<List<BankNetwork>> ->
                         resource.onLoading {
-                            setUiState { copy(isBankListLoading = true) }
+                            setUiState { copy(isTransfersBankNetworkListLoading = true) }
                         }
                         resource.onFailure { errorMessage: String ->
                             setUiState {
                                 copy(
-                                    isBankListLoading = false,
+                                    isTransfersBankNetworkListLoading = false,
                                     showErrorDialog = true,
                                     errorDialogMessage = errorMessage,
                                 )
                             }
                         }
-                        resource.onReady { bankNetworks: List<com.bankly.core.model.entity.BankNetwork> ->
+                        resource.onReady { bankNetworks: List<BankNetwork> ->
                             setUiState {
                                 copy(
-                                    isBankListLoading = false,
-                                    bankNetworks = bankNetworks,
+                                    isTransfersBankNetworkListLoading = false,
+                                    transfersBankNetworkList = bankNetworks,
                                 )
                             }
                         }
@@ -65,12 +66,21 @@ internal class NetworkCheckerViewModel @Inject constructor(
                         it.printStackTrace()
                         setUiState {
                             copy(
-                                isBankListLoading = false,
+                                isTransfersBankNetworkListLoading = false,
                                 showErrorDialog = true,
                                 errorDialogMessage = it.message ?: "",
                             )
                         }
                     }.launchIn(viewModelScope)
+            }
+
+            is NetworkCheckerScreenEvent.OnInputSearchQuery -> {
+                setUiState {
+                    when (event.selectedTab) {
+                        NetworkCheckerTab.TRANSFERS -> copy(transfersSearchQuery = event.query)
+                        NetworkCheckerTab.WITHDRAWALS -> copy(withdrawalsSearchQuery = event.query)
+                    }
+                }
             }
         }
     }

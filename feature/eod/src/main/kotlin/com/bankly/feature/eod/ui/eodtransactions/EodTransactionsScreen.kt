@@ -1,5 +1,6 @@
 package com.bankly.feature.eod.ui.eodtransactions
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -15,6 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -89,7 +94,7 @@ internal fun EodTransactionsRoute(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 private fun EodTransactionsScreen(
     onBackPress: () -> Unit,
@@ -173,81 +178,221 @@ private fun EodTransactionsScreen(
             }
         },
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            if (screenState.selectedTransactionFilterTypes.isNotEmpty()) {
-                item {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp, bottom = 8.dp),
-                    ) {
-                        LazyRow(
-                            modifier = Modifier
-                                .padding(end = 16.dp, start = 16.dp)
-                                .align(Alignment.CenterStart)
-                                .fillMaxWidth(0.755f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            items(
-                                screenState.selectedTransactionFilterTypes,
-                                key = TransactionFilterType::id,
-                            ) { item: TransactionFilterType ->
-                                BanklyFilterChip(
-                                    title = item.name,
-                                    isSelected = item.isSelected,
-                                    onClick = {
-                                        onUiEvent(
-                                            EodTransactionsScreenEvent.RemoveTransactionTypeFilterItem(
-                                                item,
-                                            ),
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        Icon(
-                                            painter = painterResource(id = BanklyIcons.Remove),
-                                            contentDescription = null,
-                                            tint = Color.Unspecified,
-                                        )
-                                    },
-                                )
-                            }
-                        }
+
+        val pullRefreshState =
+            rememberPullRefreshState(refreshing = screenState.isRefreshing, onRefresh = {
+                onUiEvent(EodTransactionsScreenEvent.OnRefresh)
+            })
+
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                if (listOf(
+                        screenState.selectedTransactionFilterTypes.isNotEmpty(),
+                        screenState.accountNameTFV.text.isNotEmpty(),
+                        screenState.transactionReferenceTFV.text.isNotEmpty(),
+                        screenState.startDateFilter != null,
+                        screenState.endDateFilter != null,
+                        screenState.cashFlows.any { it.isSelected }
+                    ).any { it }
+                ) {
+                    item {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .padding(end = 16.dp),
+                                .fillMaxWidth()
+                                .padding(top = 8.dp, bottom = 8.dp),
                         ) {
-                            BanklyClickableText(
-                                text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
-                                onClick = {
-                                    onUiEvent(EodTransactionsScreenEvent.OnClearAllFilters)
-                                },
-                                backgroundShape = RoundedCornerShape(4.dp),
-                                textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
-                            )
+                            LazyRow(
+                                modifier = Modifier
+                                    .padding(end = 16.dp, start = 16.dp)
+                                    .align(Alignment.CenterStart)
+                                    .fillMaxWidth(0.755f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                items(
+                                    screenState.selectedTransactionFilterTypes,
+                                    key = TransactionFilterType::id,
+                                ) { item: TransactionFilterType ->
+                                    BanklyFilterChip(
+                                        title = item.name,
+                                        isSelected = item.isSelected,
+                                        onClick = {
+                                            onUiEvent(
+                                                EodTransactionsScreenEvent.RemoveTransactionTypeFilterItem(
+                                                    item,
+                                                ),
+                                            )
+                                        },
+                                        trailingIcon = {
+                                            Icon(
+                                                painter = painterResource(id = BanklyIcons.Remove),
+                                                contentDescription = null,
+                                                tint = Color.Unspecified,
+                                            )
+                                        },
+                                    )
+                                }
+                                if (screenState.transactionReferenceTFV.text.isNotEmpty()) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_ref,
+                                                screenState.transactionReferenceTFV.text
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    EodTransactionsScreenEvent.RemoveTransactionReferenceItem,
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.accountNameTFV.text.isNotEmpty()) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_acct_name,
+                                                screenState.accountNameTFV.text
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    EodTransactionsScreenEvent.RemoveAccountNameItem,
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.cashFlows.any { it.isSelected }) {
+                                    items(screenState.cashFlows.filter { it.isSelected }) { cashflow: CashFlow ->
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_cash_flow,
+                                                cashflow.title
+                                            ),
+                                            isSelected = cashflow.isSelected,
+                                            onClick = {
+                                                onUiEvent(
+                                                    EodTransactionsScreenEvent.RemoveCashFlowItem(
+                                                        cashflow
+                                                    ),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.startDateFilter != null) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_start_date,
+                                                screenState.startDateFilter
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    EodTransactionsScreenEvent.RemoveDateItem(DateRange.START_DATE),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.endDateFilter != null) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_end_date,
+                                                screenState.endDateFilter
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    EodTransactionsScreenEvent.RemoveDateItem(DateRange.END_DATE),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                            }
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .padding(end = 16.dp),
+                            ) {
+                                BanklyClickableText(
+                                    text = buildAnnotatedString { append(stringResource(R.string.action_clear_all)) },
+                                    onClick = {
+                                        onUiEvent(EodTransactionsScreenEvent.OnClearAllFilters)
+                                    },
+                                    backgroundShape = RoundedCornerShape(4.dp),
+                                    textStyle = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            items(filteredList) { item ->
-                EodTransactionListItem(
-                    transaction = item,
-                    onClick = {
-                        onTransactionSelected(item.toTransactionReceipt())
-                    },
-                )
+                items(filteredList) { item ->
+                    EodTransactionListItem(
+                        transaction = item,
+                        onClick = {
+                            onTransactionSelected(item.toTransactionReceipt())
+                        },
+                    )
+                }
             }
+            PullRefreshIndicator(
+                refreshing = screenState.isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.Center),
+                contentColor = MaterialTheme.colorScheme.primary,
+            )
         }
+
         if (sheetState.isVisible) {
             ModalBottomSheet(
                 modifier = Modifier
@@ -267,11 +412,7 @@ private fun EodTransactionsScreen(
                     transactionReferenceFeedback = screenState.transactionReferenceFeedBack,
                     transactionReferenceTFV = screenState.transactionReferenceTFV,
                     onEnterTransactionReference = { textFieldValue: TextFieldValue ->
-                        onUiEvent(
-                            EodTransactionsScreenEvent.OnInputTransactionReference(
-                                textFieldValue,
-                            ),
-                        )
+                        onUiEvent(EodTransactionsScreenEvent.OnInputTransactionReference(textFieldValue))
                     },
                     isUserInputEnabled = screenState.isUserInputEnabled,
                     isAccountNameFeedbackError = screenState.isAccountNameFeedbackError,

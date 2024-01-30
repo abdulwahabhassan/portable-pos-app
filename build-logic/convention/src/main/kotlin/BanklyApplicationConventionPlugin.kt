@@ -38,7 +38,6 @@ class BanklyApplicationConventionPlugin : Plugin<Project> {
                 add("implementation", project(":feature:checkcardbalance"))
                 add("implementation", project(":feature:faq"))
                 add("implementation", project(":feature:notification"))
-
             }
         }
     }

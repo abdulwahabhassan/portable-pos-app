@@ -137,7 +137,11 @@ class BanklyFirebaseMessagingService : FirebaseMessagingService() {
         const val DATA_BODY_KEY = "body"
 
         fun resolvePayload(payload: String?, json: Json): TransactionPayload? {
-            return payload?.let { json.decodeFromString(it) }
+            return try {
+                payload?.let { json.decodeFromString(it) }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Bankly</string>
     <string name="desc_navigation_icon">Navigation Icon</string>
     <string name="symbol_naira">₦</string>
     <string name="msg_enter_amount">Enter Amount</string>
@@ -31,4 +30,10 @@
     <string name="msg_account_number_copied">Account number copied!</string>
     <string name="action_okay">Okay</string>
     <string name="title_notifications">Notifications</string>
+    <string name="symbol_minus_sign">-</string>
+    <string name="title_ref">REF: %1$s</string>
+    <string name="title_acct_name">Acct-name: %1$s</string>
+    <string name="title_cash_flow">Cash-flow: %1$s</string>
+    <string name="title_start_date">Start-date: %1$s</string>
+    <string name="title_end_date">End-date: %1$s</string>
 </resources>

@@ -14,5 +14,6 @@ object JsonModule {
     @Singleton
     fun providesJson(): Json = Json {
         ignoreUnknownKeys = true
+        isLenient = true
     }
 }

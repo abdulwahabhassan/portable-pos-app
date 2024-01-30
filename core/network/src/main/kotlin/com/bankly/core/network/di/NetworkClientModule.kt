@@ -34,6 +34,7 @@ object NetworkClientModule {
                             if (BuildConfig.DEBUG) SANDBOX_X_API_KEY else BuildConfig.PROD_X_API_KEY,
                         )
                         .addHeader("Accept", "*/*")
+                        .header("Connection", "close")
                         .build(),
                 )
             },

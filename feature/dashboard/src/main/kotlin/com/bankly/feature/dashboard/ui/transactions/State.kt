@@ -16,7 +16,7 @@ internal data class TransactionsScreenState(
     private val isTransactionFilterTypesLoading: Boolean = false,
     val showErrorDialog: Boolean = false,
     val errorDialogMessage: String = "",
-    val transactions: List<com.bankly.core.model.entity.Transaction> = emptyList(),
+    val transactions: List<Transaction> = emptyList(),
     val allTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
     val isTransactionReferenceError: Boolean = false,
     val isAccountNameError: Boolean = false,
@@ -34,7 +34,7 @@ internal data class TransactionsScreenState(
     val isStartDateFilterError: Boolean = false,
     val isEndDateFilterError: Boolean = false,
     val showAllTransactionFilterType: Boolean = false,
-    val cashFlows: List<com.bankly.core.model.entity.CashFlow> = emptyList(),
+    val cashFlows: List<CashFlow> = emptyList(),
     val selectedTransactionFilterTypes: List<TransactionFilterType> = emptyList(),
     val isRefreshing: Boolean = false,
 ) {

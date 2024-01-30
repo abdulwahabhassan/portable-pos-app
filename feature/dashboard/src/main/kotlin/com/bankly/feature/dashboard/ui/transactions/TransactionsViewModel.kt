@@ -8,6 +8,8 @@ import com.bankly.core.data.datastore.UserPreferences
 import com.bankly.core.data.datastore.UserPreferencesDataStore
 import com.bankly.core.domain.usecase.GetTransactionFilterTypesUseCase
 import com.bankly.core.domain.usecase.GetTransactionsUseCase
+import com.bankly.core.model.data.TransactionFilterData
+import com.bankly.core.model.entity.CashFlow
 import com.bankly.core.model.entity.Transaction
 import com.bankly.core.model.entity.TransactionFilter
 import com.bankly.core.model.entity.TransactionFilterType
@@ -46,7 +48,7 @@ internal class TransactionsViewModel @Inject constructor(
             TransactionsScreenEvent.LoadUiData -> {
                 val userPrefData = userPreferencesDataStore.data()
                 loadUiData(
-                    filter = com.bankly.core.model.data.TransactionFilterData(
+                    filter = TransactionFilterData(
                         dateCreatedFrom = userPrefData.remoteTransactionFilter.dateFrom?.toString()
                             ?: "",
                         dateCreatedTo = userPrefData.remoteTransactionFilter.dateTo?.toString()
@@ -66,8 +68,8 @@ internal class TransactionsViewModel @Inject constructor(
                         cashFlows = event.cashFlows.map { cashFlowFilter ->
                             if (cashFlowFilter.title == event.cashFlow.title) {
                                 when (val filter = event.cashFlow) {
-                                    is com.bankly.core.model.entity.CashFlow.Credit -> filter.copy(state = filter.state.not())
-                                    is com.bankly.core.model.entity.CashFlow.Debit -> filter.copy(state = filter.state.not())
+                                    is CashFlow.Credit -> filter.copy(state = filter.state.not())
+                                    is CashFlow.Debit -> filter.copy(state = filter.state.not())
                                 }
                             } else {
                                 cashFlowFilter
@@ -142,9 +144,9 @@ internal class TransactionsViewModel @Inject constructor(
                     copy(remoteTransactionFilter = filter)
                 }
                 loadUiData(
-                    filter = com.bankly.core.model.data.TransactionFilterData(
+                    filter = TransactionFilterData(
                         dateCreatedFrom = filter.dateFrom?.toString() ?: "",
-                        filter.dateTo?.toString() ?: "",
+                        dateCreatedTo = filter.dateTo?.toString() ?: "",
                         if (isOneTransactionTypeSelected) filter.transactionTypes.find { it.isSelected }?.id.toString() else "",
                     ),
                 )
@@ -178,7 +180,7 @@ internal class TransactionsViewModel @Inject constructor(
             TransactionsScreenEvent.OnRefresh -> {
                 val userPrefData = userPreferencesDataStore.data()
                 loadUiData(
-                    filter = com.bankly.core.model.data.TransactionFilterData(
+                    filter = TransactionFilterData(
                         dateCreatedFrom = userPrefData.remoteTransactionFilter.dateFrom?.toString()
                             ?: "",
                         dateCreatedTo = userPrefData.remoteTransactionFilter.dateTo?.toString()
@@ -192,11 +194,39 @@ internal class TransactionsViewModel @Inject constructor(
                     isTriggeredByRefresh = true,
                 )
             }
+
+            TransactionsScreenEvent.RemoveAccountNameItem -> userPreferencesDataStore.update {
+                copy(remoteTransactionFilter = remoteTransactionFilter.copy(accountName = ""))
+            }
+
+            is TransactionsScreenEvent.RemoveCashFlowItem -> userPreferencesDataStore.update {
+                copy(remoteTransactionFilter = remoteTransactionFilter.copy(cashFlows = remoteTransactionFilter.cashFlows.map {
+                    if (it.title == event.cashFlow.title) {
+                        when (it) {
+                            is CashFlow.Credit -> it.copy(it.isSelected.not())
+                            is CashFlow.Debit -> it.copy(it.isSelected.not())
+                        }
+                    } else it
+                }))
+            }
+
+            is TransactionsScreenEvent.RemoveDateItem -> userPreferencesDataStore.update {
+                copy(
+                    remoteTransactionFilter = when (event.whichDate) {
+                        DateRange.START_DATE -> remoteTransactionFilter.copy(dateFrom = null)
+                        DateRange.END_DATE -> remoteTransactionFilter.copy(dateTo = null)
+                    }
+                )
+            }
+
+            TransactionsScreenEvent.RemoveTransactionReferenceItem -> userPreferencesDataStore.update {
+                copy(remoteTransactionFilter = remoteTransactionFilter.copy(transactionReference = ""))
+            }
         }
     }
 
     private suspend fun loadUiData(
-        filter: com.bankly.core.model.data.TransactionFilterData? = null,
+        filter: TransactionFilterData? = null,
         isTriggeredByRefresh: Boolean = false,
     ) {
         combine(
@@ -204,7 +234,7 @@ internal class TransactionsViewModel @Inject constructor(
                 token = userPreferencesDataStore.data().token,
                 minimum = 1,
                 maximum = 100,
-                filter = filter ?: com.bankly.core.model.data.TransactionFilterData(),
+                filter = filter ?: TransactionFilterData(),
             ),
             flow2 = getTransactionFilterTypesUseCase.invoke(
                 token = userPreferencesDataStore.data().token,
@@ -212,7 +242,7 @@ internal class TransactionsViewModel @Inject constructor(
             flow3 = userPreferencesDataStore.flow(),
         ) { transactions, transactionFilterTypes, userPreferences ->
             Triple(transactions, transactionFilterTypes, userPreferences)
-        }.onEach { triple: Triple<Resource<List<com.bankly.core.model.entity.Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
+        }.onEach { triple: Triple<Resource<List<Transaction>>, Resource<List<TransactionFilterType>>, UserPreferences> ->
             if (triple.first is Resource.Loading || triple.second is Resource.Loading) {
                 val transactionFilter = triple.third.remoteTransactionFilter
                 setUiState {
@@ -240,14 +270,20 @@ internal class TransactionsViewModel @Inject constructor(
                                 type.id == selectedType.id
                             } ?: type
                         }
+                val transactionFilter = triple.third.remoteTransactionFilter
                 setUiState {
                     copy(
                         isTransactionFilterTypesLoading = false,
+                        startDateFilter = transactionFilter.dateFrom,
+                        endDateFilter = transactionFilter.dateTo,
+                        cashFlows = transactionFilter.cashFlows,
+                        transactionReferenceTFV = TextFieldValue(transactionFilter.transactionReference),
+                        accountNameTFV = TextFieldValue(transactionFilter.accountName),
                         allTransactionFilterTypes = allTransactionFilterTypes,
                         selectedTransactionFilterTypes = selectedTransactionFilterTypes,
                         isTransactionsLoading = false,
                         transactions = filterTransactions(
-                            transactions = (triple.first as Resource.Ready<List<com.bankly.core.model.entity.Transaction>>).data,
+                            transactions = (triple.first as Resource.Ready<List<Transaction>>).data,
                             userPrefData = triple.third,
                         ),
                         isRefreshing = false,
@@ -298,7 +334,7 @@ internal class TransactionsViewModel @Inject constructor(
         userPrefData: UserPreferences,
     ): List<Transaction> {
         return transactions
-            .filter { transaction:Transaction ->
+            .filter { transaction: Transaction ->
                 val selectedTypeIDs = userPrefData.remoteTransactionFilter.transactionTypes
                     .filter { type: TransactionFilterType -> type.isSelected }
                     .map { type: TransactionFilterType -> type.id }
@@ -308,16 +344,16 @@ internal class TransactionsViewModel @Inject constructor(
                     selectedTypeIDs.any { id: Long -> id == transaction.transactionTypeId }
                 }
             }
-            .filter { transaction: com.bankly.core.model.entity.Transaction ->
+            .filter { transaction: Transaction ->
                 val selectedCashFlows = userPrefData.remoteTransactionFilter.cashFlows
-                    .filter { cashFlow: com.bankly.core.model.entity.CashFlow -> cashFlow.isSelected }
+                    .filter { cashFlow: CashFlow -> cashFlow.isSelected }
                 if (selectedCashFlows.isEmpty()) {
                     true
                 } else {
-                    selectedCashFlows.any { cashFlow: com.bankly.core.model.entity.CashFlow ->
+                    selectedCashFlows.any { cashFlow: CashFlow ->
                         when (cashFlow) {
-                            is com.bankly.core.model.entity.CashFlow.Credit -> transaction.isCreditTransaction
-                            is com.bankly.core.model.entity.CashFlow.Debit -> transaction.isDebitTransaction
+                            is CashFlow.Credit -> transaction.isCreditTransaction
+                            is CashFlow.Debit -> transaction.isDebitTransaction
                         }
                     }
                 }
@@ -328,25 +364,25 @@ internal class TransactionsViewModel @Inject constructor(
                     true,
                 )
             }
-            .filter { transaction: com.bankly.core.model.entity.Transaction ->
+            .filter { transaction: Transaction ->
                 when (transaction) {
-                    is com.bankly.core.model.entity.Transaction.Eod -> when (transaction) {
-                        is com.bankly.core.model.entity.Transaction.Eod.BankTransfer -> transaction.beneficiaryAccountName.contains(
+                    is Transaction.Eod -> when (transaction) {
+                        is Transaction.Eod.BankTransfer -> transaction.beneficiaryAccountName.contains(
                             userPrefData.remoteTransactionFilter.accountName,
                             true,
                         )
 
-                        is com.bankly.core.model.entity.Transaction.Eod.BillPayment -> transaction.paidByAccountName.contains(
+                        is Transaction.Eod.BillPayment -> transaction.paidByAccountName.contains(
                             userPrefData.remoteTransactionFilter.accountName,
                             true,
                         )
 
-                        is com.bankly.core.model.entity.Transaction.Eod.CardPayment -> transaction.cardHolderName.contains(
+                        is Transaction.Eod.CardPayment -> transaction.cardHolderName.contains(
                             userPrefData.remoteTransactionFilter.accountName,
                             true,
                         )
 
-                        is com.bankly.core.model.entity.Transaction.Eod.CardTransfer -> transaction.beneficiaryName.contains(
+                        is Transaction.Eod.CardTransfer -> transaction.beneficiaryName.contains(
                             userPrefData.remoteTransactionFilter.accountName,
                             true,
                         ) || transaction.senderName.contains(
@@ -354,7 +390,7 @@ internal class TransactionsViewModel @Inject constructor(
                             true,
                         )
 
-                        is com.bankly.core.model.entity.Transaction.Eod.PayWithTransfer -> transaction.receiverName.contains(
+                        is Transaction.Eod.PayWithTransfer -> transaction.receiverName.contains(
                             userPrefData.remoteTransactionFilter.accountName,
                             true,
                         ) || transaction.senderAccountName.contains(
@@ -363,7 +399,7 @@ internal class TransactionsViewModel @Inject constructor(
                         )
                     }
 
-                    is com.bankly.core.model.entity.Transaction.History -> transaction.receiverName.contains(
+                    is Transaction.History -> transaction.receiverName.contains(
                         userPrefData.remoteTransactionFilter.accountName,
                         true,
                     ) || transaction.senderName.contains(

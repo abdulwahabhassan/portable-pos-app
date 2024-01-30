@@ -1,5 +1,6 @@
 package com.bankly.feature.dashboard.ui.transactions
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -39,8 +39,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
@@ -66,7 +64,6 @@ import com.bankly.core.designsystem.theme.PreviewColor
 import com.bankly.core.model.entity.CashFlow
 import com.bankly.core.model.entity.TransactionFilter
 import com.bankly.core.model.entity.TransactionFilterType
-import com.bankly.core.model.entity.Transaction
 import com.bankly.core.model.sealed.TransactionReceipt
 import com.bankly.feature.dashboard.R
 import com.bankly.feature.dashboard.ui.component.TransactionListItem
@@ -133,7 +130,8 @@ private fun TransactionsScreen(
             TransactionCategoryTab.CREDIT -> screenState.transactions.filter { it.isCreditTransaction }
             TransactionCategoryTab.DEBIT -> screenState.transactions.filter { it.isDebitTransaction }
         }.filter {
-            it.transactionAmount.toString().contains(screenState.searchQuery, true) || it.transactionReference.contains(
+            it.transactionAmount.toString()
+                .contains(screenState.searchQuery, true) || it.transactionReference.contains(
                 screenState.searchQuery, true,
             ) || it.transactionTypeLabel.contains(screenState.searchQuery, true)
         }
@@ -189,13 +187,14 @@ private fun TransactionsScreen(
             }
         },
 
-    ) { padding ->
+        ) { padding ->
 
         val pullRefreshState =
             rememberPullRefreshState(refreshing = screenState.isRefreshing, onRefresh = {
                 onUiEvent(TransactionsScreenEvent.OnRefresh)
             })
 
+        Log.d("debug", "screen state: ${screenState.copy(transactions = emptyList())}")
         Box(Modifier.pullRefresh(pullRefreshState)) {
             LazyColumn(
                 modifier = Modifier
@@ -204,7 +203,15 @@ private fun TransactionsScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                if (screenState.selectedTransactionFilterTypes.isNotEmpty()) {
+                if (listOf(
+                        screenState.selectedTransactionFilterTypes.isNotEmpty(),
+                        screenState.accountNameTFV.text.isNotEmpty(),
+                        screenState.transactionReferenceTFV.text.isNotEmpty(),
+                        screenState.startDateFilter != null,
+                        screenState.endDateFilter != null,
+                        screenState.cashFlows.any { it.isSelected }
+                    ).any { it }
+                ) {
                     item {
                         Box(
                             contentAlignment = Alignment.Center,
@@ -242,6 +249,123 @@ private fun TransactionsScreen(
                                             )
                                         },
                                     )
+                                }
+                                if (screenState.transactionReferenceTFV.text.isNotEmpty()) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_ref,
+                                                screenState.transactionReferenceTFV.text
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    TransactionsScreenEvent.RemoveTransactionReferenceItem,
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.accountNameTFV.text.isNotEmpty()) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_acct_name,
+                                                screenState.accountNameTFV.text
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    TransactionsScreenEvent.RemoveAccountNameItem,
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.cashFlows.any { it.isSelected }) {
+                                    items(screenState.cashFlows.filter { it.isSelected }) { cashflow: CashFlow ->
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_cash_flow,
+                                                cashflow.title
+                                            ),
+                                            isSelected = cashflow.isSelected,
+                                            onClick = {
+                                                onUiEvent(
+                                                    TransactionsScreenEvent.RemoveCashFlowItem(
+                                                        cashflow
+                                                    ),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.startDateFilter != null) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_start_date,
+                                                screenState.startDateFilter
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    TransactionsScreenEvent.RemoveDateItem(DateRange.START_DATE),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
+                                }
+                                if (screenState.endDateFilter != null) {
+                                    item {
+                                        BanklyFilterChip(
+                                            title = stringResource(
+                                                R.string.title_end_date,
+                                                screenState.endDateFilter
+                                            ),
+                                            isSelected = true,
+                                            onClick = {
+                                                onUiEvent(
+                                                    TransactionsScreenEvent.RemoveDateItem(DateRange.END_DATE),
+                                                )
+                                            },
+                                            trailingIcon = {
+                                                Icon(
+                                                    painter = painterResource(id = BanklyIcons.Remove),
+                                                    contentDescription = null,
+                                                    tint = Color.Unspecified,
+                                                )
+                                            },
+                                        )
+                                    }
                                 }
                             }
                             Box(

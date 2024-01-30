@@ -20,7 +20,7 @@ internal sealed interface EodTransactionsScreenEvent {
         EodTransactionsScreenEvent
 
     class OnInputAccountName(val accountNameTFV: TextFieldValue) : EodTransactionsScreenEvent
-    class OnCashFlowFilterChipClick(val cashFlow: com.bankly.core.model.entity.CashFlow, val cashFlows: List<com.bankly.core.model.entity.CashFlow>) :
+    class OnCashFlowFilterChipClick(val cashFlow: CashFlow, val cashFlows: List<CashFlow>) :
         EodTransactionsScreenEvent
 
     class DateFilterClick(val dateRange: DateRange) : EodTransactionsScreenEvent
@@ -43,4 +43,9 @@ internal sealed interface EodTransactionsScreenEvent {
     class OnApplyFilterClick(val transactionFilter: TransactionFilter) : EodTransactionsScreenEvent
     class RemoveTransactionTypeFilterItem(val item: TransactionFilterType) :
         EodTransactionsScreenEvent
+    object RemoveTransactionReferenceItem : EodTransactionsScreenEvent
+    object RemoveAccountNameItem : EodTransactionsScreenEvent
+    class RemoveCashFlowItem(val cashFlow: CashFlow) : EodTransactionsScreenEvent
+    class RemoveDateItem(val whichDate: DateRange) : EodTransactionsScreenEvent
+    object OnRefresh : EodTransactionsScreenEvent
 }

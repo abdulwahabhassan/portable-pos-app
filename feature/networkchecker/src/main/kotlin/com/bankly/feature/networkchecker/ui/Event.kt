@@ -6,4 +6,8 @@ internal sealed interface NetworkCheckerScreenEvent {
     object DismissErrorDialog : NetworkCheckerScreenEvent
     class OnTabSelected(val tab: NetworkCheckerTab) : NetworkCheckerScreenEvent
     object LoadUiData : NetworkCheckerScreenEvent
+    data class OnInputSearchQuery(
+        val query: String,
+        val selectedTab: NetworkCheckerTab,
+    ) : NetworkCheckerScreenEvent
 }

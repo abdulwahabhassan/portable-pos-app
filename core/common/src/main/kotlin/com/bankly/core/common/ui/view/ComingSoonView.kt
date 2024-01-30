@@ -29,7 +29,7 @@ import com.bankly.core.designsystem.theme.PreviewColor
 @Composable
 fun ComingSoonView(
     modifier: Modifier,
-    onOkayButtonClick: () -> Unit
+    onOkayButtonClick: (() -> Unit)? = null
 ) {
     Column(
         modifier = modifier
@@ -56,19 +56,21 @@ fun ComingSoonView(
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
         )
-        Spacer(modifier = Modifier.height(24.dp))
-        BanklyFilledButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            text = stringResource(R.string.action_okay),
-            onClick = onOkayButtonClick
-        )
+        if (onOkayButtonClick != null) {
+            Spacer(modifier = Modifier.height(24.dp))
+            BanklyFilledButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                text = stringResource(R.string.action_okay),
+                onClick = onOkayButtonClick
+            )
+        }
     }
 }
 
 @Composable
-@Preview(showBackground = true, backgroundColor = PreviewColor.white)
+@Preview(showBackground = true, backgroundColor = PreviewColor.white ,heightDp = 500)
 private fun ComingSoonPreview() {
     BanklyTheme {
         ComingSoonView(

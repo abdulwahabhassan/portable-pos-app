@@ -15,4 +15,9 @@
     <string name="msg_sync_eod_to_get_updated_transaction_report">Sync EOD to get updated transaction report</string>
     <string name="msg_loading">Loading ...</string>
     <string name="title_eod_sync_successful">EOD Sync Successful</string>
+    <string name="title_ref">REF: %1$s</string>
+    <string name="title_acct_name">Acct-name: %1$s</string>
+    <string name="title_cash_flow">Cash-flow: %1$s</string>
+    <string name="title_start_date">Start-date: %1$s</string>
+    <string name="title_end_date">End-date: %1$s</string>
 </resources>

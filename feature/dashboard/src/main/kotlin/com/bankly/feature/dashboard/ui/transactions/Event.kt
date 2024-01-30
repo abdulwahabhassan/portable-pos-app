@@ -19,7 +19,10 @@ internal sealed interface TransactionsScreenEvent {
         TransactionsScreenEvent
 
     class OnInputAccountName(val accountNameTFV: TextFieldValue) : TransactionsScreenEvent
-    class OnCashFlowFilterChipClick(val cashFlow: com.bankly.core.model.entity.CashFlow, val cashFlows: List<com.bankly.core.model.entity.CashFlow>) :
+    class OnCashFlowFilterChipClick(
+        val cashFlow: CashFlow,
+        val cashFlows: List<CashFlow>,
+    ) :
         TransactionsScreenEvent
 
     class DateFilterClick(val dateRange: DateRange) : TransactionsScreenEvent
@@ -41,6 +44,9 @@ internal sealed interface TransactionsScreenEvent {
 
     class OnApplyFilterClick(val transactionFilter: TransactionFilter) : TransactionsScreenEvent
     class RemoveTransactionTypeFilterItem(val item: TransactionFilterType) : TransactionsScreenEvent
-
+    object RemoveTransactionReferenceItem : TransactionsScreenEvent
+    object RemoveAccountNameItem : TransactionsScreenEvent
+    class RemoveCashFlowItem(val cashFlow: CashFlow) : TransactionsScreenEvent
+    class RemoveDateItem(val whichDate: DateRange) : TransactionsScreenEvent
     object OnRefresh : TransactionsScreenEvent
 }

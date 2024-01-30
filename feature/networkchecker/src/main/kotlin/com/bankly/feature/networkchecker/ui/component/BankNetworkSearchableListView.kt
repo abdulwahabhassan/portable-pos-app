@@ -44,7 +44,7 @@ import com.bankly.feature.networkchecker.R
 internal fun BankNetworkSearchableListView(
     modifier: Modifier,
     isBankListLoading: Boolean,
-    bankList: List<com.bankly.core.model.entity.BankNetwork>,
+    bankList: List<BankNetwork>,
 ) {
     val searchQuery by remember { mutableStateOf("") }
     val banks by remember(bankList, searchQuery) {
@@ -77,43 +77,45 @@ internal fun BankNetworkSearchableListView(
     } else if (banks.isEmpty()) {
         EmptyStateView()
     } else {
-        LazyColumn(modifier = modifier.fillMaxSize(), content = {
-            if (serviceDowntimeBanks.isNotEmpty()) {
-                stickyHeader {
-                    ListHeader(
-                        isListExpanded = isDowntimeBankListExpanded,
-                        title = stringResource(id = R.string.title_service_downtime_banks),
-                        onClickVisibilityIcon = {
-                            isDowntimeBankListExpanded =
-                                !isDowntimeBankListExpanded
-                        },
-                    )
-                }
-                if (isDowntimeBankListExpanded) {
-                    items(serviceDowntimeBanks) {
-                        BankNetworkListItem(bankNetwork = it)
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            content = {
+                if (serviceDowntimeBanks.isNotEmpty()) {
+                    stickyHeader {
+                        ListHeader(
+                            isListExpanded = isDowntimeBankListExpanded,
+                            title = stringResource(id = R.string.title_service_downtime_banks),
+                            onClickVisibilityIcon = {
+                                isDowntimeBankListExpanded =
+                                    !isDowntimeBankListExpanded
+                            },
+                        )
+                    }
+                    if (isDowntimeBankListExpanded) {
+                        items(serviceDowntimeBanks) {
+                            BankNetworkListItem(bankNetwork = it)
+                        }
                     }
                 }
-            }
 
-            if (operationalBanks.isNotEmpty()) {
-                stickyHeader {
-                    ListHeader(
-                        isListExpanded = isOperationalBankListExpanded,
-                        title = stringResource(id = R.string.title_operational_banks),
-                        onClickVisibilityIcon = {
-                            isOperationalBankListExpanded =
-                                !isOperationalBankListExpanded
-                        },
-                    )
-                }
-                if (isOperationalBankListExpanded) {
-                    items(operationalBanks) {
-                        BankNetworkListItem(bankNetwork = it)
+                if (operationalBanks.isNotEmpty()) {
+                    stickyHeader {
+                        ListHeader(
+                            isListExpanded = isOperationalBankListExpanded,
+                            title = stringResource(id = R.string.title_operational_banks),
+                            onClickVisibilityIcon = {
+                                isOperationalBankListExpanded =
+                                    !isOperationalBankListExpanded
+                            },
+                        )
+                    }
+                    if (isOperationalBankListExpanded) {
+                        items(operationalBanks) {
+                            BankNetworkListItem(bankNetwork = it)
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 }
 
@@ -125,9 +127,9 @@ private fun BankNetworkSearchableListPreview() {
             modifier = Modifier,
             isBankListLoading = false,
             bankList = listOf(
-                com.bankly.core.model.entity.BankNetwork("GT Bank", "", 60.00, 100),
-                com.bankly.core.model.entity.BankNetwork("First Bank", "", 100.00, 59),
-                com.bankly.core.model.entity.BankNetwork("Access Bank", "", 50.00, 0),
+                BankNetwork("GT Bank", "", 60.00, 100),
+                BankNetwork("First Bank", "", 100.00, 59),
+                BankNetwork("Access Bank", "", 50.00, 0),
             ),
         )
     }

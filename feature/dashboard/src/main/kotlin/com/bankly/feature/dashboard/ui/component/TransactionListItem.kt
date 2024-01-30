@@ -80,10 +80,9 @@ internal fun TransactionListItem(
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
             Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                 Text(
-                    text = stringResource(R.string.symbol_plus_sign) + Formatter.formatAmount(
-                        transaction.transactionAmount,
-                        true,
-                    ),
+                    text = (if (transaction.isCreditTransaction) stringResource(com.bankly.feature.dashboard.R.string.symbol_plus_sign)
+                    else stringResource(com.bankly.feature.dashboard.R.string.symbol_minus_sign))
+                            + Formatter.formatAmount(transaction.transactionAmount, true),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = if (transaction.isCreditTransaction) {
                             BanklySuccessColor.successColor
