@@ -7,7 +7,6 @@ import android.os.Environment
 import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
