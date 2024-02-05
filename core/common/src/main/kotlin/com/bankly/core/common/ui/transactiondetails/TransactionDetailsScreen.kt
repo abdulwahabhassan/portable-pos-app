@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bankly.core.common.R
 import com.bankly.core.common.util.Formatter
+import com.bankly.core.common.util.captureAndShareComposeView
 import com.bankly.core.common.util.copyToClipboard
 import com.bankly.core.designsystem.component.BanklyCenterDialog
 import com.bankly.core.designsystem.component.BanklyClickableIcon
@@ -88,6 +89,7 @@ fun TransactionDetailsScreen(
         }
     }
 
+    val context = LocalContext.current
     var showComingSoonDialog by remember { mutableStateOf(false) }
 
     BanklyCenterDialog(
@@ -228,7 +230,7 @@ fun TransactionDetailsScreen(
                         modifier = Modifier.weight(1f),
                         text = stringResource(R.string.action_share),
                         onClick = {
-                            showComingSoonDialog = true
+                            captureAndShareComposeView(context)
                         },
                         backgroundColor = MaterialTheme.colorScheme.background,
                     )
