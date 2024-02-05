@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@OptIn(ExperimentalComposeUiApi::class)
 fun captureAndShareComposeView(context: Context) {
     val rootView = (context as ComponentActivity).findViewById<View>(android.R.id.content)
 
@@ -39,7 +38,7 @@ fun captureAndShareComposeView(context: Context) {
 
 private fun saveBitmapToFile(bitmap: Bitmap, context: Context): String? {
     val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val fileName = "ComposeCapture_$timeStamp.jpg"
+    val fileName = "bankly_pos_receipt_$timeStamp.jpg"
 
     return try {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
