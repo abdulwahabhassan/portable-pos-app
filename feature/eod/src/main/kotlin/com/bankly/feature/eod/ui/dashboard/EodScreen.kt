@@ -161,6 +161,7 @@ private fun EodScreen(
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     text = "Share EOD",
                     onClick = {
+                        showComingSoonDialog = true
                     },
                 )
             }
