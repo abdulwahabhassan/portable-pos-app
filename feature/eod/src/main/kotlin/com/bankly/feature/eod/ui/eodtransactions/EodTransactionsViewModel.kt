@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.datetime.toKotlinLocalDate
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -171,7 +173,12 @@ internal class EodTransactionsViewModel @Inject constructor(
 
             EodTransactionsScreenEvent.OnClearAllFilters -> {
                 userPreferencesDataStore.update {
-                    copy(eodTransactionFilter = TransactionFilter())
+                    copy(
+                        eodTransactionFilter = TransactionFilter(
+                            dateFrom = LocalDate.now().toKotlinLocalDate(),
+                            dateTo = LocalDate.now().toKotlinLocalDate()
+                        )
+                    )
                 }
                 loadUiData()
             }

@@ -12,12 +12,12 @@ interface TransactionRepository {
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>>
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>>
 
     suspend fun getEodTransactions(
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>>
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>>
 
     suspend fun getTransactionsFilterTypes(
         token: String,

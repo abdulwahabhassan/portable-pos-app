@@ -36,8 +36,8 @@ class DefaultTransactionRepository @Inject constructor(
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> = flow {
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>> = flow {
         emit(Resource.Loading)
         when (
             val responseResult = handleTransactionApiResponse(
@@ -63,8 +63,8 @@ class DefaultTransactionRepository @Inject constructor(
     }
 
     override suspend fun getEodTransactions(
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> = flow {
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>> = flow {
         emit(Resource.Loading)
         try {
             Log.d("debug filer", "date from: ${filter.dateCreatedFrom}")

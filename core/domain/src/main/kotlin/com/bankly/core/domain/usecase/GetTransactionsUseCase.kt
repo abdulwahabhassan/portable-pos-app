@@ -14,7 +14,7 @@ class GetTransactionsUseCase @Inject constructor(
         token: String,
         minimum: Long,
         maximum: Long,
-        filter: com.bankly.core.model.data.TransactionFilterData,
-    ): Flow<Resource<List<com.bankly.core.model.entity.Transaction>>> =
+        filter: TransactionFilterData,
+    ): Flow<Resource<List<Transaction>>> =
         transactionRepository.getTransactions(token, minimum, maximum, filter)
 }
