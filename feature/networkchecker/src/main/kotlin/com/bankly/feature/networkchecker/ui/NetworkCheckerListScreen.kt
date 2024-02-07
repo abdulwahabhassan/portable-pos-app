@@ -107,7 +107,7 @@ private fun NetworkCheckerListScreen(
                         rippleColor = MaterialTheme.colorScheme.surfaceVariant,
                     )
                 }
-                if (screenState.selectedTab != NetworkCheckerTab.WITHDRAWALS && bankNetworkList.isNotEmpty()) {
+                if (screenState.selectedTab != NetworkCheckerTab.WITHDRAWALS && screenState.transfersBankNetworkList.isNotEmpty()) {
                     Spacer(modifier = Modifier.padding(top = 8.dp))
                     BanklySearchBar(
                         modifier = Modifier,
