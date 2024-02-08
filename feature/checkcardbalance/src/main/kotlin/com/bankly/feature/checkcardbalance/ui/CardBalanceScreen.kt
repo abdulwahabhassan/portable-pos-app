@@ -120,7 +120,7 @@ fun CardBalanceScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = stringResource(R.string.msg_card_balance_with_naira_symbol, amount),
+                        text = amount,
                         style = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.primary),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
